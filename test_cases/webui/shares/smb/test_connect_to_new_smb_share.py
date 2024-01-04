@@ -38,31 +38,9 @@ def test_connect_to_new_smb_share(user_data, smb_data) -> None:
     assert SSH.verify_exec_permission(smb_data['user'], smb_data['execute'])
     assert SSH.verify_delete_permission(smb_data['user'], smb_data['delete'])
 
-    # SMB.click_add_share_button()
-    # COMSHARE.set_share_path(smb_data['path'])
-    # COMSHARE.set_share_name(smb_data['name'])
-    # SMB.set_share_purpose(smb_data['purpose'])
-    # COMSHARE.set_share_description(smb_data['description'])
-    # COM.set_checkbox('enabled')
-    # COM.click_save_button()
-    # SMB.confirm_smb_service_dialog()
-    #
-    # # Verify Share attached to Dataset
-    # NAV.navigate_to_datasets()
-    # DATASET.expand_dataset('tank')
-    # DATASET.select_dataset(smb_data['name'])
-    # assert DATASET.assert_dataset_share_attached(smb_data['name'])
-    # assert DATASET.assert_dataset_roles_smb_icon(smb_data['name'])
-    #
-    # # Verify share on share page
-    # NAV.navigate_to_shares()
-    # assert COMSHARE.assert_share_name('smb', smb_data['name'])
-    # assert COMSHARE.assert_share_path('smb', smb_data['path'])
-    # assert COMSHARE.assert_share_description('smb', smb_data['description'])
-    # assert COMSHARE.is_share_enabled('smb', smb_data['name'])
-    #
     # # Environment Teardown
-    # COMSHARE.delete_share_by_api('smb', smb_data['name'])
-    # DATASET.delete_dataset_by_api(smb_data['path'])
-    # COM.delete_user_by_api('testuser')
-    # NAV.navigate_to_dashboard()
+    SSH.delete_smb_test_files(smb_data['user'])
+    assert SSH.assert_file_not_exist(smb_data['user'], 'putfile')
+    COMSHARE.delete_share_by_api('smb', smb_data['name'])
+    DATASET.delete_dataset_by_api(smb_data['path'])
+    COM.delete_user_by_api(smb_data['user'])
