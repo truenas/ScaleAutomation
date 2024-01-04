@@ -101,6 +101,15 @@ class Common:
         cls.click_on_element(xpaths.common_xpaths.button_field(name))
 
     @classmethod
+    def click_link(cls, name: str) -> None:
+        """
+        This method clicks the given link.
+
+        :param name: is the name of the link to click.
+        """
+        cls.click_on_element(xpaths.common_xpaths.link_field(name))
+
+    @classmethod
     def click_save_button(cls) -> None:
         """
         This method clicks the save button

@@ -114,7 +114,7 @@ class Dashboard:
         """
         This method click on CPU report button
         """
-        Common.click_button('cpu-reports')
+        Common.click_link('cpu-reports')
 
     @classmethod
     def click_the_memory_report_button(cls):
