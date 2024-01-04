@@ -24,9 +24,9 @@ class Common:
     @classmethod
     def assert_copyright_text_is_correct(cls) -> bool:
         """
-        This method verifies that the copyright text displays on the login page
+        This method verifies that the iX copyright text displayed.
 
-        :return: true if copyright text displays correctly
+        :return: True if copyright text displays correctly otherwise it returns False.
         """
         return cls.assert_text_is_visible('TrueNAS SCALE ® © 2024')
 
@@ -99,6 +99,15 @@ class Common:
         :param name: is the name of the button to click.
         """
         cls.click_on_element(xpaths.common_xpaths.button_field(name))
+
+    @classmethod
+    def click_link(cls, name: str) -> None:
+        """
+        This method clicks the given link.
+
+        :param name: is the name of the link to click.
+        """
+        cls.click_on_element(xpaths.common_xpaths.link_field(name))
 
     @classmethod
     def click_save_button(cls) -> None:
