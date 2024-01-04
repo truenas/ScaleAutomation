@@ -5,7 +5,7 @@ from helper.global_config import private_config
 
 def test_login_page_ui():
     COM.navigate_to_login_screen(private_config['IP'])
-    assert LPU.assert_copyright_text_is_correct() is True
+    assert COM.assert_copyright_text_is_correct() is True
     assert LPU.assert_password_visibility_button_toggles_off_to_on() is True
     assert LPU.assert_password_visibility_button_toggles_on_to_off() is True
     assert LPU.assert_text_doesnt_affect_password_visibility_button() is True

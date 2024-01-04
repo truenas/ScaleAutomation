@@ -1,5 +1,6 @@
 from keywords.webui.dashboard import Dashboard
 from keywords.webui.navigation import Navigation
+from keywords.webui.common import Common
 
 
 class Test_Verify_Links_On_The_TrueNAS_Help_Card:
@@ -12,7 +13,7 @@ class Test_Verify_Links_On_The_TrueNAS_Help_Card:
     def on_the_dashboard_verify_the_truenas_help_card_copyright():
         assert Dashboard.assert_dashboard_page_header_is_visible()
         assert Dashboard.is_truenas_help_card_visible()
-        assert Dashboard.is_ix_copyright_text_visible()
+        assert Common.assert_copyright_text_is_correct()
 
     @staticmethod
     def verify_all_links_on_the_truenas_help_card():

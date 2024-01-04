@@ -22,6 +22,15 @@ class Common:
         WebUI.delay(1)
 
     @classmethod
+    def assert_copyright_text_is_correct(cls) -> bool:
+        """
+        This method verifies that the copyright text displays on the login page
+
+        :return: true if copyright text displays correctly
+        """
+        return cls.assert_text_is_visible('TrueNAS SCALE ® © 2024')
+
+    @classmethod
     def assert_right_panel_header(cls, header_text):
         """
         This method return True if the right panel header text is visible before timeout otherwise it returns False.
