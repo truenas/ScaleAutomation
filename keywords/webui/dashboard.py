@@ -110,13 +110,11 @@ class Dashboard:
         Common.click_button('configure-dashboard')
 
     @classmethod
-    def is_ix_copyright_text_visible(cls):
+    def click_the_memory_report_button(cls):
         """
-        This method returns True if the iX copyright text is visible otherwise it returns False.
-
-        :return: True if the iX copyright text is visible otherwise it returns False.
+        This method click on memory report button
         """
-        return Common.assert_text_is_visible('TrueNAS SCALE ® © 2023')
+        Common.click_button('memory-go-to-reports')
 
     @classmethod
     def is_cpu_card_visible(cls):

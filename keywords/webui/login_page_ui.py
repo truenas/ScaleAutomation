@@ -16,15 +16,6 @@ class Login_Page_Ui:
         return COM.is_visible(xpaths.common_xpaths.any_xpath('//img[@src="assets/images/stars-sky-1200w.jpg"]'))
 
     @classmethod
-    def assert_copyright_text_is_correct(cls) -> bool:
-        """
-        This method verifies that the copyright text displays on the login page
-
-        :return: true if copyright text displays correctly
-        """
-        return WebUI.wait_until_visible(xpaths.common_xpaths.any_text('TrueNAS SCALE ® © 2023'))
-
-    @classmethod
     def assert_error_password_requirement_displays_after_deselection(cls) -> bool:
         """
         This method verifies that the password is required error message displays on the login page when field is
