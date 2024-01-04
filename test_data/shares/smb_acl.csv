@@ -1,0 +1,2 @@
+path,name,user,who,id,perm,permtype,read,write,execute,delete
+tank/SMBSHARE,SMBSHARE,smbuser,USER,3000,FULL,ALLOWED,True,True,True,True

@@ -1,0 +1,2 @@
+path,name,purpose,description,acl_owner,acl_group,path_alt,name_alt,purpose_alt,description_alt,acl_owner_alt,acl_group_alt
+tank/SMBSHARE,SMBSHARE,No presets,For automation testing,admin,admin,tank/EditedShare,EditedShare,Default share parameters,Edited description,,
