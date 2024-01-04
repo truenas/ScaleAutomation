@@ -24,9 +24,9 @@ class Common:
     @classmethod
     def assert_copyright_text_is_correct(cls) -> bool:
         """
-        This method verifies that the copyright text displays on the login page
+        This method verifies that the iX copyright text displayed.
 
-        :return: true if copyright text displays correctly
+        :return: True if copyright text displays correctly otherwise it returns False.
         """
         return cls.assert_text_is_visible('TrueNAS SCALE ® © 2024')
 
