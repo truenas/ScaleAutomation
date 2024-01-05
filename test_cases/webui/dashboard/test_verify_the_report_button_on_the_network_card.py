@@ -12,7 +12,7 @@ class Test_Verify_The_Report_Button_On_The_Network_Card:
     @staticmethod
     def on_the_dashboard_click_on_the_network_report_button():
         assert Dashboard.assert_dashboard_page_header_is_visible() is True
-        assert Dashboard.is_memory_card_visible() is True
+        assert Dashboard.is_network_card_visible() is True
         Dashboard.click_the_network_report_button()
 
     @staticmethod
