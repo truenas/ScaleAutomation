@@ -138,6 +138,40 @@ class Dashboard:
         Common.click_link('storage-reports')
 
     @classmethod
+    def disable_card(cls, card: str):
+        """
+        This method disable the given card:
+
+        :param card: is the card toggle name
+        """
+        cls.set_dashboard_card_by_state(card, False)
+
+    @classmethod
+    def enable_card(cls, card: str):
+        """
+        This method enable the given card:
+
+        :param card: is the card toggle name
+        """
+        cls.set_dashboard_card_by_state(card, True)
+
+    @classmethod
+    def set_dashboard_card_by_state(cls, card: str, state: bool):
+        """
+        This method set the card toggle by the given state.
+
+        :param card: is the card toggle name
+        :param state: is True to enable the toggle and False to disable it.
+        """
+        cls.click_the_configure_button()
+        assert cls.assert_dashboard_configure_panel_is_visible() is True
+        if state:
+            Common.set_toggle(card)
+        else:
+            Common.unset_toggle(card)
+        Common.click_save_button()
+
+    @classmethod
     def is_cpu_card_visible(cls):
         """
         This method returns True if the cpu card is visible otherwise it returns False.
@@ -202,9 +236,10 @@ class Dashboard:
         Common.set_toggle('help')
         Common.set_toggle('cpu')
         Common.set_toggle('memory')
+        Common.set_toggle('backup')
         Common.set_toggle('storage')
-        Common.set_toggle('network')
         Common.set_toggle('pool-tank')
+        Common.set_toggle('network')
         Common.set_toggle('enp-1-s-0')
         Common.click_save_button()
 

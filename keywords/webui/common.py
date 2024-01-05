@@ -190,6 +190,16 @@ class Common:
         return WebUI.wait_until_visible(xpaths.common_xpaths.card_title(card_title))
 
     @classmethod
+    def is_card_not_visible(cls, card_title: str):
+        """
+        This method return True if the card is not visible, otherwise it returns False.
+
+        :param card_title: The name of the title of the card
+        :return: True if the card is not visible, otherwise it returns False.
+        """
+        return WebUI.wait_until_not_visible(xpaths.common_xpaths.card_title(card_title))
+
+    @classmethod
     def is_checked(cls, name: str) -> bool:
         """
         This method return True if the given checkbox is checked otherwise it returns False.
@@ -362,12 +372,12 @@ class Common:
         """
         WebUI.scroll_to_element(xpaths.common_xpaths.toggle_field(name))
         toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
-        if bool(toggle.get_attribute('ariaChecked')) != state:
+        if eval(toggle.get_attribute('ariaChecked').title()) != state:
             toggle.click()
         # in headless sometime the assert fails a .1 delay stop the failing.
-        WebUI.delay(0.1)
+        WebUI.delay(0.5)
         toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
-        assert bool(toggle.get_attribute('ariaChecked')) == state
+        assert eval(toggle.get_attribute('ariaChecked').title()) is state
 
     @classmethod
     def unset_checkbox(cls, name: str) -> None:
