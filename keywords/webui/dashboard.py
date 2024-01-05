@@ -124,6 +124,20 @@ class Dashboard:
         Common.click_button('memory-go-to-reports')
 
     @classmethod
+    def click_the_network_report_button(cls):
+        """
+        This method click on Network report button
+        """
+        Common.click_link('network-reports')
+
+    @classmethod
+    def click_the_storage_report_button(cls):
+        """
+        This method click on storage report button
+        """
+        Common.click_link('storage-reports')
+
+    @classmethod
     def is_cpu_card_visible(cls):
         """
         This method returns True if the cpu card is visible otherwise it returns False.

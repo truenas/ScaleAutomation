@@ -57,31 +57,13 @@ class Reporting:
         return Common.is_card_visible('CPU Usage')
 
     @classmethod
-    def is_disk_card_visible(cls, name: str) -> bool:
+    def is_disk_i_o_card_visible(cls, name: str) -> bool:
         """
         This method returns True or False whether the disk card is visible.
 
         :return: True if the disk card is visible, otherwise it returns False.
         """
-        return Common.is_card_visible(name)
-
-    @classmethod
-    def is_disk_i_o_sda_card_visible(cls) -> bool:
-        """
-        This method returns True or False whether the disk i/o sda card is visible.
-
-        :return: True if the disk i/o sda card is visible, otherwise it returns False.
-        """
-        return cls.is_disk_card_visible('Disk I/O sda')
-
-    @classmethod
-    def is_disk_i_o_sdb_card_visible(cls) -> bool:
-        """
-        This method returns True or False whether the disk i/o sdb card is visible.
-
-        :return: True if the disk i/o sdb card is visible, otherwise it returns False.
-        """
-        return cls.is_disk_card_visible('Disk I/O sdb')
+        return Common.is_card_visible(f'Disk I/O {name}')
 
     @classmethod
     def is_interface_traffic_card_visible(cls) -> bool:
