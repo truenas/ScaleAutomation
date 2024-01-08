@@ -9,6 +9,7 @@ class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
         WebUI.refresh()
         Dashboard.click_the_reorder_button()
         Dashboard.move_card_a_to_card_b_position('sysinfo', Dashboard.get_dashboard_card_name_by_position(1))
+        Dashboard.move_card_a_to_card_b_position('help', Dashboard.get_dashboard_card_name_by_position(2))
         Dashboard.click_the_save_reorder_button()
 
     @staticmethod
