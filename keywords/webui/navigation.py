@@ -19,6 +19,13 @@ class Navigation:
         WebUI.delay(2)
 
     @classmethod
+    def navigate_to_apps(cls) -> None:
+        """
+        This method navigates to the Dashboard page
+        """
+        cls.navigate_to('apps', 'Installed')
+
+    @classmethod
     def navigate_to_dashboard(cls) -> None:
         """
         This method navigates to the Dashboard page
