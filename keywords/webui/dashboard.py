@@ -7,8 +7,14 @@ from keywords.webui.common import Common
 class Dashboard:
     @classmethod
     def assert_card_position(cls, position: int, field: str) -> bool:
-        card_name = cls.get_dashboard_widget_name_by_position(position)
-        print(card_name)
+        """
+        This method returns True if the given card is at the given position otherwise it returns False.
+
+        :param position: is the number of the position that the card should be.
+        :param field: is the name of the card.
+        :return: True if the given card is at the given position otherwise it returns False.
+        """
+        card_name = cls.get_dashboard_card_name_by_position(position)
         return True if field == card_name else False
 
     @classmethod
@@ -254,21 +260,29 @@ class Dashboard:
         return Common.is_card_visible('TrueNAS Help')
 
     @classmethod
-    def get_dashboard_widget_name_by_position(cls, position: int) -> str:
+    def get_dashboard_card_name_by_position(cls, position: int) -> str:
+        """
+        This method returns the name dashboard card by name from given position.
+
+        :param position: in the number of the position of the card.
+        :return: the name dashboard card by name
+        """
         card_header = WebUI.get_text(xpaths.common_xpaths.any_xpath(f'(//mat-card)[{position}]//h3'))
         return shared_config['DASHBOARD_CARDS'][card_header]
 
     @classmethod
-    def move_card_a_to_card_b_position_by_state(cls, card_a: str, card_b: str):
+    def move_card_a_to_card_b_position(cls, card_a: str, card_b: str):
+        """
+        This method move given card_a to the card_b position.
+
+        :param card_a: name of the card to move
+        :param card_b: name of the card to move card_a to
+        """
         if card_a != card_b:
             WebUI.drag_and_drop(xpaths.dashboard.drag_card(card_a), xpaths.dashboard.drop_card(card_b))
             WebUI.delay(0.4)
         else:
             print("card_a can't match card_b")
-
-    @classmethod
-    def move_card_a_to_card_b_position(cls, card_a: str, card_b: str):
-        cls.move_card_a_to_card_b_position_by_state(card_a, card_b)
 
     @classmethod
     def set_all_cards_visible(cls):
