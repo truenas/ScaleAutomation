@@ -231,6 +231,17 @@ class Common:
             return True
 
     @classmethod
+    def is_dialog_visible(cls, dialog_title: str, level: int) -> bool:
+        """
+        This method return True if the dialog is visible, otherwise it returns False.
+
+        :param dialog_title: The name of the title of the dialog
+        :param level: The level of the title of the dialog [1/3]
+        :return: True if the dialog is visible, otherwise it returns False.
+        """
+        return cls.is_visible(xpaths.common_xpaths.any_header(dialog_title, level))
+
+    @classmethod
     def is_service_running(cls, xpath: str) -> bool:
         """
         This method return True if the xpath element is clickable before timeout otherwise it returns False.
@@ -301,6 +312,17 @@ class Common:
         cls.set_input_field(name, Keys.TAB)
 
     @classmethod
+    def select_option(cls, name: str, option: str):
+        """
+        This method selects the given option from the given select field
+
+        :param name: name of the select field to select from
+        :param option: name of the option to select
+        """
+        WebUI.xpath(xpaths.common_xpaths.select_field(name)).click()
+        WebUI.xpath(xpaths.common_xpaths.option_field(option)).click()
+
+    @classmethod
     def set_checkbox(cls, name: str) -> None:
         """
         This method sets the given checkbox
@@ -352,6 +374,17 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
         WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Dashboard', 1))
         WebUI.delay(2)
+
+    @classmethod
+    def set_search_field(cls, text: str):
+        """
+        This method sets the search field with the given text.
+
+        :param text: is the text to set the search field to.
+        """
+        WebUI.wait_until_visible(xpaths.common_xpaths.search_field())
+        WebUI.xpath(xpaths.common_xpaths.search_field()).clear()
+        WebUI.xpath(xpaths.common_xpaths.search_field()).send_keys(text)
 
     @classmethod
     def set_toggle(cls, name: str):
