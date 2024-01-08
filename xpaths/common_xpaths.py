@@ -176,6 +176,15 @@ def option_field(field: str) -> str:
     return f'//*[@data-test="option-{field}"]'
 
 
+def search_field() -> str:
+    """
+    This method sets the text for the search field
+
+    :return: xpath string for given select
+    """
+    return '//*[@data-test="input"]'
+
+
 def select_field(field: str) -> str:
     """
     This method sets the text for the given select name
