@@ -1,4 +1,5 @@
-DASHBOARD_CARDS = {"System Information" = "system-information", "TrueNAS Help" = "help", "CPU" = "cpu", "Memory" = "memory", "Backup Tasks" = "backup", "Storage" = "storage", "Pool" = "pool-tank", "Network" = "network", "Interface" = "enp-1-s-0"}
+DASHBOARD_CARDS = {"System Information" = "sysinfo", "TrueNAS Help" = "help", "CPU" = "cpu", "Memory" = "memory", "Backup Tasks" = "backup", "Storage" = "storage", "Pool" = "pool", "Network" = "network", "Interface" = "nic"}
+DASHBOARD_CARDS_TOGGLE = {"System Information" = "system-information", "TrueNAS Help" = "help", "CPU" = "cpu", "Memory" = "memory", "Backup Tasks" = "backup", "Storage" = "storage", "Pool" = "pool-tank", "Network" = "network", "Interface" = "enp-1-s-0"}
 DISK_LIST = ["sda", "sdb", "sdc", "sdd"]
 # Execution delay will slow down WebUI.xpath by 10 misecond
 EXECUTION_DELAY = 0.01
