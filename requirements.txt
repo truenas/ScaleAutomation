@@ -1,3 +1,4 @@
+allure-pytest
 pytest
 pytest-timeout
 requests

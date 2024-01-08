@@ -11,6 +11,7 @@ class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
         Dashboard.move_card_a_to_card_b_position('sysinfo', Dashboard.get_dashboard_card_name_by_position(1))
         Dashboard.move_card_a_to_card_b_position('help', Dashboard.get_dashboard_card_name_by_position(2))
         Dashboard.click_the_save_reorder_button()
+        WebUI.refresh()
 
     @staticmethod
     def on_the_dashboard_move_the_system_information_card_to_truenas_help_card_position():
