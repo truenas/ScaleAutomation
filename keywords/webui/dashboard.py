@@ -1,9 +1,22 @@
 import xpaths
+from helper.global_config import shared_config
+from helper.webui import WebUI
 from keywords.webui.common import Common
-from helper.webui import WebUI, web_driver
 
 
 class Dashboard:
+    @classmethod
+    def assert_card_position(cls, position: int, field: str) -> bool:
+        """
+        This method returns True if the given card is at the given position otherwise it returns False.
+
+        :param position: is the number of the position that the card should be.
+        :param field: is the name of the card.
+        :return: True if the given card is at the given position otherwise it returns False.
+        """
+        card_name = cls.get_dashboard_card_name_by_position(position)
+        return True if field == card_name else False
+
     @classmethod
     def assert_dashboard_configure_panel_is_visible(cls):
         """
@@ -103,6 +116,13 @@ class Dashboard:
         Common.click_button('widget-sysinfo-update')
 
     @classmethod
+    def click_the_cancel_reorder_button(cls):
+        """
+        This method click on the cancel reorder button.
+        """
+        Common.click_button('cancel-reorder')
+
+    @classmethod
     def click_the_configure_button(cls):
         """
         This method click on the Configure button on the dashboard.
@@ -112,37 +132,51 @@ class Dashboard:
     @classmethod
     def click_the_cpu_report_button(cls):
         """
-        This method click on CPU report button
+        This method click on CPU report button.
         """
         Common.click_link('cpu-reports')
 
     @classmethod
     def click_the_memory_report_button(cls):
         """
-        This method click on memory report button
+        This method click on memory report button.
         """
         Common.click_button('memory-go-to-reports')
 
     @classmethod
     def click_the_network_report_button(cls):
         """
-        This method click on Network report button
+        This method click on Network report button.
         """
         Common.click_link('network-reports')
 
     @classmethod
+    def click_the_reorder_button(cls):
+        """
+        This method click on the Dashboard Reorder button.
+        """
+        Common.click_button('start-reorder')
+
+    @classmethod
+    def click_the_save_reorder_button(cls):
+        """
+        This method click on the save reorder button.
+        """
+        Common.click_button('save-new-order')
+
+    @classmethod
     def click_the_storage_report_button(cls):
         """
-        This method click on storage report button
+        This method click on storage report button.
         """
         Common.click_link('storage-reports')
 
     @classmethod
     def disable_card(cls, card: str):
         """
-        This method disable the given card:
+        This method disable the given card.
 
-        :param card: is the card toggle name
+        :param card: is the card toggle name.
         """
         cls.set_dashboard_card_by_state(card, False)
 
@@ -160,7 +194,7 @@ class Dashboard:
         """
         This method set the card toggle by the given state.
 
-        :param card: is the card toggle name
+        :param card: is the card toggle name.
         :param state: is True to enable the toggle and False to disable it.
         """
         cls.click_the_configure_button()
@@ -224,6 +258,31 @@ class Dashboard:
         :return: True if the truenas help card is visible otherwise it returns False.
         """
         return Common.is_card_visible('TrueNAS Help')
+
+    @classmethod
+    def get_dashboard_card_name_by_position(cls, position: int) -> str:
+        """
+        This method returns the name dashboard card by name from given position.
+
+        :param position: in the number of the position of the card.
+        :return: the name dashboard card by name
+        """
+        card_header = WebUI.get_text(xpaths.common_xpaths.any_xpath(f'(//mat-card)[{position}]//h3'))
+        return shared_config['DASHBOARD_CARDS'][card_header]
+
+    @classmethod
+    def move_card_a_to_card_b_position(cls, card_a: str, card_b: str):
+        """
+        This method move given card_a to the card_b position.
+
+        :param card_a: name of the card to move
+        :param card_b: name of the card to move card_a to
+        """
+        if card_a != card_b:
+            WebUI.drag_and_drop(xpaths.dashboard.drag_card(card_a), xpaths.dashboard.drop_card(card_b))
+            WebUI.delay(0.4)
+        else:
+            print("card_a can't match card_b")
 
     @classmethod
     def set_all_cards_visible(cls):

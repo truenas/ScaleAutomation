@@ -1,5 +1,6 @@
 from helper.global_config import shared_config
 from selenium import webdriver
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -70,6 +71,23 @@ class WebUI(object):
         cls.add_time_waited(seconds)
 
     @classmethod
+    def drag_and_drop(cls, from_xpath: str, to_xpath: str):
+        """
+        This method simulate Holds down the left mouse button on the source element, then moves to the target
+        element and releases the mouse button.
+
+        :param from_xpath: the xpath text of the element to drag
+        :param to_xpath: the xpath text of the element to drag at
+        :return: return the ActionChains
+        """
+        cls.wait_until_visible(from_xpath)
+        source = cls.xpath(from_xpath)
+        cls.wait_until_visible(to_xpath)
+        target = cls.xpath(to_xpath)
+        # ActionChains(web_driver).drag_and_drop(source, target).perform() does not work.
+        ActionChains(web_driver).click_and_hold(source).move_to_element(target).release(target).perform()
+
+    @classmethod
     def get(cls, url: str) -> None:
         """
         This method loads the URL web page in the current window.
@@ -77,6 +95,16 @@ class WebUI(object):
         :param url: is the URL to load in the current window.
         """
         web_driver.get(url)
+
+    @classmethod
+    def get_text(cls, xpath: str) -> str:
+        """
+        This method return the text the given xpath element.
+
+        :param xpath: is text of the xpath.
+        :return: return the text the given xpath element.
+        """
+        return cls.xpath(xpath).text
 
     @classmethod
     def quit(cls) -> None:

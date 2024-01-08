@@ -1,13 +1,8 @@
 from keywords.webui.dashboard import Dashboard
-from keywords.webui.navigation import Navigation
 from keywords.webui.common import Common
 
 
 class Test_Verify_Links_On_The_TrueNAS_Help_Card:
-    @classmethod
-    def setup_class(cls):
-        # Ensure we are on the dashboard.
-        Navigation.navigate_to_dashboard()
 
     @staticmethod
     def on_the_dashboard_verify_the_truenas_help_card_copyright():
