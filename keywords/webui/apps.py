@@ -8,6 +8,40 @@ import xpaths
 
 class Apps:
     @classmethod
+    def assert_start_app(cls, name: str) -> bool:
+        """
+        This method returns rue if given app is stopped otherwise it returns False.
+
+        :param name: is the name of the app
+        :return: True if given app is stopped otherwise it returns False.
+        """
+        if COM.assert_page_header('Installed') is False:
+            NAV.navigate_to_apps()
+        if cls.get_app_status(name) != 'Running':
+            COM.set_checkbox(COM.convert_to_tag_format(name))
+            COM.click_button('bulk-actions-menu')
+            COM.click_button('stop-selected')
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(f'//*[text()={COM.convert_to_tag_format(name)}]', 'ix-app-row', '*[contains(text(),"Starting")]'), shared_config['LONG_WAIT'])
+        return cls.get_app_status(name) == 'Running'
+
+    @classmethod
+    def assert_stop_app(cls, name: str) -> bool:
+        """
+        This method returns rue if given app is stopped otherwise it returns False.
+
+        :param name: is the name of the app
+        :return: True if given app is stopped otherwise it returns False.
+        """
+        if COM.assert_page_header('Installed') is False:
+            NAV.navigate_to_apps()
+        if cls.get_app_status(name) != 'Stopped':
+            COM.set_checkbox(COM.convert_to_tag_format(name))
+            COM.click_button('bulk-actions-menu')
+            COM.click_button('stop-selected')
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(f'//*[text()={COM.convert_to_tag_format(name)}]', 'ix-app-row', '*[contains(text(),"Stopping")]'), shared_config['WAIT'])
+        return cls.get_app_status(name) == 'Stopped'
+
+    @classmethod
     def click_app(cls, name: str) -> None:
         """
         This method clicks the given app
@@ -27,7 +61,7 @@ class Apps:
     @classmethod
     def click_install_app(cls, name: str) -> None:
         """
-        This method installs the given named app.
+        This method clicks the given named app install button.
 
         :param name: is the name of the app
         """
@@ -60,6 +94,10 @@ class Apps:
         assert not cls.is_app_installed(name)
 
     @classmethod
+    def get_app_status(cls, name: str) -> str:
+        return WebUI.xpath(xpaths.common_xpaths.any_child_parent_target(f'//*[text()="{COM.convert_to_tag_format(name)}"]', 'ix-app-row', 'ix-app-status-cell')).text
+
+    @classmethod
     def is_app_installed(cls, name: str) -> bool:
         """
         This method returns True if the given app is already installed otherwise it returns False.
@@ -83,7 +121,6 @@ class Apps:
 
     @classmethod
     def set_webdav_fields(cls, name: str) -> None:
-        print(f'App {name} not configured for install.')
         name = COM.convert_to_tag_format(name)
         DATASET.create_dataset_by_api('tank/' + name)
         COM.click_button('add-item-shares')
