@@ -64,6 +64,25 @@ class Dashboard:
         return url_exists
 
     @classmethod
+    def assert_system_information_ui(cls):
+        """
+        This method returns True or False whether Platform, Version, Hostname, Uptime
+        are all found on System Information Card.
+
+        :return: True if Platform, Version, Hostname, Uptime are all found on System
+        Information Card, otherwise it returns False.
+        """
+        sysinfo = '//ix-widget-sysinfo'
+        list_results = [
+            WebUI.get_text(xpaths.common_xpaths.any_xpath(f'({sysinfo}//mat-list-item)[1]')).startswith('Platform'),
+            WebUI.get_text(xpaths.common_xpaths.any_xpath(f'({sysinfo}//mat-list-item)[2]')).startswith('Version'),
+            WebUI.get_text(xpaths.common_xpaths.any_xpath(f'({sysinfo}//mat-list-item)[3]')).startswith('Hostname'),
+            WebUI.get_text(xpaths.common_xpaths.any_xpath(f'({sysinfo}//mat-list-item)[4]')).startswith('Uptime')
+        ]
+        # All need to be true or it returns false.
+        return all(list_results)
+
+    @classmethod
     def assert_the_truenas_help_documentation_link(cls):
         """
         This method returns True or False whether TrueNAS Help documentation link opened to the right link.
