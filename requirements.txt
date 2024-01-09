@@ -1,4 +1,5 @@
 allure-pytest
+pyperclip
 pytest
 pytest-timeout
 requests

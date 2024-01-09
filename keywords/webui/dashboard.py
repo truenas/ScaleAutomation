@@ -64,6 +64,20 @@ class Dashboard:
         return url_exists
 
     @classmethod
+    def assert_system_information_version_clipboard_copy(cls):
+        """
+        This method return True or False whether the copied version match the version on the UI.
+
+        :return: True if the copied version match the version on the UI, otherwise it returns False
+        """
+        xpath = '//*[contains(text(),"Version:")]/ancestor::ix-widget-sysinfo/descendant::span/div'
+        version = WebUI.get_text(xpaths.common_xpaths.any_xpath(xpath))
+        version = version.replace('Version:', '').replace('assignment', '').strip()
+        Common.click_button('copy-to-clipboard')
+        clipboard = WebUI.get_clipboard_text()
+        return version == clipboard
+
+    @classmethod
     def assert_system_information_ui(cls):
         """
         This method returns True or False whether Platform, Version, Hostname, Uptime
@@ -221,6 +235,11 @@ class Dashboard:
 
     @classmethod
     def get_system_information_uptime(cls):
+        """
+        This method get the System Information uptime value and returns it.
+
+        :return: the System Information Uptime value.
+        """
         assert WebUI.wait_until_visible(xpaths.dashboard.card_list_item('sysinfo', 4))
         return WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 4))
 
