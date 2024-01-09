@@ -27,3 +27,7 @@ def drop_card(field: str) -> str:
     :return: the xpath text of the TrueNAS help card link
     """
     return f'//ix-widget-{field}//mat-card'
+
+
+def card_list_item(field: str, item_position: int) -> str:
+    return f'(//ix-widget-{field}//mat-list-item)[{item_position}]'
