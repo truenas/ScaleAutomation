@@ -8,12 +8,6 @@ from keywords.webui.apps import Apps
 @pytest.mark.parametrize('app_data', get_data_list('apps'), scope='class')
 class Test_Stop_App:
 
-    @classmethod
-    def teardown_class(cls, app_data):
-        # reset the change
-        Apps.delete_app(app_data['app-name'])
-        assert Apps.is_app_installed(app_data['app-name']) is False
-
     @staticmethod
     def verify_app_installed(app_data) -> None:
         if Apps.is_app_installed(app_data['app-name']) is False:
@@ -28,3 +22,10 @@ class Test_Stop_App:
     @staticmethod
     def verify_stop_app(app_data) -> None:
         assert Apps.assert_stop_app(app_data['app-name'])
+
+    @staticmethod
+    def verify_teardown(app_data):
+        # reset the change
+        Apps.delete_app(app_data['app-name'])
+        assert Apps.is_app_installed(app_data['app-name']) is False
+
