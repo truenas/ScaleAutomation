@@ -1,3 +1,5 @@
+import pyperclip
+import time
 from helper.global_config import shared_config
 from selenium import webdriver
 from selenium.webdriver import ActionChains
@@ -6,7 +8,6 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
 
 
 def browser() -> WebDriver:
@@ -95,6 +96,15 @@ class WebUI(object):
         :param url: is the URL to load in the current window.
         """
         web_driver.get(url)
+
+    @classmethod
+    def get_clipboard_text(cls):
+        """
+        This method get the clipboard text and returns it.
+
+        :return: return the clipboard text.
+        """
+        return pyperclip.paste()
 
     @classmethod
     def get_text(cls, xpath: str) -> str:
