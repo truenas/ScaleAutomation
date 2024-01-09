@@ -16,7 +16,7 @@ class Common:
         This method confirms and dismisses a confirmation dialog popup
 
         """
-        if cls.is_visible(xpaths.common_xpaths.checkbox_field('confirm')):
+        if cls.is_clickable(xpaths.common_xpaths.checkbox_field('confirm')):
             WebUI.xpath(xpaths.common_xpaths.checkbox_field('confirm')).click()
         WebUI.xpath(xpaths.common_xpaths.button_field('dialog-confirm')).click()
         WebUI.delay(1)
@@ -292,6 +292,15 @@ class Common:
         cls.click_button('power-menu')
         cls.click_button('log-out')
         assert cls.is_clickable(xpaths.common_xpaths.input_field('username'))
+
+    @classmethod
+    def reboot_system(cls):
+        cls.click_button('power-menu')
+        cls.click_button('restart')
+        cls.assert_confirm_dialog()
+        WebUI.delay(10)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT'])
+        WebUI.delay(1)
 
     @classmethod
     def navigate_to_login_screen(cls, ip: str):

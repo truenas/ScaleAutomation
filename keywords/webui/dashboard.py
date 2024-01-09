@@ -74,10 +74,10 @@ class Dashboard:
         """
         sysinfo = '//ix-widget-sysinfo'
         list_results = [
-            WebUI.get_text(xpaths.common_xpaths.any_xpath(f'({sysinfo}//mat-list-item)[1]')).startswith('Platform'),
-            WebUI.get_text(xpaths.common_xpaths.any_xpath(f'({sysinfo}//mat-list-item)[2]')).startswith('Version'),
-            WebUI.get_text(xpaths.common_xpaths.any_xpath(f'({sysinfo}//mat-list-item)[3]')).startswith('Hostname'),
-            WebUI.get_text(xpaths.common_xpaths.any_xpath(f'({sysinfo}//mat-list-item)[4]')).startswith('Uptime')
+            WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 1)).startswith('Platform'),
+            WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 2)).startswith('Version'),
+            WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 3)).startswith('Hostname'),
+            WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 4)).startswith('Uptime')
         ]
         # All need to be true or it returns false.
         return all(list_results)
@@ -209,20 +209,20 @@ class Dashboard:
         cls.set_dashboard_card_by_state(card, True)
 
     @classmethod
-    def set_dashboard_card_by_state(cls, card: str, state: bool):
+    def get_dashboard_card_name_by_position(cls, position: int) -> str:
         """
-        This method set the card toggle by the given state.
+        This method returns the name dashboard card by name from given position.
 
-        :param card: is the card toggle name.
-        :param state: is True to enable the toggle and False to disable it.
+        :param position: in the number of the position of the card.
+        :return: the name dashboard card by name
         """
-        cls.click_the_configure_button()
-        assert cls.assert_dashboard_configure_panel_is_visible() is True
-        if state:
-            Common.set_toggle(card)
-        else:
-            Common.unset_toggle(card)
-        Common.click_save_button()
+        card_header = WebUI.get_text(xpaths.common_xpaths.any_xpath(f'(//mat-card)[{position}]//h3'))
+        return shared_config['DASHBOARD_CARDS'][card_header]
+
+    @classmethod
+    def get_system_information_uptime(cls):
+        assert WebUI.wait_until_visible(xpaths.dashboard.card_list_item('sysinfo', 4))
+        return WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 4))
 
     @classmethod
     def is_cpu_card_visible(cls):
@@ -279,17 +279,6 @@ class Dashboard:
         return Common.is_card_visible('TrueNAS Help')
 
     @classmethod
-    def get_dashboard_card_name_by_position(cls, position: int) -> str:
-        """
-        This method returns the name dashboard card by name from given position.
-
-        :param position: in the number of the position of the card.
-        :return: the name dashboard card by name
-        """
-        card_header = WebUI.get_text(xpaths.common_xpaths.any_xpath(f'(//mat-card)[{position}]//h3'))
-        return shared_config['DASHBOARD_CARDS'][card_header]
-
-    @classmethod
     def move_card_a_to_card_b_position(cls, card_a: str, card_b: str):
         """
         This method move given card_a to the card_b position.
@@ -322,3 +311,19 @@ class Dashboard:
         Common.click_save_button()
 
         assert Common.assert_right_panel_header_is_not_visible('Dashboard Configure') is True
+
+    @classmethod
+    def set_dashboard_card_by_state(cls, card: str, state: bool):
+        """
+        This method set the card toggle by the given state.
+
+        :param card: is the card toggle name.
+        :param state: is True to enable the toggle and False to disable it.
+        """
+        cls.click_the_configure_button()
+        assert cls.assert_dashboard_configure_panel_is_visible() is True
+        if state:
+            Common.set_toggle(card)
+        else:
+            Common.unset_toggle(card)
+        Common.click_save_button()
