@@ -1,5 +1,7 @@
 progress_bar = '//mat-progress-bar'
+"""This variable returns the default progress bar xpath text"""
 progress_spinner = '//mat-spinner'
+"""This variable returns the default spinner xpath text"""
 
 
 def any_child_parent_target(child: str, parent: str, target: str) -> str:
@@ -39,8 +41,8 @@ def any_xpath(xpath: str) -> str:
     """
     This method sets the xpath for the given xpath
 
-    :param xpath: text of the given xpath
-    :return: xpath string for given xpath
+    :param xpath: text of the given xpath.
+    :return: xpath string for given xpath.
     """
     return f"{xpath}"
 

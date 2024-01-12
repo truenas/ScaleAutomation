@@ -1,5 +1,4 @@
 from keywords.webui.dashboard import Dashboard
-from keywords.webui.navigation import Navigation
 from keywords.webui.update import Update
 
 

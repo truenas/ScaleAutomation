@@ -18,7 +18,41 @@ class Dashboard:
         return True if field == card_name else False
 
     @classmethod
-    def assert_dashboard_configure_panel_is_visible(cls):
+    def assert_cpu_card_load_graph_text(cls) -> bool:
+        """
+        This method returns True or False whether all cpu load graph text are visible.
+
+        :return: True if all cpu load graph text are visible otherwise it returns False.
+        """
+        results_list = [
+            "Avg Usage" in WebUI.get_text(xpaths.dashboard.cpu_subtitle),
+            "Thread" in WebUI.get_text(xpaths.dashboard.cpu_load_cores(1)),
+            "Usage" in WebUI.get_text(xpaths.dashboard.cpu_load_cores(2)),
+        ]
+        return all(results_list)
+
+    @classmethod
+    def assert_cpu_card_load_graph_ui(cls) -> bool:
+        """
+        This method returns True or False whether the cpu load graph ui is visible.
+
+        :return: True if the cpu load graph ui is visible otherwise it returns False.
+        """
+        return Common.is_visible(xpaths.dashboard.cpu_cores_chart)
+
+    @classmethod
+    def assert_cpu_card_load_text(cls, index: int, text) -> bool:
+        """
+        This method returns True or False whether the given cpu load text is visible in the given index.
+
+        :param index: is the number of the item in the list to get the text.
+        :param text: is the text to verify that it match with the given index.
+        :return: True if the given cpu load text is visible in the given index otherwise it returns False.
+        """
+        return text in WebUI.get_text(xpaths.dashboard.card_list_item('cpu', index)+'//strong')
+
+    @classmethod
+    def assert_dashboard_configure_panel_is_visible(cls) -> bool:
         """
         This method returns True if the dashboard configure panel is visible otherwise it returns False.
 
@@ -27,7 +61,7 @@ class Dashboard:
         return Common.assert_right_panel_header('Dashboard Configure')
 
     @classmethod
-    def assert_dashboard_page_header_is_visible(cls):
+    def assert_dashboard_page_header_is_visible(cls) -> bool:
         """
         This method returns True if the dashboard page header is visible otherwise it returns False.
 
@@ -36,7 +70,7 @@ class Dashboard:
         return Common.assert_page_header('Dashboard')
 
     @classmethod
-    def assert_new_tab_url(cls, link: str):
+    def assert_new_tab_url(cls, link: str) -> bool:
         """
         This method returns True or False whether the new tab opened to the right link.
 
@@ -78,7 +112,7 @@ class Dashboard:
         return version == clipboard
 
     @classmethod
-    def assert_system_information_ui(cls):
+    def assert_system_information_ui(cls) -> bool:
         """
         This method returns True or False whether Platform, Version, Hostname, Uptime
         are all found on System Information Card.
@@ -86,7 +120,6 @@ class Dashboard:
         :return: True if Platform, Version, Hostname, Uptime are all found on System
         Information Card, otherwise it returns False.
         """
-        sysinfo = '//ix-widget-sysinfo'
         list_results = [
             WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 1)).startswith('Platform'),
             WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 2)).startswith('Version'),
@@ -97,7 +130,7 @@ class Dashboard:
         return all(list_results)
 
     @classmethod
-    def assert_the_truenas_help_documentation_link(cls):
+    def assert_the_truenas_help_documentation_link(cls) -> bool:
         """
         This method returns True or False whether TrueNAS Help documentation link opened to the right link.
 
@@ -106,7 +139,7 @@ class Dashboard:
         return cls.assert_new_tab_url('https://www.truenas.com/docs/')
 
     @classmethod
-    def assert_the_truenas_help_ixsystems_inc_link(cls):
+    def assert_the_truenas_help_ixsystems_inc_link(cls) -> bool:
         """
         This method returns True or False whether TrueNAS Help iXsystems inc link opened to the right link.
 
@@ -115,7 +148,7 @@ class Dashboard:
         return cls.assert_new_tab_url('https://www.ixsystems.com/')
 
     @classmethod
-    def assert_the_truenas_help_open_source_link(cls):
+    def assert_the_truenas_help_open_source_link(cls) -> bool:
         """
         This method returns True or False whether TrueNAS Help open source link opened to the right link.
 
@@ -124,7 +157,7 @@ class Dashboard:
         return cls.assert_new_tab_url('https://github.com/truenas/')
 
     @classmethod
-    def assert_the_truenas_help_truenas_community_forums_link(cls):
+    def assert_the_truenas_help_truenas_community_forums_link(cls) -> bool:
         """
         This method returns True or False whether TrueNAS Help community forums link opened to the right link.
 
@@ -133,7 +166,7 @@ class Dashboard:
         return cls.assert_new_tab_url('https://www.truenas.com/community/')
 
     @classmethod
-    def assert_the_truenas_help_truenas_newsletter_link(cls):
+    def assert_the_truenas_help_truenas_newsletter_link(cls) -> bool:
         """
         This method returns True or False whether TrueNAS Help TrueNAS newsletter link opened to the right link.
 
@@ -234,7 +267,7 @@ class Dashboard:
         return shared_config['DASHBOARD_CARDS'][card_header]
 
     @classmethod
-    def get_system_information_uptime(cls):
+    def get_system_information_uptime(cls) -> str:
         """
         This method get the System Information uptime value and returns it.
 
@@ -289,7 +322,7 @@ class Dashboard:
         return Common.is_card_visible('System Information')
 
     @classmethod
-    def is_truenas_help_card_visible(cls):
+    def is_truenas_help_card_visible(cls) -> bool:
         """
         This method returns True if the truenas help card is visible otherwise it returns False.
 
