@@ -1,6 +1,9 @@
 import pyperclip
 import time
-from helper.global_config import shared_config
+
+from selenium.common import TimeoutException
+
+from helper.global_config import shared_config, screenshots
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
@@ -132,6 +135,17 @@ class WebUI(object):
         cls.delay(1)
 
     @classmethod
+    def save_screenshot(cls, filename) -> None:
+        """
+        This method saves a screenshot in the given filename.
+
+        :param filename: is the name of the file to save the screenshot.
+        """
+        filename = screenshots + "/" + filename + ".png"
+        print("@@@ SCREENSHOT: " + filename)
+        web_driver.get_screenshot_as_file(filename)
+
+    @classmethod
     def scroll_to_element(cls, xpath: str):
         """
         This method scroll to xpath of the element.
@@ -184,7 +198,7 @@ class WebUI(object):
         return wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
 
     @classmethod
-    def wait_until_not_visible(cls, xpath: str, timeout: int = shared_config['WAIT']) -> bool:
+    def wait_until_not_visible(cls, xpath: str, timeout: int = shared_config['WAIT']) -> None:
         """
         This method return True if the xpath element is not visible before timeout otherwise it returns False.
 
@@ -195,7 +209,10 @@ class WebUI(object):
         """
         wait = WebDriverWait(web_driver, timeout)
         # Return boolean even if PyCharm says otherwise.
-        return wait.until(EC.invisibility_of_element_located((By.XPATH, xpath)))
+        try:
+            wait.until(EC.invisibility_of_element_located((By.XPATH, xpath)))
+        except TimeoutException:
+            pass
 
     @classmethod
     def wait_until_number_of_windows_to_be(cls, number: int, timeout: int = shared_config['MEDIUM_WAIT']) -> bool:
@@ -221,7 +238,10 @@ class WebUI(object):
         :return: True if the xpath element is visible before timeout otherwise it returns False.
         """
         wait = WebDriverWait(web_driver, timeout)
-        return wait.until(EC.visibility_of_element_located((By.XPATH, xpath))).is_displayed()
+        try:
+            return wait.until(EC.visibility_of_element_located((By.XPATH, xpath))).is_displayed()
+        except TimeoutException:
+            return False
 
     @classmethod
     def window_handles(cls):
