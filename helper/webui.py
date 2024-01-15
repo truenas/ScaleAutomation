@@ -1,8 +1,6 @@
 import pyperclip
 import time
-
 from selenium.common import TimeoutException
-
 from helper.global_config import shared_config, screenshots
 from selenium import webdriver
 from selenium.webdriver import ActionChains
@@ -33,7 +31,7 @@ class WebUI(object):
     execute_script = web_driver.execute_script
 
     @classmethod
-    def add_time_waited(cls, seconds: float):
+    def add_time_waited(cls, seconds: float) -> None:
         """
         This method adds the given amount of seconds to the total time waited
         """
@@ -47,7 +45,7 @@ class WebUI(object):
         web_driver.close()
 
     @classmethod
-    def current_window_handle(cls):
+    def current_window_handle(cls) -> str:
         """
         This methode returns the handle of the current window
 
@@ -56,7 +54,7 @@ class WebUI(object):
         return web_driver.current_window_handle
 
     @classmethod
-    def current_url(cls):
+    def current_url(cls) -> str:
         """
         This method return the URL of the current page.
 
@@ -75,7 +73,7 @@ class WebUI(object):
         cls.add_time_waited(seconds)
 
     @classmethod
-    def drag_and_drop(cls, from_xpath: str, to_xpath: str):
+    def drag_and_drop(cls, from_xpath: str, to_xpath: str) -> None:
         """
         This method simulate Holds down the left mouse button on the source element, then moves to the target
         element and releases the mouse button.
@@ -101,7 +99,7 @@ class WebUI(object):
         web_driver.get(url)
 
     @classmethod
-    def get_clipboard_text(cls):
+    def get_clipboard_text(cls) -> any:
         """
         This method get the clipboard text and returns it.
 
@@ -146,7 +144,7 @@ class WebUI(object):
         web_driver.get_screenshot_as_file(filename)
 
     @classmethod
-    def scroll_to_element(cls, xpath: str):
+    def scroll_to_element(cls, xpath: str) -> None:
         """
         This method scroll to xpath of the element.
 
@@ -244,7 +242,7 @@ class WebUI(object):
             return False
 
     @classmethod
-    def window_handles(cls):
+    def window_handles(cls) -> list:
         """
         This method returns the handles of all windows within the current session.
 
@@ -253,7 +251,7 @@ class WebUI(object):
         return web_driver.window_handles
 
     @classmethod
-    def xpath(cls, xpath: str):
+    def xpath(cls, xpath: str) -> WebElement:
         """
         This method return the WebElement of the xpath and is used to click, send keys and more.
 

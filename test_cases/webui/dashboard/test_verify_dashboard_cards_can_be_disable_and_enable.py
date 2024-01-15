@@ -2,7 +2,6 @@ import pytest
 from helper.global_config import shared_config
 from keywords.webui.common import Common
 from keywords.webui.dashboard import Dashboard
-from keywords.webui.navigation import Navigation
 
 
 @pytest.mark.parametrize('card', shared_config['DASHBOARD_CARDS_TOGGLE'].keys())

@@ -1,5 +1,4 @@
 from keywords.webui.dashboard import Dashboard
-from helper.webui import WebUI
 
 
 class Test_Verify_A_Dashboard_Card_Reordering_Can_be_Cancel:
