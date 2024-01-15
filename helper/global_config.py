@@ -5,6 +5,7 @@ from pathlib import Path
 test_cases = str(Path('/test_cases'))
 keywords = str(Path('/keywords'))
 workdir = os.getcwd().partition(test_cases)[0].partition(keywords)[0]
+screenshots = str(Path(f'{workdir}/screenshots'))
 
 shared = str(Path('/profiles/shared.toml'))
 shared_file = open(workdir + shared, 'r')
