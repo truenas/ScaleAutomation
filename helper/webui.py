@@ -206,7 +206,7 @@ class WebUI(object):
         return wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
 
     @classmethod
-    def wait_until_not_visible(cls, xpath: str, timeout: int = shared_config['WAIT']) -> None:
+    def wait_until_not_visible(cls, xpath: str, timeout: int = shared_config['WAIT']) -> bool:
         """
         This method return True if the xpath element is not visible before timeout otherwise it returns False.
 
@@ -216,11 +216,11 @@ class WebUI(object):
         :return: True if the xpath element is not visible before timeout otherwise it returns False.
         """
         wait = WebDriverWait(web_driver, timeout)
-        # Return boolean even if PyCharm says otherwise.
         try:
             wait.until(EC.invisibility_of_element_located((By.XPATH, xpath)))
+            return True
         except TimeoutException:
-            pass
+            return False
 
     @classmethod
     def wait_until_number_of_windows_to_be(cls, number: int, timeout: int = shared_config['MEDIUM_WAIT']) -> bool:
