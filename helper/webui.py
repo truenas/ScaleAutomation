@@ -90,6 +90,16 @@ class WebUI(object):
         ActionChains(web_driver).click_and_hold(source).move_to_element(target).release(target).perform()
 
     @classmethod
+    def find_xpath(cls, xpath: str) -> list[WebElement]:
+        """
+        This method return a list of web elements that matches the xpath.
+
+        :param xpath: the xpath of elements
+        :return: a list of web elements that matches the xpath.
+        """
+        return web_driver.find_elements(By.XPATH, xpath)
+
+    @classmethod
     def get(cls, url: str) -> None:
         """
         This method loads the URL web page in the current window.

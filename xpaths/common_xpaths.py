@@ -47,6 +47,16 @@ def any_xpath(xpath: str) -> str:
     return f"{xpath}"
 
 
+def any_start_with_field(field: str) -> str:
+    """
+    This method sets the text for the given field name with starts with.
+
+    :param field: text of the given field.
+    :return: returns the xpath string for given field.
+    """
+    return f'//*[starts-with(@data-test,"{field}")]'
+
+
 def button_field(field: str) -> str:
     """
     This method sets the text for the given button name
