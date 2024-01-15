@@ -229,3 +229,21 @@ class Apps:
     @classmethod
     def set_wg_easy_fields(cls) -> None:
         print(f'App WG-Easy no configuration needed for install.')
+
+    @classmethod
+    def verify_app_installed(cls, name: str) -> bool:
+        """
+        This method verifies the given app is installed
+
+        :param name: name of app to verify is installed
+        """
+        if Apps.is_app_installed(name) is False:
+            Apps.click_discover_apps()
+            COM.set_search_field(name)
+            Apps.click_app(name)
+            Apps.click_install_app(name)
+            Apps.set_app_values(name)
+            COM.click_save_button()
+            assert COM.assert_page_header('Installed', shared_config['LONG_WAIT'])
+        assert Apps.is_app_installed(name) is True
+        return Apps.is_app_deployed(name) is True
