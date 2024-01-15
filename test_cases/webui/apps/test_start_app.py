@@ -19,7 +19,7 @@ class Test_Start_App:
         assert Apps.assert_start_app(app_data['app-name'])
 
     @staticmethod
-    def verify_teardown(app_data):
+    def verify_teardown(app_data) -> None:
         """
         This method removes the given app
 

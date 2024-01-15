@@ -5,18 +5,18 @@ from keywords.webui.datasets import Datasets as DATASET
 
 
 @pytest.mark.parametrize('app_data', get_data_list('apps'), scope='class')
-class Test_Stop_App:
+class Test_Uninstall_App:
 
     @staticmethod
-    def verify_stop_app(app_data) -> None:
+    def verify_uninstall_app(app_data) -> None:
         """
-        This method verifies the given app is stopped
+        This method verifies the given app is uninstalled
 
         :param app_data: test data listing different apps to iterate through
         """
         Apps.verify_app_installed(app_data['app-name'])
-        assert Apps.assert_start_app(app_data['app-name'])
-        assert Apps.assert_stop_app(app_data['app-name'])
+        Apps.delete_app(app_data['app-name'])
+        assert Apps.is_app_installed(app_data['app-name']) is False
 
     @staticmethod
     def verify_teardown(app_data) -> None:
@@ -26,8 +26,6 @@ class Test_Stop_App:
         :param app_data: test data listing different apps to iterate through
         """
         # reset the change
-        Apps.delete_app(app_data['app-name'])
-        assert Apps.is_app_installed(app_data['app-name']) is False
         if app_data['setup-name'] == 'webdav':
             DATASET.delete_dataset_by_api(f'{app_data['pool']}/{app_data['setup-name']}')
 
