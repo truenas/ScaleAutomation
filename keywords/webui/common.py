@@ -162,7 +162,7 @@ class Common:
     @classmethod
     def get_element_property(cls, name: str, prop: str = 'value') -> str:
         """
-        This method gets the text of the given field
+        This method gets the value of the given property of the given element
 
         :param name: name of the element
         :param prop: name of the property to get
