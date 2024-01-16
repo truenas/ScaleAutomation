@@ -160,6 +160,18 @@ class Common:
         API_DELETE.delete_user(name)
 
     @classmethod
+    def get_element_property(cls, name: str, prop: str = 'value') -> str:
+        """
+        This method gets the value of the given property of the given element
+
+        :param name: name of the element
+        :param prop: name of the property to get
+        :return: value of the element property
+        """
+        WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
+        return WebUI.xpath(xpaths.common_xpaths.input_field(name)).get_property(prop)
+
+    @classmethod
     def get_user_id_by_api(cls, username: str) -> int:
         """
         This method return the ID of the specified username.
