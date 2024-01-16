@@ -45,3 +45,10 @@ class Navigation:
         This method navigates to the Shares page
         """
         cls.navigate_to('shares', 'Sharing')
+
+    @classmethod
+    def navigate_to_storage(cls) -> None:
+        """
+        THis method navigates to the Storage page.
+        """
+        cls.navigate_to('storage', 'Storage')

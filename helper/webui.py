@@ -90,6 +90,16 @@ class WebUI(object):
         ActionChains(web_driver).click_and_hold(source).move_to_element(target).release(target).perform()
 
     @classmethod
+    def find_xpath(cls, xpath: str) -> list[WebElement]:
+        """
+        This method return a list of web elements that matches the xpath.
+
+        :param xpath: the xpath of elements
+        :return: a list of web elements that matches the xpath.
+        """
+        return web_driver.find_elements(By.XPATH, xpath)
+
+    @classmethod
     def get(cls, url: str) -> None:
         """
         This method loads the URL web page in the current window.
@@ -196,7 +206,7 @@ class WebUI(object):
         return wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
 
     @classmethod
-    def wait_until_not_visible(cls, xpath: str, timeout: int = shared_config['WAIT']) -> None:
+    def wait_until_not_visible(cls, xpath: str, timeout: int = shared_config['WAIT']) -> bool:
         """
         This method return True if the xpath element is not visible before timeout otherwise it returns False.
 
@@ -206,11 +216,11 @@ class WebUI(object):
         :return: True if the xpath element is not visible before timeout otherwise it returns False.
         """
         wait = WebDriverWait(web_driver, timeout)
-        # Return boolean even if PyCharm says otherwise.
         try:
             wait.until(EC.invisibility_of_element_located((By.XPATH, xpath)))
+            return True
         except TimeoutException:
-            pass
+            return False
 
     @classmethod
     def wait_until_number_of_windows_to_be(cls, number: int, timeout: int = shared_config['MEDIUM_WAIT']) -> bool:
