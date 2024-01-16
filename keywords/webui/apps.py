@@ -8,6 +8,71 @@ import xpaths
 
 class Apps:
     @classmethod
+    def assert_custom_app_ui(cls) -> bool:
+        """
+        This method returns True if custom app UI is validated otherwise it returns False.
+
+        :return: True if custom app UI is validated otherwise it returns False.
+        """
+        status = True
+        # Initially set testObj to right panel header
+        test_obj = xpaths.common_xpaths.any_header('Install Custom App', 1)
+        close_add_button = False
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath('//*[@class="search-card"]'), shared_config['WAIT'])
+        for key in shared_config['CUSTOM_APP_UI']:
+            text = shared_config['CUSTOM_APP_UI'].get(key)
+            click_add_button = False
+            close_checkbox = False
+
+            if key in shared_config['CUSTOM_APP_UI_LEGEND_LIST']:
+                test_obj = xpaths.common_xpaths.any_xpath(f'//legend[contains(text(),"{text}")]')
+                WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[@class="section ng-star-inserted" and contains(text(),"{text}")]')).click()
+            if key in shared_config['CUSTOM_APP_UI_BUTTON_LIST']:
+                test_obj = xpaths.common_xpaths.button_field(f'add-item-{text}')
+                click_add_button = True
+            if key in shared_config['CUSTOM_APP_UI_INPUT_LIST']:
+                test_obj = xpaths.common_xpaths.input_field(text)
+                if key in ["Run As Group", "Memory Limit", "Portal IP", "Port"]:
+                    close_checkbox = True
+            if key in shared_config['CUSTOM_APP_UI_SELECT_LIST']:
+                test_obj = xpaths.common_xpaths.select_field(text)
+            if key in shared_config['CUSTOM_APP_UI_CHECKBOX_LIST']:
+                test_obj = xpaths.common_xpaths.checkbox_field(text)
+                if key in ["Configure Container User", "Enable Resource Limits", "Enable WebUI Portal", "Use Node IP"]:
+                    COM.click_on_element(test_obj)
+
+            # Verify if Button expansion is needed
+            if click_add_button is True:
+                COM.click_on_element(test_obj)
+                close_add_button = True
+
+            # Verify if element exists
+            if not COM.is_visible(test_obj):
+                status = False
+
+            # Verify if close Button collapse is needed
+            if close_add_button and click_add_button is False:
+                # If key is last field in Add expansion, click close_button to collapse Add expansion.
+                if key in ["Command", "Arg", "Environment Variable Value", "IPAM Type", "Nameserver", "Search Entry", "Option Value", "Protocol", "Read Only", "Memory Backed Mount Path", "Dataset Name", "Add Capabilities"]:
+                    COM.click_button('remove-from-list')
+                    close_add_button = False
+
+            # If key is last field in checkbox expansion, set test_obj to expansion checkbox object.
+            match key:
+                case "Run As Group":
+                    test_obj = xpaths.common_xpaths.checkbox_field(shared_config['CUSTOM_APP_UI'].get('Configure Container User'))
+                case "Memory Limit":
+                    test_obj = xpaths.common_xpaths.checkbox_field(shared_config['CUSTOM_APP_UI'].get('Enable Resource Limits'))
+                case "Portal IP":
+                    test_obj = xpaths.common_xpaths.checkbox_field(shared_config['CUSTOM_APP_UI'].get('Use Node IP'))
+                case "Port":
+                    test_obj = xpaths.common_xpaths.checkbox_field(shared_config['CUSTOM_APP_UI'].get('Enable WebUI Portal'))
+            if close_checkbox:
+                COM.click_on_element(test_obj)
+
+        return status
+
+    @classmethod
     def assert_start_app(cls, name: str) -> bool:
         """
         This method returns True if given app is started otherwise it returns False.
@@ -100,6 +165,13 @@ class Apps:
         """
         COM.click_on_element(f'//ix-app-card//h3[contains(text(),"{name}")]')
         WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text('Please wait'))
+
+    @classmethod
+    def click_custom_app(cls) -> None:
+        """
+        This method clicks the custom apps button
+        """
+        COM.click_link('custom-app')
 
     @classmethod
     def click_discover_apps(cls) -> None:
