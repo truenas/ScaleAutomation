@@ -68,21 +68,21 @@ class storage:
         """
         This method click on the cancel pool button.
         """
-        Common.click_link(xpaths.common_xpaths.link_field('cancel'))
+        Common.click_link('cancel')
 
     @classmethod
     def click_create_pool_button(cls):
         """
         This method click on the create pool button.
         """
-        Common.click_link(xpaths.common_xpaths.link_field('create-pool'))
+        Common.click_link('create-pool')
 
     @classmethod
     def click_disks_button(cls):
         """
         This method click on the disks button.
         """
-        Common.click_link(xpaths.common_xpaths.link_field('disks'))
+        Common.click_link('disks')
 
     @classmethod
     def click_export_pool_by_name_button(cls, name: str):
