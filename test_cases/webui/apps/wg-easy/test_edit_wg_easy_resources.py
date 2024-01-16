@@ -4,7 +4,7 @@ from keywords.webui.apps import Apps
 from keywords.webui.common import Common as COM
 
 
-class Test_Edit_WG_Easy_Storage:
+class Test_Edit_WG_Easy_Resources:
 
     @staticmethod
     def test_edit_app() -> None:
@@ -13,10 +13,9 @@ class Test_Edit_WG_Easy_Storage:
         """
         assert Apps.verify_app_installed('WG Easy')
         Apps.edit_app('WG Easy')
-        Apps.navigate_to_app_section('Storage Configuration')
-        COM.click_button('add-item-additional-storage')
-        COM.set_input_field('mount-path', '/mnt/anywhere', True)
-        COM.set_input_field('dataset-name', 'storage')
+        Apps.navigate_to_app_section('Resources Configuration')
+        COM.set_input_field('cpu', '8000m')
+        COM.set_input_field('memory', '16Gi')
         COM.click_save_button()
         assert COM.assert_page_header('Installed')
         assert Apps.is_app_running('WG Easy')
@@ -27,9 +26,9 @@ class Test_Edit_WG_Easy_Storage:
         This test verifies the edited values of the app
         """
         Apps.edit_app('WG Easy')
-        Apps.navigate_to_app_section('Storage Configuration')
-        assert COM.get_element_property('mount-path', 'value') == '/mnt/anywhere'
-        assert COM.get_element_property('dataset-name', 'value') == 'storage'
+        Apps.navigate_to_app_section('Resources Configuration')
+        assert COM.get_element_property('cpu', 'value') == '8000m'
+        assert COM.get_element_property('memory', 'value') == '16Gi'
 
     @staticmethod
     def verify_teardown() -> None:

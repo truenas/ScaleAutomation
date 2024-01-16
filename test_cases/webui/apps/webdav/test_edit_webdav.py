@@ -26,7 +26,7 @@ class Test_Edit_Webdav:
     @staticmethod
     def verify_edit_values() -> None:
         """
-        This method verifies the edited values of the app
+        This test verifies the edited values of the app
         """
         Apps.edit_app('WebDAV')
         assert not COM.is_checked('http')
@@ -37,7 +37,7 @@ class Test_Edit_Webdav:
     @staticmethod
     def verify_teardown() -> None:
         """
-        This method removes the given app
+        This test removes the given app
         """
         # reset the change
         Apps.delete_app('WebDAV')
