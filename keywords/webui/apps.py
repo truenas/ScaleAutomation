@@ -218,6 +218,18 @@ class Apps:
         assert not cls.is_app_installed(name)
 
     @classmethod
+    def edit_app(cls, name: str) -> None:
+        """
+        This method clicks the edit app button for the given named app.
+
+        :param name: is the name of the app
+        """
+        name = COM.convert_to_tag_format(name)
+        COM.click_on_element(f'//ix-app-row//div[contains(text(),"{name}")]')
+        COM.click_button(f'{name}-edit')
+        assert COM.assert_page_header(f'Edit {name}')
+
+    @classmethod
     def get_app_status(cls, name: str) -> str:
         return WebUI.xpath(xpaths.common_xpaths.any_child_parent_target(
             f'//*[text()="{COM.convert_to_tag_format(name)}"]',
