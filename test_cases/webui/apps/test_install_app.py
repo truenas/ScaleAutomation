@@ -11,7 +11,7 @@ class Test_Install_App():
     @staticmethod
     def set_app_ready_for_install(app_data):
         """
-        This method finds the given app and gets it ready to install
+        This test finds the given app and gets it ready to install
 
         :param app_data: test data listing different apps to iterate through
         """
@@ -24,7 +24,7 @@ class Test_Install_App():
     @staticmethod
     def verify_install_app(app_data):
         """
-        This method installs the given app and verifies it installed
+        This test installs the given app and verifies it installed
 
         :param app_data: test data listing different apps to iterate through
         """

@@ -10,7 +10,7 @@ class Test_Uninstall_App:
     @staticmethod
     def verify_uninstall_app(app_data) -> None:
         """
-        This method verifies the given app is uninstalled
+        This test verifies the given app is uninstalled
 
         :param app_data: test data listing different apps to iterate through
         """
@@ -21,7 +21,7 @@ class Test_Uninstall_App:
     @staticmethod
     def verify_teardown(app_data) -> None:
         """
-        This method removes the given app
+        This test removes the given app
 
         :param app_data: test data listing different apps to iterate through
         """
