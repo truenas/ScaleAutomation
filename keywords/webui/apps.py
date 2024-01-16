@@ -293,6 +293,15 @@ class Apps:
             '*[contains(text(),"Stopped")]'), shared_config['LONG_WAIT'])
 
     @classmethod
+    def navigate_to_app_section(cls, name: str) -> None:
+        """
+        This method clicks the app section located on the right panel
+
+        :param name: is the name of the app section
+        """
+        WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[@class="section ng-star-inserted" and contains(text(),"{name}")]')).click()
+
+    @classmethod
     def set_app_values(cls, name: str) -> None:
         match name:
             case 'WG-Easy':
