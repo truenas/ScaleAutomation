@@ -82,6 +82,17 @@ class Common:
         WebUI.delay(1)
 
     @classmethod
+    def clear_input_field(cls, name: str) -> None:
+        """
+        This method highlights the text in the given field then deletes it
+
+        :param name: name of the field to clear
+        """
+        WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
+        WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.CONTROL + 'a')
+        WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.DELETE)
+
+    @classmethod
     def click_on_element(cls, xpath: str) -> None:
         """
         This method wait and click on the given xpath element.
@@ -151,6 +162,15 @@ class Common:
         API_POST.create_non_admin_user(name, fullname, password, smb_auth)
 
     @classmethod
+    def delete_pill(cls, xpath: str) -> None:
+        """
+        This method deletes athe given pill
+
+        :param xpath: is the xpath of the pill.
+        """
+        WebUI.xpath(xpaths.common_xpaths.any_xpath(xpath)).send_keys(Keys.DELETE)
+
+    @classmethod
     def delete_user_by_api(cls, name: str) -> None:
         """
         This method creates a non admin user
@@ -170,6 +190,15 @@ class Common:
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
         return WebUI.xpath(xpaths.common_xpaths.input_field(name)).get_property(prop)
+
+    @classmethod
+    def get_label_value(cls, label: str) -> str:
+        """
+        This method returns the value of the given label
+
+        :param label: the label to find the value of
+        """
+        return WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[contains(text(),"{label}")]/following-sibling::*')).get_property('textContent')
 
     @classmethod
     def get_user_id_by_api(cls, username: str) -> int:
