@@ -1,7 +1,7 @@
+import pytest
 from helper.global_config import private_config
 from keywords.webui.common import Common
 from keywords.webui.navigation import Navigation
-import pytest
 
 
 def pytest_sessionstart(session):
