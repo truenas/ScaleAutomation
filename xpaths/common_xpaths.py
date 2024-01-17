@@ -6,7 +6,7 @@ progress_spinner = '//mat-spinner'
 
 def any_child_parent_target(child: str, parent: str, target: str) -> str:
     """
-    This method sets the xpath for the given child/parent/target
+    This function sets the xpath for the given child/parent/target
 
     :param child: text of the child object
     :param parent: text of the parent object
@@ -18,7 +18,7 @@ def any_child_parent_target(child: str, parent: str, target: str) -> str:
 
 def any_header(text: str, level: int) -> str:
     """
-    This method sets the xpath for the given header
+    This function sets the xpath for the given header
 
     :param text: text of the header
     :param level: level of the header
@@ -29,7 +29,7 @@ def any_header(text: str, level: int) -> str:
 
 def any_text(text: str) -> str:
     """
-    This method sets the xpath for the given text
+    This function sets the xpath for the given text
 
     :param text: text of the given text
     :return: xpath string for given text
@@ -39,7 +39,7 @@ def any_text(text: str) -> str:
 
 def any_xpath(xpath: str) -> str:
     """
-    This method sets the xpath for the given xpath
+    This function sets the xpath for the given xpath
 
     :param xpath: text of the given xpath.
     :return: xpath string for given xpath.
@@ -49,7 +49,7 @@ def any_xpath(xpath: str) -> str:
 
 def any_start_with_field(field: str) -> str:
     """
-    This method sets the text for the given field name with starts with.
+    This function sets the text for the given field name with starts with.
 
     :param field: text of the given field.
     :return: returns the xpath string for given field.
@@ -59,7 +59,7 @@ def any_start_with_field(field: str) -> str:
 
 def button_field(field: str) -> str:
     """
-    This method sets the text for the given button name
+    This function sets the text for the given button name
 
     :param field: text of the given button name
     :return: xpath string for given button
@@ -69,7 +69,7 @@ def button_field(field: str) -> str:
 
 def button_share_action_by_name(sharetype: str, name: str, action: str) -> str:
     """
-    This method sets the text for the given button name
+    This function sets the text for the given button name
 
     :param sharetype: type of the given share
     :param name: text of the given share name
@@ -81,7 +81,7 @@ def button_share_action_by_name(sharetype: str, name: str, action: str) -> str:
 
 def card_title(text: str) -> str:
     """
-    The method returns the xpath text of the given card title.
+    The function returns the xpath text of the given card title.
 
     :param text: is the text of the card title.
     :return: the xpath text of the given card title.
@@ -91,7 +91,7 @@ def card_title(text: str) -> str:
 
 def checkbox_field(field: str) -> str:
     """
-    This method sets the text for the given checkbox name
+    This function sets the text for the given checkbox name
 
     :param field: text of the given checkbox name
     :return: xpath string for given checkbox
@@ -101,7 +101,7 @@ def checkbox_field(field: str) -> str:
 
 def checkbox_field_attribute(field: str) -> str:
     """
-    This method sets the text for the given checkbox attribute name
+    This function sets the text for the given checkbox attribute name
 
     :param field: text of the given checkbox attribute name
     :return: xpath string for given checkbox attribute
@@ -111,7 +111,7 @@ def checkbox_field_attribute(field: str) -> str:
 
 def close_right_panel() -> str:
     """
-    This method returns the text for the close right panel button
+    This function returns the text for the close right panel button
 
     :return: xpath string for the close right panel button
     """
@@ -120,7 +120,7 @@ def close_right_panel() -> str:
 
 def data_test_field(field: str) -> str:
     """
-    This method sets the text for the given data-test tag
+    This function sets the text for the given data-test tag
 
     :param field: text of the given data-test tag
     :return: xpath string for given data-test tag
@@ -130,7 +130,7 @@ def data_test_field(field: str) -> str:
 
 def dataset_permissions_group(name: str) -> str:
     """
-    This method sets the text for the given dataset permission group
+    This function sets the text for the given dataset permission group
 
     :param name: text of the given Group name
     :return: xpath string for given dataset permission group
@@ -140,7 +140,7 @@ def dataset_permissions_group(name: str) -> str:
 
 def dataset_permissions_ownership(name: str) -> str:
     """
-    This method sets the text for the given dataset permission ownership
+    This function sets the text for the given dataset permission ownership
 
     :param name: text of the given Ownership name
     :return: xpath string for given dataset permission ownership
@@ -150,7 +150,7 @@ def dataset_permissions_ownership(name: str) -> str:
 
 def input_field(field: str) -> str:
     """
-    This method sets the text for the given input name
+    This function sets the text for the given input name
 
     :param field: text of the given input name
     :return: xpath string for given input
@@ -158,9 +158,20 @@ def input_field(field: str) -> str:
     return f'//*[@data-test="input-{field}"]'
 
 
+def label_and_value(label: str, value: str) -> str:
+    """
+    This function sets the text for the given label and value
+
+    :param label: text of the given label
+    :param value: text of the given value
+    :return: xpath string for given label and value
+    """
+    return f'//*[contains(.,"{label}") and contains(.,"{value}")]'
+
+
 def link_dataset(name: str) -> str:
     """
-    This method sets the text for the given dataset
+    This function sets the text for the given dataset
 
     :param name: name of the given dataset
     :return: xpath string for given dataset
@@ -170,7 +181,7 @@ def link_dataset(name: str) -> str:
 
 def link_field(field: str) -> str:
     """
-    This method sets the text for the given link name
+    This function sets the text for the given link name
 
     :param field: text of the given link name
     :return: xpath string for given link
@@ -180,7 +191,7 @@ def link_field(field: str) -> str:
 
 def option_field(field: str) -> str:
     """
-    This method sets the text for the given option name
+    This function sets the text for the given option name
 
     :param field: text of the given option name
     :return: xpath string for given option
@@ -190,7 +201,7 @@ def option_field(field: str) -> str:
 
 def search_field() -> str:
     """
-    This method sets the text for the search field
+    This function sets the text for the search field
 
     :return: xpath string for given select
     """
@@ -199,7 +210,7 @@ def search_field() -> str:
 
 def select_field(field: str) -> str:
     """
-    This method sets the text for the given select name
+    This function sets the text for the given select name
 
     :param field: text of the given select name
     :return: xpath string for given select
@@ -209,7 +220,7 @@ def select_field(field: str) -> str:
 
 def selected_dataset(name: str) -> str:
     """
-    This method sets the text for the given dataset
+    This function sets the text for the given dataset
 
     :param name: name of the given dataset
     :return: xpath string for given dataset
@@ -219,7 +230,7 @@ def selected_dataset(name: str) -> str:
 
 def share_attached(name: str) -> str:
     """
-    This method sets the text for the given attached share
+    This function sets the text for the given attached share
 
     :param name: name of the given attached share
     :return: xpath string for given attached share
@@ -229,7 +240,7 @@ def share_attached(name: str) -> str:
 
 def share_attribute(sharetype: str, attribute: str, desc: str) -> str:
     """
-    This method sets the text for the given share name
+    This function sets the text for the given share name
 
     :param sharetype: type of the given share
     :param attribute: attribute of the given share [name/path/description]
@@ -248,7 +259,7 @@ def share_attribute(sharetype: str, attribute: str, desc: str) -> str:
 
 def share_enabled_slider(sharetype: str, name: str) -> str:
     """
-    This method sets the text for the given share name
+    This function sets the text for the given share name
 
     :param sharetype: type of the given share
     :param name: name of the given share
@@ -259,7 +270,7 @@ def share_enabled_slider(sharetype: str, name: str) -> str:
 
 def toggle_field(field: str) -> str:
     """
-    This method sets the text for the given toggle field
+    This function sets the text for the given toggle field
 
     :param field: name of the given toggle field
     :return: xpath string for given toggle field
