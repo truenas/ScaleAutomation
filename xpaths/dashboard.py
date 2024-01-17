@@ -6,7 +6,7 @@ cpu_cores_chart = '//*[@id="cpu-cores-chart"]'
 
 def card_list_item(field: str, item_position: int) -> str:
     """
-    This method returns the xpath text of give card and list item_position.
+    This function returns the xpath text of give card and list item_position.
 
     :param field: is the name of ix-widget.
     :param item_position: it the position of the list on the card.
@@ -17,7 +17,7 @@ def card_list_item(field: str, item_position: int) -> str:
 
 def cpu_load_cores(index: int) -> str:
     """
-    This method return the cpu load cores xpath text by the given index.
+    This function return the cpu load cores xpath text by the given index.
 
     :param index: the nuber of the item to get.
     :return: the cpu load cores xpath text by the given index.
@@ -27,7 +27,7 @@ def cpu_load_cores(index: int) -> str:
 
 def drag_card(field: str) -> str:
     """
-    This method return the xpath text of the TrueNAS help card link
+    This function return the xpath text of the TrueNAS help card link
 
     :param field: is the url text of the link on the TrueNAS help card
     :return: the xpath text of the TrueNAS help card link
@@ -37,7 +37,7 @@ def drag_card(field: str) -> str:
 
 def drop_card(field: str) -> str:
     """
-    This method return the xpath text of the TrueNAS help card link
+    This function return the xpath text of the TrueNAS help card link
 
     :param field: is the url text of the link on the TrueNAS help card
     :return: the xpath text of the TrueNAS help card link
@@ -47,7 +47,7 @@ def drop_card(field: str) -> str:
 
 def truenas_help_card_link(link: str) -> str:
     """
-    This method return the xpath text of the TrueNAS help card link
+    This function return the xpath text of the TrueNAS help card link
 
     :param link: is the url text of the link on the TrueNAS help card
     :return: the xpath text of the TrueNAS help card link

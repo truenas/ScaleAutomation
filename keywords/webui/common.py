@@ -31,6 +31,50 @@ class Common:
         return cls.assert_text_is_visible('TrueNAS SCALE ® © 2024')
 
     @classmethod
+    def assert_dialog_visible(cls, dialog_title: str, wait: int = shared_config['WAIT']) -> bool:
+        """
+        This method returns true or false weather the dialog is visible before timeout.
+
+        :param dialog_title: The name of the title of the dialog
+        :param wait: The number of seconds to wait before timeout
+        :return: True if the dialog is visible before timeout otherwise it returns False.
+
+        Example:
+            - Common.assert_dialog_visible('Create Pool')
+            - Common.assert_dialog_visible('Create Pool', shared_config['MEDIUM_WAIT'])
+        """
+        return WebUI.wait_until_visible(xpaths.common_xpaths.any_header(dialog_title, 3), wait)
+
+    @classmethod
+    def assert_dialog_not_visible(cls, dialog_title: str, wait: int = shared_config['WAIT']) -> bool:
+        """
+        This method returns True or False weather the dialog is not visible before timeout.
+
+        :param dialog_title: The name of the title of the dialog
+        :param wait: The number of seconds to wait before timeout
+        :return: True if the dialog is not visible before timeout otherwise it returns False.
+
+        Example:
+            - Common.assert_dialog_not_visible('Create Pool')
+            - Common.assert_dialog_not_visible('Create Pool', shared_config['MEDIUM_WAIT'])
+        """
+        return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(dialog_title, 3), wait)
+
+    @classmethod
+    def assert_label_and_value_exist(cls, label: str, value: str) -> bool:
+        """
+        This method returns True or False weather the given label and value is visible.
+
+        :param label: The name of the label
+        :param value: The value of the label
+        :return: True if the given label and value is visible otherwise it returns False.
+
+        Example:
+            - Common.assert_label_and_value_exist('Pool Status', 'Online')
+        """
+        return WebUI.wait_until_visible(xpaths.xpaths.common_xpaths.label_and_value(label, value), shared_config['SHORT_WAIT'])
+
+    @classmethod
     def assert_right_panel_header(cls, header_text):
         """
         This method return True if the right panel header text is visible before timeout otherwise it returns False.
@@ -121,19 +165,22 @@ class Common:
         cls.click_on_element(xpaths.common_xpaths.link_field(name))
 
     @classmethod
-    def click_save_button(cls) -> None:
-        """
-        This method clicks the save button
-        """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT']).click()
-        WebUI.delay(2)
-
-    @classmethod
     def close_right_panel(cls) -> None:
         """
         This method clicks the close right panel button
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.close_right_panel(), shared_config['MEDIUM_WAIT']).click()
+
+    @classmethod
+    def click_save_button(cls) -> None:
+        """
+        This method clicks the save button
+
+        Example:
+            - Common.click_save_button()
+        """
+        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT']).click()
+        WebUI.delay(2)
 
     @classmethod
     def convert_to_tag_format(cls, name: str) -> str:
@@ -369,8 +416,23 @@ class Common:
         :param name: name of the select field to select from
         :param option: name of the option to select
         """
-        WebUI.xpath(xpaths.common_xpaths.select_field(name)).click()
-        WebUI.xpath(xpaths.common_xpaths.option_field(option)).click()
+        WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT']).click()
+        WebUI.wait_until_clickable(xpaths.common_xpaths.option_field(option), shared_config['SHORT_WAIT']).click()
+
+    @classmethod
+    # TODO: remove this when https://ixsystems.atlassian.net/browse/NAS-126826 is fixed and update all usages to select_option.
+    def select_option_text(cls, name: str, option: str):
+        """
+        This method selects the given option text from the given select field.
+
+        :param name: The name of the select field to select from.
+        :param option: The name of the option to select.
+
+        Example:
+            - Common.select_option_text('size-and-type-data', '20 GiB (HDD)')
+        """
+        WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT']).click()
+        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//option[contains(text(), "{option}")]'), shared_config['SHORT_WAIT']).click()
 
     @classmethod
     def set_checkbox(cls, name: str) -> None:
