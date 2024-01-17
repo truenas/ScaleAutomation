@@ -41,7 +41,10 @@ class Directory_Services:
         """
         This method removes the existing ldap configuration
         """
-        cls.click_ldap_settings_button()
+        if COM.is_visible(xpaths.common_xpaths.button_field('configure-ldap')):
+            cls.click_configure_ldap_button()
+        if COM.is_visible(xpaths.common_xpaths.button_field('ldap-settings')):
+            cls.click_ldap_settings_button()
         while COM.is_visible('//mat-chip-row//*[@name="cancel"]'):
             COM.delete_pill('//mat-chip-row')
         while COM.is_visible('//*[@name="mdi-close-circle"]'):
