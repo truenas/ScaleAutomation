@@ -28,8 +28,8 @@ class Test_Edit_WG_Easy_Storage:
         """
         Apps.edit_app('WG Easy')
         Apps.navigate_to_app_section('Storage Configuration')
-        assert COM.get_element_property('mount-path', 'value') == '/mnt/anywhere'
-        assert COM.get_element_property('dataset-name', 'value') == 'storage'
+        assert COM.get_element_property('mount-path') == '/mnt/anywhere'
+        assert COM.get_element_property('dataset-name') == 'storage'
 
     @staticmethod
     def verify_teardown() -> None:
