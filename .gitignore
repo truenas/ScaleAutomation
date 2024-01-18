@@ -161,4 +161,8 @@ cython_debug/
 # .idea/
 .idea/misc.xml
 .idea/pytest-prototype.iml
+
+# allure-pytest
+allure-results
+allure-report
 screenshots
