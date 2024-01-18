@@ -50,7 +50,7 @@ class Common_SSH:
         SSH_Command_Line(f'rm * | grep file', private_config['SMB_ACL_IP'], user, 'testing')
 
     @classmethod
-    def get_output_from_ssh_key(cls, command: str, ip: str, user: str) -> str:
+    def get_output_from_ssh(cls, command: str, ip: str, user: str) ->  SSH_Command_Line:
         """
         This method verify that the command through succeed and return its output.
 
@@ -61,7 +61,7 @@ class Common_SSH:
         """
         results = SSH_Command_Line(command, ip, user)
         assert results.status is True, f'{results.stdout}\n{results.stderr}'
-        return results.stdout
+        return results
 
     @classmethod
     def get_permission_response(cls, user: str, perm: str, value: str, cmd: str, state: str) -> bool:
@@ -75,7 +75,7 @@ class Common_SSH:
         :param state: state of whether the command should be successful or not [True/False]
         :return: returns True if the expected state after executing smb command, otherwise False
         """
-        response = SSH_Command_Line(f'smbclient //{private_config['IP']}/SMBSHARE -U {user}%testing -c \'{cmd}\'', private_config['SMB_ACL_IP'], user, 'testing')
+        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/SMBSHARE -U {user}%testing -c \'{cmd}\'', private_config['SMB_ACL_IP'], user, 'testing')
         if "NT_STATUS_ACCESS_DENIED" in response.stdout:
             print(f'FAIL {perm} RESPONSE: {response.status} STATE: {bool(state)}')
             if perm == 'DELETE' and state == 'false':

@@ -268,16 +268,6 @@ class Common:
         return API_Common.get_user_uid(username)
 
     @classmethod
-    def is_card_visible(cls, card_title: str):
-        """
-        This method return True if the card is visible, otherwise it returns False.
-
-        :param card_title: The name of the title of the card
-        :return: True if the card is visible, otherwise it returns False.
-        """
-        return WebUI.wait_until_visible(xpaths.common_xpaths.card_title(card_title))
-
-    @classmethod
     def is_card_not_visible(cls, card_title: str):
         """
         This method return True if the card is not visible, otherwise it returns False.
@@ -286,6 +276,16 @@ class Common:
         :return: True if the card is not visible, otherwise it returns False.
         """
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.card_title(card_title))
+
+    @classmethod
+    def is_card_visible(cls, card_title: str):
+        """
+        This method return True if the card is visible, otherwise it returns False.
+
+        :param card_title: The name of the title of the card
+        :return: True if the card is visible, otherwise it returns False.
+        """
+        return WebUI.wait_until_visible(xpaths.common_xpaths.card_title(card_title))
 
     @classmethod
     def is_checked(cls, name: str) -> bool:
@@ -382,15 +382,6 @@ class Common:
         assert cls.is_clickable(xpaths.common_xpaths.input_field('username'))
 
     @classmethod
-    def reboot_system(cls):
-        cls.click_button('power-menu')
-        cls.click_button('restart')
-        cls.assert_confirm_dialog()
-        WebUI.delay(10)
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT'])
-        WebUI.delay(1)
-
-    @classmethod
     def navigate_to_login_screen(cls, ip: str):
         """
         This method navigates to the login page of the given IP
@@ -398,6 +389,15 @@ class Common:
         :param ip: IP address of the TrueNAS login page
         """
         WebUI.get(f'http://{ip}/ui/sessions/signin')
+
+    @classmethod
+    def reboot_system(cls):
+        cls.click_button('power-menu')
+        cls.click_button('restart')
+        cls.assert_confirm_dialog()
+        WebUI.delay(10)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT'])
+        WebUI.delay(1)
 
     @classmethod
     def select_then_deselect_input_field(cls, name: str):

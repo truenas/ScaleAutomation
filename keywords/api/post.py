@@ -1,5 +1,6 @@
 from helper.api import POST, Response, GET
 from helper.global_config import shared_config, private_config
+from common import API_Common
 
 
 class API_POST:
@@ -72,6 +73,29 @@ class API_POST:
             response = POST(f'/sharing/{sharetype}/', {"name": name, "path": path})
             assert response.status_code == 200, response.text
         return response
+
+    @classmethod
+    def export_pool(cls, name: str, destroy: bool = False) -> dict:
+        """
+        This method exports the given pool.
+
+        :param name: is the name of the pool.
+        :param destroy: True if should the pool be destroyed else False.
+        :return: The dictionary response from the job.
+
+        Example:
+           - API_POST.export_pool('test-pool', True)
+           - API_POST.export_pool('test-pool')
+        """
+        payload = {
+            "cascade": True,
+            "restart_services": True,
+            "destroy": destroy
+        }
+        response = POST(f'/pool/id/{name}/export/', payload)
+        assert response.status_code == 200, response.text
+        job_status = API_Common.wait_on_job(response.json(), shared_config['EXTRA_LONG_WAIT'])
+        return job_status
 
     @classmethod
     def is_service_running(cls, service: str) -> bool:
