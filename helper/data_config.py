@@ -18,7 +18,7 @@ def get_data_and_name_list(file_name: str, object_name: str) -> list:
     """
     This methode return the list of tuple for pytest parametrize.
     :param file_name: The name of the file to use in test_data
-    :param object_name: The name of the object to get form the list data
+    :param object_name: The name of the object to get from the list data
     :return: The list of tuple for pytest parametrize
 
     Usage:
