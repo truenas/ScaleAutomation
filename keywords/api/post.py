@@ -1,6 +1,6 @@
 from helper.api import POST, Response, GET
 from helper.global_config import shared_config, private_config
-from common import API_Common
+from keywords.api.common import API_Common
 
 
 class API_POST:
@@ -29,7 +29,7 @@ class API_POST:
     @classmethod
     def create_dataset(cls, name: str, sharetype: str = 'GENERIC') -> Response:
         """
-        This method deletes the given dataset.
+        This method creates the given dataset.
 
         :param name: is the name of the dataset.
         :param sharetype: is the sharetype of the dataset.
@@ -55,6 +55,25 @@ class API_POST:
         response = GET(f'/user?username={name}').json()
         if not response:
             response = POST(f'/user', {"username": name, "group_create": True, "home": "/mnt/tank", "home_create": True, "full_name": fullname, "email": name + "@nowhere.com", "password": password, "shell": "/usr/bin/bash", "ssh_password_enabled": True, "smb": bool(smb_auth)})
+            assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def create_remote_dataset(cls, name: str, sharetype: str = 'GENERIC') -> Response:
+        """
+        This method creates the given remote dataset.
+
+        :param name: is the name of the remote dataset.
+        :param sharetype: is the sharetype of the dataset.
+        :return: the API request response.
+        """
+        private_config['API_IP'] = private_config['REP_DEST_IP']
+        response = GET(f'/pool/dataset?name={name}').json()
+        private_config['API_IP'] = private_config['IP']
+        if not response:
+            private_config['API_IP'] = private_config['REP_DEST_IP']
+            response = cls.create_dataset(name, sharetype)
+            private_config['API_IP'] = private_config['IP']
             assert response.status_code == 200, response.text
         return response
 

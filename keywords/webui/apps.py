@@ -13,6 +13,9 @@ class Apps:
         This method returns True if custom app UI is validated otherwise it returns False.
 
         :return: True if custom app UI is validated otherwise it returns False.
+
+        Example:
+            - Apps.assert_custom_app_ui()
         """
         status = True
         # Initially set testObj to right panel header
@@ -79,6 +82,9 @@ class Apps:
 
         :param name: is the name of the app
         :return: True if given app is started otherwise it returns False.
+
+        Example:
+            - Apps.assert_start_app('WG Easy')
         """
         child = f'//*[text()="{COM.convert_to_tag_format(name)}"]'
         parent = 'ix-app-row'
@@ -106,10 +112,10 @@ class Apps:
             COM.click_button('bulk-actions-menu')
             WebUI.save_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu')
             if WebUI.xpath(xpaths.common_xpaths.button_field('start-selected')).get_attribute('disabled'):
-                # COM.click_button('bulk-actions-menu')
                 WebUI.refresh()
-                WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('bulk-actions-menu'), shared_config['MEDIUM_WAIT'])
+                # WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('bulk-actions-menu'), shared_config['WAIT'])
                 COM.click_button('bulk-actions-menu')
+                WebUI.save_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu_2')
             COM.click_button('start-selected')
             WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(
                 child,
@@ -127,6 +133,9 @@ class Apps:
 
         :param name: is the name of the app
         :return: True if given app is stopped otherwise it returns False.
+
+        Example:
+            - Apps.assert_stop_app('WG Easy')
         """
         if COM.assert_page_header('Installed') is False:
             NAV.navigate_to_apps()
@@ -162,6 +171,9 @@ class Apps:
         This method clicks the given app
 
         :param name: is the name of the app
+
+        Example:
+            - Apps.click_app('WG Easy')
         """
         COM.click_on_element(f'//ix-app-card//h3[contains(text(),"{name}")]')
         WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text('Please wait'))
@@ -170,6 +182,9 @@ class Apps:
     def click_custom_app(cls) -> None:
         """
         This method clicks the custom apps button
+
+        Example:
+            - Apps.click_custom_app()
         """
         COM.click_link('custom-app')
 
@@ -177,6 +192,9 @@ class Apps:
     def click_discover_apps(cls) -> None:
         """
         This method clicks the discover apps button
+
+        Example:
+            - Apps.click_discover_apps()
         """
         COM.click_link('discover-apps')
 
@@ -186,6 +204,9 @@ class Apps:
         This method clicks the given named app install button.
 
         :param name: is the name of the app
+
+        Example:
+            - Apps.click_install_app('WG Easy')
         """
         if COM.is_visible(xpaths.common_xpaths.button_field('setup-pool')):
             COM.click_button('setup-pool')
@@ -207,6 +228,9 @@ class Apps:
         This method deletes the given named app.
 
         :param name: is the name of the app
+
+        Example:
+            - Apps.delete_app('WG Easy')
         """
         if COM.assert_page_header('Installed') is False:
             NAV.navigate_to_apps()
@@ -223,7 +247,10 @@ class Apps:
         This method clicks the edit app button for the given named app.
 
         :param name: is the name of the app
-        """
+
+        Example:
+            - Apps.edit_app('WG Easy')
+    """
         name = COM.convert_to_tag_format(name)
         COM.click_on_element(f'//ix-app-row//div[contains(text(),"{name}")]')
         COM.click_button(f'{name}-edit')
@@ -231,6 +258,15 @@ class Apps:
 
     @classmethod
     def get_app_status(cls, name: str) -> str:
+        """
+        This method returns the status for the given app.
+
+        :param name: is the name of the app
+        :return: the status for the given app.
+
+        Example:
+            - Apps.get_app_status('WG Easy')
+    """
         return WebUI.xpath(xpaths.common_xpaths.any_child_parent_target(
             f'//*[text()="{COM.convert_to_tag_format(name)}"]',
             'ix-app-row',
@@ -243,6 +279,9 @@ class Apps:
 
         :param name: is the name of the app
         :return: True if given app is installed otherwise it returns False.
+
+        Example:
+            - Apps.is_app_deployed('WG Easy')
         """
         # Delay to wait for Apps section populate
         name = COM.convert_to_tag_format(name)
@@ -250,7 +289,7 @@ class Apps:
             f'//*[text()="{name}"]',
             'ix-app-row',
             '*[contains(text(),"Deploying")]'), shared_config['EXTRA_LONG_WAIT'])
-        return WebUI.get_text(f'//*[text()="{name}"]/ancestor::ix-app-row/descendant::ix-app-status-cell') != 'Deploying'
+        return cls.get_app_status(name) != 'Deploying'
 
     @classmethod
     def is_app_installed(cls, name: str) -> bool:
@@ -259,6 +298,9 @@ class Apps:
 
         :param name: is the name of the app
         :return: True if given app is installed otherwise it returns False.
+
+        Example:
+            - Apps.is_app_installed('WG Easy')
         """
         # Delay to wait for Apps section populate
         WebUI.delay(2)
@@ -273,6 +315,9 @@ class Apps:
 
         :param name: is the name of the app
         :return: True if given app is installed otherwise it returns False.
+
+        Example:
+            - Apps.is_app_running('WG Easy')
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_child_parent_target(
             f'//*[text()="{COM.convert_to_tag_format(name)}"]',
@@ -286,6 +331,9 @@ class Apps:
 
         :param name: is the name of the app
         :return: True if given app is installed otherwise it returns False.
+
+        Example:
+            - Apps.is_app_stopped('WG Easy')
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_child_parent_target(
             f'//*[text()="{COM.convert_to_tag_format(name)}"]',
@@ -298,11 +346,22 @@ class Apps:
         This method clicks the app section located on the right panel
 
         :param name: is the name of the app section
+
+        Example:
+            - Apps.navigate_to_app_section('WG Easy')
         """
         WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[@class="section ng-star-inserted" and contains(text(),"{name}")]')).click()
 
     @classmethod
     def set_app_values(cls, name: str) -> None:
+        """
+        This method sets the given app required fields to install
+
+        :param name: is the name of the app section
+
+        Example:
+            - Apps.set_app_values('WG Easy')
+        """
         match name:
             case 'WG-Easy':
                 cls.set_wg_easy_fields()
@@ -313,6 +372,14 @@ class Apps:
 
     @classmethod
     def set_webdav_fields(cls, name: str) -> None:
+        """
+        This method sets the WebDAV app required fields to install
+
+        :param name: is the name of the app section
+
+        Example:
+            - Apps.set_webdav_fields('WebDAV')
+        """
         name = COM.convert_to_tag_format(name)
         DATASET.create_dataset_by_api('tank/' + name)
         COM.click_button('add-item-shares')
@@ -321,6 +388,12 @@ class Apps:
 
     @classmethod
     def set_wg_easy_fields(cls) -> None:
+        """
+        This method sets the WG Easy app required fields to install (none are required)
+
+        Example:
+            - Apps.set_wg_easy_fields()
+        """
         print(f'App WG-Easy no configuration needed for install.')
 
     @classmethod
@@ -329,6 +402,9 @@ class Apps:
         This method verifies the given app is installed
 
         :param name: name of app to verify is installed
+
+        Example:
+            - Apps.verify_app_installed('WG Easy')
         """
         if Apps.is_app_installed(name) is False:
             Apps.click_discover_apps()

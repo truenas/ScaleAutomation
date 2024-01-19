@@ -30,11 +30,22 @@ class Navigation:
         cls.navigate_to('apps', 'Installed')
 
     @classmethod
+    def navigate_to_backup_credentials(cls) -> None:
+        """
+        This method navigates to the Shares page
+        """
+        cls.navigate_to('credentials', 'Backup Credentials', 'backup-credentials')
+
+    @classmethod
     def navigate_to_dashboard(cls) -> None:
         """
         This method navigates to the Dashboard page
         """
         cls.navigate_to('dashboard', 'Dashboard')
+
+    @classmethod
+    def navigate_to_data_protection(cls):
+        cls.navigate_to('data-protection', 'Data Protection')
 
     @classmethod
     def navigate_to_datasets(cls) -> None:
