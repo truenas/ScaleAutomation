@@ -72,7 +72,7 @@ class Datasets:
     @classmethod
     def create_dataset_by_api(cls, name: str, sharetype: str = 'GENERIC') -> Response:
         """
-        This method deletes the given dataset.
+        This method create the given dataset.
 
         :param name: name of the given dataset
         :param sharetype: type of the given dataset
@@ -81,11 +81,21 @@ class Datasets:
         return API_POST.create_dataset(name, sharetype)
 
     @classmethod
+    def create_remote_dataset_by_api(cls, name: str, sharetype: str = 'GENERIC') -> Response:
+        """
+        This method creates the given remote dataset.
+
+        :param name: name of the given remote dataset
+        :param sharetype: type of the given dataset
+        :return: True if the share name is visible otherwise it returns False.
+        """
+        return API_POST.create_remote_dataset(name, sharetype)
+
+    @classmethod
     def delete_dataset_by_api(cls, name: str) -> Response:
         """
         This method deletes the given dataset.
 
-        :param sharetype: type of the given share
         :param name: name of the given share
         :return: True if the share name is visible otherwise it returns False.
         """
@@ -163,4 +173,3 @@ class Datasets:
         :return: the API request response.
         """
         return API_POST.set_dataset_permissions_user_and_group(dataset, user, group)
-

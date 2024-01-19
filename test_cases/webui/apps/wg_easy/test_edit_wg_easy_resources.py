@@ -4,7 +4,7 @@ from keywords.webui.apps import Apps
 from keywords.webui.common import Common as COM
 
 
-class Test_Edit_WG_Easy_Network:
+class Test_Edit_WG_Easy_Resources:
 
     @staticmethod
     def test_edit_app() -> None:
@@ -13,10 +13,9 @@ class Test_Edit_WG_Easy_Network:
         """
         assert Apps.verify_app_installed('WG Easy')
         Apps.edit_app('WG Easy')
-        Apps.navigate_to_app_section('Network Configuration')
-        COM.set_input_field('udp-port', '30000')
-        COM.set_input_field('web-port', '30001')
-        COM.unset_checkbox('host-network')
+        Apps.navigate_to_app_section('Resources Configuration')
+        COM.set_input_field('cpu', '8000m')
+        COM.set_input_field('memory', '16Gi')
         COM.click_save_button()
         assert COM.assert_page_header('Installed')
         assert Apps.is_app_running('WG Easy')
@@ -27,10 +26,10 @@ class Test_Edit_WG_Easy_Network:
         This test verifies the edited values of the app
         """
         Apps.edit_app('WG Easy')
-        Apps.navigate_to_app_section('Network Configuration')
-        assert COM.get_element_property('udp-port') == '30000'
-        assert COM.get_element_property('web-port') == '30001'
-        assert COM.is_checked('host-network') is False
+        Apps.navigate_to_app_section('Resources Configuration')
+        assert COM.get_element_property('cpu') == '8000m'
+        assert COM.get_element_property('memory') == '16Gi'
+        COM.click_link('breadcrumb-applications')
 
     @staticmethod
     def verify_teardown() -> None:

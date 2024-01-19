@@ -37,6 +37,7 @@ class Test_Edit_WG_Easy_Configuration:
         assert COM.get_element_property('client-mtu') == '2840'
         assert COM.get_element_property('client-address-range') == '10.16.0.x'
         assert COM.get_element_property('client-dns-server') == '2.2.2.2'
+        COM.click_link('breadcrumb-applications')
 
     @staticmethod
     def verify_teardown() -> None:
