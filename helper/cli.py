@@ -10,13 +10,19 @@ class Local_Command_Line:
         stdout: This return the standard output of the command.
         stderr: This return the standard error of the command.
     """
-    def __init__(self, command: str):
+    def __init__(self, command: str, wsl: bool = True):
         """
         This method run the command line and gets status, stdout and stderr.
 
         :param command: is the command line text to run.
+        :param wsl: is optional and if True, the command will be run in WSL. The default is True.
+
+        Example:
+            - Local_Command_Line('ls')
+            - Local_Command_Line('ls', wsl=False)
         """
-        command_start = 'wsl -- ' if system() == "Windows" else 'bash -c '
+        wsl_cmd = 'wsl -- ' if wsl is True else ''
+        command_start = wsl_cmd if system() == "Windows" else 'bash -c '
         self.process = run(command_start + command, shell=True, stdout=PIPE, stderr=PIPE, universal_newlines=True)
         self.stdout = self.process.stdout
         self.stderr = self.process.stderr
