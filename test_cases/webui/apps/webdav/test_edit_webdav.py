@@ -33,6 +33,7 @@ class Test_Edit_Webdav:
         assert COM.is_checked('https')
         assert COM.get_element_property('certificate-id') == "'truenas_default' Certificate"
         assert COM.get_element_property('https-port') == '30035'
+        COM.click_link('breadcrumb-applications')
 
     @staticmethod
     def verify_teardown() -> None:
