@@ -12,11 +12,8 @@ def pytest_sessionstart(session):
     Common.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
     assert Dashboard.assert_dashboard_page_header_is_visible()
     # Setup SSH, user groups and sudo commands with no password
-    print('set ssh')
     Common_SSH.set_host_ssh_key_and_enable_ssh_on_the_nas(private_config['USERNAME'])
-    print('set_user_groups')
     API_PUT.set_user_groups(private_config['USERNAME'], ['root', 'builtin_administrators'])
-    print('enable_user_all_sudo_commands_no_password')
     API_PUT.enable_user_all_sudo_commands_no_password(private_config['USERNAME'])
 
 

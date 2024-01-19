@@ -107,8 +107,7 @@ class API_POST:
         :param service: is the service nome.
         :return: True if the service is running, otherwise False.
         """
-        print(POST('service/started/', service))
-        return bool(POST('service/started/', service).text)
+        return POST('/service/started/', service).json()
 
     @classmethod
     def restart_replication_service(cls, service: str) -> Response:
