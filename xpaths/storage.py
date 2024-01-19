@@ -39,4 +39,4 @@ def pool_wizard_step_header_open(header: str) -> str:
     :return: the xpath text of the given pool name header.
     """
     # tabindex="0" means the header is visible in the UI.
-    return f'//mat-step-header[@tabindex="0" and contains(.,"${header}")]'
+    return f'//mat-step-header[@tabindex="0" and contains(.,"{header}")]'

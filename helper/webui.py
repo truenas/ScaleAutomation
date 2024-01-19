@@ -1,6 +1,6 @@
 import pyperclip
 import time
-from selenium.common import TimeoutException
+from selenium.common.exceptions import TimeoutException
 from helper.global_config import shared_config, screenshots
 from selenium import webdriver
 from selenium.webdriver import ActionChains

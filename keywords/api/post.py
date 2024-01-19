@@ -1,6 +1,7 @@
 from helper.api import POST, Response, GET
 from helper.global_config import shared_config, private_config
 from keywords.api.common import API_Common
+from keywords.api.get import API_GET
 
 
 class API_POST:
@@ -111,7 +112,8 @@ class API_POST:
             "restart_services": True,
             "destroy": destroy
         }
-        response = POST(f'/pool/id/{name}/export/', payload)
+        pool_id = API_GET.get_pool_id(name)
+        response = POST(f'/pool/id/{pool_id}/export/', payload)
         assert response.status_code == 200, response.text
         job_status = API_Common.wait_on_job(response.json(), shared_config['EXTRA_LONG_WAIT'])
         return job_status

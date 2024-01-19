@@ -43,7 +43,7 @@ class Common:
             - Common.assert_dialog_visible('Create Pool')
             - Common.assert_dialog_visible('Create Pool', shared_config['MEDIUM_WAIT'])
         """
-        return WebUI.wait_until_visible(xpaths.common_xpaths.any_header(dialog_title, 3), wait)
+        return WebUI.wait_until_visible(xpaths.common_xpaths.any_header(dialog_title, 1), wait)
 
     @classmethod
     def assert_dialog_not_visible(cls, dialog_title: str, wait: int = shared_config['WAIT']) -> bool:
@@ -58,7 +58,7 @@ class Common:
             - Common.assert_dialog_not_visible('Create Pool')
             - Common.assert_dialog_not_visible('Create Pool', shared_config['MEDIUM_WAIT'])
         """
-        return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(dialog_title, 3), wait)
+        return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(dialog_title, 1), wait)
 
     @classmethod
     def assert_label_and_value_exist(cls, label: str, value: str) -> bool:
@@ -432,7 +432,7 @@ class Common:
             - Common.select_option_text('size-and-type-data', '20 GiB (HDD)')
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT']).click()
-        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//option[contains(text(), "{option}")]'), shared_config['SHORT_WAIT']).click()
+        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{option}")]'), shared_config['SHORT_WAIT']).click()
 
     @classmethod
     def set_checkbox(cls, name: str) -> None:
