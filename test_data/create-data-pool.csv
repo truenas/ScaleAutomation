@@ -1,0 +1,6 @@
+pool-name,pool-layout,disk-width,pool-data,raw-capacity,data-vdefs,pool-type,cmd-pool-type
+my_stripe_pool,Stripe,3,1 × STRIPE | 3 × 20 GiB (HDD),54 GiB,3 x DISK | 1 wide | 20 GiB,DISK,NA
+my_mirror_pool,Mirror,4,1 × MIRROR | 4 × 20 GiB (HDD),20 GiB,1 x MIRROR | 4 wide | 20 GiB,MIRROR,mirror-0
+my_raidz1_pool,RAIDZ1,3,1 × RAIDZ1 | 3 × 20 GiB (HDD),36 GiB,1 x RAIDZ1 | 3 wide | 20 GiB,RAIDZ1,raidz1-0
+my_raidz2_pool,RAIDZ2,4,1 × RAIDZ2 | 4 × 20 GiB (HDD),36 GiB,1 x RAIDZ2 | 4 wide | 20 GiB,RAIDZ2,raidz2-0
+my_raidz3_pool,RAIDZ3,5,1 × RAIDZ3 | 5 × 20 GiB (HDD),36 GiB,1 x RAIDZ3 | 5 wide | 20 GiB,RAIDZ3,raidz3-0

@@ -15,7 +15,7 @@ class Pool_Creation_Wizard:
         Example:
             - Pool_Creation_Wizard.assert_create_pool_dialog_not_visible()
         """
-        return Common.assert_dialog_not_visible('Create Pool')
+        return Common.assert_dialog_not_visible('Create Pool', shared_config['EXTRA_LONG_WAIT'])
 
     @classmethod
     def assert_data_value(cls, value: str):
@@ -238,7 +238,7 @@ class Pool_Creation_Wizard:
         Common.select_option_text(f'vdevs-number-{step}', str(option))
 
     @classmethod
-    def select_width_option(cls, step: int, option: int):
+    def select_width_option(cls, step: str, option: int):
         """
         This method selects the given width option from the given step.
 

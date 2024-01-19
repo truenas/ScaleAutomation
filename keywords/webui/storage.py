@@ -4,7 +4,7 @@ from helper.webui import WebUI
 from keywords.webui.common import Common
 
 
-class storage:
+class Storage:
     # Exporting Pool
 
     @classmethod
