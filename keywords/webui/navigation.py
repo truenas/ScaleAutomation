@@ -15,7 +15,7 @@ class Navigation:
 
         Example
          - Navigation.navigate_to('myLocation', 'My Location')
-         - Navigation.navigate_to('myLocation', 'My Location', 'my-second-location')
+         - Navigation.navigate_to('myLocation', 'My Location2', 'my-second-location')
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.link_field(location + '-menu'))
         WebUI.xpath(xpaths.common_xpaths.link_field(location + '-menu')).click()
