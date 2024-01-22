@@ -30,6 +30,12 @@ class Data_Protection:
 
     @classmethod
     def delete_all_snapshots(cls):
+        """
+        This method deletes all the Snapshots
+
+        Example:
+            - Data_Protection.delete_all_snapshots()
+        """
         if COM.assert_page_header('Snapshots') is False:
             NAV.navigate_to_periodic_snapshots()
         COM.set_checkbox('column-select-all')
