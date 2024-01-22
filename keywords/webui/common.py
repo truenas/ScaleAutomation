@@ -165,11 +165,31 @@ class Common:
         cls.click_on_element(xpaths.common_xpaths.link_field(name))
 
     @classmethod
+    def click_radio_button(cls, name: str) -> None:
+        """
+        This method clicks the given radio button.
+
+        :param name: is the name of the radio button to click.
+        """
+        cls.click_on_element(xpaths.common_xpaths.radio_button_field(name))
+
+    @classmethod
     def close_right_panel(cls) -> None:
         """
         This method clicks the close right panel button
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.close_right_panel(), shared_config['MEDIUM_WAIT']).click()
+
+    @classmethod
+    def click_next_button(cls) -> None:
+        """
+        This method clicks the next button
+
+        Example:
+            - Common.click_next_button()
+        """
+        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('next'), shared_config['MEDIUM_WAIT']).click()
+        assert cls.assert_text_is_visible('What and Where')
 
     @classmethod
     def click_save_button(cls) -> None:

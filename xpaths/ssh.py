@@ -17,5 +17,5 @@ def button_ssh_view_more_type(sshtype: str) -> str:
     :param sshtype: The type of connection.
     :return: The xpath text of the given connection type view more button.
     """
-    return f'//ix-ssh-${sshtype}-card/descendant::button[@data-test="button-show-more"]'
+    return f'//ix-ssh-{sshtype}-card/descendant::button[@data-test="button-show-more"]'
 
