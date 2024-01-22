@@ -7,6 +7,7 @@ from keywords.webui.data_protection import Data_Protection as DP
 from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation
 from keywords.webui.replication import Replication
+from keywords.webui.ssh_connection import SSH_Connection as SSHCON
 
 
 def pytest_sessionstart(session):
@@ -36,7 +37,7 @@ def setup_class(rep):
 
     # Setup SSH connections.
     Navigation.navigate_to_backup_credentials()
-    Replication.assert_ssh_connection_exists(rep['connection-name'])
+    SSHCON.assert_ssh_connection_exists(rep['connection-name'])
 
     # Remove Replication task if exists
     Navigation.navigate_to_data_protection()
@@ -45,4 +46,4 @@ def setup_class(rep):
 
     # Remove Snapshots if exists
     DP.delete_all_periodic_snapshot_tasks()
-    Replication.delete_all_snapshots()
+    DP.delete_all_snapshots()

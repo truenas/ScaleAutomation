@@ -3,37 +3,9 @@ from helper.global_config import private_config
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
-from keywords.webui.ssh_connection import SSH_Connection as SSHCON
 
 
 class Replication:
-    @classmethod
-    def assert_ssh_connection_exists(cls, connection: str) -> bool:
-        """
-        This method verifies the given connection exists
-
-        :param connection: is the name of the given connection
-
-        Example:
-            - Replication.assert_ssh_connection_exists('myConnection')
-        """
-        if SSHCON.is_ssh_connection_visible(connection) is False:
-            COM.click_button('add-ssh-connection')
-            COM.set_input_field('connection-name', connection)
-            url = private_config['REP_DEST_IP']
-            if connection.__contains__('self'):
-                url = private_config['IP']
-            SSHCON.set_url(url)
-            SSHCON.set_admin_credentials(private_config['USERNAME'], private_config['PASSWORD'])
-            ssh_username = 'root'
-            if ssh_username.__contains__('admin'):
-                ssh_username = 'admin'
-            SSHCON.set_username(ssh_username)
-            SSHCON.set_passwordless_sudo_checkbox()
-            SSHCON.click_generate_new_private_key()
-            COM.click_save_button()
-        return SSHCON.is_ssh_connection_visible(connection)
-
     @classmethod
     def click_close_task_started_button(cls):
         """
@@ -59,20 +31,6 @@ class Replication:
         # WebUI.delay(2)
         WebUI.wait_until_visible(
             f'//*[@data-test="button-state-replication-task-{COM.convert_to_tag_format(name)}-row-state" and contains(@class,"fn-theme-green")]')
-
-    @classmethod
-    def delete_all_snapshots(cls):
-        if COM.assert_page_header('Snapshots') is False:
-            NAV.navigate_to_periodic_snapshots()
-        COM.set_checkbox('column-select-all')
-        if COM.is_visible(xpaths.common_xpaths.button_field('delete-selected')) is True:
-            COM.click_button('delete-selected')
-            COM.set_checkbox('confirm')
-            COM.click_button('delete')
-            # delay to allow delete to complete
-            assert COM.is_visible(xpaths.common_xpaths.button_field('close')) is True
-            COM.click_button('close')
-            COM.assert_text_is_visible('No records have been added yet')
 
     @classmethod
     def delete_replication_task_by_name(cls, name: str) -> None:

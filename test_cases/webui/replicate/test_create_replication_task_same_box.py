@@ -8,7 +8,7 @@ from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.replication import Replication as REP
 
 
-@pytest.mark.parametrize('rep', get_data_list('replication')[:1], scope='class')
+@pytest.mark.parametrize('rep', get_data_list('replication')[:2], scope='class')
 class Test_Create_Replicate_Task_Same_Box():
 
     @staticmethod
@@ -49,6 +49,6 @@ class Test_Create_Replicate_Task_Same_Box():
         """
         # reset the change
         DP.delete_all_periodic_snapshot_tasks()
-        REP.delete_all_snapshots()
+        DP.delete_all_snapshots()
         NAV.navigate_to_data_protection()
         REP.delete_replication_task_by_name(rep['task-name'])

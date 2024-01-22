@@ -1,8 +1,36 @@
 import xpaths
+from helper.global_config import private_config
 from keywords.webui.common import Common as COM
 
 
 class SSH_Connection:
+    @classmethod
+    def assert_ssh_connection_exists(cls, connection: str) -> bool:
+        """
+        This method verifies the given connection exists
+
+        :param connection: is the name of the given connection
+
+        Example:
+            - SSH_Connection.assert_ssh_connection_exists('myConnection')
+        """
+        if cls.is_ssh_connection_visible(connection) is False:
+            COM.click_button('add-ssh-connection')
+            COM.set_input_field('connection-name', connection)
+            url = private_config['REP_DEST_IP']
+            if connection.__contains__('self'):
+                url = private_config['IP']
+            cls.set_url(url)
+            cls.set_admin_credentials(private_config['USERNAME'], private_config['PASSWORD'])
+            ssh_username = 'root'
+            if ssh_username.__contains__('admin'):
+                ssh_username = 'admin'
+            cls.set_username(ssh_username)
+            cls.set_passwordless_sudo_checkbox()
+            cls.click_generate_new_private_key()
+            COM.click_save_button()
+        return cls.is_ssh_connection_visible(connection)
+
     @classmethod
     def click_generate_new_private_key(cls):
         """
