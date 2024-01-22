@@ -1,0 +1,5 @@
+source,destination,task-name,status,connection-name
+tank/replicate,tank/receive,self-rep,FINISHED,self
+tank/replicate,tank/receive,admin-self,FINISHED,admin-self
+tank/replicate,tank/receive,other-rep,FINISHED,other
+tank/replicate,tank/receive,admin-other,FINISHED,admin-other

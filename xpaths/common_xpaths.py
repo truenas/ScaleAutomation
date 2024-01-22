@@ -199,6 +199,15 @@ def option_field(field: str) -> str:
     return f'//*[@data-test="option-{field}"]'
 
 
+def radio_button_field(field: str) -> str:
+    """
+    This function sets the text for the given radio button name
+
+    :param field: text of the given radio button name
+    :return: xpath string for given radio button
+    """
+    return f'//*[@data-test="radio-button-{field}"]'
+
 def search_field() -> str:
     """
     This function sets the text for the search field
