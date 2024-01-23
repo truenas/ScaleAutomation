@@ -22,6 +22,7 @@ def reporting_teardown(session):
     str_path = str_path.replace("\\", "/")
     str_path = str_path.replace("C:", "/mnt/c")
     print(str_path)
+    print(f'{str_path}/Reports/{test_name}')
     command = Local_Command_Line(f'mkdir -p {str_path}/Reports/{test_name}')
     print("command.stdout: "+command.stdout)
     print("command.stderr: " + command.stderr)
