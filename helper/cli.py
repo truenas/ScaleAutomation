@@ -22,7 +22,7 @@ class Local_Command_Line:
             - Local_Command_Line('ls', wsl=False)
         """
         wsl_cmd = 'wsl -- ' if wsl is True else ''
-        command_start = wsl_cmd if system() == "Windows" else 'bash -c '
+        command_start = wsl_cmd if system() == "Windows" else ''
         self.process = run(command_start + command, shell=True, stdout=PIPE, stderr=PIPE, universal_newlines=True)
         self.stdout = self.process.stdout
         self.stderr = self.process.stderr
