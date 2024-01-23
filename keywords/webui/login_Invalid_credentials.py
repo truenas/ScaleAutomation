@@ -14,6 +14,8 @@ class Login_Invalid_Credentials:
         :param user: the username to enter
         :param password: the password to enter
         """
+        if COM.is_visible(xpaths.common_xpaths.any_header('Dashboard', 1)):
+            COM.logoff_truenas()
         WebUI.xpath(xpaths.common_xpaths.input_field('username')).send_keys(user)
         WebUI.xpath(xpaths.common_xpaths.input_field('password')).send_keys(password)
         WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
