@@ -1,14 +1,15 @@
 import pytest
 
 from helper.data_config import get_data_list
+from helper.global_config import private_config
 from keywords.webui.common import Common as COM
 from keywords.webui.data_protection import Data_Protection as DP
 from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.replication import Replication as REP
 
 
-@pytest.mark.parametrize('rep', get_data_list('replication')[:2], scope='class')
-class Test_Create_Replicate_Task_Same_Box():
+@pytest.mark.parametrize('rep', get_data_list('replication')[2:], scope='class')
+class Test_Create_Replicate_Task_Different_Box():
 
     @staticmethod
     def test_setup_replicate_task(rep) -> None:
@@ -17,7 +18,7 @@ class Test_Create_Replicate_Task_Same_Box():
         """
         DP.click_add_replication_button()
         REP.set_source_location_on_same_box(rep['source'])
-        REP.set_destination_location_on_same_box(rep['destination'])
+        REP.set_destination_location_on_different_box(rep['destination'], rep['connection-name'])
         REP.set_custom_snapshots()
         REP.set_task_name(rep['task-name'])
         COM.click_next_button()
@@ -27,6 +28,8 @@ class Test_Create_Replicate_Task_Same_Box():
         COM.click_save_button()
 
         if REP.is_destination_snapshots_dialog_visible() is True:
+            COM.assert_confirm_dialog()
+        if REP.is_sudo_enabled_dialog_visible() is True:
             COM.assert_confirm_dialog()
         if REP.is_task_started_dialog_visible() is True:
             REP.click_close_task_started_button()
@@ -42,12 +45,24 @@ class Test_Create_Replicate_Task_Same_Box():
         REP.click_run_now_replication_task_by_name(rep['task-name'])
         assert REP.get_replication_status(rep['task-name']) == rep['status']
 
+        # log onto destination box and verify Snapshot exists
+        REP.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
+        NAV.navigate_to_data_protection()
+        DP.click_snapshots_button()
+        assert COM.assert_text_is_visible(rep['destination']) is True
+
     @staticmethod
     def verify_teardown(rep) -> None:
         """
         This test removes the replicate task
         """
         # reset the change
+        # clean destination box
+        DP.delete_all_snapshots()
+
+        # clean source box
+        REP.close_destination_box()
+        NAV.navigate_to_data_protection()
         DP.delete_all_periodic_snapshot_tasks()
         DP.delete_all_snapshots()
         NAV.navigate_to_data_protection()

@@ -47,3 +47,4 @@ def setup_class(rep):
     # Remove Snapshots if exists
     DP.delete_all_periodic_snapshot_tasks()
     DP.delete_all_snapshots()
+    Navigation.navigate_to_data_protection()
