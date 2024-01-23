@@ -16,6 +16,16 @@ class Data_Protection:
         COM.click_button('replication-task-add')
 
     @classmethod
+    def click_snapshots_button(cls):
+        """
+        This method clicks the Snapshots button
+
+        Example:
+            - Data_Protection.click_snapshots_button()
+        """
+        COM.click_link('snapshot-task-snapshots')
+
+    @classmethod
     def delete_all_periodic_snapshot_tasks(cls) -> None:
         """
         This method deletes all the Periodic Snapshot tasks
@@ -47,4 +57,4 @@ class Data_Protection:
             assert COM.is_visible(xpaths.common_xpaths.button_field('close')) is True
             COM.click_button('close')
             COM.assert_text_is_visible('No records have been added yet')
-
+        assert COM.assert_text_is_visible('No records have been added yet')

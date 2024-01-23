@@ -16,6 +16,9 @@ def browser() -> WebDriver:
     This method returns the webdriver with its settings
 
     :return: the webdriver with its settings
+
+        Example:
+            - webui.browser()
     """
     driver = webdriver.Chrome()
     driver.set_window_size(1920, 1080)
@@ -34,6 +37,10 @@ class WebUI(object):
     def add_time_waited(cls, seconds: float) -> None:
         """
         This method adds the given amount of seconds to the total time waited
+
+        Example:
+            - webui.add_time_waited(3)
+            - webui.add_time_waited(10.3)
         """
         cls.time_waited = (cls.time_waited + seconds)
 
@@ -41,6 +48,9 @@ class WebUI(object):
     def close_window(cls) -> None:
         """
         This method closes the current window
+
+        Example:
+            - webui.close_window()
         """
         web_driver.close()
 
@@ -50,6 +60,9 @@ class WebUI(object):
         This methode returns the handle of the current window
 
         :return: the handle of the current window
+
+        Example:
+            - webui.current_window_handle()
         """
         return web_driver.current_window_handle
 
@@ -59,6 +72,9 @@ class WebUI(object):
         This method return the URL of the current page.
 
         :return: the URL of the current page.
+
+        Example:
+            - webui.current_url()
         """
         return web_driver.current_url
 
@@ -68,6 +84,10 @@ class WebUI(object):
         This method sleep the number of seconds provided.
 
         :param seconds: is the number of seconds to sleep.
+
+        Example:
+            - webui.delay(3)
+            - webui.delay(10.3)
         """
         time.sleep(seconds)
         cls.add_time_waited(seconds)
@@ -81,6 +101,9 @@ class WebUI(object):
         :param from_xpath: the xpath text of the element to drag
         :param to_xpath: the xpath text of the element to drag at
         :return: return the ActionChains
+
+        Example:
+            - webui.drag_and_drop('fromXpath', 'toXpath')
         """
         cls.wait_until_visible(from_xpath)
         source = cls.xpath(from_xpath)
@@ -96,6 +119,9 @@ class WebUI(object):
 
         :param xpath: the xpath of elements
         :return: a list of web elements that matches the xpath.
+
+        Example:
+            - webui.find_xpath('xpath')
         """
         return web_driver.find_elements(By.XPATH, xpath)
 
@@ -105,6 +131,9 @@ class WebUI(object):
         This method loads the URL web page in the current window.
 
         :param url: is the URL to load in the current window.
+
+        Example:
+            - webui.get('http://my_url')
         """
         web_driver.get(url)
 
@@ -114,6 +143,9 @@ class WebUI(object):
         This method get the clipboard text and returns it.
 
         :return: return the clipboard text.
+
+        Example:
+            - webui.get_clipboard_text()
         """
         return pyperclip.paste()
 
@@ -124,13 +156,32 @@ class WebUI(object):
 
         :param xpath: is text of the xpath.
         :return: return the text the given xpath element.
+
+        Example:
+            - webui.get_text('xpath')
         """
         return cls.xpath(xpath).text
+
+    @classmethod
+    def get_window_index(cls, handle: str) -> int:
+        """
+        This methode returns the index of the given handle of the current window
+
+        :param handle: is the handle of the window.
+        :return: the index of the handle of the current window
+
+        Example:
+            - webui.get_window_index('windowHandle')
+        """
+        return WebUI.window_handles().index(handle)
 
     @classmethod
     def quit(cls) -> None:
         """
         This method Closes the browser and shuts down the driver executable.
+
+        Example:
+            - webui.quit()
         """
         web_driver.quit()
 
@@ -138,6 +189,9 @@ class WebUI(object):
     def refresh(cls) -> None:
         """
         This method refreshes the current window.
+
+        Example:
+            - webui.refresh()
         """
         web_driver.refresh()
         cls.delay(1)
@@ -145,9 +199,12 @@ class WebUI(object):
     @classmethod
     def save_screenshot(cls, filename) -> None:
         """
-        This method saves a screenshot in the given filename.
+        This method saves a screenshot in the given filename (saves as .png).
 
         :param filename: is the name of the file to save the screenshot.
+
+        Example:
+            - webui.save_screenshot('screenshot_filename')
         """
         filename = screenshots + "/" + filename + ".png"
         print("@@@ SCREENSHOT: " + filename)
@@ -159,6 +216,9 @@ class WebUI(object):
         This method scroll to xpath of the element.
 
         :param xpath: the xpath of the element to scroll at.
+
+        Example:
+            - webui.scroll_to_element('xpath')
         """
         element = cls.xpath(xpath)
         cls.execute_script("arguments[0].scrollIntoView();", element)
@@ -171,6 +231,9 @@ class WebUI(object):
 
         :param width: is the width number to change.
         :param height: is the height number to change.
+
+        Example:
+            - webui.set_window_size(300, 100)
         """
         web_driver.set_window_size(width, height)
 
@@ -180,6 +243,9 @@ class WebUI(object):
         This method switch to the window index provided.
 
         :param index: window or tab index number.
+
+        Example:
+            - webui.switch_to_window_index(1)
         """
         web_driver.switch_to.window(web_driver.window_handles[index])
 
@@ -189,6 +255,9 @@ class WebUI(object):
         This method returns the amount of total time waited in seconds
 
         :return: total time waited in seconds
+
+        Example:
+            - webui.total_time_waited()
         """
         return cls.time_waited
 
@@ -201,6 +270,10 @@ class WebUI(object):
         :param timeout: is optional and is the number of second to wait before timeout, it is defaulted to
         shared_config['WAIT'].
         :return: the element if the xpath element is clickable before the timeout
+
+        Example:
+            - webui.wait_until_clickable('xpath')
+            - webui.wait_until_clickable('xpath', shared_config['SHORT_WAIT'])
         """
         wait = WebDriverWait(web_driver, timeout)
         return wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
@@ -214,6 +287,10 @@ class WebUI(object):
         :param timeout: is optional and is the number of second to wait before timeout, it is defaulted to
         shared_config['WAIT'].
         :return: True if the xpath element is not visible before timeout otherwise it returns False.
+
+        Example:
+            - webui.wait_until_not_visible('xpath')
+            - webui.wait_until_not_visible('xpath', shared_config['SHORT_WAIT'])
         """
         wait = WebDriverWait(web_driver, timeout)
         try:
@@ -231,6 +308,10 @@ class WebUI(object):
         :param timeout: is optional and is the number of second to wait before timeout, it is defaulted to
         shared_config['WAIT'].
         :return: True if the number of windows is given number before the timeout otherwise it returns False.
+
+        Example:
+            - webui.wait_until_number_of_windows_to_be(2)
+            - webui.wait_until_number_of_windows_to_be(1, shared_config['SHORT_WAIT'])
         """
         wait = WebDriverWait(web_driver, timeout)
         return wait.until(EC.number_of_windows_to_be(number))
@@ -244,6 +325,10 @@ class WebUI(object):
         :param timeout: is optional and is the number of second to wait before timeout, it is defaulted to
         shared_config['WAIT'].
         :return: True if the xpath element is visible before timeout otherwise it returns False.
+
+        Example:
+            - webui.wait_until_visible('xpath')
+            - webui.wait_until_visible('xpath', shared_config['SHORT_WAIT'])
         """
         wait = WebDriverWait(web_driver, timeout)
         try:
@@ -257,6 +342,9 @@ class WebUI(object):
         This method returns the handles of all windows within the current session.
 
         :return: the handles of all windows within the current session
+
+        Example:
+            - webui.window_handles()
         """
         return web_driver.window_handles
 
@@ -267,6 +355,9 @@ class WebUI(object):
 
         :param xpath: the xpath of the element.
         :return: the WebElement of the xpath specified.
+
+        Example:
+            - webui.xpath('xpath')
         """
         time.sleep(shared_config['EXECUTION_DELAY'])
         return web_driver.find_element(By.XPATH, xpath)

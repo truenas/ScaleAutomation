@@ -95,7 +95,8 @@ class Navigation:
          - Navigation.navigate_to_periodic_snapshots()
         """
         cls.navigate_to_data_protection()
-        COM.click_link('snapshot-task-snapshots')
+        WebUI.wait_until_clickable(xpaths.common_xpaths.link_field('snapshot-task-snapshots')).click()
+        # COM.click_link('snapshot-task-snapshots')
         assert COM.is_visible(xpaths.common_xpaths.any_header('Snapshots', 1))
 
     @classmethod
