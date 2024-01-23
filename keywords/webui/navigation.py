@@ -12,6 +12,10 @@ class Navigation:
         :param location: location to be navigating too
         :param header: header of the page being navigated too
         :param location2: second level location to be navigating too
+
+        Example
+         - Navigation.navigate_to('myLocation', 'My Location')
+         - Navigation.navigate_to('myLocation', 'My Location2', 'my-second-location')
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.link_field(location + '-menu'))
         WebUI.xpath(xpaths.common_xpaths.link_field(location + '-menu')).click()
@@ -26,6 +30,9 @@ class Navigation:
     def navigate_to_apps(cls) -> None:
         """
         This method navigates to the Dashboard page
+
+        Example
+         - Navigation.navigate_to_apps()
         """
         cls.navigate_to('apps', 'Installed')
 
@@ -33,6 +40,9 @@ class Navigation:
     def navigate_to_backup_credentials(cls) -> None:
         """
         This method navigates to the Shares page
+
+        Example
+         - Navigation.navigate_to_backup_credentials()
         """
         cls.navigate_to('credentials', 'Backup Credentials', 'backup-credentials')
 
@@ -40,17 +50,29 @@ class Navigation:
     def navigate_to_dashboard(cls) -> None:
         """
         This method navigates to the Dashboard page
+
+        Example
+         - Navigation.navigate_to_dashboard()
         """
         cls.navigate_to('dashboard', 'Dashboard')
 
     @classmethod
     def navigate_to_data_protection(cls):
+        """
+        This method navigates to the Data Protection page
+
+        Example
+         - Navigation.navigate_to_data_protection()
+        """
         cls.navigate_to('data-protection', 'Data Protection')
 
     @classmethod
     def navigate_to_datasets(cls) -> None:
         """
         This method navigates to the Shares page
+
+        Example
+         - Navigation.navigate_to_datasets()
         """
         cls.navigate_to('datasets', 'Datasets')
 
@@ -58,13 +80,31 @@ class Navigation:
     def navigate_to_directory_services(cls) -> None:
         """
         This method navigates to the Shares page
+
+        Example
+         - Navigation.navigate_to_directory_services()
         """
         cls.navigate_to('credentials', 'Directory Services', 'directory-services')
+
+    @classmethod
+    def navigate_to_periodic_snapshots(cls):
+        """
+        THis method navigates to the Periodic Snapshots page.
+
+        Example
+         - Navigation.navigate_to_periodic_snapshots()
+        """
+        cls.navigate_to_data_protection()
+        COM.click_link('snapshot-task-snapshots')
+        assert COM.is_visible(xpaths.common_xpaths.any_header('Snapshots', 1))
 
     @classmethod
     def navigate_to_shares(cls) -> None:
         """
         This method navigates to the Shares page
+
+        Example
+         - Navigation.navigate_to_shares()
         """
         cls.navigate_to('shares', 'Sharing')
 
@@ -72,5 +112,8 @@ class Navigation:
     def navigate_to_storage(cls) -> None:
         """
         THis method navigates to the Storage page.
+
+        Example
+         - Navigation.navigate_to_storage()
         """
         cls.navigate_to('storage', 'Storage')
