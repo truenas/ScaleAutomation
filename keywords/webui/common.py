@@ -261,7 +261,7 @@ class Common:
         return name.lower()
 
     @classmethod
-    def create_non_admin_user_by_api(cls, name: str, fullname: str, password: str, smb_auth: str = 'false') -> None:
+    def create_non_admin_user_by_api(cls, name: str, fullname: str, password: str, smb_auth: str = 'False') -> None:
         """
         This method creates a non admin user
 

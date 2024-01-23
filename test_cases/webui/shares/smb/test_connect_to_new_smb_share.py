@@ -6,7 +6,6 @@ from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
 from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.services import Services as SERVICE
-from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.smb import SMB
 
 
@@ -14,7 +13,7 @@ from keywords.webui.smb import SMB
 @pytest.mark.parametrize('smb_data', get_data_list('shares/smb_acl'))
 def test_connect_to_new_smb_share(user_data, smb_data) -> None:
     # Environment setup
-    COM.create_non_admin_user_by_api(smb_data['user'], smb_data['user']+' Full', 'testing', 'true')
+    COM.create_non_admin_user_by_api(smb_data['user'], smb_data['user']+' Full', 'testing', 'True')
     COMSHARE.delete_share_by_api('smb', smb_data['name'])
     DATASET.delete_dataset_by_api(smb_data['path'])
     DATASET.create_dataset_by_api(smb_data['path'], 'SMB')
