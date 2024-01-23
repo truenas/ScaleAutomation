@@ -95,8 +95,9 @@ class Navigation:
          - Navigation.navigate_to_periodic_snapshots()
         """
         cls.navigate_to_data_protection()
+        WebUI.wait_until_clickable(xpaths.common_xpaths.link_field('snapshot-task-snapshots'))
         COM.click_link('snapshot-task-snapshots')
-        assert COM.is_visible(xpaths.common_xpaths.any_header('Snapshots', 1))
+        assert COM.assert_page_header('Snapshots')
 
     @classmethod
     def navigate_to_shares(cls) -> None:

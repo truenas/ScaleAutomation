@@ -1,5 +1,5 @@
 import xpaths
-from helper.global_config import private_config
+from helper.global_config import private_config, shared_config
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
@@ -26,11 +26,23 @@ class Replication:
         Example:
             - Replication.click_run_now_replication_task_by_name('myRepTask')
         """
+        WebUI.refresh()
         COM.click_button(f'replication-task-{COM.convert_to_tag_format(name)}-play-arrow-row-action')
         COM.assert_confirm_dialog()
-        # WebUI.delay(2)
         WebUI.wait_until_visible(
-            f'//*[@data-test="button-state-replication-task-{COM.convert_to_tag_format(name)}-row-state" and contains(@class,"fn-theme-green")]')
+            f'//*[@data-test="button-state-replication-task-{COM.convert_to_tag_format(name)}-row-state" and contains(@class,"fn-theme-green")]', shared_config['LONG_WAIT'])
+
+    @classmethod
+    def close_destination_box(cls) -> None:
+        """
+        This method closes the destination box browser window and switches to the source box browser window
+
+        Example:
+            - Replication.close_destination_box()
+        """
+        COM.logoff_truenas()
+        WebUI.close_window()
+        cls.switch_to_source_box()
 
     @classmethod
     def delete_replication_task_by_name(cls, name: str) -> None:
@@ -63,6 +75,18 @@ class Replication:
         return WebUI.xpath(xpaths.common_xpaths.button_field(f'state-replication-task-{COM.convert_to_tag_format(name)}-row-state')).text
 
     @classmethod
+    def is_destination_snapshots_dialog_visible(cls) -> bool:
+        """
+        This method returns True if the Destination Snapshots dialog is visible.
+
+        :return: True if the Destination Snapshots dialog is visible.
+
+        Example:
+            - Replication.is_destination_snapshots_dialog_visible()
+        """
+        return WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Destination Snapshots Are Not Related to Replicated Snapshots'))
+
+    @classmethod
     def is_replication_task_visible(cls, name: str) -> bool:
         """
         This method returns True if the given replication task is visible, otherwise False
@@ -79,6 +103,30 @@ class Replication:
                     f'button[contains(@data-test,"-delete")]'))
 
     @classmethod
+    def is_run_now_dialog_visible(cls) -> bool:
+        """
+        This method returns True if the Run Now dialog is visible.
+
+        :return: True if the Run Now dialog is visible.
+
+        Example:
+            - Replication.is_run_now_dialog_visible()
+        """
+        return WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Run Now'))
+
+    @classmethod
+    def is_sudo_enabled_dialog_visible(cls) -> bool:
+        """
+        This method returns True if the Sudo Enabled dialog is visible, otherwise False.
+
+        :return: True if the Sudo Enabled dialog is visible, otherwise False.
+
+        Example:
+            - Replication.is_sudo_enabled_dialog_visible()
+        """
+        return COM.is_visible(xpaths.common_xpaths.any_text('Sudo Enabled'))
+
+    @classmethod
     def is_task_started_dialog_visible(cls) -> bool:
         """
         This method returns True if the Task started dialog is visible.
@@ -91,6 +139,26 @@ class Replication:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Task started'))
 
     @classmethod
+    def login_to_destination_box(cls, username, password):
+        """
+        This method opens a new browser window to the destination box and logs in with the given credentials.
+
+        :param username: is the username to log in with
+        :param password: is the password of the username
+
+        Example:
+            - Replication.login_to_destination_box('user', 'password')
+        """
+        WebUI.execute_script('window.open();', [])
+        # WebUI.switch_to_window_index(WebUI.get_window_index(WebUI.current_window_handle()) + 1)
+        WebUI.switch_to_window_index(1)
+        WebUI.get(f'http://{private_config['REP_DEST_IP']}/ui/sessions/signin')
+        COM.set_login_form(username, password)
+        if COM.assert_page_header('Dashboard') is False:
+            NAV.navigate_to_dashboard()
+        assert COM.assert_page_header('Dashboard')
+
+    @classmethod
     def set_custom_snapshots(cls) -> None:
         """
         This method sets the custom snapshot checkbox
@@ -101,16 +169,17 @@ class Replication:
         COM.set_checkbox('custom-snapshots')
 
     @classmethod
-    def set_destination_location_on_different_box(cls, path: str) -> None:
+    def set_destination_location_on_different_box(cls, path: str, connection: str) -> None:
         """
         This method sets the given destination path on a different box
 
         :param path: is the path of the given destination
+        :param connection: is the SSh connection to use (blank = no need for one, local)
 
         Example:
-            - Replication.set_destination_location_on_different_box('tank/receive')
+            - Replication.set_destination_location_on_different_box('tank/receive', 'myConnection')
         """
-        cls.set_location('target-dataset', 'different', '', path)
+        cls.set_location('target-dataset', 'different', connection, path)
 
     @classmethod
     def set_destination_location_on_same_box(cls, path: str) -> None:
@@ -162,16 +231,17 @@ class Replication:
         COM.click_radio_button('schedule-method-run-once')
 
     @classmethod
-    def set_source_location_on_different_box(cls, path: str) -> None:
+    def set_source_location_on_different_box(cls, path: str, connection: str) -> None:
         """
         This method sets the given source path on a different box
 
         :param path: is the path of the source
+        :param connection: is the SSh connection to use (blank = no need for one, local)
 
         Example:
             - Replication.set_source_location_on_different_box('tank/replicate')
         """
-        cls.set_location('source-datasets', 'different', '', path)
+        cls.set_location('source-datasets', 'different', connection, path)
 
     @classmethod
     def set_source_location_on_same_box(cls, path: str) -> None:
@@ -197,8 +267,8 @@ class Replication:
             - Replication.set_ssh_connection('source', 'mySSHConnection')
             - Replication.set_ssh_connection('target', 'mySSHConnection')
         """
-        source = xpaths.common_xpaths.select_field('ssh-credentials-' + source)
-        COM.select_option(source, connection)
+        source = 'ssh-credentials-' + source
+        COM.select_option(source, source + '-' + connection)
 
     @classmethod
     def set_task_name(cls, name: str) -> None:
@@ -213,6 +283,26 @@ class Replication:
         COM.set_input_field('name', name)
 
     @classmethod
+    def switch_to_destination_box(cls) -> None:
+        """
+        This method switches to the destination box browser window
+
+        Example:
+            - Replication.switch_to_destination_box()
+        """
+        WebUI.switch_to_window_index(1)
+
+    @classmethod
+    def switch_to_source_box(cls) -> None:
+        """
+        This method switches to the source box browser window
+
+        Example:
+            - Replication.switch_to_source_box()
+        """
+        WebUI.switch_to_window_index(0)
+
+    @classmethod
     def unset_read_only_destination_checkbox(cls):
         """
         This method unsets the read only destination checkbox
@@ -223,13 +313,15 @@ class Replication:
         COM.set_checkbox('readonly')
 
     @classmethod
-    def is_run_now_dialog_visible(cls) -> bool:
+    def wait_for_task_to_stop_running(cls, name: str) -> None:
         """
-        This method returns True if the Run Now dialog is visible.
+        This method waits until the given task is no longer running
 
-        :return: True if the Run Now dialog is visible.
+        :param name: is the name of the task
 
         Example:
-            - Replication.is_run_now_dialog_visible()
+            - Replication.wait_for_task_to_stop_running('myRepTask')
         """
-        return WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Run Now'))
+        while WebUI.xpath(xpaths.common_xpaths.button_field(f'state-replication-task-{name}-row-state')).get_property('innerText') == 'RUNNING':
+            WebUI.delay(1)
+

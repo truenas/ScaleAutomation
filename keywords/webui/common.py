@@ -15,8 +15,11 @@ class Common:
         """
         This method confirms and dismisses a confirmation dialog popup
 
+
+        Example:
+            - Common.assert_confirm_dialog()
         """
-        if cls.is_clickable(xpaths.common_xpaths.checkbox_field('confirm')):
+        if cls.is_clickable(xpaths.common_xpaths.checkbox_field('confirm'), shared_config['SHORT_WAIT']):
             WebUI.xpath(xpaths.common_xpaths.checkbox_field('confirm')).click()
         WebUI.xpath(xpaths.common_xpaths.button_field('dialog-confirm')).click()
         WebUI.delay(1)
@@ -27,6 +30,9 @@ class Common:
         This method verifies that the iX copyright text displayed.
 
         :return: True if copyright text displays correctly otherwise it returns False.
+
+        Example:
+            - Common.assert_copyright_text_is_correct()
         """
         return cls.assert_text_is_visible('TrueNAS SCALE ® © 2024')
 
@@ -81,6 +87,9 @@ class Common:
 
         :param header_text: is the text of the right panel header.
         :return: True if the right panel header text is visible before timeout otherwise it returns False.
+
+        Example:
+            - Common.assert_right_panel_header('Header text')
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header_text, 3))
 
@@ -91,6 +100,9 @@ class Common:
 
         :param header_text: is the text of the right panel header.
         :return: True if the right panel header text is not visible before timeout otherwise it returns False.
+
+        Example:
+            - Common.assert_right_panel_header_is_not_visible('Header text')
         """
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(header_text, 3))
 
@@ -101,6 +113,9 @@ class Common:
 
         :param text: is the text to verify it is visible.
         :return: True if the given text is visible otherwise it returns False.
+
+        Example:
+            - Common.assert_text_is_visible('any Text')
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_text(text))
 
@@ -113,6 +128,10 @@ class Common:
         :param timeout: is optional and is the number of second to wait before timeout, it is defaulted to
         shared_config['WAIT'].
         :return: True if the page header text is visible before timeout otherwise it returns False.
+
+        Example:
+            - Common.assert_page_header('Header Title')
+            - Common.assert_page_header('Header Title', shared_config['SHORT_WAIT'])
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header_text, 1), timeout)
 
@@ -120,6 +139,9 @@ class Common:
     def cancel_confirm_dialog(cls) -> None:
         """
         This method cancels the confirmation popup dialog [no/cancel]
+
+        Example:
+            - Common.cancel_confirm_dialog()
         """
         assert cls.is_visible(xpaths.common_xpaths.button_field('dialog-cancel'))
         WebUI.xpath(xpaths.common_xpaths.button_field('dialog-cancel')).click()
@@ -131,6 +153,9 @@ class Common:
         This method highlights the text in the given field then deletes it
 
         :param name: name of the field to clear
+
+        Example:
+            - Common.clear_input_field('myInput')
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.CONTROL + 'a')
@@ -142,6 +167,9 @@ class Common:
         This method wait and click on the given xpath element.
 
         :param xpath: is the xpath text to click on.
+
+        Example:
+            - Common.click_on_element('xpath')
         """
         find = WebUI.wait_until_clickable(xpath, shared_config['MEDIUM_WAIT'])
         find.click()
@@ -152,6 +180,9 @@ class Common:
         This method clicks the given button.
 
         :param name: is the name of the button to click.
+
+        Example:
+            - Common.click_button('myButton')
         """
         cls.click_on_element(xpaths.common_xpaths.button_field(name))
 
@@ -161,6 +192,9 @@ class Common:
         This method clicks the given link.
 
         :param name: is the name of the link to click.
+
+        Example:
+            - Common.click_link('myLink)
         """
         cls.click_on_element(xpaths.common_xpaths.link_field(name))
 
@@ -170,15 +204,11 @@ class Common:
         This method clicks the given radio button.
 
         :param name: is the name of the radio button to click.
+
+        Example:
+            - Common.click_radio_button('myRadio')
         """
         cls.click_on_element(xpaths.common_xpaths.radio_button_field(name))
-
-    @classmethod
-    def close_right_panel(cls) -> None:
-        """
-        This method clicks the close right panel button
-        """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.close_right_panel(), shared_config['MEDIUM_WAIT']).click()
 
     @classmethod
     def click_next_button(cls) -> None:
@@ -189,6 +219,7 @@ class Common:
             - Common.click_next_button()
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('next'), shared_config['MEDIUM_WAIT']).click()
+        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT'])
         assert cls.assert_text_is_visible('What and Where')
 
     @classmethod
@@ -203,11 +234,24 @@ class Common:
         WebUI.delay(2)
 
     @classmethod
+    def close_right_panel(cls) -> None:
+        """
+        This method clicks the close right panel button
+
+        Example:
+            - Common.close_right_panel()
+        """
+        WebUI.wait_until_clickable(xpaths.common_xpaths.close_right_panel(), shared_config['MEDIUM_WAIT']).click()
+
+    @classmethod
     def convert_to_tag_format(cls, name: str) -> str:
         """
         This method converts the given name to standard TAG format
 
         :param name: is the name to convert to TAG format.
+
+        Example:
+            - Common.convert_to_tag_format('Element Name')
         """
         if name.__contains__('AD03\\'):
             name = name.replace('AD03\\', 'AD-03-')
@@ -225,15 +269,22 @@ class Common:
         :param fullname: is the fullname of the user.
         :param password: is the password of the user.
         :param smb_auth: is whether the user needs SMB authorization access.
+
+        Example:
+            - Common.create_non_admin_user_by_api('name', 'full name', 'password')
+            - Common.create_non_admin_user_by_api('name', 'full name', 'password', True)
         """
         API_POST.create_non_admin_user(name, fullname, password, smb_auth)
 
     @classmethod
     def delete_pill(cls, xpath: str) -> None:
         """
-        This method deletes athe given pill
+        This method deletes the given pill
 
         :param xpath: is the xpath of the pill.
+
+        Example:
+            - Common.delete_pill('xpath')
         """
         WebUI.xpath(xpaths.common_xpaths.any_xpath(xpath)).send_keys(Keys.DELETE)
 
@@ -243,6 +294,9 @@ class Common:
         This method creates a non admin user
 
         :param name: is the name of the user.
+
+        Example:
+            - Common.delete_user_by_api('user')
         """
         API_DELETE.delete_user(name)
 
@@ -254,6 +308,10 @@ class Common:
         :param name: name of the element
         :param prop: name of the property to get
         :return: value of the element property
+
+        Example:
+            - Common.get_element_property('myElement', 'disabled')
+            - Common.get_element_property('myCheckbox', 'checked')
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
         return WebUI.xpath(xpaths.common_xpaths.input_field(name)).get_property(prop)
@@ -264,6 +322,9 @@ class Common:
         This method returns the value of the given label
 
         :param label: the label to find the value of
+
+        Example:
+            - Common.get_label_value('Label')
         """
         return WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[contains(text(),"{label}")]/following-sibling::*')).get_property('textContent')
 
@@ -274,6 +335,9 @@ class Common:
 
         :param username: is the username of the user to get the ID from.
         :return: the ID of the specified username.
+
+        Example:
+            - Common.get_user_id_by_api('username')
         """
         return API_Common.get_user_id(username)
 
@@ -284,6 +348,9 @@ class Common:
 
         :param username: is the username of the user to get the UID from.
         :return: the UID of the specified username.
+
+        Example:
+            - Common.get_user_uid_by_api('username')
         """
         return API_Common.get_user_uid(username)
 
@@ -294,6 +361,9 @@ class Common:
 
         :param card_title: The name of the title of the card
         :return: True if the card is not visible, otherwise it returns False.
+
+        Example:
+            - Common.is_card_not_visible('myCard')
         """
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.card_title(card_title))
 
@@ -304,6 +374,9 @@ class Common:
 
         :param card_title: The name of the title of the card
         :return: True if the card is visible, otherwise it returns False.
+
+        Example:
+            - Common.is_card_visible('myCard')
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.card_title(card_title))
 
@@ -314,6 +387,9 @@ class Common:
 
         :param name: name of the checkbox.
         :return: True if the checkbox is checked, otherwise it returns False.
+
+        Example:
+            - Common.is_checked('myCheckbox')
         """
         state = False
         if bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')):
@@ -329,6 +405,10 @@ class Common:
         :param timeout: is optional and is the number of second to wait before timeout, it is defaulted to
         shared_config['WAIT'].
         :return: True if the xpath element is clickable before timeout otherwise it returns False.
+
+        Example:
+            - Common.is_clickable('myXpath')
+            - Common.is_clickable('myXpath', shared_config['SHORT_WAIT'])
         """
         try:
             WebUI.wait_until_clickable(xpath, timeout)
@@ -346,6 +426,10 @@ class Common:
         :param dialog_title: The name of the title of the dialog
         :param level: The level of the title of the dialog [1/3]
         :return: True if the dialog is visible, otherwise it returns False.
+
+        Example:
+            - Common.is_dialog_visible('Dialog Title', 1)
+            - Common.is_dialog_visible('Dialog Title', 3)
         """
         return cls.is_visible(xpaths.common_xpaths.any_header(dialog_title, level))
 
@@ -356,6 +440,9 @@ class Common:
 
         :param xpath: is the service xpath.
         :return: True if the service is running, otherwise it returns False.
+
+        Example:
+            - Common.is_service_running('myXpath')
         """
         state = False
         text = WebUI.xpath(xpaths.common_xpaths.button_field(xpath)).get_property('innerText')
@@ -370,6 +457,9 @@ class Common:
 
         :param xpath: the xpath of the object to find
         :return: true if the object is visible
+
+        Example:
+            - Common.is_visible('myXpath')
         """
         obj = None
         try:
@@ -387,6 +477,9 @@ class Common:
 
         :param user: the username used to log in TrueNAS
         :param password: the password of the user used to log in
+
+        Example:
+            - Common.login_to_truenas('user', 'password')
         """
         ip = private_config['IP']
         cls.navigate_to_login_screen(ip)
@@ -396,6 +489,9 @@ class Common:
     def logoff_truenas(cls):
         """
         This method click the power menu and click logout.
+
+        Example:
+            - Common.logoff_truenas()
         """
         cls.click_button('power-menu')
         cls.click_button('log-out')
@@ -407,11 +503,20 @@ class Common:
         This method navigates to the login page of the given IP
 
         :param ip: IP address of the TrueNAS login page
+
+        Example:
+            - Common.navigate_to_login_screen('10.0.0.1')
         """
         WebUI.get(f'http://{ip}/ui/sessions/signin')
 
     @classmethod
     def reboot_system(cls):
+        """
+        This method reboots the system
+
+        Example:
+            - Common.reboot_system()
+        """
         cls.click_button('power-menu')
         cls.click_button('restart')
         cls.assert_confirm_dialog()
@@ -425,6 +530,9 @@ class Common:
         This method clears the given field and then TABs out
 
         :param name: name of the field to deselect
+
+        Example:
+            - Common.select_then_deselect_input_field('myInput')
         """
         cls.set_input_field(name, Keys.TAB)
 
@@ -435,6 +543,9 @@ class Common:
 
         :param name: name of the select field to select from
         :param option: name of the option to select
+
+        Example:
+            - Common.select_option('mySelect', 'myOption')
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT']).click()
         WebUI.wait_until_clickable(xpaths.common_xpaths.option_field(option), shared_config['SHORT_WAIT']).click()
@@ -460,6 +571,9 @@ class Common:
         This method sets the given checkbox
 
         :param name: name of the checkbox to set
+
+        Example:
+            - Common.set_checkbox('myCheckbox')
         """
         cls.set_checkbox_by_state(name, True)
 
@@ -470,6 +584,10 @@ class Common:
 
         :param name: name of the checkbox to set
         :param state: state to set the checkbox to
+
+        Example:
+            - Common.set_checkbox_by_state('myCheckbox', False)
+            - Common.set_checkbox_by_state('myCheckbox', True)
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name))
         if WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked') != state:
@@ -484,6 +602,10 @@ class Common:
         :param name: name of the field to set
         :param value: value to set the field to
         :param tab: whether to tab out of the field or not
+
+        Example:
+            - Common.set_input_field('myInput', 'text')
+            - Common.set_input_field('myInput', 'text', True)
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).clear()
@@ -498,6 +620,9 @@ class Common:
 
         :param username: username to enter into the username field
         :param password: password to enter into the password field
+
+        Example:
+            - Common.set_login_form('user', 'password')
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'))
         WebUI.xpath(xpaths.common_xpaths.input_field('username')).send_keys(username)
@@ -513,6 +638,9 @@ class Common:
         This method sets the search field with the given text.
 
         :param text: is the text to set the search field to.
+
+        Example:
+            - Common.set_search_field('search text')
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.search_field())
         WebUI.xpath(xpaths.common_xpaths.search_field()).clear()
@@ -524,6 +652,9 @@ class Common:
         This method unsets the given toggle.
 
         :param name: is the name of the toggle to set.
+
+        Example:
+            - Common.set_toggle('myToggle')
         """
         cls.set_toggle_by_state(name, True)
 
@@ -534,6 +665,10 @@ class Common:
 
         :param name: is the name of the toggle to set
         :param state: state to set the toggle to
+
+        Example:
+            - Common.set_toggle_by_state('myToggle', True)
+            - Common.set_toggle_by_state('myToggle', False)
         """
         WebUI.scroll_to_element(xpaths.common_xpaths.toggle_field(name))
         toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
@@ -550,6 +685,9 @@ class Common:
         This method unsets the given checkbox
 
         :param name: name of the checkbox to unset
+
+        Example:
+            - Common.unset_checkbox('myCheckbox')
         """
         cls.set_checkbox_by_state(name, False)
 
@@ -559,5 +697,8 @@ class Common:
         This method unsets the given toggle.
 
         :param name: is the name of the toggle.
+
+        Example:
+            - Common.unset_toggle('myToggle')
         """
         cls.set_toggle_by_state(name, False)
