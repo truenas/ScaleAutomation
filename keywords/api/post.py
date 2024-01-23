@@ -55,7 +55,19 @@ class API_POST:
         """
         response = GET(f'/user?username={name}').json()
         if not response:
-            response = POST(f'/user', {"username": name, "group_create": True, "home": "/mnt/tank", "home_create": True, "full_name": fullname, "email": name + "@nowhere.com", "password": password, "shell": "/usr/bin/bash", "ssh_password_enabled": True, "smb": bool(smb_auth)})
+            payload = {
+                "username": name,
+                "group_create": True,
+                "home": "/mnt/tank",
+                "home_create": True,
+                "full_name": fullname,
+                "email": f"{name}@nowhere.com",
+                "password": password,
+                "shell": "/usr/bin/bash",
+                "ssh_password_enabled": True,
+                "smb": eval(smb_auth.lower().capitalize())
+            }
+            response = POST(f'/user', payload)
             assert response.status_code == 200, response.text
         return response
 
@@ -167,7 +179,7 @@ class API_POST:
         return response
 
     @classmethod
-    def set_filesystem_acl(cls, payload: str) -> Response:
+    def set_filesystem_acl(cls, payload: dict) -> Response:
         """
         This method deletes the given dataset.
 
@@ -213,7 +225,7 @@ class API_POST:
         """
         This method sets the SMB_ACL_ENTRY to default value
         """
-        shared_config['SMB_ACL_ENTRY'] = '{"ae_who_sid": "S-1-1-0", "ae_type": "ALLOWED","ae_perm": "FULL"}'
+        shared_config['SMB_ACL_ENTRY'] = {"ae_who_sid": "S-1-1-0", "ae_type": "ALLOWED","ae_perm": "FULL"}
 
     @classmethod
     def start_replication_service(cls, service: str) -> Response:

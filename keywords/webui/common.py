@@ -612,6 +612,7 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(value)
         if tab:
             WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.TAB)
+        assert WebUI.get_attribute(xpaths.common_xpaths.input_field('name'), 'value') == value
 
     @classmethod
     def set_login_form(cls, username: str, password: str):
@@ -645,6 +646,24 @@ class Common:
         WebUI.wait_until_visible(xpaths.common_xpaths.search_field())
         WebUI.xpath(xpaths.common_xpaths.search_field()).clear()
         WebUI.xpath(xpaths.common_xpaths.search_field()).send_keys(text)
+
+    @classmethod
+    def set_textarea_field(cls, name: str, value: str, tab: bool = False) -> None:
+        """
+        This method sets the given textarea field with the given value.
+        :param name: The name of the textarea field.
+        :param value: The value to set the textarea field to.
+        :param tab: Is optional, True if the user wants to tab out of the field.
+
+        Example:
+            - Common.set_textarea_field('name', 'text')
+        """
+        WebUI.wait_until_visible(xpaths.common_xpaths.textarea_field(name))
+        WebUI.xpath(xpaths.common_xpaths.textarea_field(name)).clear()
+        WebUI.xpath(xpaths.common_xpaths.textarea_field(name)).send_keys(value)
+        if tab:
+            WebUI.xpath(xpaths.common_xpaths.textarea_field(name)).send_keys(Keys.TAB)
+        assert WebUI.get_attribute(xpaths.common_xpaths.textarea_field('name'), 'value') == value
 
     @classmethod
     def set_toggle(cls, name: str):
