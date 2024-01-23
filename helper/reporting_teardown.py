@@ -11,13 +11,12 @@ def reporting_teardown(session):
 
     :param session: the session of information from the pytest run used for pathing.
     """
-    allure_results = str(Path('/allure-results').as_posix())
     now = datetime.now()
     timestamp = now.strftime("%Y_%m_%d-%H_%M_%S")
     test_name = str(Path(os.getcwd()).as_posix())
     test_name = test_name.rsplit('/', 1)
     test_name = str(f'{timestamp}-{test_name[1]}')
-    full_allure_results_path = str(Path(os.getcwd()).as_posix()) + allure_results
+    full_allure_results_path = str(Path(os.getcwd()).as_posix()) + str(Path('/allure-results').as_posix())
     full_allure_results_path = full_allure_results_path.replace("C:", "/mnt/c")
     str_path = str(session.path)
     str_path = str_path.replace("\\", "/")
