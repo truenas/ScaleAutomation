@@ -1,5 +1,4 @@
 allure-pytest
-pytest-html
 pyperclip
 pytest
 pytest-timeout
