@@ -48,13 +48,14 @@ class Data_Protection:
         """
         if COM.assert_page_header('Snapshots') is False:
             NAV.navigate_to_periodic_snapshots()
-        COM.set_checkbox('column-select-all')
-        if COM.is_visible(xpaths.common_xpaths.button_field('delete-selected')) is True:
-            COM.click_button('delete-selected')
-            COM.set_checkbox('confirm')
-            COM.click_button('delete')
-            # delay to allow delete to complete
-            assert COM.is_visible(xpaths.common_xpaths.button_field('close')) is True
-            COM.click_button('close')
-            COM.assert_text_is_visible('No records have been added yet')
-        assert COM.assert_text_is_visible('No records have been added yet')
+        if COM.assert_text_is_visible('No records have been added yet') is False:
+            COM.set_checkbox('column-select-all')
+            if COM.is_clickable(xpaths.common_xpaths.button_field('delete-selected')) is True:
+                COM.click_button('delete-selected')
+                COM.set_checkbox('confirm')
+                COM.click_button('delete')
+                # delay to allow delete to complete
+                assert COM.is_visible(xpaths.common_xpaths.button_field('close')) is True
+                COM.click_button('close')
+                COM.assert_text_is_visible('No records have been added yet')
+            assert COM.assert_text_is_visible('No records have been added yet')

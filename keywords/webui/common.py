@@ -211,16 +211,6 @@ class Common:
         cls.click_on_element(xpaths.common_xpaths.radio_button_field(name))
 
     @classmethod
-    def close_right_panel(cls) -> None:
-        """
-        This method clicks the close right panel button
-
-        Example:
-            - Common.close_right_panel()
-        """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.close_right_panel(), shared_config['MEDIUM_WAIT']).click()
-
-    @classmethod
     def click_next_button(cls) -> None:
         """
         This method clicks the next button
@@ -242,6 +232,16 @@ class Common:
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT']).click()
         WebUI.delay(2)
+
+    @classmethod
+    def close_right_panel(cls) -> None:
+        """
+        This method clicks the close right panel button
+
+        Example:
+            - Common.close_right_panel()
+        """
+        WebUI.wait_until_clickable(xpaths.common_xpaths.close_right_panel(), shared_config['MEDIUM_WAIT']).click()
 
     @classmethod
     def convert_to_tag_format(cls, name: str) -> str:

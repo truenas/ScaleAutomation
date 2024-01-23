@@ -16,7 +16,6 @@ class Test_Create_Replicate_Task_Different_Box():
         """
         This test verifies a replicate task can be setup
         """
-        # NAV.navigate_to_data_protection()
         DP.click_add_replication_button()
         REP.set_source_location_on_same_box(rep['source'])
         REP.set_destination_location_on_different_box(rep['destination'], rep['connection-name'])
@@ -28,6 +27,8 @@ class Test_Create_Replicate_Task_Different_Box():
         REP.unset_read_only_destination_checkbox()
         COM.click_save_button()
 
+        if REP.is_destination_snapshots_dialog_visible() is True:
+            COM.assert_confirm_dialog()
         if REP.is_sudo_enabled_dialog_visible() is True:
             COM.assert_confirm_dialog()
         if REP.is_task_started_dialog_visible() is True:

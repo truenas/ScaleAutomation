@@ -26,6 +26,7 @@ class Replication:
         Example:
             - Replication.click_run_now_replication_task_by_name('myRepTask')
         """
+        WebUI.refresh()
         COM.click_button(f'replication-task-{COM.convert_to_tag_format(name)}-play-arrow-row-action')
         COM.assert_confirm_dialog()
         WebUI.wait_until_visible(
@@ -72,6 +73,18 @@ class Replication:
             - Replication.get_replication_status('myRepTask')
     """
         return WebUI.xpath(xpaths.common_xpaths.button_field(f'state-replication-task-{COM.convert_to_tag_format(name)}-row-state')).text
+
+    @classmethod
+    def is_destination_snapshots_dialog_visible(cls) -> bool:
+        """
+        This method returns True if the Destination Snapshots dialog is visible.
+
+        :return: True if the Destination Snapshots dialog is visible.
+
+        Example:
+            - Replication.is_destination_snapshots_dialog_visible()
+        """
+        return WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Destination Snapshots Are Not Related to Replicated Snapshots'))
 
     @classmethod
     def is_replication_task_visible(cls, name: str) -> bool:
@@ -299,4 +312,16 @@ class Replication:
         """
         COM.set_checkbox('readonly')
 
+    @classmethod
+    def wait_for_task_to_stop_running(cls, name: str) -> None:
+        """
+        This method waits until the given task is no longer running
+
+        :param name: is the name of the task
+
+        Example:
+            - Replication.wait_for_task_to_stop_running('myRepTask')
+        """
+        while WebUI.xpath(xpaths.common_xpaths.button_field(f'state-replication-task-{name}-row-state')).get_property('innerText') == 'RUNNING':
+            WebUI.delay(1)
 
