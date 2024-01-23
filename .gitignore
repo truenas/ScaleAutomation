@@ -166,3 +166,5 @@ cython_debug/
 allure-results
 allure-report
 screenshots
+Reports
+assets
