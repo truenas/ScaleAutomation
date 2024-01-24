@@ -18,10 +18,9 @@ def reporting_teardown(session):
     test_name = str(f'{timestamp}-{test_name[1]}').strip()
     full_allure_results_path = str(Path(os.getcwd()).as_posix()) + str(Path('/allure-results').as_posix())
     full_allure_results_path = full_allure_results_path.replace("C:", "/mnt/c")
-    str_path = str(session.path)
+    str_path = str(session.fspath)
     str_path = str_path.replace("\\", "/")
     str_path = str_path.replace("C:", "/mnt/c")
-    print(f'mkdir -p {str_path}/Reports/{test_name}')
     command = Local_Command_Line(f'mkdir -p {str_path}/Reports/{test_name}')
     assert command.status is True, f'{command.stdout} \n{command.stderr}'
     command = Local_Command_Line(f'cp -r {full_allure_results_path} {str_path}/Reports/{test_name}')
