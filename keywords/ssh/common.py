@@ -78,7 +78,7 @@ class Common_SSH:
         response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/SMBSHARE -U {user}%testing -c \'{cmd}\'', private_config['SMB_ACL_IP'], user, 'testing')
         if "NT_STATUS_ACCESS_DENIED" in response.stdout:
             print(f'FAIL {perm} RESPONSE: {response.status} STATE: {bool(state)}')
-            if perm == 'DELETE' and state == 'false':
+            if perm == 'DELETE' and state == 'False':
                 return False
             return bool(state) is False
         command = 'ls -al /mnt/tank/SMBSHARE/'

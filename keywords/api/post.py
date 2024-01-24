@@ -43,14 +43,14 @@ class API_POST:
         return response
 
     @classmethod
-    def create_non_admin_user(cls, name: str, fullname: str, password: str, smb_auth: str = 'false') -> Response:
+    def create_non_admin_user(cls, name: str, fullname: str, password: str, smb_auth: str = 'False') -> Response:
         """
         This method creates a new non-admin user.
 
         :param name: is the name of the user.
         :param fullname: is the fullname of the user.
         :param password: is the password of the user.
-        :param smb_auth: does user require SMB Authentication ['true'/'false'].
+        :param smb_auth: does user require SMB Authentication ['True'/'False'].
         :return: the API request response.
         """
         response = GET(f'/user?username={name}').json()
