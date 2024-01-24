@@ -87,6 +87,16 @@ class Navigation:
         cls.navigate_to('credentials', 'Directory Services', 'directory-services')
 
     @classmethod
+    def navigate_to_local_users(cls):
+        """
+        THis method navigates to the Local Users page.
+
+        Example
+         - Navigation.navigate_to_local_users()
+        """
+        cls.navigate_to('credentials', 'Users', 'local-users')
+
+    @classmethod
     def navigate_to_periodic_snapshots(cls):
         """
         THis method navigates to the Periodic Snapshots page.

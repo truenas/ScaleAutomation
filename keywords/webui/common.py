@@ -194,7 +194,7 @@ class Common:
         :param name: is the name of the link to click.
 
         Example:
-            - Common.click_link('myLink)
+            - Common.click_link('myLink')
         """
         cls.click_on_element(xpaths.common_xpaths.link_field(name))
 
@@ -255,13 +255,15 @@ class Common:
         """
         if name.__contains__('AD03\\'):
             name = name.replace('AD03\\', 'AD-03-')
+        if name.__contains__('iperf3'):
+            name = name.replace('iperf3', 'iperf-3')
         name = name.replace('/', '-')
         name = name.replace('_', '-')
         name = name.replace(' ', '-')
         return name.lower()
 
     @classmethod
-    def create_non_admin_user_by_api(cls, name: str, fullname: str, password: str, smb_auth: str = 'false') -> None:
+    def create_non_admin_user_by_api(cls, name: str, fullname: str, password: str, smb_auth: str = 'False') -> None:
         """
         This method creates a non admin user
 
@@ -566,6 +568,46 @@ class Common:
         WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{option}")]'), shared_config['SHORT_WAIT']).click()
 
     @classmethod
+    def set_10_items_per_page(cls) -> None:
+        """
+        This method sets the items per page to 10
+
+        Example:
+            - Common.set_10_items_per_page()
+        """
+        cls.set_items_per_page('10')
+
+    @classmethod
+    def set_20_items_per_page(cls) -> None:
+        """
+        This method sets the items per page to 20
+
+        Example:
+            - Common.set_20_items_per_page()
+        """
+        cls.set_items_per_page('20')
+
+    @classmethod
+    def set_50_items_per_page(cls) -> None:
+        """
+        This method sets the items per page to 50
+
+        Example:
+            - Common.set_50_items_per_page()
+        """
+        cls.set_items_per_page('50')
+
+    @classmethod
+    def set_100_items_per_page(cls) -> None:
+        """
+        This method sets the items per page to 100
+
+        Example:
+            - Common.set_100_items_per_page()
+        """
+        cls.set_items_per_page('100')
+
+    @classmethod
     def set_checkbox(cls, name: str) -> None:
         """
         This method sets the given checkbox
@@ -612,7 +654,21 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(value)
         if tab:
             WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.TAB)
-        assert WebUI.get_attribute(xpaths.common_xpaths.input_field('name'), 'value') == value
+        assert WebUI.get_attribute(xpaths.common_xpaths.input_field(name), 'value') == value
+
+    @classmethod
+    def set_items_per_page(cls, count: str) -> None:
+        """
+        This method sets the items per page to the given count [10/20/50/100]
+
+        :param count: the items per page count
+
+        Example:
+            - Common.set_items_per_page('10')
+        """
+        if WebUI.get_attribute(xpaths.common_xpaths.any_xpath('//mat-select'), 'innerText') != count:
+            cls.select_option('page-size', f'page-size-option-{count}')
+        # WebUI.delay(0.2)
 
     @classmethod
     def set_login_form(cls, username: str, password: str):
