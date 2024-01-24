@@ -277,6 +277,16 @@ def share_enabled_slider(sharetype: str, name: str) -> str:
     return f'//ix-{sharetype}-card//*[contains(text(),"{name}")]/ancestor::tr/descendant::mat-slide-toggle//button'
 
 
+def textarea_field(field: str) -> str:
+    """
+    This function sets the text for the given textarea name
+
+    :param field: text of the given textarea name
+    :return: xpath string for given textarea
+    """
+    return f'//*[@data-test="textarea-{field}"]'
+
+
 def toggle_field(field: str) -> str:
     """
     This function sets the text for the given toggle field

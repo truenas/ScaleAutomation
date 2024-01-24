@@ -46,4 +46,4 @@ class Test_Install_App():
         Apps.delete_app(app_data['app-name'])
         assert Apps.is_app_installed(app_data['app-name']) is False
         if app_data['setup-name'] == 'webdav':
-            DATASET.delete_dataset_by_api(f'{app_data['pool']}/{app_data['setup-name']}')
+            DATASET.delete_dataset_by_api(f'{app_data["pool"]}/{app_data["setup-name"]}')

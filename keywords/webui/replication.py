@@ -152,7 +152,7 @@ class Replication:
         WebUI.execute_script('window.open();', [])
         # WebUI.switch_to_window_index(WebUI.get_window_index(WebUI.current_window_handle()) + 1)
         WebUI.switch_to_window_index(1)
-        WebUI.get(f'http://{private_config['REP_DEST_IP']}/ui/sessions/signin')
+        WebUI.get(f'http://{private_config["REP_DEST_IP"]}/ui/sessions/signin')
         COM.set_login_form(username, password)
         if COM.assert_page_header('Dashboard') is False:
             NAV.navigate_to_dashboard()
