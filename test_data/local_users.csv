@@ -1,2 +1,2 @@
 username,password,fullname,email,home-dir,aux-group,primary-group,key,shell,sudo-commands,no-password-sudo-commands
-new_user,testing,new_user fullname,new_user@nowhere.com,/mnt/tank,root,root,keypassword,bash,/usr/sbin/zfs,/usr/bin
+new_user,testing,"new_user fullname",new_user@nowhere.com,/mnt/tank,root,root,keypassword,bash,/usr/sbin/zfs,/usr/bin

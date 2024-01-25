@@ -1,4 +1,5 @@
 import xpaths
+from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.webui.common import Common as COM
 
@@ -16,6 +17,52 @@ class Local_Users:
         COM.click_button('add-user')
 
     @classmethod
+    def click_user_delete_button(cls, username: str) -> None:
+        """
+        This method clicks the user delete button of the given user
+
+        :param username: is the name of the user
+
+        Example
+         - Local_Users.click_user_delete_button('username')
+        """
+        name = COM.convert_to_tag_format(username)
+        COM.click_button('delete-' + name)
+
+    @classmethod
+    def confirm_delete_user_and_primary_group_by_full_name(cls, fullname: str) -> None:
+        """
+        This method confirms the user delete dialog and checks the delete primary group checkbox
+
+        :param fullname: is the fullname of the user
+
+        Example
+         - Local_Users.click_user_delete_button('Full Name')
+        """
+        cls.confirm_delete_user_by_full_name(fullname, True)
+
+    @classmethod
+    def confirm_delete_user_by_full_name(cls, fullname: str, primary_group: bool = False) -> None:
+        """
+        This method confirms the user delete dialog and checks the delete primary group checkbox
+
+        :param fullname: is the fullname of the user
+        :param primary_group: is whether to delete the primary group as well
+
+        Example
+         - Local_Users.confirm_delete_user_by_full_name('Full Name')
+         - Local_Users.confirm_delete_user_by_full_name('Full Name', True)
+        """
+        if COM.is_visible(xpaths.common_xpaths.any_text(fullname)):
+            cls.expand_user_by_full_name(fullname)
+            cls.click_user_delete_button(cls.get_username_from_full_name(fullname))
+            if primary_group:
+                if COM.is_visible(xpaths.common_xpaths.checkbox_field('delete-primary-group')):
+                    WebUI.xpath(xpaths.common_xpaths.checkbox_field('delete-primary-group')).click()
+            COM.click_button('delete')
+            COM.assert_page_header('Delete User')
+
+    @classmethod
     def delete_user_by_api(cls, username):
         """
         This method deletes the given user by API call
@@ -28,6 +75,36 @@ class Local_Users:
         API_DELETE.delete_user(username)
 
     @classmethod
+    def expand_user_by_full_name(cls, fullname: str) -> None:
+        """
+        This method expands the given user section
+
+        :param fullname: is the fullname of the user to expand
+
+        Example
+         - Local_Users.expand_user_by_full_name('Full Name')
+        """
+        name = cls.get_username_from_full_name(fullname)
+        name = COM.convert_to_tag_format(name)
+        if COM.is_visible(xpaths.common_xpaths.button_field('edit-' + name)) is False:
+            WebUI.xpath(xpaths.common_xpaths.any_text(fullname)).click()
+
+    @classmethod
+    def get_username_from_full_name(cls, fullname: str) -> str:
+        """
+        This method returns the username from the given fullname
+
+        :param fullname: is the fullname of the user to expand
+
+        Example
+         - Local_Users.get_username_from_full_name('Full Name')
+        """
+        name = WebUI.xpath(xpaths.common_xpaths.any_text(fullname)).text
+        if name.__contains__(' fullname'):
+            name = name.replace(' fullname', '')
+        return name
+
+    @classmethod
     def is_user_visible(cls, username: str) -> bool:
         """
         This method unsets the show built-in users toggle
@@ -37,6 +114,7 @@ class Local_Users:
         Example
          - Local_Users.unset_show_builtin_users_toggle()
         """
+        WebUI.refresh()
         name = COM.convert_to_tag_format(username)
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
 
