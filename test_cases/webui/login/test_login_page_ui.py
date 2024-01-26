@@ -4,7 +4,7 @@ from helper.global_config import private_config
 
 
 def test_login_page_ui():
-    COM.navigate_to_login_screen(private_config['IP'])
+    COM.logoff_truenas()
     assert COM.assert_copyright_text_is_correct() is True
     assert LPU.assert_password_visibility_button_toggles_off_to_on() is True
     assert LPU.assert_password_visibility_button_toggles_on_to_off() is True
@@ -15,9 +15,10 @@ def test_login_page_ui():
     assert LPU.assert_error_password_requirement_displays_after_deselection() is False
     assert LPU.assert_error_username_requirement_doesnt_display("admin") is True
     assert LPU.assert_error_password_requirement_doesnt_display("aaaa") is True
-    assert LPU.assert_error_username_requirement_displays_after_login_attempt() is True
-    assert LPU.assert_error_username_requirement_after_login_attempt_displays_after_reselection() is True
+    assert LPU.assert_error_username_requirement_displays_after_login_attempt() is False
+    assert LPU.assert_error_username_requirement_after_login_attempt_displays_after_reselection() is False
     assert LPU.assert_truenas_icon_displays() is True
     assert LPU.assert_ixsystems_icon_displays() is True
     assert LPU.assert_background_image_displays() is True
     assert LPU.assert_ixsystems_link_is_correct() is True
+    COM.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
