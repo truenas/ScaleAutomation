@@ -20,8 +20,7 @@ class Login_Invalid_Credentials:
         COM.set_input_field('password', password, True)
         COM.click_button('log-in')
         if user == "":
-            assert COM.is_visible(
-                xpaths.common_xpaths.any_text('Either "username" or "uid" must be specified')) is False
+            assert COM.is_visible(xpaths.common_xpaths.any_text('Either "username" or "uid" must be specified')) is False
         # else:
         assert WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Wrong username or password. Please try again.'))
         WebUI.refresh()
