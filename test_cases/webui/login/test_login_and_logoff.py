@@ -10,9 +10,9 @@ class Test_Login_And_Logoff:
         Common.login_to_truenas(user_data['username'], user_data['password'])
 
     @staticmethod
-    def verify_we_are_on_the_dashboard():
+    def verify_we_are_on_the_dashboard(user_data):
         assert Common.assert_page_header('Dashboard')
 
     @staticmethod
-    def verify_logoff_truenas_works():
+    def verify_logoff_truenas_works(user_data):
         Common.logoff_truenas()
