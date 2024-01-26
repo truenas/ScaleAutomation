@@ -11,7 +11,7 @@ class Test_Create_Replicate_Task_Different_Box():
     @staticmethod
     def test_add_new_user(users) -> None:
         """
-        This test verifies a replicate task can be setup
+        This test verifies a new user can be created
         """
         LU.click_add_user_button()
 

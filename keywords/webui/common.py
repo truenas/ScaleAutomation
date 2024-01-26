@@ -303,7 +303,23 @@ class Common:
         API_DELETE.delete_user(name)
 
     @classmethod
-    def get_element_property(cls, name: str, prop: str = 'value') -> str:
+    def get_element_property(cls, xpath: str, prop: str = 'value') -> str | bool:
+        """
+        This method gets the value of the given property of the given element
+
+        :param xpath: xpath of the element
+        :param prop: name of the property to get
+        :return: value of the element property
+
+        Example:
+            - Common.get_element_property('//myButton', 'disabled')
+            - Common.get_element_property('//myCheckbox', 'checked')
+        """
+        WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(xpath))
+        return WebUI.xpath(xpaths.common_xpaths.any_xpath(xpath)).get_property(prop)
+
+    @classmethod
+    def get_input_property(cls, name: str, prop: str = 'value') -> str | bool:
         """
         This method gets the value of the given property of the given element
 
@@ -312,11 +328,12 @@ class Common:
         :return: value of the element property
 
         Example:
-            - Common.get_element_property('myElement', 'disabled')
-            - Common.get_element_property('myCheckbox', 'checked')
+            - Common.get_input_property('myElement', 'disabled')
+            - Common.get_input_property('myCheckbox', 'checked')
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
-        return WebUI.xpath(xpaths.common_xpaths.input_field(name)).get_property(prop)
+        return cls.get_element_property(xpaths.common_xpaths.input_field(name), prop)
+        # WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
+        # return WebUI.xpath(xpaths.common_xpaths.input_field(name)).get_property(prop)
 
     @classmethod
     def get_label_value(cls, label: str) -> str:
@@ -719,7 +736,7 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.textarea_field(name)).send_keys(value)
         if tab:
             WebUI.xpath(xpaths.common_xpaths.textarea_field(name)).send_keys(Keys.TAB)
-        assert WebUI.get_attribute(xpaths.common_xpaths.textarea_field('name'), 'value') == value
+        assert WebUI.get_attribute(xpaths.common_xpaths.textarea_field(name), 'value') == value
 
     @classmethod
     def set_toggle(cls, name: str):

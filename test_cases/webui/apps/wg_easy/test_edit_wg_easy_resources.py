@@ -27,8 +27,8 @@ class Test_Edit_WG_Easy_Resources:
         """
         Apps.edit_app('WG Easy')
         Apps.navigate_to_app_section('Resources Configuration')
-        assert COM.get_element_property('cpu') == '8000m'
-        assert COM.get_element_property('memory') == '16Gi'
+        assert COM.get_input_property('cpu') == '8000m'
+        assert COM.get_input_property('memory') == '16Gi'
         COM.click_link('breadcrumb-applications')
 
     @staticmethod

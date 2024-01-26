@@ -28,8 +28,8 @@ class Test_Edit_WG_Easy_Network:
         """
         Apps.edit_app('WG Easy')
         Apps.navigate_to_app_section('Network Configuration')
-        assert COM.get_element_property('udp-port') == '30000'
-        assert COM.get_element_property('web-port') == '30001'
+        assert COM.get_input_property('udp-port') == '30000'
+        assert COM.get_input_property('web-port') == '30001'
         assert COM.is_checked('host-network') is False
         COM.click_link('breadcrumb-applications')
 
