@@ -31,12 +31,12 @@ class Test_Edit_WG_Easy_Configuration:
         """
         Apps.edit_app('WG Easy')
         Apps.navigate_to_app_section('Network Configuration')
-        assert COM.get_element_property('host') == '10.234.27.201'
-        assert COM.get_element_property('password') == 'test1234'
-        assert COM.get_element_property('keep-alive') == '50'
-        assert COM.get_element_property('client-mtu') == '2840'
-        assert COM.get_element_property('client-address-range') == '10.16.0.x'
-        assert COM.get_element_property('client-dns-server') == '2.2.2.2'
+        assert COM.get_input_property('host') == '10.234.27.201'
+        assert COM.get_input_property('password') == 'test1234'
+        assert COM.get_input_property('keep-alive') == '50'
+        assert COM.get_input_property('client-mtu') == '2840'
+        assert COM.get_input_property('client-address-range') == '10.16.0.x'
+        assert COM.get_input_property('client-dns-server') == '2.2.2.2'
         COM.click_link('breadcrumb-applications')
 
     @staticmethod

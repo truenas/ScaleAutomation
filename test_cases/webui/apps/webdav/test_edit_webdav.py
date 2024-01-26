@@ -31,8 +31,8 @@ class Test_Edit_Webdav:
         Apps.edit_app('WebDAV')
         assert not COM.is_checked('http')
         assert COM.is_checked('https')
-        assert COM.get_element_property('certificate-id') == "'truenas_default' Certificate"
-        assert COM.get_element_property('https-port') == '30035'
+        assert COM.get_input_property('certificate-id') == "'truenas_default' Certificate"
+        assert COM.get_input_property('https-port') == '30035'
         COM.click_link('breadcrumb-applications')
 
     @staticmethod
