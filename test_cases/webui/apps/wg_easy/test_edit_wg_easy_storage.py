@@ -28,8 +28,8 @@ class Test_Edit_WG_Easy_Storage:
         """
         Apps.edit_app('WG Easy')
         Apps.navigate_to_app_section('Storage Configuration')
-        assert COM.get_element_property('mount-path') == '/mnt/anywhere'
-        assert COM.get_element_property('dataset-name') == 'storage'
+        assert COM.get_input_property('mount-path') == '/mnt/anywhere'
+        assert COM.get_input_property('dataset-name') == 'storage'
         COM.click_link('breadcrumb-applications')
 
     @staticmethod

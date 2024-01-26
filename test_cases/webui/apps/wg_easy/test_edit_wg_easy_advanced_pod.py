@@ -28,8 +28,8 @@ class Test_Edit_WG_Easy_Advanced_Pod:
         """
         Apps.edit_app('WG Easy')
         Apps.navigate_to_app_section('Network Configuration')
-        assert COM.get_element_property('name') == 'Option Name'
-        assert COM.get_element_property('value') == 'Option Value'
+        assert COM.get_input_property('name') == 'Option Name'
+        assert COM.get_input_property('value') == 'Option Value'
         COM.click_link('breadcrumb-applications')
 
     @staticmethod
