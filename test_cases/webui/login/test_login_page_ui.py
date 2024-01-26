@@ -30,5 +30,3 @@ class Test_Login_Page_UI:
         assert LPU.assert_ixsystems_icon_displays() is True
         assert LPU.assert_background_image_displays() is True
         assert LPU.assert_ixsystems_link_is_correct() is True
-        # COM.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
-
