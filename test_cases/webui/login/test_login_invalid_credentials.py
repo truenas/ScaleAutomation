@@ -6,6 +6,8 @@ from helper.global_config import private_config
 
 
 @pytest.mark.parametrize('user_data', get_data_list('invalid_creds'))
-def test_login_invalid_credentials(user_data):
-    COM.navigate_to_login_screen(private_config['IP'])
-    LIC.set_login_form_with_invalid_credentials(user_data['username'], user_data['password'])
+class Test_Login_And_Logoff:
+    @staticmethod
+    def test_login_invalid_credentials(user_data):
+        COM.navigate_to_login_screen(private_config['IP'])
+        LIC.set_login_form_with_invalid_credentials(user_data['username'], user_data['password'])
