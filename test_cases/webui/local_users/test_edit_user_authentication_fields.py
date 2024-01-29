@@ -1,16 +1,15 @@
 import pytest
 
 from helper.data_config import get_data_list
-from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.local_users import Local_Users as LU
 
 
 @pytest.mark.parametrize('users', get_data_list('local_users'), scope='class')
-class Test_Create_Replicate_Task_Different_Box():
+class Test_Edit_User_Authentication_Fields:
 
     @staticmethod
-    def test_add_new_user(users) -> None:
+    def test_edit_user_authentication_fields(users) -> None:
         """
         This test verifies a new user can be created
         """

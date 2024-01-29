@@ -6,7 +6,7 @@ from keywords.webui.directory_services import Directory_Services as DS
 
 
 @pytest.mark.parametrize('ldap', get_data_list('ldap_credentials'), scope='class')
-class Test_Disable_LDAP():
+class Test_Disable_LDAP:
 
     @staticmethod
     def test_setup_ldap(ldap) -> None:

@@ -14,6 +14,9 @@ class Test_Login_Page_UI:
 
     @staticmethod
     def test_login_page_ui():
+        """
+        This test asserts the UI of the login page
+        """
         assert COM.assert_copyright_text_is_correct() is True
         assert LPU.assert_password_visibility_button_toggles_off_to_on() is True
         assert LPU.assert_password_visibility_button_toggles_on_to_off() is True

@@ -8,7 +8,7 @@ from keywords.webui.replication import Replication as REP
 
 
 @pytest.mark.parametrize('rep', get_data_list('replication')[:2], scope='class')
-class Test_Create_Replicate_Task_Same_Box():
+class Test_Create_Replicate_Task_Same_Box:
 
     @staticmethod
     def test_setup_replicate_task(rep) -> None:

@@ -332,8 +332,6 @@ class Common:
             - Common.get_input_property('myCheckbox', 'checked')
         """
         return cls.get_element_property(xpaths.common_xpaths.input_field(name), prop)
-        # WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
-        # return WebUI.xpath(xpaths.common_xpaths.input_field(name)).get_property(prop)
 
     @classmethod
     def get_label_value(cls, label: str) -> str:
