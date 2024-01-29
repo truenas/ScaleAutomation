@@ -553,7 +553,7 @@ class Common:
         Example:
             - Common.select_then_deselect_input_field('myInput')
         """
-        cls.set_input_field(name, Keys.TAB)
+        cls.set_input_field(name, '', True)
 
     @classmethod
     def select_option(cls, name: str, option: str):

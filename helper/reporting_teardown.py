@@ -6,14 +6,14 @@ from datetime import datetime
 
 def reporting_teardown(session):
     """
-    This method creates a unique directory, moves the allure-results contents into it and generates the
-    allure report.
+    This method creates a unique directory in the reports directory, moves the allure-results contents into it
+    and generates the allure report.
 
-    :param session: the session of information from the pytest run used for pathing.
+    :param session: the session information from the pytest run used for pathing.
     """
     now = datetime.now()
     timestamp = now.strftime("%Y_%m_%d-%H_%M_%S")
-    test_name = str(Path(os.getcwd()).as_posix())
+    test_name = str(Path(Path.cwd()).as_posix())
     test_name = test_name.rsplit('/', 1)
     test_name = str(f'{timestamp}-{test_name[1]}').strip()
     full_allure_results_path = str(Path(os.getcwd()).as_posix()) + str(Path('/allure-results').as_posix())
