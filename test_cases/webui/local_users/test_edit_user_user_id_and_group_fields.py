@@ -11,7 +11,7 @@ class Test_Edit_User_User_ID_And_Group_Fields:
     @staticmethod
     def test_edit_user_user_id_and_group_fields(users) -> None:
         """
-        This test verifies a new user can be created
+        This test verifies the user id and group fields can be edited
         """
         COM.create_non_admin_user_by_api(users['username'], users['fullname'], users['password'])
         assert LU.is_user_visible(users['username']) is True
