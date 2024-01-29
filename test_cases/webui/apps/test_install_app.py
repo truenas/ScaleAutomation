@@ -7,7 +7,7 @@ from keywords.webui.datasets import Datasets as DATASET
 
 
 @pytest.mark.parametrize('app_data', get_data_list('apps'), scope='class')
-class Test_Install_App():
+class Test_Install_App:
 
     @staticmethod
     def set_app_ready_for_install(app_data):

@@ -6,7 +6,7 @@ from keywords.webui.local_users import Local_Users as LU
 
 
 @pytest.mark.parametrize('users', get_data_list('local_users'), scope='class')
-class Test_Create_Replicate_Task_Different_Box():
+class Test_Create_New_User:
 
     @staticmethod
     def test_add_new_user(users) -> None:
