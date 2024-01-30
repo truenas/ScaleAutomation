@@ -17,7 +17,6 @@ class Local_Users:
         Example
          - Local_Users.add_user_auxiliary_group('wheel')
         """
-        # if not COM.get_element_property('//*[@data-test="input-groups"]//preceding-sibling::mat-chip-row', 'textContent').__contains__(group):
         COM.click_on_element(xpaths.common_xpaths.input_field('groups'))
         WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{group}")]')).click()
         WebUI.delay(0.5)
@@ -407,7 +406,6 @@ class Local_Users:
         Example
          - Local_Users.is_user_visible('username')
         """
-        # WebUI.refresh()
         NAV.navigate_to_dashboard()
         NAV.navigate_to_local_users()
         name = COM.convert_to_tag_format(username)

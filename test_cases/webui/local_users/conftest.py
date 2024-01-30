@@ -10,7 +10,6 @@ from keywords.webui.navigation import Navigation
 
 def pytest_sessionstart(session):
     Common.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
-    # pass
 
 
 @pytest.fixture(scope='class', autouse=True)

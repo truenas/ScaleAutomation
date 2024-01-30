@@ -2,7 +2,6 @@ import pytest
 
 from helper.data_config import get_data_list
 from helper.global_config import private_config
-from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.local_users import Local_Users as LU
 from keywords.webui.navigation import Navigation as NAV
@@ -38,7 +37,7 @@ class Test_Edit_User_Identification_Fields:
         LU.assert_user_username(users['username'] + '-edt')
         LU.assert_user_fullname(users['fullname'] + '-edt')
         LU.assert_user_email(users['email'] + '-edt')
-        # Password fields are blank - need to logout and login to verify passwords were set
+        # Password fields are blank - need to log out and login to verify passwords were set
         LU.assert_user_password('')
         LU.assert_user_password_confirm('')
 

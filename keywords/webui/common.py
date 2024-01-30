@@ -513,7 +513,6 @@ class Common:
         """
         cls.click_button('power-menu')
         cls.click_button('log-out')
-        # assert cls.is_clickable(xpaths.common_xpaths.input_field('username'))
         assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod
@@ -704,7 +703,7 @@ class Common:
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field('password'))
         WebUI.xpath(xpaths.common_xpaths.input_field('password')).send_keys(password)
         WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
-        # WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Dashboard', 1))
+        WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Dashboard', 1))
         WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('log-in'))
         WebUI.delay(2)
 
