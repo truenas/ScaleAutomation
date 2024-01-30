@@ -7,6 +7,20 @@ from keywords.webui.common import Common as COM
 class Local_Users:
 
     @classmethod
+    def add_user_auxiliary_group(cls, group) -> None:
+        """
+        This method sets the given auxiliary group to the user
+
+        :param group: is the auxiliary group to add to the user
+
+        Example
+         - Local_Users.add_user_auxiliary_group('wheel')
+        """
+        COM.click_on_element(xpaths.common_xpaths.input_field('groups'))
+        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{group}")]')).click()
+        WebUI.delay(0.5)
+
+    @classmethod
     def assert_error_user_home_directory_not_writable(cls) -> bool:
         """
         This method returns True if the home directory error message displays, otherwise False
@@ -116,7 +130,19 @@ class Local_Users:
          - Local_Users.assert_user_authorized_keys('key')
         """
         return COM.get_element_property(xpaths.common_xpaths.textarea_field('sshpubkey'), 'value') == key
-        # return WebUI.xpath(xpaths.common_xpaths.textarea_field('sshpubkey')).text == key
+
+    @classmethod
+    def assert_user_auxiliary_group(cls, group) -> bool:
+        """
+        This method returns True is the given group is in the Auxiliary groups, otherwise False
+
+        :param group: is the auxiliary group to verify
+        :return: returns True is the given group is in the Auxiliary groups, otherwise False
+
+        Example
+         - Local_Users.assert_user_auxiliary_group('wheel')
+        """
+        return WebUI.xpath(f'//mat-chip-row//*[contains(text(),"{group}")]').text == group
 
     @classmethod
     def assert_user_lock_user(cls) -> bool:
@@ -129,6 +155,19 @@ class Local_Users:
          - Local_Users.assert_user_lock_user()
         """
         return COM.is_checked('locked')
+
+    @classmethod
+    def assert_user_primary_group(cls, group) -> bool:
+        """
+        This method returns True is the given group is in the Primary groups, otherwise False
+
+        :param group: is the primary group to verify
+        :return: returns True is the given group is in the Primary groups, otherwise False
+
+        Example
+         - Local_Users.assert_user_primary_group('wheel')
+        """
+        return COM.get_input_property('group') == group
 
     @classmethod
     def assert_user_samba_authentication(cls) -> bool:
@@ -458,6 +497,19 @@ class Local_Users:
          - Local_Users.set_user_password_confirm('password')
         """
         COM.set_input_field('password-conf', password)
+
+    @classmethod
+    def set_user_primary_group(cls, group) -> None:
+        """
+        This method sets the given primary group to the user
+
+        :param group: is the primary group to add to the user
+
+        Example
+         - Local_Users.set_user_primary_group('wheel')
+        """
+        COM.set_input_field('group', group)
+        WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{group}")]')).click()
 
     @classmethod
     def set_user_samba_authentication_checkbox(cls) -> None:
