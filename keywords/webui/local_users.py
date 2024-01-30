@@ -34,6 +34,30 @@ class Local_Users:
         return COM.assert_text_is_visible('Home directory is not writable, leave this blank"')
 
     @classmethod
+    def assert_error_user_home_directory_requires_execute(cls) -> bool:
+        """
+        This method returns True if the home directory error message displays, otherwise False
+
+        :return: returns True if the home directory error message displays, otherwise False
+
+        Example
+         - Local_Users.assert_error_user_home_directory_requires_execute()
+        """
+        return COM.assert_text_is_visible('Home directory must be executable by User.')
+
+    @classmethod
+    def assert_error_user_home_directory_requires_read(cls) -> bool:
+        """
+        This method returns True if the home directory error message displays, otherwise False
+
+        :return: returns True if the home directory error message displays, otherwise False
+
+        Example
+         - Local_Users.assert_error_user_home_directory_requires_execute()
+        """
+        return COM.assert_text_is_visible('Home directory must be readable by User.')
+
+    @classmethod
     def assert_error_user_samba_change_password(cls) -> bool:
         """
         This method returns True if the home directory error message displays, otherwise False
@@ -170,6 +194,127 @@ class Local_Users:
          - Local_Users.assert_user_fullname('Full Name')
         """
         return COM.get_input_property('full-name') == fullname
+
+    @classmethod
+    def assert_user_home_directory(cls, home) -> bool:
+        """
+        This method returns True if the home directory matches the given home, otherwise False
+
+        :param home: is the home directory of the user
+        :return: returns True if the home directory matches the given home, otherwise False
+
+        Example
+         - Local_Users.assert_user_home_directory('/mnt/tank/home')
+        """
+        return COM.get_input_property('home') == home
+
+    @classmethod
+    def assert_user_home_directory_permission_group_execute_checkbox(cls) -> bool:
+        """
+        This method returns True if the group execute checkbox is set, otherwise False
+
+        :return: returns True if the group execute checkbox is set, otherwise False
+
+        Example
+         - Local_Users.assert_user_home_directory_permission_group_execute_checkbox()
+        """
+        return COM.is_checked('group-execute')
+
+    @classmethod
+    def assert_user_home_directory_permission_group_read_checkbox(cls) -> bool:
+        """
+        This method returns True if the group read checkbox is set, otherwise False
+
+        :return: returns True if the group read checkbox is set, otherwise False
+
+        Example
+         - Local_Users.assert_user_home_directory_permission_group_read_checkbox()
+        """
+        return COM.is_checked('group-read')
+
+    @classmethod
+    def assert_user_home_directory_permission_group_write_checkbox(cls) -> bool:
+        """
+        This method returns True if the group write checkbox is set, otherwise False
+
+        :return: returns True if the group write checkbox is set, otherwise False
+
+        Example
+         - Local_Users.assert_user_home_directory_permission_group_write_checkbox()
+        """
+        return COM.is_checked('group-write')
+
+    @classmethod
+    def assert_user_home_directory_permission_other_execute_checkbox(cls) -> bool:
+        """
+        This method returns True if the other execute checkbox is set, otherwise False
+
+        :return: returns True if the other execute checkbox is set, otherwise False
+
+        Example
+         - Local_Users.assert_user_home_directory_permission_other_execute_checkbox()
+        """
+        return COM.is_checked('other-execute')
+
+    @classmethod
+    def assert_user_home_directory_permission_other_read_checkbox(cls) -> bool:
+        """
+        This method returns True if the other read checkbox is set, otherwise False
+
+        :return: returns True if the other read checkbox is set, otherwise False
+
+        Example
+         - Local_Users.assert_user_home_directory_permission_other_read_checkbox()
+        """
+        return COM.is_checked('other-read')
+
+    @classmethod
+    def assert_user_home_directory_permission_other_write_checkbox(cls) -> bool:
+        """
+        This method returns True if the other write checkbox is set, otherwise False
+
+        :return: returns True if the other write checkbox is set, otherwise False
+
+        Example
+         - Local_Users.assert_user_home_directory_permission_other_write_checkbox()
+        """
+        return COM.is_checked('other-write')
+
+    @classmethod
+    def assert_user_home_directory_permission_user_execute_checkbox(cls) -> bool:
+        """
+        This method returns True if the user execute checkbox is set, otherwise False
+
+        :return: returns True if the user execute checkbox is set, otherwise False
+
+        Example
+         - Local_Users.assert_user_home_directory_permission_user_execute_checkbox()
+        """
+        return COM.is_checked('user-execute')
+
+    @classmethod
+    def assert_user_home_directory_permission_user_read_checkbox(cls) -> bool:
+        """
+        This method returns True if the user read checkbox is set, otherwise False
+
+        :return: returns True if the user read checkbox is set, otherwise False
+
+        Example
+         - Local_Users.assert_user_home_directory_permission_user_read_checkbox()
+        """
+        return COM.is_checked('user-read')
+
+    @classmethod
+    def assert_user_home_directory_permission_user_write_checkbox(cls) -> bool:
+        """
+        This method returns True if the user write checkbox is set, otherwise False
+
+        :return: returns True if the user write checkbox is set, otherwise False
+
+        Example
+         - Local_Users.assert_user_home_directory_permission_user_write_checkbox()
+        """
+        return COM.is_checked('user-write')
 
     @classmethod
     def assert_user_lock_user(cls) -> bool:
@@ -538,6 +683,26 @@ class Local_Users:
         COM.set_input_field('home', home)
 
     @classmethod
+    def set_user_home_directory_permission_user_execute_checkbox(cls) -> None:
+        """
+        This method sets the user execute home directory checkbox
+
+        Example
+         - Local_Users.set_user_home_directory_permission_user_execute_checkbox()
+        """
+        COM.set_checkbox('user-execute')
+
+    @classmethod
+    def set_user_home_directory_permission_user_read_checkbox(cls) -> None:
+        """
+        This method sets the user read home directory checkbox
+
+        Example
+         - Local_Users.set_user_home_directory_permission_user_read_checkbox()
+        """
+        COM.set_checkbox('user-read')
+
+    @classmethod
     def set_user_lock_user_checkbox(cls) -> None:
         """
         This method sets the lock user checkbox
@@ -635,3 +800,95 @@ class Local_Users:
          - Local_Users.unset_user_disable_password_button()
         """
         COM.unset_toggle('password-disabled')
+
+    @classmethod
+    def unset_user_home_directory_permission_group_execute_checkbox(cls) -> None:
+        """
+        This method unsets the group execute home directory checkbox
+
+        Example
+         - Local_Users.unset_user_home_directory_permission_group_execute_checkbox()
+        """
+        COM.unset_checkbox('group-execute')
+
+    @classmethod
+    def unset_user_home_directory_permission_group_read_checkbox(cls) -> None:
+        """
+        This method unsets the group read home directory checkbox
+
+        Example
+         - Local_Users.unset_user_home_directory_permission_group_read_checkbox()
+        """
+        COM.unset_checkbox('group-read')
+
+    @classmethod
+    def unset_user_home_directory_permission_group_write_checkbox(cls) -> None:
+        """
+        This method unsets the group write home directory checkbox
+
+        Example
+         - Local_Users.unset_user_home_directory_permission_group_write_checkbox()
+        """
+        COM.unset_checkbox('group-write')
+
+    @classmethod
+    def unset_user_home_directory_permission_other_execute_checkbox(cls) -> None:
+        """
+        This method unsets the other execute home directory checkbox
+
+        Example
+         - Local_Users.unset_user_home_directory_permission_other_execute_checkbox()
+        """
+        COM.unset_checkbox('other-execute')
+
+    @classmethod
+    def unset_user_home_directory_permission_other_read_checkbox(cls) -> None:
+        """
+        This method unsets the other read home directory checkbox
+
+        Example
+         - Local_Users.unset_user_home_directory_permission_other_read_checkbox()
+        """
+        COM.unset_checkbox('other-read')
+
+    @classmethod
+    def unset_user_home_directory_permission_other_write_checkbox(cls) -> None:
+        """
+        This method unsets the other write home directory checkbox
+
+        Example
+         - Local_Users.unset_user_home_directory_permission_other_write_checkbox()
+        """
+        COM.unset_checkbox('other-write')
+
+    @classmethod
+    def unset_user_home_directory_permission_user_execute_checkbox(cls) -> None:
+        """
+        This method unsets the user execute home directory checkbox
+
+        Example
+         - Local_Users.unset_user_home_directory_permission_user_execute_checkbox()
+        """
+        COM.unset_checkbox('user-execute')
+
+    @classmethod
+    def unset_user_home_directory_permission_user_read_checkbox(cls) -> None:
+        """
+        This method unsets the user read home directory checkbox
+
+        Example
+         - Local_Users.unset_user_home_directory_permission_user_read_checkbox()
+        """
+        COM.unset_checkbox('user-read')
+
+    @classmethod
+    def unset_user_home_directory_permission_user_write_checkbox(cls) -> None:
+        """
+        This method unsets the user write home directory checkbox
+
+        Example
+         - Local_Users.unset_user_home_directory_permission_user_write_checkbox()
+        """
+        COM.unset_checkbox('user-write')
+
+
