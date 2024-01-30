@@ -3,6 +3,7 @@ import pytest
 from helper.data_config import get_data_list
 from keywords.webui.common import Common as COM
 from keywords.webui.local_users import Local_Users as LU
+from keywords.webui.navigation import Navigation as NAV
 
 
 @pytest.mark.parametrize('users', get_data_list('local_users'), scope='class')
@@ -43,7 +44,6 @@ class Test_Edit_User_Authentication_Fields:
         LU.set_user_password(users['password'])
         LU.set_user_password_confirm(users['password'])
         COM.click_save_button()
-        # COM.click_save_button_and_wait('Edit User')
 
         LU.expand_user_by_full_name(users['fullname'])
         LU.click_user_edit_button()
@@ -59,7 +59,6 @@ class Test_Edit_User_Authentication_Fields:
         LU.set_user_allow_all_sudo_commands_checkbox()
         LU.set_user_allow_all_sudo_commands_no_password_checkbox()
         COM.click_save_button()
-        # COM.click_save_button_and_wait('Edit User')
 
         LU.expand_user_by_full_name(users['fullname'])
         LU.click_user_edit_button()
@@ -79,3 +78,4 @@ class Test_Edit_User_Authentication_Fields:
         """
         # reset the change
         LU.delete_user_by_api(users['username'])
+        NAV.navigate_to_dashboard()
