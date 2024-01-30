@@ -3,6 +3,7 @@ import pytest
 from helper.data_config import get_data_list
 from keywords.webui.common import Common as COM
 from keywords.webui.local_users import Local_Users as LU
+from keywords.webui.navigation import Navigation as NAV
 
 
 @pytest.mark.parametrize('users', get_data_list('local_users'), scope='class')
@@ -38,4 +39,4 @@ class Test_Edit_User_User_ID_And_Group_Fields:
         This test removes the new user
         """
         # reset the change
-        # LU.delete_user_by_api(users['username'])
+        NAV.navigate_to_dashboard()

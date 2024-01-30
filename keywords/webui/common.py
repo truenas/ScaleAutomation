@@ -81,6 +81,22 @@ class Common:
         return WebUI.wait_until_visible(xpaths.xpaths.common_xpaths.label_and_value(label, value), shared_config['SHORT_WAIT'])
 
     @classmethod
+    def assert_page_header(cls, header_text: str, timeout: int = shared_config['WAIT']):
+        """
+        This method return True if the page header text is visible before timeout otherwise it returns False.
+
+        :param header_text: is the text of the page to assert.
+        :param timeout: is optional and is the number of second to wait before timeout, it is defaulted to
+        shared_config['WAIT'].
+        :return: True if the page header text is visible before timeout otherwise it returns False.
+
+        Example:
+            - Common.assert_page_header('Header Title')
+            - Common.assert_page_header('Header Title', shared_config['SHORT_WAIT'])
+        """
+        return WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header_text, 1), timeout)
+
+    @classmethod
     def assert_right_panel_header(cls, header_text):
         """
         This method return True if the right panel header text is visible before timeout otherwise it returns False.
@@ -118,22 +134,6 @@ class Common:
             - Common.assert_text_is_visible('any Text')
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_text(text))
-
-    @classmethod
-    def assert_page_header(cls, header_text: str, timeout: int = shared_config['WAIT']):
-        """
-        This method return True if the page header text is visible before timeout otherwise it returns False.
-
-        :param header_text: is the text of the page to assert.
-        :param timeout: is optional and is the number of second to wait before timeout, it is defaulted to
-        shared_config['WAIT'].
-        :return: True if the page header text is visible before timeout otherwise it returns False.
-
-        Example:
-            - Common.assert_page_header('Header Title')
-            - Common.assert_page_header('Header Title', shared_config['SHORT_WAIT'])
-        """
-        return WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header_text, 1), timeout)
 
     @classmethod
     def cancel_confirm_dialog(cls) -> None:
@@ -232,6 +232,7 @@ class Common:
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT']).click()
         WebUI.delay(2)
+        WebUI.wait_until_not_visible('(//ix-icon[@name="cancel"])[1]')
 
     @classmethod
     def close_right_panel(cls) -> None:
@@ -512,7 +513,7 @@ class Common:
         """
         cls.click_button('power-menu')
         cls.click_button('log-out')
-        assert cls.is_clickable(xpaths.common_xpaths.input_field('username'))
+        assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod
     def navigate_to_login_screen(cls, ip: str):
@@ -525,6 +526,7 @@ class Common:
             - Common.navigate_to_login_screen('10.0.0.1')
         """
         WebUI.get(f'http://{ip}/ui/sessions/signin')
+        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod
     def reboot_system(cls):
@@ -702,6 +704,7 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.input_field('password')).send_keys(password)
         WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
         WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Dashboard', 1))
+        WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('log-in'))
         WebUI.delay(2)
 
     @classmethod
