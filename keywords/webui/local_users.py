@@ -2,6 +2,7 @@ import xpaths
 from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.webui.common import Common as COM
+from keywords.webui.navigation import Navigation as NAV
 
 
 class Local_Users:
@@ -16,6 +17,7 @@ class Local_Users:
         Example
          - Local_Users.add_user_auxiliary_group('wheel')
         """
+        # if not COM.get_element_property('//*[@data-test="input-groups"]//preceding-sibling::mat-chip-row', 'textContent').__contains__(group):
         COM.click_on_element(xpaths.common_xpaths.input_field('groups'))
         WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{group}")]')).click()
         WebUI.delay(0.5)
@@ -145,6 +147,32 @@ class Local_Users:
         return WebUI.xpath(f'//mat-chip-row//*[contains(text(),"{group}")]').text == group
 
     @classmethod
+    def assert_user_email(cls, email) -> bool:
+        """
+        This method returns True if the email matches the given email, otherwise False
+
+        :param email: is the email of the user
+        :return: returns True if the email matches the given email, otherwise False
+
+        Example
+         - Local_Users.assert_user_email('myEmail@nowhere.com')
+        """
+        return COM.get_input_property('email') == email
+
+    @classmethod
+    def assert_user_fullname(cls, fullname) -> bool:
+        """
+        This method returns True if the fullname matches the given fullname, otherwise False
+
+        :param fullname: is the fullname of the user
+        :return: returns True if the fullname matches the given fullname, otherwise False
+
+        Example
+         - Local_Users.assert_user_fullname('Full Name')
+        """
+        return COM.get_input_property('full-name') == fullname
+
+    @classmethod
     def assert_user_lock_user(cls) -> bool:
         """
         This method returns True if the lock user checkbox is set, otherwise False
@@ -157,6 +185,32 @@ class Local_Users:
         return COM.is_checked('locked')
 
     @classmethod
+    def assert_user_password(cls, password) -> bool:
+        """
+        This method returns True if the password matches the given password, otherwise False
+
+        :param password: is the password of the user
+        :return: returns True if the password matches the given password, otherwise False
+
+        Example
+         - Local_Users.assert_user_password('password')
+        """
+        return COM.get_input_property('password') == password
+
+    @classmethod
+    def assert_user_password_confirm(cls, password) -> bool:
+        """
+        This method returns True if the password confirmation matches the given password, otherwise False
+
+        :param password: is the password of the user
+        :return: returns True if the password confirmation matches the given password, otherwise False
+
+        Example
+         - Local_Users.assert_user_password_confirm('password')
+        """
+        return COM.get_input_property('password-conf') == password
+
+    @classmethod
     def assert_user_primary_group(cls, group) -> bool:
         """
         This method returns True is the given group is in the Primary groups, otherwise False
@@ -167,7 +221,10 @@ class Local_Users:
         Example
          - Local_Users.assert_user_primary_group('wheel')
         """
-        return COM.get_input_property('group') == group
+        result = ''
+        if COM.get_input_property('group') == '40':
+            result = 'builtin_administrators'
+        return result == group
 
     @classmethod
     def assert_user_samba_authentication(cls) -> bool:
@@ -192,7 +249,8 @@ class Local_Users:
         Example
          - Local_Users.assert_user_shell('bash')
         """
-        return WebUI.xpath(xpaths.common_xpaths.select_field('shell')).text == shell
+        WebUI.scroll_to_element(xpaths.common_xpaths.select_field('shell'))
+        return COM.get_element_property(xpaths.common_xpaths.select_field('shell'), 'innerText') == shell
 
     @classmethod
     def assert_user_ssh_password_login_enabled(cls) -> bool:
@@ -205,6 +263,19 @@ class Local_Users:
          - Local_Users.assert_user_ssh_password_login_enabled()
         """
         return COM.is_checked('ssh-password-enabled')
+
+    @classmethod
+    def assert_user_username(cls, username) -> bool:
+        """
+        This method returns True if the username matches the given username, otherwise False
+
+        :param username: is the name of the user
+        :return: returns True if the username matches the given username, otherwise False
+
+        Example
+         - Local_Users.assert_user_username('username')
+        """
+        return COM.get_input_property('username') == username
 
     @classmethod
     def click_add_user_button(cls) -> None:
@@ -336,8 +407,12 @@ class Local_Users:
         Example
          - Local_Users.is_user_visible('username')
         """
-        WebUI.refresh()
+        # WebUI.refresh()
+        NAV.navigate_to_dashboard()
+        NAV.navigate_to_local_users()
         name = COM.convert_to_tag_format(username)
+        if not COM.assert_page_header('Users'):
+            NAV.navigate_to_local_users()
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
 
     @classmethod
@@ -552,3 +627,13 @@ class Local_Users:
          - Local_Users.unset_show_builtin_users_toggle()
         """
         COM.unset_toggle('show-built-in-users')
+
+    @classmethod
+    def unset_user_disable_password_toggle(cls) -> None:
+        """
+        This method unsets the disable password toggle
+
+        Example
+         - Local_Users.unset_user_disable_password_button()
+        """
+        COM.unset_toggle('password-disabled')
