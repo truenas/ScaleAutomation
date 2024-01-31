@@ -1,5 +1,6 @@
 import pytest
 from helper.data_config import get_data_list
+from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
 from keywords.webui.datasets import Datasets as DATASET
@@ -10,8 +11,10 @@ from keywords.webui.smb import SMB
 
 @pytest.mark.parametrize('user_data', get_data_list('user'))
 @pytest.mark.parametrize('smb_data', get_data_list('shares/smb'))
-def test_create_new_smb_share_with_acl(user_data, smb_data) -> None:
+@pytest.mark.parametrize('smb_acl_data', get_data_list('shares/smb_acl'))
+def test_create_new_smb_share_with_acl(user_data, smb_data, smb_acl_data) -> None:
     # Environment setup
+    COM.create_non_admin_user_by_api(smb_acl_data['user'], smb_acl_data['user'] + ' Full', 'testing', 'True')
     COMSHARE.delete_share_by_api('smb', smb_data['name'])
     DATASET.delete_dataset_by_api(smb_data['path'])
     # note creating 'generic' dataset will cause smb share creation to prompt for acl configuration
@@ -40,6 +43,7 @@ def test_create_new_smb_share_with_acl(user_data, smb_data) -> None:
 
     # Edit ACL Permissions
     COM.assert_page_header('Edit ACL')
+    WebUI.save_screenshot('screenshot_justbeforeaclowner')
     PERM.set_dataset_owner(smb_data['acl_owner'])
     PERM.set_dataset_owner_group(smb_data['acl_group'])
     COM.set_checkbox('apply-owner')
