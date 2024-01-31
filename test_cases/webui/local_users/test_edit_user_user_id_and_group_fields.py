@@ -15,6 +15,7 @@ class Test_Edit_User_User_ID_And_Group_Fields:
         This test verifies the user id and group fields can be edited
         """
         COM.create_non_admin_user_by_api(users['username'], users['fullname'], users['password'])
+        LU.refresh_local_user_page()
         assert LU.is_user_visible(users['username']) is True
 
         LU.unset_show_builtin_users_toggle()
@@ -32,11 +33,4 @@ class Test_Edit_User_User_ID_And_Group_Fields:
         assert LU.assert_user_primary_group(users['primary-group'])
 
         COM.close_right_panel()
-
-    @staticmethod
-    def verify_teardown(users) -> None:
-        """
-        This test removes the new user
-        """
-        # reset the change
         NAV.navigate_to_dashboard()

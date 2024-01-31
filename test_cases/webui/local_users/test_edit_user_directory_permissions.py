@@ -15,6 +15,7 @@ class Test_Edit_User_Directory_Permissions:
         This test verifies the user directory permissions can be edited
         """
         COM.create_non_admin_user_by_api(users['username'], users['fullname'], users['password'])
+        LU.refresh_local_user_page()
         assert LU.is_user_visible(users['username']) is True
 
         LU.unset_show_builtin_users_toggle()
@@ -73,7 +74,7 @@ class Test_Edit_User_Directory_Permissions:
     @staticmethod
     def verify_teardown(users) -> None:
         """
-        This test removes the new user
+        This test removes the new user and resets to the dashboard
         """
         # reset the change
         LU.delete_user_by_api(users['username'])
