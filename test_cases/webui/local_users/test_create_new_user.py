@@ -24,14 +24,14 @@ class Test_Create_New_User:
 
         COM.click_save_button()
         LU.unset_show_builtin_users_toggle()
-        COM.set_100_items_per_page()
+        LU.refresh_local_user_page('100')
 
         assert LU.is_user_visible(users['username']) is True
 
     @staticmethod
     def verify_teardown(users) -> None:
         """
-        This test removes the new user
+        This test removes the new user and resets to the dashboard
         """
         # reset the change
         LU.delete_user_by_api(users['username'])
