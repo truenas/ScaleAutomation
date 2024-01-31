@@ -15,17 +15,12 @@ class Test_Delete_New_User:
         This test verifies a new user can be deleted
         """
         COM.create_non_admin_user_by_api(users['username'], users['fullname'], users['password'])
+        LU.refresh_local_user_page()
         assert LU.is_user_visible(users['username']) is True
 
         LU.unset_show_builtin_users_toggle()
         LU.confirm_delete_user_and_primary_group_by_full_name(users['fullname'])
 
         assert LU.is_user_visible(users['username']) is False
-
-    @staticmethod
-    def verify_teardown(users) -> None:
-        """
-        This test removes the new user
-        """
-        # reset the change
         NAV.navigate_to_dashboard()
+

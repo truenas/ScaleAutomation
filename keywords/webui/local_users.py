@@ -365,8 +365,8 @@ class Local_Users:
         Example
          - Local_Users.assert_user_primary_group('wheel')
         """
-        result = ''
-        if COM.get_input_property('group') == '40':
+        result = COM.get_input_property('group')
+        if result == '40':
             result = 'builtin_administrators'
         return result == group
 
@@ -485,7 +485,8 @@ class Local_Users:
                 if COM.is_visible(xpaths.common_xpaths.checkbox_field('delete-primary-group')):
                     WebUI.xpath(xpaths.common_xpaths.checkbox_field('delete-primary-group')).click()
             COM.click_button('delete')
-            COM.assert_page_header('Delete User')
+            COM.assert_page_header('Users')
+            WebUI.delay(0.5)
 
     @classmethod
     def confirm_home_warning_dialog(cls):
@@ -541,6 +542,54 @@ class Local_Users:
         return name
 
     @classmethod
+    def get_users_list_builtin(cls, name) -> bool:
+        """
+        This method returns True if the given name is a builtin user, otherwise False
+
+        :param name: is the name of the user
+        :return: returns True if the given name is a builtin user, otherwise False
+
+        Example
+         - Local_Users.get_users_list_builtin('username')
+        """
+        name = COM.convert_to_tag_format(name)
+        return COM.get_element_property(
+            xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]//ix-cell-yesno'),
+            'textContent') == 'Yes'
+
+    @classmethod
+    def get_users_list_full_name(cls, name) -> str:
+        """
+        This method returns the user full name from the given name
+
+        :param name: is the name of the user
+        :return: returns the user full name from the given name
+
+        Example
+         - Local_Users.get_users_list_full_name('username')
+        """
+        name = COM.convert_to_tag_format(name)
+        return COM.get_element_property(
+            xpaths.common_xpaths.any_xpath(f'(//*[@data-test="row-{name}"]//ix-cell-text)[3]'),
+            'textContent')
+
+    @classmethod
+    def get_users_list_uid(cls, name) -> str:
+        """
+        This method returns the user uid from the given name
+
+        :param name: is the name of the user
+        :return: returns the user uid from the given name
+
+        Example
+         - Local_Users.get_users_list_uid('username')
+        """
+        name = COM.convert_to_tag_format(name)
+        return COM.get_element_property(
+            xpaths.common_xpaths.any_xpath(f'(//*[@data-test="row-{name}"]//ix-cell-text)[2]'),
+            'textContent')
+
+    @classmethod
     def is_user_visible(cls, username: str) -> bool:
         """
         This method returns True if the given user displays, otherwise False
@@ -551,12 +600,22 @@ class Local_Users:
         Example
          - Local_Users.is_user_visible('username')
         """
+        name = COM.convert_to_tag_format(username)
+        return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
+
+    @classmethod
+    def refresh_local_user_page(cls, count: str = 50) -> None:
+        """
+        This method refreshes the local users page
+
+        :param count: is the number of items per page
+
+        Example
+         - Local_Users.is_user_visible('username')
+        """
         NAV.navigate_to_dashboard()
         NAV.navigate_to_local_users()
-        name = COM.convert_to_tag_format(username)
-        if not COM.assert_page_header('Users'):
-            NAV.navigate_to_local_users()
-        return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
+        COM.set_items_per_page(count)
 
     @classmethod
     def select_user_shell(cls, shell) -> None:
@@ -890,5 +949,4 @@ class Local_Users:
          - Local_Users.unset_user_home_directory_permission_user_write_checkbox()
         """
         COM.unset_checkbox('user-write')
-
 

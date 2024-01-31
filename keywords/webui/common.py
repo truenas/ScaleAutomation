@@ -258,6 +258,8 @@ class Common:
             name = name.replace('AD03\\', 'AD-03-')
         if name.__contains__('iperf3'):
             name = name.replace('iperf3', 'iperf-3')
+        if name.startswith('_'):
+            name = name.replace('_', '',1)
         name = name.replace('/', '-')
         name = name.replace('_', '-')
         name = name.replace(' ', '-')
@@ -685,7 +687,6 @@ class Common:
         """
         if WebUI.get_attribute(xpaths.common_xpaths.any_xpath('//mat-select'), 'innerText') != count:
             cls.select_option('page-size', f'page-size-option-{count}')
-        # WebUI.delay(0.2)
 
     @classmethod
     def set_login_form(cls, username: str, password: str):
@@ -698,12 +699,10 @@ class Common:
         Example:
             - Common.set_login_form('user', 'password')
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'))
+        assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
         WebUI.xpath(xpaths.common_xpaths.input_field('username')).send_keys(username)
-        WebUI.wait_until_visible(xpaths.common_xpaths.input_field('password'))
         WebUI.xpath(xpaths.common_xpaths.input_field('password')).send_keys(password)
         WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Dashboard', 1))
         WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('log-in'))
         WebUI.delay(2)
 
