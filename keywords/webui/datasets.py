@@ -99,6 +99,7 @@ class Datasets:
         Example:
             - Dataset.assert_dataset_share_attached('root')
         """
+        print("returned xpath: "+xpaths.common_xpaths.share_attached(name, sharetype))
         return COM.is_visible(xpaths.common_xpaths.share_attached(name, sharetype))
 
     @classmethod
