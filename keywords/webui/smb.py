@@ -38,6 +38,13 @@ class SMB:
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@formcontrolname="watch_list"]//*[contains(text(),"{name}")]'))
 
     @classmethod
+    def click_add_share_button(cls) -> None:
+        """
+        This method clicks the add share button on the Shares page
+        """
+        WebUI.xpath(xpaths.common_xpaths.button_field('smb-share-add')).click()
+        assert COM.assert_right_panel_header('Add SMB')
+
     def click_edit_share_filesystem_acl(cls, name: str) -> None:
         """
         This method clicks the edit share filesystem acl button of the given share by the share type.
@@ -60,24 +67,21 @@ class SMB:
         """
         This method sets the afp checkbox.
         """
-        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('afp'))
-        WebUI.xpath(xpaths.common_xpaths.checkbox_field('afp')).click()
+        COM.set_checkbox('afp')
 
     @classmethod
     def set_audit_logging_enable(cls) -> None:
         """
         This method sets the audit logging enable checkbox.
         """
-        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('enable'))
-        WebUI.xpath(xpaths.common_xpaths.checkbox_field('enable')).click()
+        COM.set_checkbox('enable')
 
     @classmethod
     def set_guest_ok(cls) -> None:
         """
         This method sets the guest ok checkbox.
         """
-        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('guestok'))
-        WebUI.xpath(xpaths.common_xpaths.checkbox_field('guestok')).click()
+        COM.set_checkbox('guestok')
 
     @classmethod
     def set_ignore_list(cls, name: str) -> None:
@@ -96,7 +100,7 @@ class SMB:
         """
         This method sets the purpose for the share on the Edit Share right panel
         """
-        COM.is_visible(xpaths.common_xpaths.select_field('purpose'))
+        WebUI.wait_until_visible(xpaths.common_xpaths.select_field('purpose'))
         WebUI.xpath(xpaths.common_xpaths.select_field('purpose')).click()
         purpose = purpose.replace(' ', '-').lower()
         WebUI.xpath(xpaths.common_xpaths.option_field('purpose-' + purpose)).click()
