@@ -245,10 +245,11 @@ def share_attached(name: str, sharetype: str) -> str:
     :param name: name of the given attached share
     :return: xpath string for given attached share
     """
+    xpath = f'//*[contains(text(),"Share Attached:")]/following-sibling::*[contains(text(), "Dataset is shared via '
     if sharetype == 'smb':
-        return f'''//*[contains(text(),"Share Attached:")]/following-sibling::*[contains(text(),"Dataset is shared via SMB as '{name}'")]'''
+        return xpath+f'SMB as {name}")]'
     if sharetype == 'nfs':
-        return f'''//*[contains(text(),"Share Attached:")]/following-sibling::*[contains(text(),"Dataset is shared via NFS")]'''
+        return xpath+f'NFS")]'
 
 
 def share_attribute(sharetype: str, attribute: str, desc: str) -> str:
