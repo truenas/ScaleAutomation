@@ -21,6 +21,7 @@ class Common:
         """
         if cls.is_clickable(xpaths.common_xpaths.checkbox_field('confirm'), shared_config['SHORT_WAIT']):
             WebUI.xpath(xpaths.common_xpaths.checkbox_field('confirm')).click()
+        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('dialog-confirm'))
         WebUI.xpath(xpaths.common_xpaths.button_field('dialog-confirm')).click()
         WebUI.delay(1)
 

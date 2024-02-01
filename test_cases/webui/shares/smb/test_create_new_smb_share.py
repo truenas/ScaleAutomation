@@ -9,8 +9,10 @@ from keywords.webui.smb import SMB
 
 @pytest.mark.parametrize('user_data', get_data_list('user'))
 @pytest.mark.parametrize('smb_data', get_data_list('shares/smb'))
-def test_create_new_smb_share(user_data, smb_data) -> None:
+@pytest.mark.parametrize('smb_acl_data', get_data_list('shares/smb_acl'))
+def test_create_new_smb_share(user_data, smb_data, smb_acl_data) -> None:
     # Environment setup
+    COM.create_non_admin_user_by_api(smb_acl_data['user'], smb_acl_data['user'] + ' Full', 'testing', 'True')
     COMSHARE.delete_share_by_api('smb', smb_data['name'])
     DATASET.delete_dataset_by_api(smb_data['path'])
     DATASET.create_dataset_by_api(smb_data['path'], 'SMB')
@@ -45,4 +47,5 @@ def test_create_new_smb_share(user_data, smb_data) -> None:
     # Environment Teardown
     COMSHARE.delete_share_by_api('smb', smb_data['name'])
     DATASET.delete_dataset_by_api(smb_data['path'])
+    COM.delete_user_by_api(smb_acl_data['user'])
     NAV.navigate_to_dashboard()
