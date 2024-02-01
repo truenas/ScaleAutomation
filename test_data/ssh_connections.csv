@@ -1,0 +1,7 @@
+username,password,connection name,url,ssh username,keypair name
+ix_auto_tester,changeMeNow!,self,10.234.27.212,root,null
+ix_auto_tester,changeMeNow!,other,http://10.234.27.201,root,null
+ix_auto_tester,changeMeNow!,admin-self,10.234.27.212,admin,null
+ix_auto_tester,changeMeNow!,admin-other,http://10.234.27.201,admin,null
+ix_auto_tester,changeMeNow!,new_ssh,10.234.27.201,ix_auto_tester,null
+ix_auto_tester,changeMeNow!,rsync_api,10.234.27.201,ix_auto_tester,rsync_api

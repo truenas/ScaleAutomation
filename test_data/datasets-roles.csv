@@ -1,0 +1,5 @@
+dataset,role name,link text,link,page header,role text
+tank,System Dataset:,Manage Advanced Settings,manage-advanced-settings,Advanced,This dataset is used by the system
+ix-applications,Apps:,Manage Apps Settings,manage-apps-settings,Installed,This dataset is used to store Kubernetes config and other container related data
+smb_share,Share Attached:,Manage SMB Shares,manage-smb-shares,SMB,Dataset is shared via 
+virtmachine,Virtual Machine:,null,manage-vm,null,null

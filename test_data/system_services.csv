@@ -1,0 +1,9 @@
+Service Name,Running Status,Auto Start,Error Dialog,blnRunningAfterStart
+FTP,true,true,false,null
+iSCSI,true,true,false,null
+NFS,true,true,false,true
+S.M.A.R.T.,true,true,false,null
+SMB,true,true,false,null
+SNMP,true,true,false,null
+SSH,true,true,false,null
+UPS,false,false,true,false
