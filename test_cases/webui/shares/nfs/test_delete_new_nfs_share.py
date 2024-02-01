@@ -31,7 +31,7 @@ def test_delete_new_nfs_share(nfs_data) -> None:
     # Verify share deleted from Shares page
     NAV.navigate_to_shares()
     assert not COMSHARE.is_share_visible('nfs', nfs_data['share_page_path'])
-    
+
     # Environment Teardown
     DATASET.delete_dataset_by_api(nfs_data['api_path'])
     NAV.navigate_to_dashboard()
