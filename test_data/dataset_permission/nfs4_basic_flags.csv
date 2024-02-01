@@ -1,0 +1,3 @@
+dataset,flags,path,user_permission,getfacl_user,file_inherit,directory_inherit
+nfs4-inherit,inherit,/mnt/tank/nfs4-inherit,Allow | Modify,user:admin:rwxpDdaARWc--s:fd-----:allow,true,true
+nfs4-no-inherit,no-inherit,/mnt/tank/nfs4-no-inherit,Allow | Modify,user:admin:rwxpDdaARWc--s:-------:allow,false,false

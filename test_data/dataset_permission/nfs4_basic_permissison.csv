@@ -1,0 +1,5 @@
+dataset,option,path,user_permission,getfacl_user,read_data,execute,delete_children,read_attributes,read_named_attributes,read_acl,write_owner,write_data,append_data,delete,write_attributes,write_named_attributes,write_acl,synchronize
+nfs4-read,read,/mnt/tank/nfs4-read,Allow | Read,user:admin:r-x---a-R-c---:fd-----:allow,true,true,false,true,true,true,false,false,false,false,false,false,false,false
+nfs4-modify,modify,/mnt/tank/nfs4-modify,Allow | Modify,user:admin:rwxpDdaARWc--s:fd-----:allow,true,true,true,true,true,true,false,true,true,true,true,true,false,true
+nfs4-traverse,traverse,/mnt/tank/nfs4-traverse,Allow | Traverse,user:admin:--x---a-R-c---:fd-----:allow,false,true,false,true,true,true,false,false,false,false,false,false,false,false
+nfs4-full-control,full-control,/mnt/tank/nfs4-full-control,Allow | Full Control,user:admin:rwxpDdaARWcCos:fd-----:allow,true,true,true,true,true,true,true,true,true,true,true,true,true,true
