@@ -19,7 +19,8 @@ class Navigation:
          - Navigation.navigate_to('myLocation', 'My Location2', 'my-second-location')
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.link_field(location + '-menu'))
-        WebUI.xpath(xpaths.common_xpaths.link_field(location + '-menu')).click()
+        # WebUI.xpath(xpaths.common_xpaths.link_field(location + '-menu')).click()
+        COM.click_on_element(xpaths.common_xpaths.link_field(location + '-menu'))
         if location2 != "":
             WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'(//*[@data-test="link-{location2}"])[2]'))
             WebUI.xpath(xpaths.common_xpaths.any_xpath(f'(//*[@data-test="link-{location2}"])[2]')).click()
