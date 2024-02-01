@@ -15,7 +15,6 @@ def test_create_new_smb_share(user_data, smb_data) -> None:
     DATASET.delete_dataset_by_api(smb_data['path'])
     DATASET.create_dataset_by_api(smb_data['path'], 'SMB')
 
-    COM.login_to_truenas(user_data['username'], user_data['password'])
     NAV.navigate_to_shares()
     assert COMSHARE.assert_share_card_displays('smb')
 
