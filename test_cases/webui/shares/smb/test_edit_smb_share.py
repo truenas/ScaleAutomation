@@ -11,7 +11,9 @@ from keywords.webui.smb import SMB
 def test_edit_smb_share(smb_data) -> None:
     # Environment setup
     COMSHARE.delete_share_by_api('smb', smb_data['name'])
+    COMSHARE.delete_share_by_api('smb', smb_data['name_alt'])
     DATASET.delete_dataset_by_api(smb_data['path'])
+    DATASET.delete_dataset_by_api(smb_data['path_alt'])
     DATASET.create_dataset_by_api(smb_data['path'], 'SMB')
     DATASET.create_dataset_by_api(smb_data['path_alt'], 'SMB')
     COMSHARE.create_share_by_api('smb', smb_data['name'], smb_data['path'])
