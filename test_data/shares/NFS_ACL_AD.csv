@@ -1,0 +1,3 @@
+strSharename,strDataset,strDescription,strPreset,stradUser,stradGroup,stradUserNogroup,strOption,strBasicFlag,strOwnerID,strGroupID,strOwnerPermsCode,strGroupPermsCode,strEveryonePermsCode,strSUPermsCode,strSGPermsCode
+nfsshare,testset,nfs acl with ad using nfs share,nfs-4-open,duser01,domain users,nduser01,read,inherit,owner: 100001417,group: 100000514,owner@:r-x---a-R-c---:fd-----:allow,owner@:r-x---a-R-c---:fd-----:allow,owner@:r-x---a-R-c---:fd-----:allow,null,null
+null,null,null,null,nduser01,null,null,null,null,owner: 100001419,null,null,null,null,null,null
