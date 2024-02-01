@@ -27,5 +27,5 @@ class Test_Uninstall_App:
         """
         # reset the change
         if app_data['setup-name'] == 'webdav':
-            DATASET.delete_dataset_by_api(f'{app_data['pool']}/{app_data['setup-name']}')
+            DATASET.delete_dataset_by_api(f"{app_data['pool']}/{app_data['setup-name']}")
 
