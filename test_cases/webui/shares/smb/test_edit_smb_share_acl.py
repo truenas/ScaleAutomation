@@ -20,7 +20,6 @@ def test_edit_smb_share_acl(user_data, smb_data, smb_acl_data) -> None:
     DATASET.create_dataset_by_api(smb_data['path'])
     COMSHARE.create_share_by_api('smb', smb_data['name'], smb_data['path'])
 
-    COM.login_to_truenas(user_data['username'], user_data['password'])
     NAV.navigate_to_shares()
     assert COMSHARE.assert_share_card_displays('smb')
 

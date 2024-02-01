@@ -18,7 +18,6 @@ def test_create_new_smb_share_without_acl(user_data, smb_data, smb_acl_data) -> 
     # note creating 'generic' dataset will cause smb share creation to prompt for acl configuration
     DATASET.create_dataset_by_api(smb_data['path'])
 
-    COM.login_to_truenas(user_data['username'], user_data['password'])
     NAV.navigate_to_shares()
     assert COMSHARE.assert_share_card_displays('smb')
 
