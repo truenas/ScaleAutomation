@@ -6,9 +6,8 @@ from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation as NAV
 
 
-@pytest.mark.parametrize('user_data', get_data_list('user'))
 @pytest.mark.parametrize('nfs_data', get_data_list('shares/nfs'))
-def test_create_new_nfs_share(user_data, nfs_data) -> None:
+def test_create_new_nfs_share(nfs_data) -> None:
     # Environment setup
     COMSHARE.delete_share_by_api('nfs', nfs_data['path'])
     DATASET.delete_dataset_by_api(nfs_data['path'])

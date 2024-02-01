@@ -62,8 +62,8 @@ class Datasets:
         """
         This method return True if the given dataset is selected otherwise it returns False.
 
-        :param sharetype: the type of share connected to the dataset
         :param name: name of the given dataset
+        :param sharetype: the type of share connected to the dataset
         :return: True if the given dataset displays the specified share connected icon otherwise it returns False.
 
         Example:
@@ -92,8 +92,8 @@ class Datasets:
         """
         This method return True if the given share is attached to the dataset otherwise it returns False.
 
-        :param sharetype: the type of attached share
         :param name: name of the given share.
+        :param sharetype: the type of attached share
         :return: True if the given share is attached to the dataset otherwise it returns False.
 
         Example:

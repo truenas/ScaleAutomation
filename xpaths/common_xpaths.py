@@ -241,8 +241,8 @@ def share_attached(name: str, sharetype: str) -> str:
     """
     This function sets the text for the given attached share
 
-    :param sharetype: the type of attached share
     :param name: name of the given attached share
+    :param sharetype: the type of attached share
     :return: xpath string for given attached share
     """
     xpath = f"""//*[contains(text(),"Share Attached:")]/following-sibling::*[contains(text(), "Dataset is shared via """
