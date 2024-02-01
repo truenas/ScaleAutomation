@@ -1,6 +1,5 @@
 import pytest
 from helper.data_config import get_data_list
-from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
 from keywords.webui.datasets import Datasets as DATASET
