@@ -1,6 +1,5 @@
 import pytest
 from helper.data_config import get_data_list
-from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
 from keywords.webui.datasets import Datasets as DATASET
@@ -24,7 +23,7 @@ def test_create_new_nfs_share(user_data, nfs_data) -> None:
     COM.set_checkbox('enabled')
     COM.click_save_button()
     # Handle start/restart service popup
-    NFS.confirm_nfs_service_dialog()
+    COMSHARE.handle_share_service_dialog('nfs')
     # Verify share attachment to dataset
     NAV.navigate_to_datasets()
     DATASET.expand_dataset('tank')

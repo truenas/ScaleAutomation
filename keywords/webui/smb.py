@@ -48,21 +48,6 @@ class SMB:
         WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit ACL', 1))
 
     @classmethod
-    def confirm_smb_service_dialog(cls) -> None:
-        """
-        This method confirms the SMB services popup dialog [start/restart]
-        """
-        name = ''
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_text('SMB Service'))
-
-        if COM.is_visible(xpaths.common_xpaths.button_field('enable-service')):
-            name = 'enable-service'
-        if COM.is_visible(xpaths.common_xpaths.button_field('restart-service')):
-            name = 'restart-service'
-        WebUI.xpath(xpaths.common_xpaths.button_field(name)).click()
-        WebUI.delay(2)
-
-    @classmethod
     def delete_share_by_name(cls, sharetype: str, name: str, action: str) -> None:
         """
         This method deletes the given share on the Shares page

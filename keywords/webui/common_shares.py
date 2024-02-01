@@ -117,6 +117,26 @@ class Common_Shares:
         return API_DELETE.delete_share(sharetype, name)
 
     @classmethod
+    def handle_share_service_dialog(cls, sharetype: str):
+        """
+        This method handles the service dialog to start or restart a share service when a share is created or edited
+
+        :param sharetype: type of the given share
+        """
+        name = ''
+        if sharetype == 'smb':
+            WebUI.wait_until_visible(xpaths.common_xpaths.any_text('SMB Service'))
+        if sharetype == 'nfs':
+            WebUI.wait_until_visible(xpaths.common_xpaths.any_text(f'{sharetype.upper()} share created'))
+        if COM.is_visible(xpaths.common_xpaths.button_field('enable-service')):
+            name = 'enable-service'
+        if COM.is_visible(xpaths.common_xpaths.button_field('restart-service')):
+            name = 'restart-service'
+        if name != '':
+            WebUI.xpath(xpaths.common_xpaths.button_field(name)).click()
+        WebUI.delay(2)
+
+    @classmethod
     def is_share_enabled(cls, sharetype: str, name: str) -> bool:
         """
         This method return True if the xpath element is clickable before timeout otherwise it returns False.

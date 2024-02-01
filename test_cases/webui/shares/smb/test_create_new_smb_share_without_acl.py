@@ -33,11 +33,11 @@ def test_create_new_smb_share_without_acl(user_data, smb_data, smb_acl_data) -> 
     COM.click_save_button()
     # dismiss acl configuration dialog
     if running:
-        SMB.confirm_smb_service_dialog()
+        COMSHARE.handle_share_service_dialog('smb')
         COM.cancel_confirm_dialog()
     else:
         COM.cancel_confirm_dialog()
-        SMB.confirm_smb_service_dialog()
+        COMSHARE.handle_share_service_dialog('smb')
 
 
     # Verify Share attached to Dataset

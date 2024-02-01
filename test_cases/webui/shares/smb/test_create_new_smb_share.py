@@ -29,7 +29,7 @@ def test_create_new_smb_share(user_data, smb_data, smb_acl_data) -> None:
     COMSHARE.set_share_description(smb_data['description'])
     COM.set_checkbox('enabled')
     COM.click_save_button()
-    SMB.confirm_smb_service_dialog()
+    COMSHARE.handle_share_service_dialog('smb')
 
     # Verify Share attached to Dataset
     NAV.navigate_to_datasets()
