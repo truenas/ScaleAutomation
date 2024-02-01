@@ -27,7 +27,7 @@ def test_edit_smb_share_acl(user_data, smb_data, smb_acl_data) -> None:
     # Edit ACL Permissions
     SMB.click_edit_share_filesystem_acl(smb_data['name'])
     if COM.assert_page_header('Select a preset ACL'):
-        COM.click_button('Cancel')
+        COM.click_button('cancel')
     assert COM.assert_page_header('Edit ACL')
     PERM.set_dataset_owner(smb_data['acl_owner'])
     PERM.set_dataset_owner_group(smb_data['acl_group'])
