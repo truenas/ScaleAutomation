@@ -143,7 +143,7 @@ class Common:
         Example:
             - Common.cancel_confirm_dialog()
         """
-        assert cls.is_visible(xpaths.common_xpaths.button_field('dialog-cancel'))
+        assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('dialog-cancel'))
         WebUI.xpath(xpaths.common_xpaths.button_field('dialog-cancel')).click()
         WebUI.delay(1)
 
