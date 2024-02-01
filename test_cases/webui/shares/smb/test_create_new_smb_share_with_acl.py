@@ -43,7 +43,6 @@ def test_create_new_smb_share_with_acl(user_data, smb_data, smb_acl_data) -> Non
 
     # Edit ACL Permissions
     COM.assert_page_header('Edit ACL')
-    WebUI.save_screenshot('screenshot_justbeforeaclowner')
     PERM.set_dataset_owner(smb_data['acl_owner'])
     PERM.set_dataset_owner_group(smb_data['acl_group'])
     COM.set_checkbox('apply-owner')
