@@ -232,7 +232,7 @@ class Common:
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT']).click()
         WebUI.delay(2)
-        WebUI.wait_until_not_visible('(//ix-icon[@name="cancel"])[1]')
+
 
     @classmethod
     def close_right_panel(cls) -> None:
