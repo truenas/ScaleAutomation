@@ -11,7 +11,9 @@ from keywords.webui.smb import SMB
 def test_edit_smb_share(smb_data) -> None:
     # Environment setup
     COMSHARE.delete_share_by_api('smb', smb_data['name'])
+    COMSHARE.delete_share_by_api('smb', smb_data['name_alt'])
     DATASET.delete_dataset_by_api(smb_data['path'])
+    DATASET.delete_dataset_by_api(smb_data['path_alt'])
     DATASET.create_dataset_by_api(smb_data['path'], 'SMB')
     DATASET.create_dataset_by_api(smb_data['path_alt'], 'SMB')
     COMSHARE.create_share_by_api('smb', smb_data['name'], smb_data['path'])
@@ -27,14 +29,14 @@ def test_edit_smb_share(smb_data) -> None:
     COMSHARE.set_share_description(smb_data['description_alt'])
     COM.unset_checkbox('enabled')
     COM.click_save_button()
-    SMB.confirm_smb_service_dialog()
+    COMSHARE.handle_share_service_dialog('smb')
 
     # Verify Share attached to Dataset
     NAV.navigate_to_datasets()
     DATASET.expand_dataset('tank')
     DATASET.select_dataset(smb_data['name_alt'])
-    assert DATASET.assert_dataset_share_attached(smb_data['name_alt'])
-    assert DATASET.assert_dataset_roles_smb_icon(smb_data['name_alt'])
+    assert DATASET.assert_dataset_share_attached(smb_data['name_alt'], 'smb')
+    assert DATASET.assert_dataset_roles_share_icon(smb_data['name_alt'], 'smb')
 
     # Verify share on share page
     NAV.navigate_to_shares()

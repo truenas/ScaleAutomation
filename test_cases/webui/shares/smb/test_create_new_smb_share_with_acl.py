@@ -21,7 +21,7 @@ def test_create_new_smb_share_with_acl(smb_data) -> None:
 
     # Add SMB Share
     running = COM.is_service_running('service-status-cifs')
-    SMB.click_add_share_button()
+    COMSHARE.click_add_share_button('smb')
     COMSHARE.set_share_path(smb_data['path'])
     COMSHARE.set_share_name(smb_data['name'])
     SMB.set_share_purpose(smb_data['purpose'])
@@ -30,11 +30,11 @@ def test_create_new_smb_share_with_acl(smb_data) -> None:
     COM.click_save_button()
     # accept acl configuration dialog
     if running:
-        SMB.confirm_smb_service_dialog()
+        COMSHARE.handle_share_service_dialog('smb')
         COM.assert_confirm_dialog()
     else:
         COM.assert_confirm_dialog()
-        SMB.confirm_smb_service_dialog()
+        COMSHARE.handle_share_service_dialog('smb')
 
     # Edit ACL Permissions
     COM.assert_page_header('Edit ACL')

@@ -51,6 +51,16 @@ class Common_Shares:
         return COM.is_visible(xpaths.common_xpaths.share_attribute(sharetype, 'path', path))
 
     @classmethod
+    def click_add_share_button(cls, sharetype: str):
+        """
+        This method clicks the add share button on the Shares page for the specified sharetype
+
+        :param sharetype: type of the given share
+        """
+        WebUI.xpath(xpaths.common_xpaths.button_field(f'{sharetype}-share-add')).click()
+        assert COM.is_visible(xpaths.common_xpaths.any_header(f'Add {sharetype.upper()}', 3))
+
+    @classmethod
     def click_advanced_options(cls) -> None:
         """
         This method clicks the advanced options button.
@@ -107,6 +117,26 @@ class Common_Shares:
         :return: True if the share name is visible otherwise it returns False.
         """
         return API_DELETE.delete_share(sharetype, name)
+
+    @classmethod
+    def handle_share_service_dialog(cls, sharetype: str):
+        """
+        This method handles the service dialog to start or restart a share service when a share is created or edited
+
+        :param sharetype: type of the given share
+        """
+        name = ''
+        if sharetype == 'smb':
+            WebUI.wait_until_visible(xpaths.common_xpaths.any_text('SMB Service'))
+        if sharetype == 'nfs':
+            WebUI.wait_until_visible(xpaths.common_xpaths.any_text(f'{sharetype.upper()} share created'))
+        if COM.is_visible(xpaths.common_xpaths.button_field('enable-service')):
+            name = 'enable-service'
+        if COM.is_visible(xpaths.common_xpaths.button_field('restart-service')):
+            name = 'restart-service'
+        if name != '':
+            WebUI.xpath(xpaths.common_xpaths.button_field(name)).click()
+        WebUI.delay(2)
 
     @classmethod
     def is_share_enabled(cls, sharetype: str, name: str) -> bool:

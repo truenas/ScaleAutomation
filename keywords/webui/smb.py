@@ -38,14 +38,6 @@ class SMB:
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@formcontrolname="watch_list"]//*[contains(text(),"{name}")]'))
 
     @classmethod
-    def click_add_share_button(cls) -> None:
-        """
-        This method clicks the add share button on the Shares page
-        """
-        WebUI.xpath(xpaths.common_xpaths.button_field('smb-share-add')).click()
-        assert COM.assert_right_panel_header('Add SMB')
-
-    @classmethod
     def click_edit_share_filesystem_acl(cls, name: str) -> None:
         """
         This method clicks the edit share filesystem acl button of the given share by the share type.
@@ -54,21 +46,6 @@ class SMB:
         """
         WebUI.xpath(xpaths.common_xpaths.button_field(f'card-smb-share-{name.lower()}-security-row-action')).click()
         WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit ACL', 1))
-
-    @classmethod
-    def confirm_smb_service_dialog(cls) -> None:
-        """
-        This method confirms the SMB services popup dialog [start/restart]
-        """
-        name = ''
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_text('SMB Service'))
-
-        if COM.is_visible(xpaths.common_xpaths.button_field('enable-service')):
-            name = 'enable-service'
-        if COM.is_visible(xpaths.common_xpaths.button_field('restart-service')):
-            name = 'restart-service'
-        WebUI.xpath(xpaths.common_xpaths.button_field(name)).click()
-        WebUI.delay(2)
 
     @classmethod
     def delete_share_by_name(cls, sharetype: str, name: str, action: str) -> None:

@@ -20,7 +20,7 @@ def test_create_new_smb_share_with_advanced_options(smb_data) -> None:
 
     # Add SMB Share
     running = COM.is_service_running('service-status-cifs')
-    SMB.click_add_share_button()
+    COMSHARE.click_add_share_button('smb')
     COMSHARE.set_share_path(smb_data['path'])
     COMSHARE.set_share_name(smb_data['name'])
     SMB.set_share_purpose(smb_data['purpose'])
@@ -36,11 +36,11 @@ def test_create_new_smb_share_with_advanced_options(smb_data) -> None:
     COM.click_save_button()
     # dismiss acl configuration dialog
     if running:
-        SMB.confirm_smb_service_dialog()
+        COMSHARE.handle_share_service_dialog('smb')
         COM.cancel_confirm_dialog()
     else:
         COM.cancel_confirm_dialog()
-        SMB.confirm_smb_service_dialog()
+        COMSHARE.handle_share_service_dialog('smb')
 
     # Verify Advanced Options
     COMSHARE.click_edit_share('smb', smb_data['name'])

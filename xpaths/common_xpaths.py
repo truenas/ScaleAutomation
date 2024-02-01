@@ -237,14 +237,19 @@ def selected_dataset(name: str) -> str:
     return f'//*[contains(@class,"own-name") and contains(text(),"{name}")]'
 
 
-def share_attached(name: str) -> str:
+def share_attached(name: str, sharetype: str) -> str:
     """
     This function sets the text for the given attached share
 
     :param name: name of the given attached share
+    :param sharetype: the type of attached share
     :return: xpath string for given attached share
     """
-    return f'''//*[contains(text(),"Share Attached:")]/following-sibling::*[contains(text(),"Dataset is shared via SMB as '{name}'")]'''
+    xpath = f"""//*[contains(text(),"Share Attached:")]/following-sibling::*[contains(text(), "Dataset is shared via """
+    if sharetype == 'smb':
+        return xpath+f"""SMB as '{name}'")]"""
+    if sharetype == 'nfs':
+        return xpath+f'NFS")]'
 
 
 def share_attribute(sharetype: str, attribute: str, desc: str) -> str:
@@ -257,12 +262,18 @@ def share_attribute(sharetype: str, attribute: str, desc: str) -> str:
     :return: xpath string for given share name
     """
     index = 1
-    if attribute == 'name':
-        index = 1
-    if attribute == 'path':
-        index = 2
-    if attribute == 'description':
-        index = 3
+    if sharetype == "smb":
+        if attribute == 'name':
+            index = 1
+        if attribute == 'path':
+            index = 2
+        if attribute == 'description':
+            index = 3
+    if sharetype == 'nfs':
+        if attribute == 'path':
+            index = 1
+        if attribute == 'description':
+            index = 2
     return f'//ix-{sharetype}-card//*[@data-test="row"]/td[{index}]/descendant::*[contains(text(),"{desc}")]'
 
 
