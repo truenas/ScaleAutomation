@@ -20,8 +20,7 @@ class Navigation:
         """
         COM.click_on_element(xpaths.common_xpaths.link_field(location + '-menu'))
         if location2 != "":
-            WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'(//*[@data-test="link-{location2}"])[2]'))
-            WebUI.xpath(xpaths.common_xpaths.any_xpath(f'(//*[@data-test="link-{location2}"])[2]')).click()
+            COM.click_on_element(xpaths.common_xpaths.any_xpath(f'(//*[@data-test="link-{location2}"])[2]'))
         WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header, 1))
         assert COM.is_visible(xpaths.common_xpaths.any_header(header, 1))
         WebUI.delay(2)
