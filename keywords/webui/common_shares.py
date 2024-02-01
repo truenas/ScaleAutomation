@@ -53,7 +53,9 @@ class Common_Shares:
     @classmethod
     def click_add_share_button(cls, sharetype: str):
         """
-        This method clicks the add share button on the Shares page
+        This method clicks the add share button on the Shares page for the specified sharetype
+
+        :param sharetype: type of the given share
         """
         WebUI.xpath(xpaths.common_xpaths.button_field(f'{sharetype}-share-add')).click()
         assert COM.is_visible(xpaths.common_xpaths.any_header(f'Add {sharetype.upper()}', 3))

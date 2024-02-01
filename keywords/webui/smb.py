@@ -38,13 +38,6 @@ class SMB:
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@formcontrolname="watch_list"]//*[contains(text(),"{name}")]'))
 
     @classmethod
-    def click_add_share_button(cls) -> None:
-        """
-        This method clicks the add share button on the Shares page
-        """
-        WebUI.xpath(xpaths.common_xpaths.button_field('smb-share-add')).click()
-        assert COM.assert_right_panel_header('Add SMB')
-
     def click_edit_share_filesystem_acl(cls, name: str) -> None:
         """
         This method clicks the edit share filesystem acl button of the given share by the share type.
