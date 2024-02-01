@@ -58,19 +58,20 @@ class Datasets:
         return COM.assert_label_and_value_exist('Owner:', name)
 
     @classmethod
-    def assert_dataset_roles_smb_icon(cls, name: str) -> bool:
+    def assert_dataset_roles_share_icon(cls, name: str, sharetype: str) -> bool:
         """
         This method return True if the given dataset is selected otherwise it returns False.
 
+        :param sharetype: the type of share connected to the dataset
         :param name: name of the given dataset
-        :return: True if the given dataset is selected otherwise it returns False.
+        :return: True if the given dataset displays the specified share connected icon otherwise it returns False.
 
         Example:
-            - Dataset.assert_dataset_roles_smb_icon('root')
+            - Dataset.assert_dataset_roles_share_icon('dataset_name', 'smb')
         """
         child = f'//ix-tree-node//*[contains(text(),"{name}")]'
         parent = 'ix-dataset-node'
-        target = "ix-icon[@name='ix:smb_share']"
+        target = f'ix-icon[@name="ix:{sharetype}_share"]'
         return COM.is_visible(xpaths.common_xpaths.any_child_parent_target(child, parent, target))
 
     @classmethod
@@ -87,17 +88,18 @@ class Datasets:
         return WebUI.wait_until_visible(xpaths.common_xpaths.selected_dataset(name))
 
     @classmethod
-    def assert_dataset_share_attached(cls, name: str) -> bool:
+    def assert_dataset_share_attached(cls, name: str, sharetype: str) -> bool:
         """
         This method return True if the given share is attached to the dataset otherwise it returns False.
 
+        :param sharetype: the type of attached share
         :param name: name of the given share.
         :return: True if the given share is attached to the dataset otherwise it returns False.
 
         Example:
             - Dataset.assert_dataset_share_attached('root')
         """
-        return COM.is_visible(xpaths.common_xpaths.share_attached(name))
+        return COM.is_visible(xpaths.common_xpaths.share_attached(name, sharetype))
 
     @classmethod
     def assert_dataset_tree(cls) -> bool:

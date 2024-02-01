@@ -24,7 +24,7 @@ def test_create_new_smb_share_with_advanced_options(user_data, smb_data, smb_acl
 
     # Add SMB Share
     running = COM.is_service_running('service-status-cifs')
-    SMB.click_add_share_button()
+    COMSHARE.click_add_share_button('smb')
     COMSHARE.set_share_path(smb_data['path'])
     COMSHARE.set_share_name(smb_data['name'])
     SMB.set_share_purpose(smb_data['purpose'])

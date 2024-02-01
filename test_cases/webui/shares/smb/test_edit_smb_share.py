@@ -37,8 +37,8 @@ def test_edit_smb_share(user_data, smb_data, smb_acl_data) -> None:
     NAV.navigate_to_datasets()
     DATASET.expand_dataset('tank')
     DATASET.select_dataset(smb_data['name_alt'])
-    assert DATASET.assert_dataset_share_attached(smb_data['name_alt'])
-    assert DATASET.assert_dataset_roles_smb_icon(smb_data['name_alt'])
+    assert DATASET.assert_dataset_share_attached(smb_data['name_alt'], 'smb')
+    assert DATASET.assert_dataset_roles_share_icon(smb_data['name_alt'], 'smb')
 
     # Verify share on share page
     NAV.navigate_to_shares()

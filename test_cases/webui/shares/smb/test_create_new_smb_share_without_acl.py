@@ -24,7 +24,7 @@ def test_create_new_smb_share_without_acl(user_data, smb_data, smb_acl_data) -> 
 
     # Add SMB Share
     running = COM.is_service_running('service-status-cifs')
-    SMB.click_add_share_button()
+    COMSHARE.click_add_share_button('smb')
     COMSHARE.set_share_path(smb_data['path'])
     COMSHARE.set_share_name(smb_data['name'])
     SMB.set_share_purpose(smb_data['purpose'])
@@ -44,8 +44,8 @@ def test_create_new_smb_share_without_acl(user_data, smb_data, smb_acl_data) -> 
     NAV.navigate_to_datasets()
     DATASET.expand_dataset('tank')
     DATASET.select_dataset(smb_data['name'])
-    assert DATASET.assert_dataset_share_attached(smb_data['name'])
-    assert DATASET.assert_dataset_roles_smb_icon(smb_data['name'])
+    assert DATASET.assert_dataset_share_attached(smb_data['name'], 'smb')
+    assert DATASET.assert_dataset_roles_share_icon(smb_data['name'], 'smb')
 
     # Verify share on share page
     NAV.navigate_to_shares()

@@ -51,6 +51,14 @@ class Common_Shares:
         return COM.is_visible(xpaths.common_xpaths.share_attribute(sharetype, 'path', path))
 
     @classmethod
+    def click_add_share_button(cls, sharetype: str):
+        """
+        This method clicks the add share button on the Shares page
+        """
+        WebUI.xpath(xpaths.common_xpaths.button_field(f'{sharetype}-share-add')).click()
+        assert COM.is_visible(xpaths.common_xpaths.any_header(f'Add {sharetype.upper()}', 3))
+
+    @classmethod
     def click_advanced_options(cls) -> None:
         """
         This method clicks the advanced options button.
