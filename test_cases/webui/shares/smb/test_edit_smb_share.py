@@ -53,4 +53,5 @@ def test_edit_smb_share(user_data, smb_data, smb_acl_data) -> None:
     DATASET.delete_dataset_by_api(smb_data['path'])
     COMSHARE.delete_share_by_api('smb', smb_data['name_alt'])
     DATASET.delete_dataset_by_api(smb_data['path_alt'])
+    COM.delete_user_by_api(smb_acl_data['user'])
     NAV.navigate_to_dashboard()

@@ -57,4 +57,5 @@ def test_create_new_smb_share_with_acl(user_data, smb_data, smb_acl_data) -> Non
     # Environment Teardown
     COMSHARE.delete_share_by_api('smb', smb_data['name'])
     DATASET.delete_dataset_by_api(smb_data['path'])
+    COM.delete_user_by_api(smb_acl_data['user'])
     NAV.navigate_to_dashboard()
