@@ -6,9 +6,8 @@ from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation as NAV
 
 
-@pytest.mark.parametrize('user_data', get_data_list('user'))
 @pytest.mark.parametrize('smb_data', get_data_list('shares/smb'))
-def test_delete_new_smb_share(user_data, smb_data) -> None:
+def test_delete_new_smb_share(smb_data) -> None:
     # Environment setup
     COMSHARE.delete_share_by_api('smb', smb_data['name'])
     DATASET.delete_dataset_by_api(smb_data['path'])
