@@ -79,6 +79,7 @@ class Common_Shares:
         if sharetype == 'nfs':
             name = name.replace('/', '-')
         path = f'card-{sharetype}-share-{name.lower()}-delete-row-action'
+        path = path.replace('--', '-')
         WebUI.xpath(xpaths.common_xpaths.button_field(path)).click()
 
     @classmethod

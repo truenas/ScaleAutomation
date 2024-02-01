@@ -93,7 +93,7 @@ class API_POST:
     @classmethod
     def create_share(cls, sharetype: str, name: str, path: str) -> Response:
         """
-        This method deletes the given dataset.
+        This method creates the given share.
 
         :param sharetype: is the sharetype of the share.
         :param name: is the name of the share.
@@ -102,7 +102,10 @@ class API_POST:
         """
         response = GET(f'/sharing/{sharetype}?name={name}').json()
         if not response:
-            response = POST(f'/sharing/{sharetype}/', {"name": name, "path": path})
+            if sharetype == 'smb':
+                response = POST(f'/sharing/{sharetype}/', {"name": name, "path": path})
+            if sharetype == 'nfs':
+                response = POST(f'/sharing/{sharetype}/', {"path": path})
             assert response.status_code == 200, response.text
         return response
 

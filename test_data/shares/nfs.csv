@@ -1,2 +1,2 @@
-dataset_name,dataset_name_alt,path,path_alt,full_path,full_path_alt,description,description_alt,maproot_user,maproot_group,mapall_user,mapall_group,security,networks,hosts
+dataset_name,dataset_name_alt,api_path,api_path_alt,share_page_path,share_page_alt,description,description_alt,maproot_user,maproot_group,mapall_user,mapall_group,security,networks,hosts
 NFSSHARE,EDITIEDNFSSHARE,tank/NFSSHARE,tank/EDITIEDNFSSHARE,/mnt/tank/NFSSHARE,/mnt/tank/EDITIEDNFSSHARE,For automation testing,EDITED DESC
