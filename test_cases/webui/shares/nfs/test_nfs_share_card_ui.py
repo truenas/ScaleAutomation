@@ -44,12 +44,12 @@ def test_nfs_share_card_ui(nfs_data) -> None:
     assert COMSHARE.is_share_service_stopped('nfs')
     assert COMSHARE.start_share_service_by_actions_menu('nfs')
     assert COMSHARE.stop_share_service_by_actions_menu('nfs')
-    assert COMSHARE.assert_share_card_ui_add_button('nfs')
-    assert COMSHARE.assert_share_card_ui_actions_menu_button('nfs')
-    assert COMSHARE.assert_share_card_row_ui_enabled_button('nfs', "/mnt/tank/shareone")
-    assert COMSHARE.assert_share_card_row_ui_edit_button('nfs', "/mnt/tank/shareone")
-    assert COMSHARE.assert_share_card_row_ui_delete_button('nfs', "/mnt/tank/shareone")
-    assert COMSHARE.assert_share_card_ui_view_all_button('nfs')
+    assert COMSHARE.assert_share_card_add_button('nfs')
+    assert COMSHARE.assert_share_card_actions_menu_button('nfs')
+    assert COMSHARE.assert_share_card_enabled_button_by_name('nfs', "/mnt/tank/shareone")
+    assert COMSHARE.assert_share_card_button_by_name('nfs', "/mnt/tank/shareone", 'edit')
+    assert COMSHARE.assert_share_card_button_by_name('nfs', "/mnt/tank/shareone", 'delete')
+    assert COMSHARE.assert_share_card_view_all_button('nfs')
 
     # Verify only four shares display regularly
     assert COMSHARE.assert_share_path('nfs', "/mnt/tank/shareone")
@@ -68,10 +68,10 @@ def test_nfs_share_card_ui(nfs_data) -> None:
     assert COMSHARE.assert_view_all_page_share_path('nfs', "/mnt/tank/sharefive")
 
     # Verify NFS View All page UI
-    assert COMSHARE.assert_share_view_all_page_ui_add_button('nfs')
-    assert COMSHARE.assert_share_view_all_page_ui_enabled_button('nfs', "/mnt/tank/shareone")
-    assert COMSHARE.assert_share_view_all_page_ui_edit_button('nfs', "/mnt/tank/shareone")
-    assert COMSHARE.assert_share_view_all_page_ui_delete_button('nfs', "/mnt/tank/shareone")
+    assert COMSHARE.assert_share_view_all_page_add_button('nfs')
+    assert COMSHARE.assert_share_view_all_page_enabled_button('nfs', "/mnt/tank/shareone")
+    assert COMSHARE.assert_share_view_all_page_button_by_name('nfs', "/mnt/tank/shareone", 'edit')
+    assert COMSHARE.assert_share_view_all_page_button_by_name('nfs', "/mnt/tank/shareone", 'delete')
 
     # clean up
     DATASET.delete_dataset_by_api("tank/shareone")
