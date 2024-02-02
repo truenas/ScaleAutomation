@@ -67,6 +67,17 @@ def button_field(field: str) -> str:
     return f'//*[@data-test="button-{field}"]'
 
 
+def button_field_by_row(field: str, row: int) -> str:
+    """
+    This function sets the text for the given button name
+
+    :param field: text of the given button name
+    :param row: row number of the given button
+    :return: xpath string for given button
+    """
+    return f'(//*[@data-test="button-{field}"])[{row}]'
+
+
 def button_share_action_by_name(sharetype: str, name: str, action: str) -> str:
     """
     This function sets the text for the given button name
@@ -167,6 +178,16 @@ def input_field(field: str) -> str:
     return f'//*[@data-test="input-{field}"]'
 
 
+def input_delete_button(field: str) -> str:
+    """
+    This function sets the text for the given input name
+
+    :param field: text of the given input name
+    :return: xpath string for given input
+    """
+    return f'//*[@data-test="input-{field}"]/..//ix-icon'
+
+
 def label_and_value(label: str, value: str) -> str:
     """
     This function sets the text for the given label and value
@@ -176,16 +197,6 @@ def label_and_value(label: str, value: str) -> str:
     :return: xpath string for given label and value
     """
     return f'//*[contains(.,"{label}") and contains(.,"{value}")]'
-
-
-def link_dataset(name: str) -> str:
-    """
-    This function sets the text for the given dataset
-
-    :param name: name of the given dataset
-    :return: xpath string for given dataset
-    """
-    return f'//ix-dataset-node//*[contains(text(),"{name}")]'
 
 
 def link_field(field: str) -> str:
@@ -216,6 +227,7 @@ def radio_button_field(field: str) -> str:
     :return: xpath string for given radio button
     """
     return f'//*[@data-test="radio-button-{field}"]'
+
 
 def search_field() -> str:
     """
@@ -315,3 +327,13 @@ def toggle_field(field: str) -> str:
     :return: xpath string for given toggle field
     """
     return f'//*[@data-test="toggle-{field}"]//button'
+
+
+def tree_node_field(field: str) -> str:
+    """
+    This function sets the text for the given tree node name
+
+    :param field: text of the given tree node name
+    :return: xpath string for given tree node
+    """
+    return f'//ix-tree-node//span[contains(text(),"{field}")]'
