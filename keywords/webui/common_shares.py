@@ -270,6 +270,18 @@ class Common_Shares:
         return API_POST.create_share(sharetype, name, "/mnt/"+path)
 
     @classmethod
+    def delete_all_shares_by_sharetype(cls, sharetype: str):
+        """
+        This method deletes the all shares by the given sharetype.
+
+        :param sharetype: type of the given share
+        """
+        loc = f'//*[contains(@data-test,"-delete-row-action") and starts-with(@data-test,"button-card-{sharetype}")]'
+        while COM.is_visible(loc):
+            COM.click_on_element(loc)
+            COM.assert_confirm_dialog()
+
+    @classmethod
     def delete_share_by_api(cls, sharetype: str, name: str) -> Response:
         """
         This method deletes the given share by the share type.
