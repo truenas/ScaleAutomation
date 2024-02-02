@@ -79,6 +79,15 @@ def button_share_action_by_name(sharetype: str, name: str, action: str) -> str:
     return f'//ix-{sharetype}-card//span[contains(text(),"{name}")]/ancestor::tr/descendant::*[contains(@data-test,"-{action}-row-action")]'
 
 
+def button_share_actions_menu(sharetype: str) -> str:
+    """
+    This function sets the text for the given button name
+
+    :param sharetype: type of the given share
+    :return: xpath string for the given acton button
+    """
+    return f'//ix-{sharetype}-card//ix-service-extra-actions//button'
+
 def card_title(text: str) -> str:
     """
     The function returns the xpath text of the given card title.

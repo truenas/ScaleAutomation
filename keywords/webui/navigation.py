@@ -18,6 +18,8 @@ class Navigation:
          - Navigation.navigate_to('myLocation', 'My Location')
          - Navigation.navigate_to('myLocation', 'My Location2', 'my-second-location')
         """
+        if (COM.is_visible(xpaths.common_xpaths.any_header(header, 1)) is True) & (header is not 'Dashboard'):
+            cls.navigate_to_dashboard()
         COM.click_on_element(xpaths.common_xpaths.link_field(location + '-menu'))
         if location2 != "":
             COM.click_on_element(xpaths.common_xpaths.any_xpath(f'(//*[@data-test="link-{location2}"])[2]'))
