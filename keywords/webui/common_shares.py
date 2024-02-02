@@ -64,7 +64,6 @@ class Common_Shares:
             name = name.replace('/', '-')
         path = f'card-{sharetype}-share-{name.lower()}-{button}-row-action'
         path = path.replace('--', '-')
-        print(path)
         return COM.is_visible(xpaths.common_xpaths.button_field(path))
 
     @classmethod
@@ -175,7 +174,6 @@ class Common_Shares:
             name = name.replace('/', '-')
         loc = xpaths.common_xpaths.any_xpath(f'//*[@data-test="toggle-enabled-{sharetype}-share-{name}-row-toggle"]')
         loc = loc.replace('--', '-')
-        print(loc)
         return COM.is_visible(loc)
 
     @classmethod
@@ -192,7 +190,6 @@ class Common_Shares:
             name = name.replace('/', '-')
         loc = xpaths.common_xpaths.button_field(f'{sharetype}-share-{name}-{button}-row-action')
         loc = loc.replace('--', '-')
-        print(loc)
         return COM.is_visible(loc)
 
     @classmethod
@@ -208,7 +205,6 @@ class Common_Shares:
             path = path.replace('/', '-')
         loc = xpaths.common_xpaths.any_xpath(f'//*[@data-test="text-path-{sharetype}-share-{path}-row-text"]')
         loc = loc.replace('--', '-')
-        print(loc)
         return COM.is_visible(loc)
 
     @classmethod
