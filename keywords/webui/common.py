@@ -527,7 +527,7 @@ class Common:
         cls.assert_confirm_dialog()
         WebUI.delay(10)
         assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT'])
-        WebUI.delay(2)
+        WebUI.delay(10)
 
     @classmethod
     def select_then_deselect_input_field(cls, name: str):
