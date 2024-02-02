@@ -18,6 +18,86 @@ class Common_Shares:
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//ix-{sharetype}-card'))
 
     @classmethod
+    def assert_share_card_row_ui_delete_button(cls, sharetype: str, name: str) -> bool:
+        """
+        This method returns True if the Delete button on the specified share card's share row is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :param name: The name(SMB)/path(NFS) of the share
+        :return: True if the Delete button on the specified share card's share row is visible otherwise it returns False.
+        """
+        return cls.assert_share_card_row_ui_button(sharetype, name, 'delete')
+
+    @classmethod
+    def assert_share_card_row_ui_edit_button(cls, sharetype: str, name: str) -> bool:
+        """
+        This method returns True if the Edit button on the specified share card's share row is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :param name: The name(SMB)/path(NFS) of the share
+        :return: True if the Edit button on the specified share card's share row is visible otherwise it returns False.
+        """
+        return cls.assert_share_card_row_ui_button(sharetype, name, 'edit')
+
+    @classmethod
+    def assert_share_card_row_ui_enabled_button(cls, sharetype: str, name: str) -> bool:
+        """
+        This method returns True if the Enabled button on the specified share card's share row is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :param name: The name(SMB)/path(NFS) of the share
+        :return: True if the Enabled button on the specified share card's share row is visible otherwise it returns False.
+        """
+        return COM.is_visible(xpaths.common_xpaths.share_enabled_slider(sharetype, name))
+
+    @classmethod
+    def assert_share_card_row_ui_button(cls, sharetype: str, name: str, button: str) -> bool:
+        """
+        This method returns True if the specified button on the specified share card's share row is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :param name: The name(SMB)/path(NFS) of the share
+        :param button: The button type to verify
+        :return: True if the specified button on the specified share card's share row is visible otherwise it returns False.
+        """
+        if sharetype == 'nfs':
+            name = name.replace('/', '-')
+        path = f'card-{sharetype}-share-{name.lower()}-{button}-row-action'
+        path = path.replace('--', '-')
+        print(path)
+        return COM.is_visible(xpaths.common_xpaths.button_field(path))
+
+    @classmethod
+    def assert_share_card_ui_add_button(cls, sharetype: str) -> bool:
+        """
+        This method returns True if the Add button on the specified share card is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :return: True if the Add button on the specified share card is visible otherwise it returns False.
+        """
+        return COM.is_visible(xpaths.common_xpaths.button_field(f'{sharetype}-share-add'))
+
+    @classmethod
+    def assert_share_card_ui_actions_menu_button(cls, sharetype: str) -> bool:
+        """
+        This method returns True if the Add button on the specified share card is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :return: True if the Add button on the specified share card is visible otherwise it returns False.
+        """
+        return COM.is_visible(xpaths.common_xpaths.button_share_page_share_actions_menu(sharetype))
+
+    @classmethod
+    def assert_share_card_ui_view_all_button(cls, sharetype: str) -> bool:
+        """
+        This method returns True if the View All button on the specified share card is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :return: True if the View All button on the specified share card is visible otherwise it returns False.
+        """
+        return COM.is_visible(xpaths.common_xpaths.link_field(f'{sharetype}-share-view-all'))
+
+    @classmethod
     def assert_share_description(cls, sharetype: str, desc: str) -> bool:
         """
         This method sets the description for the share on the Edit Share right panel
@@ -42,13 +122,95 @@ class Common_Shares:
     @classmethod
     def assert_share_path(cls, sharetype: str, path: str) -> bool:
         """
-        This method sets the path for the share on the Edit Share right panel
+        This method asserts the path for the share row of the given share.
 
         :param sharetype: type of the given share
         :param path: path of the given share
         :return: True if the share name is visible otherwise it returns False.
         """
         return COM.is_visible(xpaths.common_xpaths.share_attribute(sharetype, 'path', path))
+
+    @classmethod
+    def assert_share_view_all_page_ui_add_button(cls, sharetype: str) -> bool:
+        """
+        This method returns True if the Add button on the specified share card is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :return: True if the Add button on the specified share card is visible otherwise it returns False.
+        """
+        return COM.is_visible(xpaths.common_xpaths.button_field(f'add-{sharetype}-share'))
+
+    @classmethod
+    def assert_share_view_all_page_ui_delete_button(cls, sharetype: str, name: str) -> bool:
+        """
+        This method returns True if the Edit button on the specified share card's share row is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :param name: The name(SMB)/path(NFS) of the share
+        :return: True if the Edit button on the specified share card's share row is visible otherwise it returns False.
+        """
+        return cls.assert_share_view_all_page_ui_button(sharetype, name, 'edit')
+
+    @classmethod
+    def assert_share_view_all_page_ui_edit_button(cls, sharetype: str, name: str) -> bool:
+        """
+        This method returns True if the Edit button on the specified share card's share row is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :param name: The name(SMB)/path(NFS) of the share
+        :return: True if the Edit button on the specified share card's share row is visible otherwise it returns False.
+        """
+        return cls.assert_share_view_all_page_ui_button(sharetype, name, 'edit')
+
+    @classmethod
+    def assert_share_view_all_page_ui_enabled_button(cls, sharetype: str, name: str) -> bool:
+        """
+        This method returns True if the Edit button on the specified share card's share row is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :param name: The name(SMB)/path(NFS) of the share
+        :return: True if the Edit button on the specified share card's share row is visible otherwise it returns False.
+        """
+        if sharetype == 'nfs':
+            name = name.replace('/', '-')
+        loc = xpaths.common_xpaths.any_xpath(f'//*[@data-test="toggle-enabled-{sharetype}-share-{name}-row-toggle"]')
+        loc = loc.replace('--', '-')
+        print(loc)
+        return COM.is_visible(loc)
+
+    @classmethod
+    def assert_share_view_all_page_ui_button(cls, sharetype: str, name: str, button: str) -> bool:
+        """
+        This method returns True if the specified button on the specified share card's share row is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :param name: The name(SMB)/path(NFS) of the share
+        :param button: The button type to verify
+        :return: True if the specified button on the specified share card's share row is visible otherwise it returns False.
+        """
+        if sharetype == 'nfs':
+            name = name.replace('/', '-')
+        path = f'{sharetype}-share-{name.lower()}-{button}-row-action'
+        xpaths.common_xpaths.any_xpath(f'//*[@data-test="text-path-{sharetype}-share-{path}-row-text"]')
+        path = path.replace('--', '-')
+        print(path)
+        return COM.is_visible(xpaths.common_xpaths.button_field(path))
+
+    @classmethod
+    def assert_view_all_page_share_path(cls, sharetype: str, path: str) -> bool:
+        """
+        This method sets the path for the share on the Edit Share right panel
+
+        :param sharetype: type of the given share
+        :param path: path of the given share
+        :return: True if the share name is visible otherwise it returns False.
+        """
+        if sharetype == 'nfs':
+            path = path.replace('/', '-')
+        loc = xpaths.common_xpaths.any_xpath(f'//*[@data-test="text-path-{sharetype}-share-{path}-row-text"]')
+        loc = loc.replace('--', '-')
+        print(loc)
+        return COM.is_visible(loc)
 
     @classmethod
     def click_add_share_button(cls, sharetype: str):
@@ -151,6 +313,52 @@ class Common_Shares:
         return bool(WebUI.xpath(xpaths.common_xpaths.share_enabled_slider(sharetype, name)).get_property('ariaChecked'))
 
     @classmethod
+    def assert_share_service_in_expected_state(cls, xpath: str, expected_text: str, expected_state: bool) -> bool:
+        """
+        This method returns True if the service status button on the shares page displays and if the api service response
+        matches the state param, otherwise it returns False.
+
+        :param xpath: is the service xpath.
+        :param expected_text: is the text displayed by the service status icon on the sharing page.
+        :param expected_state: the expected state to assert against for the api call response.
+        :return: True if the service matches the state param, otherwise it returns False.
+
+        Example:
+            - cls.assert_share_service_in_expected_state(xpath, 'RUNNING', True)
+        """
+        state = False
+        icon_text = WebUI.xpath(xpaths.common_xpaths.button_field('service-status-'+xpath)).get_property('innerText')
+        if (icon_text == expected_text) & (API_POST.is_service_running(xpath) is expected_state):
+            state = True
+        return state
+
+    @classmethod
+    def is_share_service_running(cls, xpath: str) -> bool:
+        """
+        This method return True if the service status button on the shares page displays RUNNING, otherwise it returns False.
+
+        :param xpath: is the service xpath.
+        :return: True if the service is running, otherwise it returns False.
+
+        Example:
+            - assert COMSHARE.is_share_service_running('cifs')
+        """
+        return cls.assert_share_service_in_expected_state(xpath, 'RUNNING', True)
+
+    @classmethod
+    def is_share_service_stopped(cls, xpath: str) -> bool:
+        """
+        This method return True if the service status button on the shares page displays STOPPED, otherwise it returns False.
+
+        :param xpath: is the service xpath.
+        :return: True if the service is STOPPED, otherwise it returns False.
+
+        Example:
+            - Common.is_share_service_STOPPED('cifs)
+        """
+        return cls.assert_share_service_in_expected_state(xpath, 'STOPPED', False)
+
+    @classmethod
     def is_share_visible(cls, sharetype: str, name: str) -> bool:
         """
         This method return True if the given share is visible otherwise it returns False.
@@ -184,3 +392,45 @@ class Common_Shares:
         """
         COM.is_visible(xpaths.common_xpaths.input_field('path'))
         COM.set_input_field('path', '/mnt/'+path)
+
+    @classmethod
+    def start_share_service_by_actions_menu(cls, service: str) -> bool:
+        """
+        This method starts the specified share service by the actions menu on the sharing page and returns True if the service
+        successfully changed to STARTED, otherwise returns False.
+
+        :param service: is the service name.
+        :return: True if the service successfully changed to STARTED, otherwise returns False.
+        """
+        cls.toggle_share_service_state_by_actions_menu(service, 'on')
+        return cls.is_share_service_running(service)
+
+    @classmethod
+    def stop_share_service_by_actions_menu(cls, service: str) -> bool:
+        """
+        This method stops the specified share service by the actions menu on the sharing page and returns True if the service
+        successfully changed to STOPPED, otherwise returns False.
+
+        :param service: is the service name.
+        :return: True if the service successfully changed to STOPPED, otherwise returns False.
+        """
+        cls.toggle_share_service_state_by_actions_menu(service, 'off')
+        return cls.is_share_service_stopped(service)
+
+    @classmethod
+    def toggle_share_service_state_by_actions_menu(cls, service: str, toggle: str):
+        """
+        This method toggles the specified share service by the actions menu on the sharing page and returns True if the service
+        successfully changed to the expected state, otherwise returns False.
+
+        :param service: is the service name.
+        :param toggle: direction in which to toggle the service.
+        """
+        COM.click_on_element(xpaths.common_xpaths.button_share_page_share_actions_menu(service))
+        if service == 'smb':
+            service = 'cifs'
+        COM.click_button(f'{service}-actions-menu-turn-{toggle}-service')
+        text = 'STOPPED'
+        if toggle == 'on':
+            text = 'RUNNING'
+        WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f"""//*[@data-test="button-service-status-{service}"]//*[contains(text(),"{text}")]"""))

@@ -455,23 +455,6 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.any_header(dialog_title, level))
 
     @classmethod
-    def is_service_running(cls, xpath: str) -> bool:
-        """
-        This method return True if the xpath element is clickable before timeout otherwise it returns False.
-
-        :param xpath: is the service xpath.
-        :return: True if the service is running, otherwise it returns False.
-
-        Example:
-            - Common.is_service_running('myXpath')
-        """
-        state = False
-        text = WebUI.xpath(xpaths.common_xpaths.button_field(xpath)).get_property('innerText')
-        if text == 'RUNNING':
-            state = True
-        return state
-
-    @classmethod
     def is_visible(cls, xpath: str):
         """
         This method verifies if the object identified by the given xpath is visible
