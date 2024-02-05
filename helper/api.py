@@ -36,7 +36,7 @@ def POST(api_path: str,  payload=None) -> Response:
     post_it = requests.post(
         f'http://{private_config["API_IP"]}/api/v2.0{api_path}',
         headers=HEADER,
-        auth=(private_config['API_USER'],private_config["API_PASSWORD"]),
+        auth=(private_config['API_USER'], private_config["API_PASSWORD"]),
         data=json.dumps(payload) if payload else None
     )
     return post_it
@@ -54,7 +54,7 @@ def PUT(api_path: str, payload=None) -> Response:
     put_it = requests.put(
         f'http://{private_config["API_IP"]}/api/v2.0{api_path}',
         headers=HEADER,
-        auth=(private_config['API_USER'],private_config["API_PASSWORD"]),
+        auth=(private_config['API_USER'], private_config["API_PASSWORD"]),
         data=json.dumps(payload) if payload else None
     )
     return put_it
@@ -72,7 +72,7 @@ def DELETE(api_path: str, payload=None) -> Response:
     delete_it = requests.delete(
         f'http://{private_config["API_IP"]}/api/v2.0{api_path}',
         headers=HEADER,
-        auth=(private_config['API_USER'],private_config["API_PASSWORD"]),
+        auth=(private_config['API_USER'], private_config["API_PASSWORD"]),
         data=json.dumps(payload) if payload else None
     )
     return delete_it

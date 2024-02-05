@@ -1,5 +1,6 @@
 from helper.global_config import shared_config
 from helper.webui import WebUI
+from helper.reporting import take_screenshot
 from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
 import xpaths
@@ -109,12 +110,12 @@ class Apps:
             WebUI.delay(0.2)
             assert cls.is_app_stopped(name)
             COM.click_button('bulk-actions-menu')
-            WebUI.save_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu')
+            take_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu')
             if WebUI.xpath(xpaths.common_xpaths.button_field('start-selected')).get_attribute('disabled'):
                 WebUI.refresh()
                 # WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('bulk-actions-menu'), shared_config['WAIT'])
                 COM.click_button('bulk-actions-menu')
-                WebUI.save_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu_2')
+                take_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu_2')
             COM.click_button('start-selected')
             WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(
                 child,

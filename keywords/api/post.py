@@ -227,7 +227,7 @@ class API_POST:
         """
         This method sets the SMB_ACL_ENTRY to default value
         """
-        shared_config['SMB_ACL_ENTRY'] = {"ae_who_sid": "S-1-1-0", "ae_type": "ALLOWED","ae_perm": "FULL"}
+        shared_config['SMB_ACL_ENTRY'] = {"ae_who_sid": "S-1-1-0", "ae_type": "ALLOWED", "ae_perm": "FULL"}
 
     @classmethod
     def start_replication_service(cls, service: str) -> Response:

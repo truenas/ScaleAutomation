@@ -49,6 +49,28 @@ class API_Common:
         return cls.get_id_by_type("group?", group)
 
     @classmethod
+    def get_privilege_id(cls, privilege: str) -> int:
+        """
+        This method return the ID of the specified privilege.
+
+        :param privilege: is the name of the privilege to get the ID from.
+        :return: the ID of the specified privilege.
+        """
+        return cls.get_id_by_type("privilege?", privilege)
+
+    @classmethod
+    def get_privilege_gid(cls, privilege: str) -> int:
+        """
+        This method return the GID of the specified privilege.
+
+        :param privilege: is the name of the privilege to get the GID from.
+        :return: the GID of the specified privilege.
+        """
+        user_results = GET(f"/privilege?name={privilege}")
+        assert user_results.status_code == 200, user_results.text
+        return user_results.json()[0]['local_groups'][0]['gid']
+
+    @classmethod
     def wait_on_job(cls, job_id: int, max_timeout: int) -> dict:
         """
         This method wait for API ID to return SUCCESS or FAILED and TIMEOUT.

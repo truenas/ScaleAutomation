@@ -1,7 +1,5 @@
-from helper.api import DELETE, Response
-from helper.global_config import private_config
+from helper.api import GET, DELETE, PUT, Response
 from keywords.api.common import API_Common as API
-from helper.api import GET
 
 
 class API_DELETE:
@@ -33,6 +31,32 @@ class API_DELETE:
         response = GET(f'/pool/dataset?name={name}').json()
         if response:
             response = DELETE(f'/pool/dataset/id/' + name)
+            assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def delete_group(cls, name: str, privilege: str = None) -> Response:
+        """
+        This method deletes the group.
+
+        :param name: is nane of the group.
+        :param privilege: is privilege of the group.
+        :return: the API request response.
+        """
+        if privilege:
+            # get privilege id
+            privilege_id = API.get_privilege_id(privilege)
+            # remove privilege from group
+            if privilege_id:
+                privilege_gid = API.get_privilege_gid(privilege)
+                payload = {"local_groups": [privilege_gid]}
+                response = PUT(f'/privilege/id/{privilege_id}', payload)
+                assert response.status_code == 200, response.text
+        # remove group
+        response = GET(f'/group?name={name}').json()
+        if response:
+            group_id = str(API.get_group_id(name))
+            response = DELETE(f'/group/id/{group_id}')
             assert response.status_code == 200, response.text
         return response
 

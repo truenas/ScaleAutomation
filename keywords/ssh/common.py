@@ -50,7 +50,7 @@ class Common_SSH:
         SSH_Command_Line(f'rm * | grep file', private_config['SMB_ACL_IP'], user, 'testing')
 
     @classmethod
-    def get_output_from_ssh(cls, command: str, ip: str, user: str) ->  SSH_Command_Line:
+    def get_output_from_ssh(cls, command: str, ip: str, user: str) -> SSH_Command_Line:
         """
         This method verify that the command through succeed and return its output.
 
@@ -140,16 +140,16 @@ class Common_SSH:
         return cls.get_permission_response(user, 'WRITE', file, f'put {file}', write)
 
     @classmethod
-    def verify_exec_permission(cls, user: str, exec: str, file: str = 'execfile.sh') -> bool:
+    def verify_exec_permission(cls, user: str, execute: str, file: str = 'execfile.sh') -> bool:
         """
         This method verifies the Execute permissions of connecting to a smb share
 
         :param user: user to execute smb command
-        :param exec: value of whether Exec command should be successful
+        :param execute: value of whether Exec command should be successful
         :param file: name of the file to execute the smb command on
         :return: returns True if the expected Exec value was returned, otherwise False
         """
-        return cls.get_permission_response(user, 'EXEC', file, f'open {file}', exec)
+        return cls.get_permission_response(user, 'EXEC', file, f'open {file}', execute)
 
     @classmethod
     def verify_delete_permission(cls, user: str, delete: str, file: str = 'deletefile') -> bool:
