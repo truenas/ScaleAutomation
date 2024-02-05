@@ -570,6 +570,17 @@ class Common:
         WebUI.wait_until_visible(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod
+    def print_defect_and_screenshot(cls, ticketnumber: str):
+        """
+        This method prints the NAS ticket number and screenshots.
+
+        :param ticketnumber: The ticket number to display with the failure.
+        Example:
+            - Common.print_defect_and_screenshot('NAS-999999')
+        """
+        print(f'##### This test has an associated NAS ticket number: | {ticketnumber} | #####')
+
+    @classmethod
     def reboot_system(cls):
         """
         This method reboots the system
