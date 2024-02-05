@@ -1,7 +1,7 @@
 import pyperclip
 import time
 from selenium.common.exceptions import TimeoutException
-from helper.global_config import shared_config, screenshots
+from helper.global_config import shared_config
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
@@ -164,6 +164,16 @@ class WebUI(object):
         return pyperclip.paste()
 
     @classmethod
+    def get_screenshot_as_png(cls) -> bytes:
+        """
+        This method saves a screenshot in the given filename (saves as .png).
+
+        Example:
+            - WebUI.save_screenshot_as_png()
+        """
+        return web_driver.get_screenshot_as_png()
+
+    @classmethod
     def get_text(cls, xpath: str) -> str:
         """
         This method return the text the given xpath element.
@@ -209,20 +219,6 @@ class WebUI(object):
         """
         web_driver.refresh()
         cls.delay(1)
-
-    @classmethod
-    def save_screenshot(cls, filename) -> None:
-        """
-        This method saves a screenshot in the given filename (saves as .png).
-
-        :param filename: is the name of the file to save the screenshot.
-
-        Example:
-            - WebUI.save_screenshot('screenshot_filename')
-        """
-        filename = screenshots + "/" + filename + ".png"
-        print("@@@ SCREENSHOT: " + filename)
-        web_driver.get_screenshot_as_file(filename)
 
     @classmethod
     def scroll_to_element(cls, xpath: str) -> None:
