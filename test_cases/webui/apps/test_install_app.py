@@ -16,6 +16,7 @@ class Test_Install_App:
 
         :param app_data: test data listing different apps to iterate through
         """
+        DATASET.create_dataset_by_api('tank/' + app_data['app-name'])
         if Apps.is_app_installed(app_data['app-name']) is True:
             Apps.delete_app(app_data['app-name'])
         Apps.click_discover_apps()
@@ -43,6 +44,7 @@ class Test_Install_App:
         :param app_data: test data listing different apps to iterate through
         """
         # reset the change
+        DATASET.delete_dataset_by_api('tank/' + app_data['app-name'])
         Apps.delete_app(app_data['app-name'])
         assert Apps.is_app_installed(app_data['app-name']) is False
         if app_data['setup-name'] == 'webdav':
