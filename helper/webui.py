@@ -1,7 +1,7 @@
 import pyperclip
 import time
 from selenium.common.exceptions import TimeoutException
-from helper.global_config import shared_config, screenshots
+from helper.global_config import shared_config
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
@@ -211,18 +211,16 @@ class WebUI(object):
         cls.delay(1)
 
     @classmethod
-    def save_screenshot(cls, filename) -> None:
+    def save_screenshot(cls, screenshot_path: str) -> None:
         """
         This method saves a screenshot in the given filename (saves as .png).
 
-        :param filename: is the name of the file to save the screenshot.
+        :param screenshot_path: The path to save the screenshot
 
         Example:
             - WebUI.save_screenshot('screenshot_filename')
         """
-        filename = screenshots + "/" + filename + ".png"
-        print("@@@ SCREENSHOT: " + filename)
-        web_driver.get_screenshot_as_file(filename)
+        web_driver.get_screenshot_as_file(screenshot_path)
 
     @classmethod
     def scroll_to_element(cls, xpath: str) -> None:
