@@ -1,10 +1,13 @@
 import os
+import allure
+from allure_commons.types import AttachmentType
 from datetime import datetime
 from helper.cli import Local_Command_Line
 from helper.global_config import workdir
 from helper.webui import WebUI
 from pathlib import Path
 from platform import system
+
 
 # make the timestamp global
 now = datetime.now()
@@ -14,24 +17,6 @@ full_test_path = str(Path(Path.cwd()).as_posix()).strip()
 test_name = full_test_path.split('/')[-1]
 timestamp_test_name = f'{timestamp}-{test_name}'
 report_dir = f'{real_workdir}/Reports/{timestamp_test_name}'
-
-
-def fix_windows_path(path: str):
-    """
-    This method fixes the windows path if we are on Windows
-
-    :param path: The path to be fixed.
-    :return: Returns the fixed path if we are on Windows otherwise it returns the original path.
-
-    Example:
-        - reporting.fix_windows_path('\\path\\to\\directory')
-    """
-    if system() == 'Windows':
-        if path.startswith('\\'):
-            return f'C:{path}'
-        elif not path.startswith('C:\\'):
-            return f'C:\\{path}'
-    return path
 
 
 def allure_reporting():
@@ -62,8 +47,4 @@ def take_screenshot(name):
     Example:
         - take_screenshot('name')
     """
-    screenshot_path = fix_windows_path(str(Path(f'{report_dir}/screenshots')))
-    screenshot_name = str(Path(f'/{name}'))
-    os.makedirs(screenshot_path, exist_ok=True)
-    WebUI.save_screenshot(f'{screenshot_path}{screenshot_name}.png')
-    print(f'Screenshot path: {screenshot_path}{screenshot_name}.png')
+    allure.attach(WebUI.get_screenshot_as_png(), name, attachment_type=AttachmentType.PNG)

@@ -164,6 +164,16 @@ class WebUI(object):
         return pyperclip.paste()
 
     @classmethod
+    def get_screenshot_as_png(cls) -> bytes:
+        """
+        This method saves a screenshot in the given filename (saves as .png).
+
+        Example:
+            - WebUI.save_screenshot_as_png()
+        """
+        return web_driver.get_screenshot_as_png()
+
+    @classmethod
     def get_text(cls, xpath: str) -> str:
         """
         This method return the text the given xpath element.
@@ -209,18 +219,6 @@ class WebUI(object):
         """
         web_driver.refresh()
         cls.delay(1)
-
-    @classmethod
-    def save_screenshot(cls, screenshot_path: str) -> None:
-        """
-        This method saves a screenshot in the given filename (saves as .png).
-
-        :param screenshot_path: The path to save the screenshot
-
-        Example:
-            - WebUI.save_screenshot('screenshot_filename')
-        """
-        web_driver.get_screenshot_as_file(screenshot_path)
 
     @classmethod
     def scroll_to_element(cls, xpath: str) -> None:
