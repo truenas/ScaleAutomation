@@ -12,6 +12,7 @@ class Test_Edit_Webdav:
         """
         This method verifies the app can be edited
         """
+        DATASET.create_dataset_by_api('tank/webdav')
         assert Apps.verify_app_installed('WebDAV')
         Apps.edit_app('WebDAV')
         COM.unset_checkbox('http')

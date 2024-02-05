@@ -14,6 +14,7 @@ class Test_Uninstall_App:
 
         :param app_data: test data listing different apps to iterate through
         """
+        DATASET.create_dataset_by_api('tank/' + app_data['app-name'])
         Apps.verify_app_installed(app_data['app-name'])
         Apps.delete_app(app_data['app-name'])
         assert Apps.is_app_installed(app_data['app-name']) is False
