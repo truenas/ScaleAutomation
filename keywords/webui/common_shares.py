@@ -206,6 +206,7 @@ class Common_Shares:
         if sharetype == 'nfs':
             name = name.replace('/', '-')
         path = f'card-{sharetype}-share-{name.lower()}-edit-row-action'
+        path = path.replace('--', '-')
         WebUI.xpath(xpaths.common_xpaths.button_field(path)).click()
         WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit {sharetype.upper()}', 3))
 
@@ -354,7 +355,7 @@ class Common_Shares:
         This method sets the path for the share on the Edit Share right panel
         """
         COM.is_visible(xpaths.common_xpaths.input_field('path'))
-        COM.set_input_field('path', '/mnt/'+path)
+        COM.set_input_field('path', '/mnt/'+path, True)
 
     @classmethod
     def start_share_service_by_actions_menu(cls, service: str) -> bool:
