@@ -82,6 +82,34 @@ class Common:
         return WebUI.wait_until_visible(xpaths.xpaths.common_xpaths.label_and_value(label, value), shared_config['SHORT_WAIT'])
 
     @classmethod
+    def assert_progress_bar_not_visible(cls, wait: int = shared_config['LONG_WAIT']) -> bool:
+        """
+        This method returns True or False weather the progress bar is not visible before timeout.
+
+        :param wait: The number of seconds to wait before timeout
+        :return: True if the progress bar is not visible before timeout otherwise it returns False.
+
+        Example:
+            - Common.assert_progress_bar_not_visible()
+            - Common.assert_progress_bar_not_visible(shared_config['MEDIUM_WAIT'])
+        """
+        return WebUI.wait_until_not_visible(xpaths.common_xpaths.progress_bar, wait)
+
+    @classmethod
+    def assert_progress_spinner_not_visible(cls, wait: int = shared_config['LONG_WAIT']) -> bool:
+        """
+        This method returns True or False weather the progress spinner is not visible before timeout.
+
+        :param wait: The number of seconds to wait before timeout
+        :return: True if the progress spinner is not visible before timeout otherwise it returns False.
+
+        Example:
+            - Common.assert_progress_spinner_not_visible()
+            - Common.assert_progress_spinner_not_visible(shared_config['MEDIUM_WAIT'])
+        """
+        return WebUI.wait_until_not_visible(xpaths.common_xpaths.progress_spinner, wait)
+
+    @classmethod
     def assert_page_header(cls, header_text: str, timeout: int = shared_config['WAIT']):
         """
         This method return True if the page header text is visible before timeout otherwise it returns False.
@@ -135,6 +163,21 @@ class Common:
             - Common.assert_text_is_visible('any Text')
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_text(text))
+
+    @classmethod
+    def assert_tree_is_expanded(cls, name: str) -> bool:
+        """
+        This method expands the tree if it is not expanded.
+        :param name: The name of the tree
+        :return: True if the tree is expanded otherwise it returns False.
+        """
+        expanded = False
+        to = xpaths.common_xpaths.any_xpath(f'//*[contains(@data-test,"-row-{name}")]')
+        if WebUI.wait_until_visible(to, shared_config['SHORT_WAIT']):
+            if WebUI.get_attribute(to, 'outerText') != 'expand_more':
+                cls.click_on_element(to)
+            expanded = WebUI.get_attribute(to, 'outerText') == 'expand_more'
+        return expanded
 
     @classmethod
     def cancel_confirm_dialog(cls) -> None:
