@@ -498,6 +498,18 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.any_header(dialog_title, level))
 
     @classmethod
+    def is_save_button_disabled(cls) -> bool:
+        """
+        This method returns True if the Save button is disabled, otherwise it returns False.
+
+        :return: returns True if the Save button is disabled, otherwise it returns False.
+
+        Example:
+            - Common.is_save_button_disabled()
+        """
+        return cls.get_element_property(xpaths.common_xpaths.button_field('save'), 'disabled')
+
+    @classmethod
     def is_visible(cls, xpath: str):
         """
         This method verifies if the object identified by the given xpath is visible
@@ -570,7 +582,7 @@ class Common:
         cls.assert_confirm_dialog()
         WebUI.delay(10)
         assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT'])
-        WebUI.delay(2)
+        WebUI.delay(10)
 
     @classmethod
     def select_then_deselect_input_field(cls, name: str):
