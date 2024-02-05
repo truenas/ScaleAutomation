@@ -14,6 +14,7 @@ now = datetime.now()
 timestamp = now.strftime("%Y_%m_%d-%H_%M_%S")
 real_workdir = workdir.replace("\\", "/").replace("C:", "/mnt/c")
 full_test_path = str(Path(Path.cwd()).as_posix()).strip()
+full_test_path = full_test_path.replace("C:", "/mnt/c")
 test_name = full_test_path.split('/')[-1]
 timestamp_test_name = f'{timestamp}-{test_name}'
 report_dir = f'{real_workdir}/Reports/{timestamp_test_name}'
