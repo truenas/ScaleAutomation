@@ -1,2 +1,2 @@
-group_name,alt_group_name,gid,dup_gid,sudo_commands_1,sudo_commands_2,username,2ndusername
-auto_test_group,changed_Group_Name,6839,3000,/usr/sbin/zfs,/usr/sbin/,root,apps
+group-name,group-privileges,alt-group-name,gid,dup-gid,sudo-commands-1,sudo-commands-2,username,username-2
+auto_test_group,Read-Only Administrator,changed_group_Name,6839,3000,"/usr/sbin/zfs","/usr/sbin/",root,apps

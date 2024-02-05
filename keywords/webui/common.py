@@ -277,7 +277,6 @@ class Common:
         WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT']).click()
         WebUI.delay(2)
 
-
     @classmethod
     def close_right_panel(cls) -> None:
         """
@@ -303,7 +302,7 @@ class Common:
         if name.__contains__('iperf3'):
             name = name.replace('iperf3', 'iperf-3')
         if name.startswith('_'):
-            name = name.replace('_', '',1)
+            name = name.replace('_', '', 1)
         name = name.replace('/', '-')
         name = name.replace('_', '-')
         name = name.replace(' ', '-')
@@ -481,6 +480,20 @@ class Common:
             return False
         else:
             return True
+
+    @classmethod
+    def is_checkbox_disabled(cls, name: str) -> bool:
+        """
+        This method return True if the checkbox is disabled, otherwise it returns False.
+
+        :param name: The name of the checkbox
+        :return: True if the checkbox is disabled, otherwise it returns False.
+
+        Example:
+            - Common.is_checkbox_disabled('my-checkbox')
+        """
+        return WebUI.get_attribute(xpaths.common_xpaths.checkbox_field_attribute(name), 'disabled') is True
+
 
     @classmethod
     def is_dialog_visible(cls, dialog_title: str, level: int) -> bool:
@@ -695,24 +708,29 @@ class Common:
         assert WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked') == state
 
     @classmethod
-    def set_input_field(cls, name: str, value: str, tab: bool = False) -> None:
+    def set_input_field(cls, name: str, value: str, tab: bool = False, pill: bool = False) -> None:
         """
         This method sets the given field with the given value
 
         :param name: name of the field to set
         :param value: value to set the field to
         :param tab: whether to tab out of the field or not
+        :param pill: whether a pill is created or not
 
         Example:
             - Common.set_input_field('myInput', 'text')
             - Common.set_input_field('myInput', 'text', True)
+            - Common.set_input_field('myInput', 'text', , true)
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).clear()
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(value)
         if tab:
             WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.TAB)
-        assert WebUI.get_attribute(xpaths.common_xpaths.input_field(name), 'value') == value
+        if pill:
+            assert WebUI.get_attribute(xpaths.common_xpaths.any_pill(name, value), 'textContent').strip() == value
+        else:
+            assert WebUI.get_attribute(xpaths.common_xpaths.input_field(name), 'value') == value
 
     @classmethod
     def set_items_per_page(cls, count: str) -> None:
