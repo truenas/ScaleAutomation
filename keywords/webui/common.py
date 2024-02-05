@@ -192,7 +192,7 @@ class Common:
         WebUI.delay(1)
 
     @classmethod
-    def clear_input_field(cls, name: str) -> None:
+    def clear_input_field(cls, name: str, tab: bool = False) -> None:
         """
         This method highlights the text in the given field then deletes it
 
@@ -204,6 +204,9 @@ class Common:
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.CONTROL + 'a')
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.DELETE)
+        if tab:
+            WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.TAB)
+
 
     @classmethod
     def click_on_element(cls, xpath: str) -> None:
