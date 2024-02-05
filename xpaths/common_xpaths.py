@@ -27,6 +27,38 @@ def any_header(text: str, level: int) -> str:
     return f"//h{level}[contains(text(),'{text}')]"
 
 
+def any_pill(name: str, text: str) -> str:
+    """
+    This function sets the xpath for the given pill
+
+    :param name: name of the input associated with the pill
+    :param text: text of the pill
+    :return: xpath string for given pill
+    """
+    return f'//*[@data-test="input-{name}"]/preceding-sibling::mat-chip-row/descendant::*[contains(text(),"{text}")]'
+
+
+def any_pill_delete(name: str, text: str) -> str:
+    """
+    This function sets the xpath for the given pill
+
+    :param name: name of the input associated with the pill
+    :param text: text of the pill
+    :return: xpath string for given pill
+    """
+    return f'//*[@data-test="input-{name}"]/preceding-sibling::mat-chip-row/descendant::*[contains(text(),"{text}")]/ancestor::span/following-sibling::*/ix-icon'
+
+
+def any_start_with_field(field: str) -> str:
+    """
+    This function sets the text for the given field name with starts with.
+
+    :param field: text of the given field.
+    :return: returns the xpath string for given field.
+    """
+    return f'//*[starts-with(@data-test,"{field}")]'
+
+
 def any_text(text: str) -> str:
     """
     This function sets the xpath for the given text
@@ -45,16 +77,6 @@ def any_xpath(xpath: str) -> str:
     :return: xpath string for given xpath.
     """
     return f"{xpath}"
-
-
-def any_start_with_field(field: str) -> str:
-    """
-    This function sets the text for the given field name with starts with.
-
-    :param field: text of the given field.
-    :return: returns the xpath string for given field.
-    """
-    return f'//*[starts-with(@data-test,"{field}")]'
 
 
 def button_field(field: str) -> str:

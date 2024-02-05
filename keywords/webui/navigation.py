@@ -22,6 +22,7 @@ class Navigation:
             cls.navigate_to_dashboard()
         COM.click_on_element(xpaths.common_xpaths.link_field(location + '-menu'))
         if location2 != "":
+            WebUI.delay(0.2)
             COM.click_on_element(xpaths.common_xpaths.any_xpath(f'(//*[@data-test="link-{location2}"])[2]'))
         WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header, 1))
         assert COM.is_visible(xpaths.common_xpaths.any_header(header, 1))
@@ -58,7 +59,7 @@ class Navigation:
         cls.navigate_to('dashboard', 'Dashboard')
 
     @classmethod
-    def navigate_to_data_protection(cls):
+    def navigate_to_data_protection(cls) -> None:
         """
         This method navigates to the Data Protection page
 
@@ -88,7 +89,17 @@ class Navigation:
         cls.navigate_to('credentials', 'Directory Services', 'directory-services')
 
     @classmethod
-    def navigate_to_local_users(cls):
+    def navigate_to_local_groups(cls) -> None:
+        """
+        THis method navigates to the Local Groups page.
+
+        Example
+         - Navigation.navigate_to_local_groups()
+        """
+        cls.navigate_to('credentials', 'Groups', 'local-groups')
+
+    @classmethod
+    def navigate_to_local_users(cls) -> None:
         """
         THis method navigates to the Local Users page.
 
@@ -98,7 +109,7 @@ class Navigation:
         cls.navigate_to('credentials', 'Users', 'local-users')
 
     @classmethod
-    def navigate_to_periodic_snapshots(cls):
+    def navigate_to_periodic_snapshots(cls) -> None:
         """
         THis method navigates to the Periodic Snapshots page.
 
@@ -129,3 +140,4 @@ class Navigation:
          - Navigation.navigate_to_storage()
         """
         cls.navigate_to('storage', 'Storage')
+
