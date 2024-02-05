@@ -30,7 +30,7 @@ def test_edit_nfs_share_with_nonexistant_dataset(nfs_data) -> None:
     assert COM.get_save_button_disabled_property()
     COM.close_right_panel()
 
-    # Verify share still in original state
+    # Verify share still in original state when editing is cancelled
     assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path'])
     assert not COMSHARE.assert_share_description('nfs', nfs_data['description'])
     assert COMSHARE.is_share_enabled('nfs', nfs_data['share_page_path'])
