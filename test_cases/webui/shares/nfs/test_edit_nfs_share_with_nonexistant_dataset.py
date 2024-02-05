@@ -27,7 +27,7 @@ def test_edit_nfs_share_with_nonexistant_dataset(nfs_data) -> None:
 
     # Assert error message displays and saving disabled
     assert NFS.assert_error_nfs_share_path_nonexistant()
-    assert COM.get_save_button_disabled_property()
+    assert COM.is_save_button_disabled()
     COM.close_right_panel()
 
     # Verify share still in original state when editing is cancelled

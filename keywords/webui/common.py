@@ -393,18 +393,6 @@ class Common:
         return WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[contains(text(),"{label}")]/following-sibling::*')).get_property('textContent')
 
     @classmethod
-    def get_save_button_disabled_property(cls) -> bool:
-        """
-        This method returns the value of the disabled property on the save button.
-
-        :return: value of the disabled property on the save button
-
-        Example:
-            - Common.get_save_button_disabled_property()
-        """
-        return cls.get_element_property(xpaths.common_xpaths.button_field('save'), 'disabled')
-
-    @classmethod
     def get_user_id_by_api(cls, username: str) -> int:
         """
         This method return the ID of the specified username.
@@ -508,6 +496,18 @@ class Common:
             - Common.is_dialog_visible('Dialog Title', 3)
         """
         return cls.is_visible(xpaths.common_xpaths.any_header(dialog_title, level))
+
+    @classmethod
+    def is_save_button_disabled(cls) -> bool:
+        """
+        This method returns True if the Save button is disabled, otherwise it returns False.
+
+        :return: returns True if the Save button is disabled, otherwise it returns False.
+
+        Example:
+            - Common.is_save_button_disabled()
+        """
+        return cls.get_element_property(xpaths.common_xpaths.button_field('save'), 'disabled')
 
     @classmethod
     def is_visible(cls, xpath: str):
