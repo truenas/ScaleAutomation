@@ -355,7 +355,7 @@ class Common_Shares:
         This method sets the path for the share on the Edit Share right panel
         """
         COM.is_visible(xpaths.common_xpaths.input_field('path'))
-        COM.set_input_field('path', '/mnt/'+path)
+        COM.set_input_field('path', '/mnt/'+path, True)
 
     @classmethod
     def start_share_service_by_actions_menu(cls, service: str) -> bool:

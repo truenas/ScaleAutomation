@@ -350,6 +350,18 @@ class Common:
         return WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[contains(text(),"{label}")]/following-sibling::*')).get_property('textContent')
 
     @classmethod
+    def get_save_button_disabled_property(cls) -> bool:
+        """
+        This method returns the value of the disabled property on the save button.
+
+        :return: value of the disabled property on the save button
+
+        Example:
+            - Common.get_save_button_disabled_property()
+        """
+        return cls.get_element_property(xpaths.common_xpaths.button_field('save'), 'disabled')
+
+    @classmethod
     def get_user_id_by_api(cls, username: str) -> int:
         """
         This method return the ID of the specified username.
