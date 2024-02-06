@@ -641,6 +641,7 @@ class Common:
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT']).click()
         WebUI.wait_until_clickable(xpaths.common_xpaths.option_field(option), shared_config['SHORT_WAIT']).click()
+        WebUI.xpath(xpaths.common_xpaths.select_field(name)).send_keys(Keys.TAB)
 
     @classmethod
     # TODO: remove this when https://ixsystems.atlassian.net/browse/NAS-126826 is fixed and update all usages to select_option.
