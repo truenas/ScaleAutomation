@@ -16,6 +16,16 @@ def any_child_parent_target(child: str, parent: str, target: str) -> str:
     return f'{child}/ancestor::{parent}//descendant::{target}'
 
 
+def any_data_test(name: str) -> str:
+    """
+    This function sets the xpath for the given data-test object
+
+    :param name: name of the data-test object
+    :return: xpath string for given data-test object
+    """
+    return f'//*[@data-test="{name}"]'
+
+
 def any_header(text: str, level: int) -> str:
     """
     This function sets the xpath for the given header
