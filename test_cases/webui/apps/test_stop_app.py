@@ -14,7 +14,6 @@ class Test_Stop_App:
 
         :param app_data: test data listing different apps to iterate through
         """
-        DATASET.create_dataset_by_api('tank/' + app_data['app-name'])
         Apps.verify_app_installed(app_data['app-name'])
         assert Apps.assert_start_app(app_data['app-name'])
         assert Apps.assert_stop_app(app_data['app-name'])
