@@ -21,6 +21,18 @@ class Local_Groups:
             f'//*[@formcontrolname="sudo_commands_nopasswd"]/descendant::*[contains(text(),"{command}")]'))
 
     @classmethod
+    def assert_gid_field_is_disabled(cls) -> bool:
+        """
+        This method returns True if the gid text field is disabled, otherwise False
+
+        :return: returns True if the gid text field is disabled, otherwise False
+
+        Example
+         - Local_Groups.assert_gid_field_is_disabled()
+        """
+        return COM.get_input_property('gid', 'disabled')
+
+    @classmethod
     def assert_group_allow_all_sudo_commands(cls) -> bool:
         """
         This method returns True if the allow all sudo commands checkbox is set, otherwise False
@@ -95,6 +107,21 @@ class Local_Groups:
         return COM.get_input_property('sudo-commands-nopasswd', 'disabled')
 
     @classmethod
+    def assert_group_gid(cls, group_name: str, gid: str) -> bool:
+        """
+        This method returns True if the given gid is set for the given group, otherwise False
+
+        :param group_name: is the name of the group
+        :param gid: is the gid of the group
+        :return: returns True if the given gid is set for the given group, otherwise False
+
+        Example
+         - Local_Groups.assert_group_gid('group-name', '3000')
+        """
+        group_name = COM.convert_to_tag_format(group_name)
+        return WebUI.get_attribute(f'//*[@data-test="row-{group_name}"]/td[2]', 'innerText') == gid
+
+    @classmethod
     def assert_sudo_commands_is_disabled(cls) -> bool:
         """
         This method returns True if the allow sudo commands checkbox is disabled, otherwise False
@@ -104,9 +131,6 @@ class Local_Groups:
         Example
          - Local_Groups.assert_sudo_commands_is_disabled()
         """
-        # WebUI.delay(0.2)
-        # attr = COM.get_input_property('sudo-commands', 'disabled')
-        # print("ATTR: "+str(attr))
         return COM.get_input_property('sudo-commands', 'disabled') is True
 
     @classmethod
@@ -145,6 +169,20 @@ class Local_Groups:
         COM.click_button('delete-' + name)
 
     @classmethod
+    def click_group_edit_button_by_name(cls, group_name) -> None:
+        """
+        This method clicks the given group name edit button
+
+        :param group_name: is the name of the group
+
+        Example
+         - Local_Groups.click_group_edit_button_by_name('group-name')
+        """
+        group_name = COM.convert_to_tag_format(group_name)
+        COM.is_visible(xpaths.common_xpaths.button_field(group_name + '-edit'))
+        COM.click_button(group_name + '-edit')
+
+    @classmethod
     def delete_group_by_api(cls, name, privilege: str = None) -> None:
         """
         This method deletes the given group by API call
@@ -157,6 +195,19 @@ class Local_Groups:
          - Local_Users.delete_group_by_api('group name', 'Read-Only Administrator')
         """
         API_DELETE.delete_group(name, privilege)
+
+    @classmethod
+    def expand_group_by_name(cls, group_name: str) -> None:
+        """
+        This method expands the gid group
+
+        :param group_name: is the name of the group
+
+        Example
+         - Local_Groups.expand_group_by_name('group_name')
+        """
+        group_name = COM.convert_to_tag_format(group_name)
+        WebUI.xpath(xpaths.common_xpaths.any_data_test(f'row-{group_name}')).click()
 
     @classmethod
     def is_group_visible(cls, group_name: str) -> bool:
