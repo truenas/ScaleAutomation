@@ -24,6 +24,7 @@ def test_nfs_share_disabled_share(nfs_data) -> None:
 
     # Handle start/restart service popup
     COMSHARE.handle_share_service_dialog('nfs')
+    assert not COMSHARE.is_share_enabled('nfs', nfs_data['share_page_path'])
 
     # Verify share attachment to dataset
     NAV.navigate_to_datasets()
@@ -37,7 +38,6 @@ def test_nfs_share_disabled_share(nfs_data) -> None:
     assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path'])
     assert not COMSHARE.is_share_enabled('nfs', nfs_data['share_page_path'])
 
-    #
     # TODO: Add in CLI test component to ensure share cannot be used when disabled. TE-1415
 
     # clean up

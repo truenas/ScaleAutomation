@@ -1,6 +1,7 @@
 import xpaths
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
+from keywords.webui.navigation import Navigation as NAV
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from helper.api import Response
@@ -229,6 +230,7 @@ class Common_Shares:
 
         :param sharetype: type of the given share
         """
+        NAV.navigate_to_shares()
         loc = f'//*[contains(@data-test,"-delete-row-action") and starts-with(@data-test,"button-card-{sharetype}")]'
         while COM.is_visible(loc):
             COM.click_on_element(loc)
@@ -274,7 +276,9 @@ class Common_Shares:
         :param name: name of the given share
         :return: True if the share is enabled otherwise it returns False.
         """
-        return bool(WebUI.xpath(xpaths.common_xpaths.share_enabled_slider(sharetype, name)).get_property('ariaChecked'))
+        val = WebUI.xpath(xpaths.common_xpaths.share_enabled_slider(sharetype, name)).get_property('ariaChecked')
+        val = val.capitalize()
+        return eval(val)
 
     @classmethod
     def assert_share_service_in_expected_state(cls, xpath: str, expected_text: str, expected_state: bool) -> bool:
