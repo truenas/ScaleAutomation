@@ -257,8 +257,6 @@ class Common_Shares:
         name = ''
         if sharetype == 'smb':
             WebUI.wait_until_visible(xpaths.common_xpaths.any_text('SMB Service'))
-        if sharetype == 'nfs':
-            WebUI.wait_until_visible(xpaths.common_xpaths.any_text(f'{sharetype.upper()} share created'))
         if COM.is_visible(xpaths.common_xpaths.button_field('enable-service')):
             name = 'enable-service'
         if COM.is_visible(xpaths.common_xpaths.button_field('restart-service')):
