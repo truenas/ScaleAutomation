@@ -4,7 +4,6 @@ from helper.global_config import shared_config
 from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
-from keywords.webui.apps import Apps
 from keywords.webui.common import Common
 from keywords.webui.navigation import Navigation
 
@@ -21,20 +20,21 @@ class Datasets:
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.button_field('add-zvol'))
 
-    @classmethod
-    def assert_app_role_dataset_exists(cls, app_name: str) -> bool:
-        if cls.is_dataset_visible('tank', 'ix-applications') is False:
-            Navigation.navigate_to_apps()
-            if Apps.is_app_installed(app_name) is False:
-                Apps.click_discover_apps()
-                Common.set_search_field(app_name)
-                Apps.click_app(app_name)
-                Apps.click_install_app(app_name)
-                Common.click_save_button()
-                Common.assert_progress_bar_not_visible()
-                assert Apps.is_app_installed(app_name) is True
-            Navigation.navigate_to_datasets()
-        return WebUI.wait_until_visible(xpaths.datasets.dataset_roles_icon('apps'))
+    # TODO: rework to use API instead of webui
+    # @classmethod
+    # def assert_app_role_dataset_exists(cls, app_name: str) -> bool:
+    #     if cls.is_dataset_visible('tank', 'ix-applications') is False:
+    #         Navigation.navigate_to_apps()
+    #         if Apps.is_app_installed(app_name) is False:
+    #             Apps.click_discover_apps()
+    #             Common.set_search_field(app_name)
+    #             Apps.click_app(app_name)
+    #             Apps.click_install_app(app_name)
+    #             Common.click_save_button()
+    #             Common.assert_progress_bar_not_visible()
+    #             assert Apps.is_app_installed(app_name) is True
+    #         Navigation.navigate_to_datasets()
+    #     return WebUI.wait_until_visible(xpaths.datasets.dataset_roles_icon('apps'))
 
     @classmethod
     def assert_applied_dataset_quota_size(cls, size):
@@ -640,6 +640,10 @@ class Datasets:
         Common.click_link('edit-permissions')
 
     @classmethod
+    def click_manage_group_quotas_link(cls):
+        Common.click_link('tank-space-management-manage-group-quotas')
+
+    @classmethod
     def click_manage_role_link(cls, name: str):
         """
         This method clicks on the Manage Role Link.
@@ -659,7 +663,7 @@ class Datasets:
         Example:
             - Dataset.click_manage_user_quotas_link()
         """
-        Common.click_link('manage-user-quotas')
+        Common.click_link('tank-space-management-manage-user-quotas')
 
     @classmethod
     def click_protection_manage_link(cls, link: str):
