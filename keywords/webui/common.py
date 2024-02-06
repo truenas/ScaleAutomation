@@ -192,7 +192,7 @@ class Common:
         WebUI.delay(1)
 
     @classmethod
-    def clear_input_field(cls, name: str) -> None:
+    def clear_input_field(cls, name: str, tab: bool = False) -> None:
         """
         This method highlights the text in the given field then deletes it
 
@@ -204,6 +204,9 @@ class Common:
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.CONTROL + 'a')
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.DELETE)
+        if tab:
+            WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.TAB)
+
 
     @classmethod
     def click_on_element(cls, xpath: str) -> None:
@@ -583,6 +586,19 @@ class Common:
         WebUI.wait_until_visible(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod
+    def print_defect_and_screenshot(cls, ticketnumber: str):
+        """
+        This method prints the NAS ticket number and screenshots.
+
+        :param ticketnumber: The ticket number to display with the failure.
+        Example:
+            - Common.print_defect_and_screenshot('NAS-999999')
+        """
+        print(f'##### This test has an associated NAS ticket number: | {ticketnumber} | #####')
+        # TODO: Refactor into webui to be a list that gets added to each time it is called.
+        #  Then add to global conftest to print at the end.
+
+    @classmethod
     def reboot_system(cls):
         """
         This method reboots the system
@@ -703,9 +719,9 @@ class Common:
             - Common.set_checkbox_by_state('myCheckbox', True)
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name))
-        if WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked') != state:
+        if bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')) is not state:
             WebUI.xpath(xpaths.common_xpaths.checkbox_field(name)).click()
-        assert WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked') == state
+        assert bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')) is state
 
     @classmethod
     def set_input_field(cls, name: str, value: str, tab: bool = False, pill: bool = False) -> None:
