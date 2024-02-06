@@ -15,7 +15,6 @@ class API_DELETE:
         search = 'name='
         if sharetype == 'nfs':
             search = 'path=/mnt/'
-        print("@@@ URL: "+f'/sharing/{sharetype}?{search}{name}')
         response = GET(f'/sharing/{sharetype}?{search}{name}').json()
         if response:
             smb_id = str(API.get_id_by_type(f'/sharing/{sharetype}?', name))
