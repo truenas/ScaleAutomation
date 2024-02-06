@@ -595,6 +595,8 @@ class Common:
             - Common.print_defect_and_screenshot('NAS-999999')
         """
         print(f'##### This test has an associated NAS ticket number: | {ticketnumber} | #####')
+        # TODO: Refactor into webui to be a list that gets added to each time it is called.
+        #  Then add to global conftest to print at the end.
 
     @classmethod
     def reboot_system(cls):
@@ -717,9 +719,9 @@ class Common:
             - Common.set_checkbox_by_state('myCheckbox', True)
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name))
-        if eval(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')) is not state:
+        if bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')) is not state:
             WebUI.xpath(xpaths.common_xpaths.checkbox_field(name)).click()
-        assert eval(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')) is state
+        assert bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')) is state
 
     @classmethod
     def set_input_field(cls, name: str, value: str, tab: bool = False, pill: bool = False) -> None:
