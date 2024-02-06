@@ -1,7 +1,4 @@
-import time
-
 import pytest
-
 from helper.data_config import get_data_list
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
