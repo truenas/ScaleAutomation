@@ -1,4 +1,4 @@
-root,location
+pool,dataset
 tank,replicate
 tank,receive
 tank,new-dataset
