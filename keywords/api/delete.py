@@ -12,7 +12,11 @@ class API_DELETE:
         :param name: is the share nome.
         :return: the API request response.
         """
-        response = GET(f'/sharing/{sharetype}?name={name}').json()
+        search = 'name='
+        if sharetype == 'nfs':
+            search = 'path=/mnt/'
+        print("@@@ URL: "+f'/sharing/{sharetype}?{search}{name}')
+        response = GET(f'/sharing/{sharetype}?{search}{name}').json()
         if response:
             smb_id = str(API.get_id_by_type(f'/sharing/{sharetype}?', name))
             response = DELETE(f'/sharing/{sharetype}/id/' + smb_id)
