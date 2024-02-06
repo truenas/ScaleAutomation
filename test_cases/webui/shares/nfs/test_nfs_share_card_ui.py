@@ -17,12 +17,6 @@ def test_nfs_share_card_ui(nfs_data) -> None:
     DATASET.delete_dataset_by_api("tank/sharethree")
     DATASET.delete_dataset_by_api("tank/sharefour")
     DATASET.delete_dataset_by_api("tank/sharefive")
-    # create_multiple_shares(five)
-    COMSHARE.delete_share_by_api('nfs', "tank/shareone")
-    COMSHARE.delete_share_by_api('nfs', "tank/sharetwo")
-    COMSHARE.delete_share_by_api('nfs', "tank/sharethree")
-    COMSHARE.delete_share_by_api('nfs', "tank/sharefour")
-    COMSHARE.delete_share_by_api('nfs', "tank/sharefive")
     NAV.navigate_to_shares()
     COMSHARE.delete_all_shares_by_sharetype('nfs')
 
@@ -84,5 +78,4 @@ def test_nfs_share_card_ui(nfs_data) -> None:
     COMSHARE.delete_share_by_api('nfs', "tank/sharethree")
     COMSHARE.delete_share_by_api('nfs', "tank/sharefour")
     COMSHARE.delete_share_by_api('nfs', "tank/sharefive")
-    NAV.navigate_to_dashboard()
     NAV.navigate_to_dashboard()

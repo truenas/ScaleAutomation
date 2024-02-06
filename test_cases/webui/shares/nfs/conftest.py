@@ -1,4 +1,3 @@
-from helper.global_config import private_config
 from keywords.webui.common import Common
 from keywords.webui.common_shares import Common_Shares as COMSHARE
 from keywords.webui.navigation import Navigation as NAV

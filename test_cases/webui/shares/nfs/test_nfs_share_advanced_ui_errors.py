@@ -1,5 +1,6 @@
 import pytest
 from helper.data_config import get_data_list
+from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
 from keywords.webui.datasets import Datasets as DATASET
@@ -8,46 +9,73 @@ from keywords.webui.nfs import NFS
 
 
 @pytest.mark.parametrize('nfs_data', get_data_list('shares/nfs'))
-def test_nfs_share_path_ui_errors(nfs_data) -> None:
+def test_nfs_share_advanced_ui_errors(nfs_data) -> None:
     # Environment setup
     COMSHARE.delete_share_by_api('nfs', nfs_data['api_path'])
-    COMSHARE.delete_share_by_api('nfs', nfs_data['api_path_alt'])
     DATASET.delete_dataset_by_api(nfs_data['api_path'])
-    DATASET.delete_dataset_by_api(nfs_data['api_path_alt'])
     DATASET.create_dataset_by_api(nfs_data['api_path'], 'NFS')
-    DATASET.create_dataset_by_api(nfs_data['api_path_alt'], 'NFS')
     COMSHARE.create_share_by_api('nfs', '', nfs_data['api_path'])
-    COMSHARE.create_share_by_api('nfs', '', nfs_data['api_path_alt'])
     NAV.navigate_to_shares()
     assert COMSHARE.assert_share_card_displays('nfs')
 
-    # Trigger the nonexistant path error
+    # Trigger the maproot user required error
     assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path'])
     COMSHARE.click_edit_share('nfs', nfs_data['share_page_path'])
-    COMSHARE.set_share_path('nonexistant')
-    COMSHARE.set_share_description(nfs_data['description'])
     COM.set_checkbox('enabled')
+    COMSHARE.click_advanced_options()
+    NFS.set_maproot_group('admin')
+    WebUI.delay(1)
     COM.click_save_button()
 
     # Assert error message displays and saving disabled
-    assert NFS.assert_error_nfs_share_path_nonexistant()
+    assert NFS.assert_error_nfs_share_maproot_user_required()
     assert COM.is_save_button_disabled()
+    NFS.unset_maproot_group()
 
-    # Trigger the Path is required error
-    COM.clear_input_field('path', True)
-
-    # Assert error message displays and saving disabled
-    assert NFS.assert_error_nfs_share_path_required()
-    assert COM.is_save_button_disabled()
-
-    # Trigger the duplicate share error
-    COMSHARE.set_share_path(nfs_data['api_path_alt'])
+    # Trigger mapall user override error
+    NFS.set_maproot_user('admin')
+    NFS.set_mapall_user('admin')
+    WebUI.delay(1)
     COM.click_save_button()
 
     # Assert error message displays and saving disabled
-    COM.print_defect_and_screenshot('NAS-127220')
-    assert NFS.assert_error_nfs_share_path_duplicate(nfs_data['share_page_path_alt'])
+    assert NFS.assert_error_nfs_share_mapall_user_override()
     assert COM.is_save_button_disabled()
+    NFS.unset_maproot_user()
+    NFS.unset_mapall_user()
+    WebUI.delay(1)
+    COM.select_then_deselect_input_field('comment')
+
+    # Trigger invalid ip error
+    NFS.click_add_networks_button()
+    NFS.set_network('1')
+
+    # Assert error message displays and saving disabled
+    assert NFS.assert_error_nfs_share_network_invalid_ip()
+    assert COM.is_save_button_disabled()
+    NFS.click_remove_from_list_button()
+    WebUI.delay(1)
+
+    # Trigger network is required error
+    NFS.click_add_networks_button()
+    NFS.set_network_mask('32')
+
+    # Assert error message displays and saving disabled
+    assert NFS.assert_error_nfs_share_network_is_required()
+    assert COM.is_save_button_disabled()
+    NFS.click_remove_from_list_button()
+    WebUI.delay(1)
+
+    # Trigger Authorized Hosts and IP addresses is required error
+    NFS.click_add_hosts_button()
+    NFS.set_host_and_ip('')
+    WebUI.delay(1)
+
+    # Assert error message displays and saving disabled
+    assert NFS.assert_error_nfs_share_authorized_hosts_required()
+    assert COM.is_save_button_disabled()
+    NFS.click_remove_from_list_button()
+    WebUI.delay(1)
 
     # Verify share still in original state when editing is cancelled
     COM.close_right_panel()
@@ -61,12 +89,8 @@ def test_nfs_share_path_ui_errors(nfs_data) -> None:
     DATASET.select_dataset(nfs_data['dataset_name'])
     assert DATASET.assert_dataset_share_attached(nfs_data['dataset_name'], 'nfs')
     assert DATASET.assert_dataset_roles_share_icon(nfs_data['dataset_name'], 'nfs')
-    DATASET.select_dataset(nfs_data['dataset_name_alt'])
-    assert DATASET.assert_dataset_share_attached(nfs_data['dataset_name_alt'], 'nfs')
-    assert DATASET.assert_dataset_roles_share_icon(nfs_data['dataset_name_alt'], 'nfs')
 
     # clean up
     COMSHARE.delete_share_by_api('nfs', nfs_data['api_path'])
-    DATASET.delete_dataset_by_api(nfs_data['api_path_alt'])
     DATASET.delete_dataset_by_api(nfs_data['api_path'])
     NAV.navigate_to_dashboard()
