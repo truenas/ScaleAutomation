@@ -34,7 +34,10 @@ class API_Common:
         :param name: is the name of the to get the ID from.
         :return: the ID of name of specified path.
         """
-        user_results = GET(f"/{path}name={name}")
+        search = 'name='
+        if path.__contains__('nfs'):
+            search = 'path=/mnt/'
+        user_results = GET(f"/{path}{search}{name}")
         assert user_results.status_code == 200, user_results.text
         return user_results.json()[0]['id']
 
