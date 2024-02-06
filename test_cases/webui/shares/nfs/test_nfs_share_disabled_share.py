@@ -43,5 +43,4 @@ def test_nfs_share_disabled_share(nfs_data) -> None:
     # clean up
     COMSHARE.delete_share_by_api('nfs', nfs_data['api_path'])
     DATASET.delete_dataset_by_api(nfs_data['api_path'])
-    DATASET.delete_dataset_by_api(nfs_data['api_path'])
     NAV.navigate_to_dashboard()
