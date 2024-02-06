@@ -111,7 +111,7 @@ class NFS:
 
         :param text: The text to enter.
         """
-        cls.set_nfs_network_and_host_inputs(text, '2')
+        cls.set_nfs_network_and_host_inputs('Hosts', text)
 
     @classmethod
     def set_mapall_group(cls, name: str):
@@ -156,7 +156,7 @@ class NFS:
 
         :param network: The ip of the network.
         """
-        cls.set_nfs_network_and_host_inputs(network, '1')
+        cls.set_nfs_network_and_host_inputs('Network', network,)
 
     @classmethod
     def set_network_mask(cls, netmask: str):
@@ -168,14 +168,15 @@ class NFS:
         COM.select_option('netmasks', f'netmask-{netmask}')
 
     @classmethod
-    def set_nfs_network_and_host_inputs(cls, text: str, index: str):
+    def set_nfs_network_and_host_inputs(cls, field: str, text: str):
         """
         This method selects the specified netmask on the Network section of the NFS share edit panel.
 
-        :param text: The text to enter
-        :param index: The index of the input elements to select
+        :param field: The field to select (Network or Hosts)
+        :param text: The text to enter.
         """
-        path = xpaths.common_xpaths.any_xpath(f'(//*[@data-test="input"])[{index}]')
+
+        path = xpaths.common_xpaths.any_xpath(f'//*[contains(text(), "{field}")]/ancestor::ix-list//*[@data-test="input"]')
         WebUI.wait_until_visible(path)
         WebUI.xpath(path).clear()
         WebUI.xpath(path).send_keys(text)
