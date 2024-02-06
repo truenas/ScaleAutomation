@@ -7,43 +7,46 @@ from keywords.webui.navigation import Navigation
 
 
 @pytest.mark.parametrize('data', get_data_list('datasets')[6:], scope='class')
-class Test_Access_Dataset_Managing_Group_Quotas:
+class Test_Access_Dataset_Managing_User_Quotas:
     """
-    This test cases verifies the access to dataset managing user quotas.
+    This test verifies the access to dataset managing user quotas
     """
 
     @staticmethod
     def preconfigure_test(data):
         """
-        This method creates a dataset for the test case.
+        This test adds the dataset for the test.
         """
         API_POST.create_dataset(f'{data["pool"]}/{data["dataset"]}')
 
     @staticmethod
     def navigate_to_datasets(data):
         """
-        This method navigates to datasets page.
+        This test navigates to datasets page
         """
         Navigation.navigate_to_datasets()
         Datasets.assert_datasets_page_header()
 
     @staticmethod
     def select_the_pool_then_the_dataset(data):
+        """
+        This test selects the pool and dataset
+        """
         Datasets.select_dataset(data["pool"])
         Datasets.select_dataset(data["dataset"])
 
     @staticmethod
-    def on_the_space_management_card_click_on_the_group_quotas_and_verify_the_page_open(data):
+    def on_the_space_management_card_click_on_the_user_quotas_and_verify_the_page_open(data):
         """
-        This test verifies the group quotas page for the given dataset opens.
+        This test verifies the user quotas page
         """
         assert Datasets.is_space_management_card_visible()
-        Datasets.click_manage_group_quotas_link()
-        assert Datasets.is_group_quotas_page_visible()
+        Datasets.click_manage_user_quotas_link()
+        assert Datasets.is_user_quotas_page_visible()
 
     @staticmethod
     def clean_up(data):
         """
-        This method deletes the created dataset.
+        This test removes the dataset
         """
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["dataset"]}')
