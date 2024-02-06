@@ -1,6 +1,5 @@
 import pytest
 
-import xpaths
 from helper.data_config import get_data_list
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
