@@ -2,6 +2,7 @@ from helper.global_config import shared_config
 from helper.webui import WebUI
 from helper.reporting import take_screenshot
 from keywords.webui.common import Common as COM
+from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation as NAV
 import xpaths
 
@@ -382,6 +383,7 @@ class Apps:
         """
         name = COM.convert_to_tag_format(name)
         COM.click_button('add-item-shares')
+        DATASET.create_dataset_by_api('tank/' + name)
         COM.set_input_field('name', name)
         COM.set_input_field('host-path', '/mnt/tank/' + name, True)
 
