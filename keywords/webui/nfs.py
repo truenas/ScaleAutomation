@@ -1,6 +1,6 @@
 import xpaths
 from helper.webui import WebUI
-from selenium.webdriver import Keys
+from selenium.webdriver.common.keys import Keys
 from keywords.webui.common import Common as COM
 
 
