@@ -1,5 +1,7 @@
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.keys import Keys
+
+from helper.reporting import take_screenshot
 from helper.webui import WebUI
 from helper.global_config import private_config
 from helper.global_config import shared_config
@@ -595,6 +597,7 @@ class Common:
             - Common.print_defect_and_screenshot('NAS-999999')
         """
         print(f'##### This test has an associated NAS ticket number: | {ticketnumber} | #####')
+        take_screenshot(ticketnumber)
         # TODO: Refactor into webui to be a list that gets added to each time it is called.
         #  Then add to global conftest to print at the end.
 
