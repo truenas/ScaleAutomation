@@ -281,6 +281,17 @@ class Common:
         WebUI.delay(2)
 
     @classmethod
+    def click_save_button_and_wait_for_progress_bar(cls) -> bool:
+        """
+        This method clicks the save button and waits for the progress bar to disappear
+
+        Example:
+            - Common.click_save_button_and_wait_for_progress_bar_to_disappear()
+        """
+        cls.click_save_button()
+        return cls.assert_progress_bar_not_visible()
+
+    @classmethod
     def close_right_panel(cls) -> None:
         """
         This method clicks the close right panel button
