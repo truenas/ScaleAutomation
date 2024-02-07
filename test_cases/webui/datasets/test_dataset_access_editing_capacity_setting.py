@@ -14,7 +14,8 @@ class Test_Dataset_Access_Editing_Capacity_Setting:
     """
 
     @staticmethod
-    def preconfigure_test(data):
+    @pytest.fixture(scope='class', autouse=True)
+    def create_dataset(data):
         """
         This test adds the dataset for the test case.
         """
@@ -84,10 +85,12 @@ class Test_Dataset_Access_Editing_Capacity_Setting:
         assert Datasets.assert_reserved_for_dataset_and_children_size('2 GiB') is True
 
     @staticmethod
-    def clean_up(data):
+    @pytest.fixture(scope='class', autouse=True)
+    def remove_pool_and_delete_dataset(data):
         """
         This test removes the quotas for on the pool dataset and remove the dataset.
         """
+        yield
         Datasets.select_dataset(data["pool"])
         assert Datasets.is_space_management_card_visible() is True
         Datasets.click_edit_dataset_space_button()

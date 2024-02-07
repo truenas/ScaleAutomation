@@ -13,7 +13,8 @@ class Test_Access_Dataset_Managing_User_Quotas:
     """
 
     @staticmethod
-    def preconfigure_test(data):
+    @pytest.fixture(scope='class', autouse=True)
+    def create_dataset(data):
         """
         This test adds the dataset for the test.
         """
@@ -45,8 +46,10 @@ class Test_Access_Dataset_Managing_User_Quotas:
         assert Datasets.is_user_quotas_page_visible()
 
     @staticmethod
-    def clean_up(data):
+    @pytest.fixture(scope='class', autouse=True)
+    def delete_dataset(data):
         """
         This test removes the dataset
         """
+        yield
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["dataset"]}')
