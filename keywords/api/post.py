@@ -43,6 +43,25 @@ class API_POST:
         return response
 
     @classmethod
+    def create_group(cls, group_name: str, smb_access: bool = False) -> Response:
+        """
+        This method creates the given group by API call
+
+        :param group_name: is the name of the group to delete
+        :param smb_access: allow smb access for the group.
+        :return: returns the new group id
+        """
+        response = GET(f'/group?name={group_name}').json()
+        if not response:
+            payload = {
+                "name": group_name,
+                "smb": smb_access
+            }
+            response = POST('/group', payload)
+            assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
     def create_non_admin_user(cls, name: str, fullname: str, password: str, smb_auth: str = 'False') -> Response:
         """
         This method creates a new non-admin user.
