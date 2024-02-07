@@ -1358,7 +1358,7 @@ class Datasets:
         Example:
             - Dataset.set_reserved_space_for_this_dataset('96 KiB')
         """
-        Common.set_input_field('reservation', size)
+        Common.set_input_field('refreservation', size)
 
     @classmethod
     def set_reserved_space_for_this_dataset_and_all_children(cls, size: str):
