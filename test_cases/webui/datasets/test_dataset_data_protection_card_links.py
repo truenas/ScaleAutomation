@@ -6,7 +6,7 @@ from keywords.webui.datasets import Datasets
 from keywords.webui.navigation import Navigation
 
 
-class Test_Dataset_Data_Protection_Card_links:
+class Test_Dataset_Data_Protection_Card_Links:
     """
     Test class for dataset data protection card links.
     """
