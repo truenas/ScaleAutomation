@@ -13,7 +13,7 @@ import xpaths
 
 class Common:
     @classmethod
-    def assert_confirm_dialog(cls):
+    def assert_confirm_dialog(cls) -> None:
         """
         This method confirms and dismisses a confirmation dialog popup
 
@@ -112,7 +112,7 @@ class Common:
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.progress_spinner, wait)
 
     @classmethod
-    def assert_page_header(cls, header_text: str, timeout: int = shared_config['WAIT']):
+    def assert_page_header(cls, header_text: str, timeout: int = shared_config['WAIT']) -> bool:
         """
         This method return True if the page header text is visible before timeout otherwise it returns False.
 
@@ -128,7 +128,7 @@ class Common:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header_text, 1), timeout)
 
     @classmethod
-    def assert_right_panel_header(cls, header_text):
+    def assert_right_panel_header(cls, header_text) -> bool:
         """
         This method return True if the right panel header text is visible before timeout otherwise it returns False.
 
@@ -141,7 +141,7 @@ class Common:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header_text, 3))
 
     @classmethod
-    def assert_right_panel_header_is_not_visible(cls, header_text):
+    def assert_right_panel_header_is_not_visible(cls, header_text) -> bool:
         """
         This method return True if the right panel header text is not visible before timeout otherwise it returns False.
 
@@ -154,7 +154,7 @@ class Common:
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(header_text, 3))
 
     @classmethod
-    def assert_text_is_visible(cls, text):
+    def assert_text_is_visible(cls, text) -> bool:
         """
         This method return True if the given text is visible before timeout otherwise it returns False.
 
@@ -444,7 +444,7 @@ class Common:
         return API_Common.get_user_uid(username)
 
     @classmethod
-    def is_card_not_visible(cls, card_title: str):
+    def is_card_not_visible(cls, card_title: str) -> bool:
         """
         This method return True if the card is not visible, otherwise it returns False.
 
@@ -457,7 +457,7 @@ class Common:
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.card_title(card_title))
 
     @classmethod
-    def is_card_visible(cls, card_title: str):
+    def is_card_visible(cls, card_title: str) -> bool:
         """
         This method return True if the card is visible, otherwise it returns False.
 
@@ -548,7 +548,7 @@ class Common:
         return cls.get_element_property(xpaths.common_xpaths.button_field('save'), 'disabled')
 
     @classmethod
-    def is_visible(cls, xpath: str):
+    def is_visible(cls, xpath: str) -> bool:
         """
         This method verifies if the object identified by the given xpath is visible
 
@@ -568,7 +568,7 @@ class Common:
         return obj.is_displayed()
 
     @classmethod
-    def login_to_truenas(cls, user: str, password: str):
+    def login_to_truenas(cls, user: str, password: str) -> None:
         """
         This method navigates to the login page and logs in with given user and password
 
@@ -583,7 +583,7 @@ class Common:
         cls.set_login_form(user, password)
 
     @classmethod
-    def logoff_truenas(cls):
+    def logoff_truenas(cls) -> None:
         """
         This method click the power menu and click logout.
 
@@ -595,7 +595,7 @@ class Common:
         assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod
-    def navigate_to_login_screen(cls, ip: str):
+    def navigate_to_login_screen(cls, ip: str) -> None:
         """
         This method navigates to the login page of the given IP
 
@@ -608,11 +608,12 @@ class Common:
         WebUI.wait_until_visible(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod
-    def print_defect_and_screenshot(cls, ticketnumber: str):
+    def print_defect_and_screenshot(cls, ticketnumber: str) -> None:
         """
         This method prints the NAS ticket number and screenshots.
 
         :param ticketnumber: The ticket number to display with the failure.
+
         Example:
             - Common.print_defect_and_screenshot('NAS-999999')
         """
@@ -622,7 +623,7 @@ class Common:
         #  Then add to global conftest to print at the end.
 
     @classmethod
-    def reboot_system(cls):
+    def reboot_system(cls) -> None:
         """
         This method reboots the system
 
@@ -632,12 +633,12 @@ class Common:
         cls.click_button('power-menu')
         cls.click_button('restart')
         cls.assert_confirm_dialog()
-        WebUI.delay(10)
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT'])
-        WebUI.delay(10)
+        WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Connecting to TrueNAS'), shared_config['LONG_WAIT'])
+        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_xpath('//mat-progress-bar[@mode="indeterminate"]'), shared_config['EXTRA_LONG_WAIT'])
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['LONG_WAIT'])
 
     @classmethod
-    def select_then_deselect_input_field(cls, name: str):
+    def select_then_deselect_input_field(cls, name: str) -> None:
         """
         This method clears the given field and then TABs out
 
@@ -649,7 +650,7 @@ class Common:
         cls.set_input_field(name, '', True)
 
     @classmethod
-    def select_option(cls, name: str, option: str):
+    def select_option(cls, name: str, option: str) -> None:
         """
         This method selects the given option from the given select field
 
@@ -665,7 +666,7 @@ class Common:
 
     @classmethod
     # TODO: remove this when https://ixsystems.atlassian.net/browse/NAS-126826 is fixed and update all usages to select_option.
-    def select_option_text(cls, name: str, option: str):
+    def select_option_text(cls, name: str, option: str) -> None:
         """
         This method selects the given option text from the given select field.
 
@@ -785,7 +786,7 @@ class Common:
             cls.select_option('page-size', f'page-size-option-{count}')
 
     @classmethod
-    def set_login_form(cls, username: str, password: str):
+    def set_login_form(cls, username: str, password: str) -> None:
         """
         This method fills out the login page form [username/password] and clicks the login button
 
@@ -803,7 +804,7 @@ class Common:
         WebUI.delay(2)
 
     @classmethod
-    def set_search_field(cls, text: str):
+    def set_search_field(cls, text: str) -> None:
         """
         This method sets the search field with the given text.
 
@@ -835,7 +836,7 @@ class Common:
         assert WebUI.get_attribute(xpaths.common_xpaths.textarea_field(name), 'value') == value
 
     @classmethod
-    def set_toggle(cls, name: str):
+    def set_toggle(cls, name: str) -> None:
         """
         This method unsets the given toggle.
 
@@ -847,7 +848,7 @@ class Common:
         cls.set_toggle_by_state(name, True)
 
     @classmethod
-    def set_toggle_by_state(cls, name: str, state: bool):
+    def set_toggle_by_state(cls, name: str, state: bool) -> None:
         """
         This method sets the given toggle to the given state and asserts is set correctly
 
@@ -880,7 +881,7 @@ class Common:
         cls.set_checkbox_by_state(name, False)
 
     @classmethod
-    def unset_toggle(cls, name: str):
+    def unset_toggle(cls, name: str) -> None:
         """
         This method unsets the given toggle.
 
