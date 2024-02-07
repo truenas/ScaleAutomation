@@ -199,6 +199,7 @@ class Common:
         This method highlights the text in the given field then deletes it
 
         :param name: name of the field to clear
+        :param tab: whether to tab out of input field
 
         Example:
             - Common.clear_input_field('myInput')
@@ -208,20 +209,6 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.DELETE)
         if tab:
             WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.TAB)
-
-
-    @classmethod
-    def click_on_element(cls, xpath: str) -> None:
-        """
-        This method wait and click on the given xpath element.
-
-        :param xpath: is the xpath text to click on.
-
-        Example:
-            - Common.click_on_element('xpath')
-        """
-        find = WebUI.wait_until_clickable(xpath, shared_config['MEDIUM_WAIT'])
-        find.click()
 
     @classmethod
     def click_button(cls, name: str) -> None:
@@ -236,6 +223,16 @@ class Common:
         cls.click_on_element(xpaths.common_xpaths.button_field(name))
 
     @classmethod
+    def click_cancel_button(cls) -> None:
+        """
+        This method clicks the save button
+
+        Example:
+            - Common.click_save_button()
+        """
+        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('cancel'), shared_config['SHORT_WAIT']).click()
+
+    @classmethod
     def click_link(cls, name: str) -> None:
         """
         This method clicks the given link.
@@ -246,6 +243,19 @@ class Common:
             - Common.click_link('myLink')
         """
         cls.click_on_element(xpaths.common_xpaths.link_field(name))
+
+    @classmethod
+    def click_on_element(cls, xpath: str) -> None:
+        """
+        This method wait and click on the given xpath element.
+
+        :param xpath: is the xpath text to click on.
+
+        Example:
+            - Common.click_on_element('xpath')
+        """
+        find = WebUI.wait_until_clickable(xpath, shared_config['MEDIUM_WAIT'])
+        find.click()
 
     @classmethod
     def click_radio_button(cls, name: str) -> None:
@@ -510,7 +520,6 @@ class Common:
         """
         return WebUI.get_attribute(xpaths.common_xpaths.checkbox_field_attribute(name), 'disabled') is True
 
-
     @classmethod
     def is_dialog_visible(cls, dialog_title: str, level: int) -> bool:
         """
@@ -751,7 +760,6 @@ class Common:
         Example:
             - Common.set_input_field('myInput', 'text')
             - Common.set_input_field('myInput', 'text', True)
-            - Common.set_input_field('myInput', 'text', , true)
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).clear()

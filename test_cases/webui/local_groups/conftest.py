@@ -21,5 +21,5 @@ def setup_class(groups):
     This method clears any test groups before test is run for a clean environment
     """
     # Setup clean environment.
-    LG.delete_group_by_api(groups['group-name'],groups['group-privileges'])
-    LG.delete_group_by_api(groups['alt-group-name'],groups['group-privileges'])
+    LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
+    LG.delete_group_by_api(groups['alt-group-name'], groups['group-privileges'])
