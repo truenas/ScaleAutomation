@@ -17,7 +17,7 @@ class Test_Delete_Member_From_New_Group:
         """
         # Environment setup
         if LG.is_group_visible(groups['group-name']) is False:
-            API_DELETE.delete_group(groups['group-name'])
+            API_DELETE.delete_group(groups['group-name'], groups['group-privileges'])
             API_POST.create_group(groups['group-name'])
             assert LG.is_group_visible(groups['group-name']) is True
             LG.expand_group_by_name(groups['group-name'])
@@ -42,4 +42,4 @@ class Test_Delete_Member_From_New_Group:
         COM.click_cancel_button()
 
         # Environment clean up
-        LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
+        API_DELETE.delete_group(groups['group-name'], groups['group-privileges'])

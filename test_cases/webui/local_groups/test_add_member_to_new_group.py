@@ -1,6 +1,8 @@
 import pytest
 
 from helper.data_config import get_data_list
+from keywords.api.delete import API_DELETE
+from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 from keywords.webui.local_groups import Local_Groups as LG
 
@@ -15,8 +17,8 @@ class Test_Add_Member_To_New_Group:
         """
         # Environment setup
         if LG.is_group_visible(groups['group-name']) is False:
-            LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
-            LG.create_group_by_api(groups['group-name'])
+            API_DELETE.delete_group(groups['group-name'], groups['group-privileges'])
+            API_POST.create_group(groups['group-name'])
             assert LG.is_group_visible(groups['group-name']) is True
 
         LG.expand_group_by_name(groups['group-name'])
@@ -33,4 +35,4 @@ class Test_Add_Member_To_New_Group:
         COM.click_cancel_button()
 
         # Environment clean up
-        LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
+        API_DELETE.delete_group(groups['group-name'], groups['group-privileges'])
