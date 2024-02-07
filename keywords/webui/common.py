@@ -1,5 +1,7 @@
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.keys import Keys
+
+from helper.reporting import take_screenshot
 from helper.webui import WebUI
 from helper.global_config import private_config
 from helper.global_config import shared_config
@@ -606,6 +608,7 @@ class Common:
             - Common.print_defect_and_screenshot('NAS-999999')
         """
         print(f'##### This test has an associated NAS ticket number: | {ticketnumber} | #####')
+        take_screenshot(ticketnumber)
         # TODO: Refactor into webui to be a list that gets added to each time it is called.
         #  Then add to global conftest to print at the end.
 
@@ -649,6 +652,7 @@ class Common:
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT']).click()
         WebUI.wait_until_clickable(xpaths.common_xpaths.option_field(option), shared_config['SHORT_WAIT']).click()
+        WebUI.xpath(xpaths.common_xpaths.select_field(name)).send_keys(Keys.TAB)
 
     @classmethod
     # TODO: remove this when https://ixsystems.atlassian.net/browse/NAS-126826 is fixed and update all usages to select_option.
