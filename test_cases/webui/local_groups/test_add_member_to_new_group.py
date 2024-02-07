@@ -9,7 +9,7 @@ from keywords.webui.local_groups import Local_Groups as LG
 class Test_Add_Member_To_New_Group:
 
     @staticmethod
-    def test_add_new_local_group_with_duplicate_gid(groups) -> None:
+    def test_add_member_to_new_group(groups) -> None:
         """
         This test verifies adding a member to a new local group
         """
@@ -31,3 +31,6 @@ class Test_Add_Member_To_New_Group:
         assert LG.is_user_in_group_list(groups['username']) is True
         assert LG.is_user_in_users_list(groups['username']) is False
         COM.click_cancel_button()
+
+        # Environment clean up
+        LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
