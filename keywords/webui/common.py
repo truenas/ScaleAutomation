@@ -225,10 +225,10 @@ class Common:
     @classmethod
     def click_cancel_button(cls) -> None:
         """
-        This method clicks the save button
+        This method clicks the cancel button
 
         Example:
-            - Common.click_save_button()
+            - Common.click_cancel_button()
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('cancel'), shared_config['SHORT_WAIT']).click()
 
