@@ -194,9 +194,6 @@ class Local_Groups:
          - Local_Groups.click_group_edit_button_by_name('group-name')
         """
         cls.click_group_action_button(group_name, 'delete')
-        # group_name = COM.convert_to_tag_format(group_name)
-        # assert COM.is_visible(xpaths.common_xpaths.button_field(group_name + '-delete'))
-        # COM.click_button(group_name + '-delete')
 
     @classmethod
     def click_group_edit_button_by_name(cls, group_name: str) -> None:
@@ -209,9 +206,6 @@ class Local_Groups:
          - Local_Groups.click_group_edit_button_by_name('group-name')
         """
         cls.click_group_action_button(group_name, 'edit')
-        # group_name = COM.convert_to_tag_format(group_name)
-        # assert COM.is_visible(xpaths.common_xpaths.button_field(group_name + '-edit'))
-        # COM.click_button(group_name + '-edit')
 
     @classmethod
     def click_group_members_button(cls, group_name: str) -> None:
@@ -224,9 +218,6 @@ class Local_Groups:
          - Local_Groups.click_group_members_button('group-name')
         """
         cls.click_group_action_button(group_name, 'members')
-        # group_name = COM.convert_to_tag_format(group_name)
-        # assert COM.is_visible(xpaths.common_xpaths.button_field(group_name + '-members'))
-        # COM.click_button(group_name + '-members')
 
     @classmethod
     def click_remove_from_list_button(cls) -> None:
