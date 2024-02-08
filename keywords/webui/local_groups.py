@@ -2,6 +2,7 @@ import xpaths
 from helper.global_config import shared_config
 from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
+from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
 
@@ -9,13 +10,13 @@ from keywords.webui.navigation import Navigation as NAV
 class Local_Groups:
 
     @classmethod
-    def add_group_allowed_sudo_command(cls, command) -> None:
+    def add_group_allowed_sudo_command(cls, command: str) -> None:
         COM.set_input_field('sudo-commands', command, True, True)
         assert COM.is_visible(xpaths.common_xpaths.any_xpath(
             f'//*[@formcontrolname="sudo_commands"]/descendant::*[contains(text(),"{command}")]'))
 
     @classmethod
-    def add_group_allowed_sudo_command_no_password(cls, command) -> None:
+    def add_group_allowed_sudo_command_no_password(cls, command: str) -> None:
         COM.set_input_field('sudo-commands-nopasswd', command, True, True)
         assert COM.is_visible(xpaths.common_xpaths.any_xpath(
             f'//*[@formcontrolname="sudo_commands_nopasswd"]/descendant::*[contains(text(),"{command}")]'))
@@ -57,7 +58,7 @@ class Local_Groups:
         return COM.is_checked('sudo-commands-nopasswd-all')
 
     @classmethod
-    def assert_group_allowed_sudo_commands(cls, command) -> bool:
+    def assert_group_allowed_sudo_commands(cls, command: str) -> bool:
         """
         This method returns True if the given command is set for the group, otherwise False
 
@@ -82,7 +83,7 @@ class Local_Groups:
         return COM.get_input_property('sudo-commands', 'disabled')
 
     @classmethod
-    def assert_group_allowed_sudo_commands_no_password(cls, command) -> bool:
+    def assert_group_allowed_sudo_commands_no_password(cls, command: str) -> bool:
         """
         This method returns True if the given command is set for the group, otherwise False
 
@@ -156,20 +157,34 @@ class Local_Groups:
         COM.click_button('add')
 
     @classmethod
-    def click_group_delete_button(cls, group_name: str) -> None:
+    def click_add_to_list_button(cls) -> None:
         """
-        This method clicks the group delete button of the given group
-
-        :param group_name: is the name of the group
+        This method clicks the Add To List button.
 
         Example
-         - Local_Groups.click_group_delete_button('group-name')
+         - Local_Groups.click_add_to_list_button()
         """
-        name = COM.convert_to_tag_format(group_name)
-        COM.click_button('delete-' + name)
+        COM.click_button('add-to-list')
 
     @classmethod
-    def click_group_edit_button_by_name(cls, group_name) -> None:
+    def click_group_action_button(cls, group_name: str, action: str) -> None:
+        """
+        This method clicks the given group action button of the given group
+
+        :param group_name: is the name of the group
+        :param action: is the action of the button ['members'/'edit'/'delete']
+
+        Example
+         - Local_Groups.click_group_action_button('group-name', 'delete')
+         - Local_Groups.click_group_action_button('group-name', 'edit')
+         - Local_Groups.click_group_action_button('group-name', 'members')
+        """
+        group_name = COM.convert_to_tag_format(group_name)
+        assert COM.is_visible(xpaths.common_xpaths.button_field(group_name + '-' + action))
+        COM.click_button(group_name + '-' + action)
+
+    @classmethod
+    def click_group_delete_button_by_name(cls, group_name: str) -> None:
         """
         This method clicks the given group name edit button
 
@@ -178,12 +193,70 @@ class Local_Groups:
         Example
          - Local_Groups.click_group_edit_button_by_name('group-name')
         """
-        group_name = COM.convert_to_tag_format(group_name)
-        COM.is_visible(xpaths.common_xpaths.button_field(group_name + '-edit'))
-        COM.click_button(group_name + '-edit')
+        cls.click_group_action_button(group_name, 'delete')
 
     @classmethod
-    def delete_group_by_api(cls, name, privilege: str = None) -> None:
+    def click_group_edit_button_by_name(cls, group_name: str) -> None:
+        """
+        This method clicks the given group name edit button
+
+        :param group_name: is the name of the group
+
+        Example
+         - Local_Groups.click_group_edit_button_by_name('group-name')
+        """
+        cls.click_group_action_button(group_name, 'edit')
+
+    @classmethod
+    def click_group_members_button(cls, group_name: str) -> None:
+        """
+        This method clicks the given group name members button
+
+        :param group_name: is the name of the group
+
+        Example
+         - Local_Groups.click_group_members_button('group-name')
+        """
+        cls.click_group_action_button(group_name, 'members')
+
+    @classmethod
+    def click_remove_from_list_button(cls) -> None:
+        """
+        This method clicks the Remove From List button.
+
+        Example
+         - Local_Groups.click_remove_from_list_button()
+        """
+        COM.click_button('remove-from-list')
+
+    @classmethod
+    def click_user_account_by_name(cls, username: str) -> None:
+        """
+        This method clicks the given username
+
+        :param username: is the name of the user
+
+        Example
+         - Local_Groups.click_user_account_by_name('username')
+        """
+        COM.click_on_element(f'//mat-list-item//*[contains(text(),"{username}")]')
+
+    @classmethod
+    def create_group_by_api(cls, group_name: str, smb_access: bool = False) -> None:
+        """
+        This method creates the given group by API call
+
+        :param group_name: is the name of the group to delete
+        :param smb_access: allow smb access for the group.
+
+        Example
+         - Local_Users.create_group_by_api('group name')
+         - Local_Users.create_group_by_api('group name', True)
+        """
+        API_POST.create_group(group_name, smb_access)
+
+    @classmethod
+    def delete_group_by_api(cls, name: str, privilege: str = None) -> None:
         """
         This method deletes the given group by API call
 
@@ -228,7 +301,33 @@ class Local_Groups:
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
 
     @classmethod
-    def select_group_privileges(cls, privilege) -> None:
+    def is_user_in_group_list(cls, username: str) -> bool:
+        """
+        This method returns True if the given username is in the group member list, otherwise False
+
+        :param username: is the name of the user
+        :return: returns True if the given username is in the group member list, otherwise False
+
+        Example
+         - Local_Groups.is_user_in_group_list('username')
+        """
+        return COM.is_visible(f'//*[@id="member-list"]//*[text()="{username}"]')
+
+    @classmethod
+    def is_user_in_users_list(cls, username: str) -> bool:
+        """
+        This method returns True if the given username is in the users list, otherwise False
+
+        :param username: is the name of the user
+        :return: returns True if the given username is in the users list, otherwise False
+
+        Example
+         - Local_Groups.is_user_in_users_list('username')
+        """
+        return COM.is_visible(f'//*[@id="user-list"]//*[text()="{username}"]')
+
+    @classmethod
+    def select_group_privileges(cls, privilege: str) -> None:
         """
         This method selects the given privilege.
 
@@ -271,7 +370,7 @@ class Local_Groups:
         COM.set_checkbox('sudo-commands-nopasswd-all')
 
     @classmethod
-    def set_group_allowed_sudo_commands(cls, command) -> None:
+    def set_group_allowed_sudo_commands(cls, command: str) -> None:
         """
         This method adds the given sudo command for the group
 
@@ -283,7 +382,7 @@ class Local_Groups:
         COM.set_input_field('sudo-commands', command)
 
     @classmethod
-    def set_group_allowed_sudo_commands_no_password(cls, command) -> None:
+    def set_group_allowed_sudo_commands_no_password(cls, command: str) -> None:
         """
         This method adds the given sudo command no password for the group
 
@@ -369,4 +468,3 @@ class Local_Groups:
          - Local_Groups.unset_show_builtin_groups_toggle()
         """
         COM.unset_toggle('show-built-in-groups')
-

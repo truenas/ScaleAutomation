@@ -1,7 +1,6 @@
 import pytest
 
 from helper.data_config import get_data_list
-from keywords.api.delete import API_DELETE
 from keywords.webui.common import Common as COM
 from keywords.webui.local_groups import Local_Groups as LG
 
@@ -33,5 +32,5 @@ class Test_Create_New_Local_Group:
         LG.click_group_edit_button_by_name(groups['alt-group-name'])
         assert LG.assert_gid_field_is_disabled() is True
         COM.click_save_button()
-        API_DELETE.delete_group(groups['group-name'])
-        API_DELETE.delete_group(groups['alt-group-name'])
+        LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
+        LG.delete_group_by_api(groups['alt-group-name'], groups['group-privileges'])

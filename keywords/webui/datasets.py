@@ -9,6 +9,18 @@ from keywords.webui.navigation import Navigation
 
 
 class Datasets:
+
+    @classmethod
+    def assert_add_dataset_button(cls) -> bool:
+        """
+        This method return True or False whether the add dataset button is visible.
+        :return: True if the add dataset button is visible, otherwise it returns False.
+
+        Example:
+            - Dataset.assert_add_dataset_button()
+        """
+        return WebUI.wait_until_visible(xpaths.common_xpaths.button_field('add-dataset'))
+
     @classmethod
     def assert_add_zvol_button(cls) -> bool:
         """
@@ -87,7 +99,6 @@ class Datasets:
             - Dataset.assert_dataset_group('root')
         """
         return Common.assert_label_and_value_exist('Group:', name)
-
 
     @classmethod
     def assert_dataset_owner(cls, name: str) -> bool:
@@ -1358,7 +1369,7 @@ class Datasets:
         Example:
             - Dataset.set_reserved_space_for_this_dataset('96 KiB')
         """
-        Common.set_input_field('reservation', size)
+        Common.set_input_field('refreservation', size)
 
     @classmethod
     def set_reserved_space_for_this_dataset_and_all_children(cls, size: str):

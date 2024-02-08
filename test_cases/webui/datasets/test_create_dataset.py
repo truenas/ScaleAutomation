@@ -16,6 +16,9 @@ class Test_Create_Dataset:
         """
         This test navigates to datasets page.
         """
+        # Ensure dataset doesn't already exist
+        API_DELETE.delete_dataset(f'{data["pool"]}/{data["dataset"]}')
+
         Navigation.navigate_to_datasets()
         Datasets.assert_datasets_page_header()
 
@@ -45,8 +48,10 @@ class Test_Create_Dataset:
         Datasets.is_dataset_visible(data["pool"], data["dataset"])
 
     @staticmethod
-    def clean_up(data):
+    @pytest.fixture(scope='class', autouse=True)
+    def delete_dataset(data):
         """
         This test removes the created dataset.
         """
+        yield
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["dataset"]}')

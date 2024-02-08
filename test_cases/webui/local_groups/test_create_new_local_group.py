@@ -35,4 +35,4 @@ class Test_Create_New_Local_Group:
         COM.click_save_button()
         assert LG.is_group_visible(groups['group-name']) is True
         NAV.navigate_to_dashboard()
-        LG.delete_group_by_api(groups['group-name'],groups['group-privileges'])
+        LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
