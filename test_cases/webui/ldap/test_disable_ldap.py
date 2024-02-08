@@ -24,7 +24,7 @@ class Test_Disable_LDAP:
         assert DS.assert_directory_services_page_header()
 
     @staticmethod
-    def verify_ldap_disabled() -> None:
+    def verify_ldap_disabled(ldap) -> None:
         """
         This test verifies the ldap is disabled
         """
