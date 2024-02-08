@@ -7,6 +7,7 @@ from keywords.webui.datasets import Datasets
 from keywords.webui.navigation import Navigation
 
 
+@pytest.mark.random_order(disabled=True)
 @pytest.mark.parametrize('data', get_data_list('datasets')[5:6], scope='class')
 class Test_Dataset_Data_Protection_Card_Links:
     """
