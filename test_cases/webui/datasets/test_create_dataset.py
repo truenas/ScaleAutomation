@@ -16,6 +16,9 @@ class Test_Create_Dataset:
         """
         This test navigates to datasets page.
         """
+        # Ensure dataset doesn't already exist
+        API_DELETE.delete_dataset(f'{data["pool"]}/{data["dataset"]}')
+
         Navigation.navigate_to_datasets()
         Datasets.assert_datasets_page_header()
 

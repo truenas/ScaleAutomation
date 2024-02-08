@@ -22,7 +22,7 @@ class Test_Dataset_Access_Editing_Capacity_Setting:
         API_POST.create_dataset(f'{data["pool"]}/{data["dataset"]}')
 
     @staticmethod
-    def navigate_to_datasets(data):
+    def navigate_to_datasets():
         """
         This test navigates to datasets page.
         """
@@ -39,7 +39,7 @@ class Test_Dataset_Access_Editing_Capacity_Setting:
         Datasets.click_edit_dataset_space_button()
 
     @staticmethod
-    def on_the_capacity_settings_panel_set_quota_for_dataset_and_all_children_to_8_gib_and_save(data):
+    def on_the_capacity_settings_panel_set_quota_for_dataset_and_all_children_to_8_gib_and_save():
         """
         This test on the capacity settings panel set quota for dataset and all children to 8 GiB.
         """
@@ -49,7 +49,7 @@ class Test_Dataset_Access_Editing_Capacity_Setting:
         assert Common.click_save_button_and_wait_for_progress_bar() is True
 
     @staticmethod
-    def verify_the_pool_quota_for_dataset_and_all_children_is_8_gib(data):
+    def verify_the_pool_quota_for_dataset_and_all_children_is_8_gib():
         """
         This test verifies the system quota for dataset and all children is 8 GiB.
         """
@@ -66,7 +66,7 @@ class Test_Dataset_Access_Editing_Capacity_Setting:
         assert Datasets.assert_applied_inherited_quotas_size(f'8 GiB from {data["pool"]}') is True
 
     @staticmethod
-    def click_on_the_dataset_space_management_edit_button_and_set_reserved_space_for_dataset_and_children_to_2_gib(data):
+    def click_on_the_dataset_space_management_edit_button_and_set_reserved_space_for_dataset_and_children_to_2_gib():
         """
         This test click on the dataset space management edit button and set reserved space for dataset and children to 2 GiB.
         """
@@ -77,7 +77,7 @@ class Test_Dataset_Access_Editing_Capacity_Setting:
         assert Common.click_save_button_and_wait_for_progress_bar() is True
 
     @staticmethod
-    def verify_the_system_reserved_space_for_dataset_and_all_children_is_2_gib(data):
+    def verify_the_system_reserved_space_for_dataset_and_all_children_is_2_gib():
         """
         This test verifies the system reserved space for dataset and all children is 2 GiB.
         """
