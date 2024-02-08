@@ -5,6 +5,7 @@ from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 from keywords.webui.local_groups import Local_Groups as LG
+from keywords.webui.navigation import Navigation as NAV
 
 
 @pytest.mark.parametrize('groups', get_data_list('local_groups'), scope='class')
@@ -16,6 +17,7 @@ class Test_Delete_Member_From_New_Group:
         This test verifies deleting a member from a new local group
         """
         # Environment setup
+        NAV.navigate_to_local_groups()
         if LG.is_group_visible(groups['group-name']) is False:
             API_DELETE.delete_group(groups['group-name'], groups['group-privileges'])
             API_POST.create_group(groups['group-name'])
@@ -42,4 +44,5 @@ class Test_Delete_Member_From_New_Group:
         COM.click_cancel_button()
 
         # Environment clean up
-        API_DELETE.delete_group(groups['group-name'], groups['group-privileges'])
+        NAV.navigate_to_dashboard()
+        LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
