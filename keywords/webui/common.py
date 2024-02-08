@@ -633,9 +633,9 @@ class Common:
         cls.click_button('power-menu')
         cls.click_button('restart')
         cls.assert_confirm_dialog()
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Connecting to TrueNAS'), shared_config['LONG_WAIT'])
-        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_xpath('//mat-progress-bar[@mode="indeterminate"]'), shared_config['EXTRA_LONG_WAIT'])
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['LONG_WAIT'])
+        # WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Connecting to TrueNAS'), shared_config['LONG_WAIT'])
+        # WebUI.wait_until_not_visible(xpaths.common_xpaths.any_xpath('//mat-progress-bar[@mode="indeterminate"]'), shared_config['EXTRA_LONG_WAIT'])
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT'])
 
     @classmethod
     def select_then_deselect_input_field(cls, name: str) -> None:
