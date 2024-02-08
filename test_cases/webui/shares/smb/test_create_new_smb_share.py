@@ -19,8 +19,8 @@ def test_create_new_smb_share(smb_data) -> None:
 
     # Add SMB Share
     COMSHARE.click_add_share_button('smb')
-    COMSHARE.set_share_path(smb_data['path'])
     COMSHARE.set_share_name(smb_data['name'])
+    COMSHARE.set_share_path(smb_data['path'])
     SMB.set_share_purpose(smb_data['purpose'])
     COMSHARE.set_share_description(smb_data['description'])
     COM.set_checkbox('enabled')

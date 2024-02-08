@@ -156,7 +156,7 @@ class NFS:
 
         :param network: The ip of the network.
         """
-        cls.set_nfs_network_and_host_inputs('Network', network,)
+        cls.set_nfs_network_and_host_inputs('Network', network)
 
     @classmethod
     def set_network_mask(cls, netmask: str):
