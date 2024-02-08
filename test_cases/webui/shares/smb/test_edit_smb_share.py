@@ -23,8 +23,8 @@ def test_edit_smb_share(smb_data) -> None:
 
     # Edit SMB Share
     COMSHARE.click_edit_share('smb', smb_data['name'])
-    COMSHARE.set_share_path(smb_data['path_alt'])
     COMSHARE.set_share_name(smb_data['name_alt'])
+    COMSHARE.set_share_path(smb_data['path_alt'])
     SMB.set_share_purpose(smb_data['purpose_alt'])
     COMSHARE.set_share_description(smb_data['description_alt'])
     COM.unset_checkbox('enabled')
@@ -44,7 +44,7 @@ def test_edit_smb_share(smb_data) -> None:
     assert COMSHARE.assert_share_name('smb', smb_data['name_alt'])
     assert COMSHARE.assert_share_path('smb', smb_data['path_alt'])
     assert COMSHARE.assert_share_description('smb', smb_data['description_alt'])
-    assert COMSHARE.is_share_enabled('smb', smb_data['name_alt'])
+    assert not COMSHARE.is_share_enabled('smb', smb_data['name_alt'])
 
     # Environment Teardown
     COMSHARE.delete_share_by_api('smb', smb_data['name'])
