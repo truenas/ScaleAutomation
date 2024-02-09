@@ -374,7 +374,8 @@ class Common:
         Example:
             - Common.delete_user_by_api('user')
         """
-        API_DELETE.delete_user(name)
+        response = API_DELETE.delete_user(name)
+        print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
 
     @classmethod
     def get_element_property(cls, xpath: str, prop: str = 'value') -> str | bool:

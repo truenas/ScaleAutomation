@@ -1,5 +1,4 @@
 import pytest
-
 from keywords.webui.common import Common
 from keywords.webui.common_shares import Common_Shares as COMSHARE
 from keywords.webui.navigation import Navigation as NAV
@@ -12,7 +11,9 @@ def setup_class():
     print('in nfs setup after')
 
 
-def pytest_sessionfinish(session, exitstatus):
+@pytest.fixture(scope='class', autouse=True)
+def teardown_class():
+    yield
     print('in nfs finish before')
     COMSHARE.delete_all_shares_by_sharetype('nfs')
     Common.delete_user_by_api('nfs_test_user')

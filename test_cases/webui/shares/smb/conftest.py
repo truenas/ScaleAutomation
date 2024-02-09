@@ -1,6 +1,4 @@
 import pytest
-
-from helper.global_config import private_config
 from keywords.webui.common import Common
 
 
@@ -11,7 +9,9 @@ def setup_class():
     print('in smb conftest start after')
 
 
-def pytest_sessionfinish(session, exitstatus):
+@pytest.fixture(scope='class', autouse=True)
+def teardown_class():
+    yield
     print('in smb conftest finish before')
     Common.delete_user_by_api('smbuser')
     print('in smb conftest finish after')
