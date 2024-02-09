@@ -472,23 +472,6 @@ class Datasets:
         return WebUI.wait_until_visible(xpaths.datasets.selected_dataset_name(dataset), shared_config['SHORT_WAIT'])
 
     @classmethod
-    def assert_share_role_dataset_exists(cls):
-        """
-        This method returns True or False whether the share role dataset exists.
-
-        :return: True if the share role dataset exists, otherwise it returns False.
-
-        Example:
-            - Dataset.assert_share_role_dataset_exists()
-        """
-        if cls.is_dataset_visible('tank', 'smb_share') is False:
-            API_POST.create_dataset('tank/smb_share')
-            API_POST.create_share("smb", "smb_share", "/mnt/tank/smb_share")
-        WebUI.refresh()
-        assert Common.assert_progress_bar_not_visible()
-        return WebUI.wait_until_visible(xpaths.datasets.dataset_roles_icon('smb_share'))
-
-    @classmethod
     def assert_space_available_to_dataset_size(cls, size: str) -> bool:
         """
         This method returns True or False if the space available to dataset size is visible.
