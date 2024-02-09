@@ -6,6 +6,7 @@ from keywords.webui.datasets import Datasets
 from keywords.webui.navigation import Navigation
 
 
+@pytest.mark.random_order(disabled=True)
 @pytest.mark.parametrize('data', get_data_list('datasets')[2:4], scope='class')
 class Test_Create_Dataset:
     """

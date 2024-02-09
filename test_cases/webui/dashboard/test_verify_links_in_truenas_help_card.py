@@ -1,7 +1,9 @@
+import pytest
 from keywords.webui.dashboard import Dashboard
 from keywords.webui.common import Common
 
 
+@pytest.mark.random_order(disabled=True)
 class Test_Verify_Links_On_The_TrueNAS_Help_Card:
 
     @staticmethod

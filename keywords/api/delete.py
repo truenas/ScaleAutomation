@@ -23,17 +23,19 @@ class API_DELETE:
         return response
 
     @classmethod
-    def delete_dataset(cls, name: str) -> Response:
+    def delete_dataset(cls, name: str, recursive: bool = False, force: bool = False) -> Response:
         """
         This method deletes the given dataset.
 
         :param name: is the share nome.
+        :param recursive: is True to delete recursively.
+        :param force: is True to force delete.
         :return: the API request response.
         """
         name = name.replace('/', '%2F')
         response = GET(f'/pool/dataset?name={name}').json()
         if response:
-            response = DELETE(f'/pool/dataset/id/' + name)
+            response = DELETE(f'/pool/dataset/id/{name}', {'recursive': recursive, 'force': force})
             assert response.status_code == 200, response.text
         return response
 

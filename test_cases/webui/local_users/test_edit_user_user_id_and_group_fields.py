@@ -15,7 +15,7 @@ class Test_Edit_User_User_ID_And_Group_Fields:
         This test verifies the user id and group fields can be edited
         """
         COM.create_non_admin_user_by_api(users['username'], users['fullname'], users['password'])
-        LU.refresh_local_user_page()
+        NAV.navigate_to_local_users()
         assert LU.is_user_visible(users['username']) is True
 
         LU.unset_show_builtin_users_toggle()

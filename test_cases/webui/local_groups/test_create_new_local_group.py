@@ -14,7 +14,7 @@ class Test_Create_New_Local_Group:
         """
         This test verifies a new local group can be created
         """
-        # NAV.navigate_to_local_groups()
+        NAV.navigate_to_local_groups()
         LG.unset_show_builtin_groups_toggle()
         LG.click_add_group_button()
         LG.set_group_gid(groups['gid'])
@@ -34,5 +34,7 @@ class Test_Create_New_Local_Group:
         LG.set_allow_duplicate_gids()
         COM.click_save_button()
         assert LG.is_group_visible(groups['group-name']) is True
-        NAV.navigate_to_dashboard()
+
+        # Environment clean up
         LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
+        NAV.navigate_to_dashboard()
