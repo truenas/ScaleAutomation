@@ -41,14 +41,11 @@ def allure_reporting():
     """
     full_allure_results_path = f'{full_test_path}/allure-results'
     print(f'full_allure_results_path: {full_allure_results_path}')
-    # command = Local_Command_Line(f'mkdir -p {report_dir}')
-    # assert command.status is True, f'{command.stdout} \n{command.stderr}'
     command = Local_Command_Line(f'cp -r {full_allure_results_path} {report_dir}')
     assert command.status is True, f'{command.stdout} \n{command.stderr}'
     command = Local_Command_Line(f'cd {report_dir} ; allure generate -c allure-results')
     assert command.status is True, f'{command.stdout} \n{command.stderr}'
     print(f'Report generated. Folder name: | {timestamp_test_name} |')
-    # use workdir from helper.global_config for the path the put the reports folder.
 
 
 def take_screenshot(name):
