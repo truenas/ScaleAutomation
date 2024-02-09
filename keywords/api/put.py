@@ -90,6 +90,10 @@ class API_PUT:
         return cls.update_user(username, {"ssh_password_enabled": True})
 
     @classmethod
+    def set_app_pool(cls, pool: str) -> Response:
+        return PUT('/kubernetes/', {'pool': pool, 'servicelb': True})
+
+    @classmethod
     def set_user_groups(cls, username: str, groups: list) -> Response:
         """
         This method set the groups for the specified user.
