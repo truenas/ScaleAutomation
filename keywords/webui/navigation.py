@@ -1,5 +1,6 @@
 import xpaths
 from helper.global_config import shared_config
+from helper.reporting import take_screenshot, timestamp
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 
@@ -19,6 +20,8 @@ class Navigation:
          - Navigation.navigate_to('myLocation', 'My Location2', 'my-second-location')
         """
         if COM.is_visible(xpaths.common_xpaths.close_right_panel()):
+            print('@@@@@@@ RIGHT_PANEL_OPEN'+timestamp())
+            take_screenshot('RIGHT_PANEL_OPEN'+timestamp())
             COM.close_right_panel()
         if (COM.is_visible(xpaths.common_xpaths.any_header(header, 1)) is True) & (header is not 'Dashboard'):
             cls.navigate_to_dashboard()
