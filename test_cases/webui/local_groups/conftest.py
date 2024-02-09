@@ -1,7 +1,10 @@
 import pytest
+
 from helper.data_config import get_data_list
 from keywords.webui.local_groups import Local_Groups as LG
 from keywords.webui.navigation import Navigation
+
+
 @pytest.fixture(scope='class', autouse=True)
 def navigate_to_():
     """
@@ -33,4 +36,3 @@ def teardown_class(groups):
     Navigation.navigate_to_dashboard()
     LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
     LG.delete_group_by_api(groups['alt-group-name'], groups['group-privileges'])
-    
