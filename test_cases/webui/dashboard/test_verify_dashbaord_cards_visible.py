@@ -1,6 +1,8 @@
+import pytest
 from keywords.webui.dashboard import Dashboard
 
 
+@pytest.mark.random_order(disabled=True)
 class Test_Verify_All_Dashboard_Cards_Are_Visible:
     @staticmethod
     def set_all_dashboard_cards_visible():

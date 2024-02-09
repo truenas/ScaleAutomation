@@ -6,7 +6,7 @@ from keywords.webui.common import Common
 from keywords.webui.datasets import Datasets
 from keywords.webui.navigation import Navigation
 
-
+@pytest.mark.random_order(disabled=True)
 @pytest.mark.parametrize('data', get_data_list('datasets')[5:6], scope='class')
 class Test_Dataset_Protection_Navigate_Add_Snapshot:
     @staticmethod

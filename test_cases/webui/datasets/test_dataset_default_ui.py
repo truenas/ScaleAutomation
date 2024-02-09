@@ -5,6 +5,7 @@ from keywords.webui.datasets import Datasets
 from keywords.webui.navigation import Navigation
 
 
+@pytest.mark.random_order(disabled=True)
 class Test_Dataset_Default_UI:
     @staticmethod
     def navigate_to_datasets():

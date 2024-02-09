@@ -15,7 +15,7 @@ class Test_Delete_New_User:
         This test verifies a new user can be deleted
         """
         COM.create_non_admin_user_by_api(users['username'], users['fullname'], users['password'])
-        LU.refresh_local_user_page()
+        NAV.navigate_to_local_users()
         assert LU.is_user_visible(users['username']) is True
 
         LU.unset_show_builtin_users_toggle()
