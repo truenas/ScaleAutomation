@@ -8,9 +8,9 @@ from keywords.webui.navigation import Navigation
 @pytest.fixture(scope='class', autouse=True)
 def navigate_to_():
     """
-    This method starts all tests to navigate to the Data Protection page
+    This method starts all tests to navigate to the Local Groups page
     """
-    # Ensure we are on the Data Protection page.
+    # Ensure we are on the Local Groups page.
     Navigation.navigate_to_local_groups()
 
 
@@ -21,5 +21,18 @@ def setup_class(groups):
     This method clears any test groups before test is run for a clean environment
     """
     # Setup clean environment.
+    LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
+    LG.delete_group_by_api(groups['alt-group-name'], groups['group-privileges'])
+
+
+@pytest.fixture(scope='class', autouse=True)
+@pytest.mark.parametrize('groups', get_data_list('local_groups'), scope='class')
+def teardown_class(groups):
+    """
+    This method clears any test groups after test is run for a clean environment
+    """
+    yield
+    # Clean up environment.
+    Navigation.navigate_to_dashboard()
     LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
     LG.delete_group_by_api(groups['alt-group-name'], groups['group-privileges'])
