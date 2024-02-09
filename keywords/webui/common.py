@@ -348,7 +348,9 @@ class Common:
             - Common.create_non_admin_user_by_api('name', 'full name', 'password')
             - Common.create_non_admin_user_by_api('name', 'full name', 'password', True)
         """
-        API_POST.create_non_admin_user(name, fullname, password, smb_auth)
+        response = API_POST.create_non_admin_user(name, fullname, password, smb_auth)
+        print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
+
 
     @classmethod
     def delete_pill(cls, xpath: str) -> None:
@@ -372,7 +374,8 @@ class Common:
         Example:
             - Common.delete_user_by_api('user')
         """
-        API_DELETE.delete_user(name)
+        response = API_DELETE.delete_user(name)
+        print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
 
     @classmethod
     def get_element_property(cls, xpath: str, prop: str = 'value') -> str | bool:
@@ -633,9 +636,10 @@ class Common:
         cls.click_button('power-menu')
         cls.click_button('restart')
         cls.assert_confirm_dialog()
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Connecting to TrueNAS'), shared_config['LONG_WAIT'])
-        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_xpath('//mat-progress-bar[@mode="indeterminate"]'), shared_config['EXTRA_LONG_WAIT'])
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['LONG_WAIT'])
+        WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Connecting to TrueNAS'), shared_config['EXTRA_LONG_WAIT'])
+        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_xpath('//ix-disconnected-message//*[contains(text(), "Connecting to TrueNAS")]'), shared_config['EXTRA_LONG_WAIT'])
+        WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT'])
+        assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod
     def select_then_deselect_input_field(cls, name: str) -> None:
