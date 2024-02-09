@@ -43,6 +43,30 @@ class API_POST:
         return response
 
     @classmethod
+    def create_encrypted_dataset(cls, dataset: str) -> Response:
+        """
+        This method creates an encrypted dataset.
+
+        :param dataset: The dataset pool and name.
+        :return: The API response.
+
+        Example:
+            - API_POST.create_encrypted_dataset('tank/test-dataset')
+        """
+        payload = {
+            "name": dataset,
+            "encryption_options": {
+                "generate_key": False,
+                "pbkdf2iters": 555000,
+                "algorithm": "AES-256-GCM",
+                "passphrase": "encryption"
+            },
+            "inherit_encryption": False,
+            "encryption": True
+        }
+        return POST('/pool/dataset/', payload)
+
+    @classmethod
     def create_group(cls, group_name: str, smb_access: bool = False) -> Response:
         """
         This method creates the given group by API call
@@ -60,6 +84,29 @@ class API_POST:
             response = POST('/group', payload)
             assert response.status_code == 200, response.text
         return response
+
+    @classmethod
+    def create_inherit_encrypted_dataset(cls, dataset: str) -> Response:
+        """
+        This method creates a dataset that inherit encrypted for the parent dataset.
+        :param dataset: The dataset pool and name.
+        :return: The API response.
+
+        Example:
+            - API_POST.create_inherit_encrypted_dataset('tank/parent-dataset/child-dataset')
+        """
+        payload = {
+            "name": dataset,
+            "encryption_options": {
+                "generate_key": False,
+                "pbkdf2iters": 555000,
+                "algorithm": "AES-256-GCM",
+                "passphrase": "encryption"
+            },
+            "inherit_encryption": True,
+            "encryption": False
+        }
+        return POST('/pool/dataset/', payload)
 
     @classmethod
     def create_non_admin_user(cls, name: str, fullname: str, password: str, smb_auth: str = 'False') -> Response:
