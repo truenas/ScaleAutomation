@@ -91,6 +91,14 @@ class API_PUT:
 
     @classmethod
     def set_app_pool(cls, pool: str) -> Response:
+        """
+        This method set the app pool with the kubernetes API call.
+        :param pool: The name of the pool.
+        :return: The API request response.
+
+        Example:
+            - API_PUT.set_app_pool('tank')
+        """
         return PUT('/kubernetes/', {'pool': pool, 'servicelb': True})
 
     @classmethod
