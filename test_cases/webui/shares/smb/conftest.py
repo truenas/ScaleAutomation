@@ -3,6 +3,7 @@ import pytest
 from helper.global_config import private_config
 from keywords.webui.common import Common
 
+
 @pytest.fixture(scope='class', autouse=True)
 def setup_class():
     print('in smb conftest start before')
