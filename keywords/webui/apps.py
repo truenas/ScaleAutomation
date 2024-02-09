@@ -114,7 +114,7 @@ class Apps:
             take_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu')
             if WebUI.xpath(xpaths.common_xpaths.button_field('start-selected')).get_attribute('disabled'):
                 WebUI.refresh()
-                # WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('bulk-actions-menu'), shared_config['WAIT'])
+                COM.set_checkbox(COM.convert_to_tag_format(name))
                 COM.click_button('bulk-actions-menu')
                 take_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu_2')
             COM.click_button('start-selected')

@@ -14,6 +14,7 @@ class Test_Create_New_User:
         """
         This test verifies a new user can be created
         """
+        NAV.navigate_to_local_users()
         LU.click_add_user_button()
 
         LU.set_user_fullname(users['fullname'])

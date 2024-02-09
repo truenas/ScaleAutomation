@@ -7,8 +7,7 @@ from keywords.webui.common import Common
 
 # Close WebUI and move Allure report to Reports folder after the test session is completed
 def pytest_sessionfinish(session, exitstatus):
-    print(f"\nTotal time (in seconds) spent on hard delays using WebUI.delay(): {WebUI.total_time_waited()} "
-          "seconds waited")
+    print(f"\nTotal time (in seconds) spent on hard delays using WebUI.delay(): {WebUI.total_time_waited()} seconds waited")
     allure_reporting()
     WebUI.quit()
 
