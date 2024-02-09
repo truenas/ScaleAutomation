@@ -51,4 +51,3 @@ def setup_class(rep):
 def teardown_class():
     yield
     WebUI.switch_to_window_index(0)
-    
