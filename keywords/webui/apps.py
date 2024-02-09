@@ -113,7 +113,7 @@ class Apps:
             COM.click_button('bulk-actions-menu')
             take_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu')
             if WebUI.xpath(xpaths.common_xpaths.button_field('start-selected')).get_attribute('disabled'):
-                WebUI.refresh()
+                NAV.navigate_to_apps()
                 COM.set_checkbox(COM.convert_to_tag_format(name))
                 COM.click_button('bulk-actions-menu')
                 take_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu_2')
@@ -124,7 +124,7 @@ class Apps:
                 f'*[contains(text(),"Starting")]'), shared_config['LONG_WAIT'])
             assert cls.is_app_deployed(name)
             assert cls.is_app_running(name)
-            WebUI.refresh()
+            NAV.navigate_to_apps()
         return cls.is_app_running(name)
 
     @classmethod

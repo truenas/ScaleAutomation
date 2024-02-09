@@ -26,7 +26,7 @@ class Replication:
         Example:
             - Replication.click_run_now_replication_task_by_name('myRepTask')
         """
-        WebUI.refresh()
+        NAV.navigate_to_data_protection()
         COM.click_button(f'replication-task-{COM.convert_to_tag_format(name)}-play-arrow-row-action')
         COM.assert_confirm_dialog()
         WebUI.wait_until_visible(

@@ -5,6 +5,7 @@ from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common
+from keywords.webui.navigation import Navigation as NAV
 
 
 class Datasets:
@@ -484,7 +485,7 @@ class Datasets:
         if cls.is_dataset_visible('tank', 'smb_share') is False:
             API_POST.create_dataset('tank/smb_share')
             API_POST.create_share("smb", "smb_share", "/mnt/tank/smb_share")
-        WebUI.refresh()
+        NAV.navigate_to_datasets()
         assert Common.assert_progress_bar_not_visible()
         return WebUI.wait_until_visible(xpaths.datasets.dataset_roles_icon('smb_share'))
 

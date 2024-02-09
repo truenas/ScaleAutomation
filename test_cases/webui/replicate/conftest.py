@@ -1,9 +1,10 @@
 import pytest
 
+import xpaths
 from helper.data_config import get_data_list
 from helper.global_config import private_config
 from helper.webui import WebUI
-from keywords.webui.common import Common
+from keywords.webui.common import Common as COM
 from keywords.webui.data_protection import Data_Protection as DP
 from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation
@@ -51,3 +52,5 @@ def setup_class(rep):
 def teardown_class():
     yield
     WebUI.switch_to_window_index(0)
+    if COM.is_visible(xpaths.common_xpaths.button_field('log-in')):
+        COM.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
