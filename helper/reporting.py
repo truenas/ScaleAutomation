@@ -10,15 +10,20 @@ from platform import system
 
 
 # make the timestamp global
-now = datetime.now()
-timestamp = now.strftime("%Y_%m_%d-%H_%M_%S")
+
+def create_timestamp() -> str:
+    now = datetime.now()
+    timestamp = now.strftime("%Y_%m_%d-%H_%M_%S")
+    return timestamp
+
+
 real_workdir = workdir.replace("\\", "/").replace("C:", "/mnt/c")
 print(f'real_workdir: {real_workdir}')
 full_test_path = str(Path(Path.cwd()).as_posix()).strip()
 full_test_path = full_test_path.replace("C:", "/mnt/c")
 print(f'full_test_path: {full_test_path}')
 test_name = full_test_path.split('/')[-1]
-timestamp_test_name = f'{timestamp}-{test_name}'
+timestamp_test_name = f'{create_timestamp()}-{test_name}'
 print(f'timestamp_test_name: {timestamp_test_name}')
 report_dir = f'{real_workdir}/Reports/{timestamp_test_name}'
 print(f'report_dir: {report_dir}')
