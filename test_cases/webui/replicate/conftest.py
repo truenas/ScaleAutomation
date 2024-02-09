@@ -2,6 +2,7 @@ import pytest
 
 from helper.data_config import get_data_list
 from helper.global_config import private_config
+from helper.webui import WebUI
 from keywords.webui.common import Common
 from keywords.webui.data_protection import Data_Protection as DP
 from keywords.webui.datasets import Datasets as DATASET
@@ -44,3 +45,10 @@ def setup_class(rep):
     DP.delete_all_periodic_snapshot_tasks()
     DP.delete_all_snapshots()
     Navigation.navigate_to_data_protection()
+
+
+@pytest.fixture(scope='class', autouse=True)
+def teardown_class():
+    yield
+    WebUI.switch_to_window_index(0)
+    

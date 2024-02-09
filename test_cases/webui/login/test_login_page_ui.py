@@ -1,17 +1,8 @@
 from keywords.webui.login_page_ui import Login_Page_Ui as LPU
 from keywords.webui.common import Common as COM
-from helper.global_config import private_config
 
 
 class Test_Login_Page_UI:
-    @classmethod
-    def setup_class(cls):
-        COM.logoff_truenas()
-
-    @classmethod
-    def teardown_class(cls):
-        COM.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
-
     @staticmethod
     def test_login_page_ui():
         """
