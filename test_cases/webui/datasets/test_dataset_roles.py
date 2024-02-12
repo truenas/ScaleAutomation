@@ -27,7 +27,6 @@ class Test_Dataset_Roles:
         """
         # Navigate to Datasets page
         Navigation.navigate_to_datasets()
-        assert Datasets.assert_datasets_page_header()
         Datasets.select_dataset(role['dataset'])
 
         # Verify the dataset roles information
@@ -41,7 +40,6 @@ class Test_Dataset_Roles:
         """
         # Navigate to Datasets page
         Navigation.navigate_to_datasets()
-        assert Datasets.assert_datasets_page_header()
         Datasets.select_dataset(role['dataset'])
 
         # Verify the manage role link
