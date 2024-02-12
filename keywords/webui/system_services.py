@@ -1,4 +1,5 @@
 import xpaths
+from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 
 
@@ -17,6 +18,15 @@ class System_Services:
         service_backend = cls.return_backend_service_name(service)
         assert (COM.is_visible(xpaths.common_xpaths.checkbox_field(f'{service_backend}-service')))
         return COM.is_checked(f'{service_backend}-service')
+
+    @classmethod
+    def restart_service_by_api(cls, service: str) -> None:
+        """
+        This method starts the given service
+
+        :param service: is the name of the service to start
+        """
+        assert API_POST.start_service(service).status_code == 200
 
     @classmethod
     def return_backend_service_name(cls, service: str) -> str:
@@ -80,6 +90,24 @@ class System_Services:
         :param service: The name of the service.
         """
         cls.toggle_service_auto_start(service, True)
+
+    @classmethod
+    def start_service_by_api(cls, service: str) -> None:
+        """
+        This method starts the given service
+
+        :param service: is the name of the service to start
+        """
+        assert API_POST.start_service(service).status_code == 200
+
+    @classmethod
+    def stop_service_by_api(cls, service: str) -> None:
+        """
+        This method stops the given service
+
+        :param service: is the name of the service to stop
+        """
+        assert API_POST.stop_service(service).status_code == 200
 
     @classmethod
     def toggle_service_auto_start(cls, service: str, state: bool):
