@@ -175,7 +175,6 @@ class NFS:
         :param field: The field to select (Network or Hosts)
         :param text: The text to enter.
         """
-
         path = xpaths.common_xpaths.any_xpath(f'//*[contains(text(), "{field}")]/ancestor::ix-list//*[@data-test="input"]')
         WebUI.wait_until_visible(path)
         WebUI.xpath(path).clear()
