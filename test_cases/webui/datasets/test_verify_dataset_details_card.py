@@ -52,7 +52,6 @@ class Test_Verify_Dataset_Details_Card:
         assert Common.assert_right_panel_header('Edit Dataset') is True
         Common.close_right_panel()
 
-
     @pytest.fixture(scope='class', autouse=True)
     def tear_down_class(self, data):
         """
