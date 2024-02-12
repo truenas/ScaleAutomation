@@ -131,6 +131,7 @@ def button_share_actions_menu(sharetype: str) -> str:
     """
     return f'//ix-{sharetype}-card//ix-service-extra-actions//button'
 
+
 def card_title(text: str) -> str:
     """
     The function returns the xpath text of the given card title.
