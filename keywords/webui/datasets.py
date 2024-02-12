@@ -728,7 +728,7 @@ class Datasets:
             Common.assert_dialog_visible(f'Delete dataset {pool}/{dataset}')
             Common.set_input_field('confirm-dataset-name', f'{pool}/{dataset}')
             Common.set_checkbox('confirm')
-            Common.click_on_element(xpaths.common_xpaths.button_field_by_row('confirm-dataset', 2))
+            Common.click_on_element(xpaths.common_xpaths.button_field_by_row('delete-dataset', 2))
             WebUI.delay(1)
 
     @classmethod
@@ -933,6 +933,19 @@ class Datasets:
             - Dataset.is_capacity_settings_right_panel_visible()
         """
         return Common.assert_right_panel_header('Capacity Settings')
+
+    @classmethod
+    def is_dataset_not_visible(cls, dataset: str) -> bool:
+        """
+        This method checks if the given dataset is not visible.
+        :param dataset: Test name of the dataset.
+        :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+            - Dataset.is_dataset_not_visible('test-dataset')
+        """
+        Common.assert_progress_bar_not_visible()
+        return WebUI.wait_until_not_visible(xpaths.datasets.link_dataset(dataset), shared_config['SHORT_WAIT']) is True
 
     @classmethod
     def is_dataset_visible(cls, pool: str, dataset: str) -> bool:
