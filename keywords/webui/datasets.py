@@ -420,7 +420,7 @@ class Datasets:
         Example:
             - Dataset.assert_data_written_size('96 KiB')
         """
-        return Common.assert_label_and_value_exist('Data Written:', size)
+        return Common.assert_label_and_value_exist('Data Written', size)
 
     @classmethod
     def assert_reserved_for_dataset_size(cls, size):
@@ -986,9 +986,7 @@ class Datasets:
         Example:
             - Dataset.is_locked('test-dataset')
         """
-        xpath = xpaths.common_xpaths.tree_node_field(dataset)
-        to = xpaths.common_xpaths.any_child_parent_target(xpath, 'ix-dataset-node', 'ix-dataset-locked-cell')
-        return WebUI.get_attribute(to, 'innerText') == 'Locked'
+        return WebUI.get_text(xpaths.datasets.dataset_encryption_text(dataset)) == 'Locked'
 
     @classmethod
     def is_permissions_advanced_item_visible(cls, name: str, permission_item: str) -> bool:
