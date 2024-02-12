@@ -28,14 +28,24 @@ class System_Services:
         """
         returned_name = ''
         match service.lower():
-            case 'smb':
-                returned_name = 'cifs'
+            case 'ftp':
+                returned_name = 'ftp'
             case 'iscsi':
                 returned_name = 'iscsitarget'
+            case 'nfs':
+                returned_name = 'nfs'
             case 'smart':
                 returned_name = 'smartd'
             case 's.m.a.r.t.':
                 returned_name = 'smartd'
+            case 'smb':
+                returned_name = 'cifs'
+            case 'snmp':
+                returned_name = 'snmp'
+            case 'ssh':
+                returned_name = 'ssh'
+            case 'ups':
+                returned_name = 'ups'
         return returned_name
 
     @classmethod
