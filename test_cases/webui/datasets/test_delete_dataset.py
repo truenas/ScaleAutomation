@@ -1,7 +1,6 @@
 import pytest
 from helper.data_config import get_data_list
 from keywords.api.post import API_POST
-from keywords.webui.common import Common
 from keywords.webui.datasets import Datasets
 from keywords.webui.navigation import Navigation
 

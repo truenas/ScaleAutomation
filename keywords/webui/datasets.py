@@ -937,13 +937,12 @@ class Datasets:
     @classmethod
     def is_dataset_not_visible(cls, dataset: str) -> bool:
         """
-        This method checks if the given dataset is visible and expanded.
-        :param pool: The name of the pool.
+        This method checks if the given dataset is not visible.
         :param dataset: Test name of the dataset.
         :return: True if the share name is visible otherwise it returns False.
 
         Example:
-            - Dataset.is_dataset_visible('test-pool', 'test-dataset')
+            - Dataset.is_dataset_not_visible('test-dataset')
         """
         Common.assert_progress_bar_not_visible()
         return WebUI.wait_until_not_visible(xpaths.datasets.link_dataset(dataset), shared_config['SHORT_WAIT']) is True
