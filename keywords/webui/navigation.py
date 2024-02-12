@@ -29,8 +29,7 @@ class Navigation:
         if location2 != "":
             WebUI.delay(0.2)
             COM.click_on_element(xpaths.common_xpaths.any_xpath(f'(//*[@data-test="link-{location2}"])[2]'))
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header, 1))
-        assert COM.is_visible(xpaths.common_xpaths.any_header(header, 1))
+        assert COM.assert_page_header(header)
         WebUI.delay(2)
 
     @classmethod
