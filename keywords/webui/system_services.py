@@ -26,26 +26,15 @@ class System_Services:
         :param service: The name of the service.
         :return: returns the state of the backend name of the given service.
         """
-        returned_name = ''
         match service.lower():
-            case 'ftp':
-                returned_name = 'ftp'
             case 'iscsi':
                 returned_name = 'iscsitarget'
-            case 'nfs':
-                returned_name = 'nfs'
-            case 'smart':
-                returned_name = 'smartd'
-            case 's.m.a.r.t.':
+            case 'smart' | 's.m.a.r.t.':
                 returned_name = 'smartd'
             case 'smb':
                 returned_name = 'cifs'
-            case 'snmp':
-                returned_name = 'snmp'
-            case 'ssh':
-                returned_name = 'ssh'
-            case 'ups':
-                returned_name = 'ups'
+            case _:
+                returned_name = service
         return returned_name
 
     @classmethod
