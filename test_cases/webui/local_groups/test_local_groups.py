@@ -5,6 +5,7 @@ from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 from keywords.webui.local_groups import Local_Groups as LG
+from keywords.webui.navigation import Navigation as NAV
 
 
 @pytest.mark.parametrize('groups', get_data_list('local_groups'), scope='class')
@@ -15,6 +16,7 @@ class Test_Local_Groups:
         """
         This method sets up each test to start with builtin groups not shown
         """
+        NAV.navigate_to_local_groups()
         LG.unset_show_builtin_groups_toggle()
         API_DELETE.delete_group(groups['group-name'], groups['group-privileges'])
         API_DELETE.delete_group(groups['alt-group-name'], groups['group-privileges'])
@@ -35,7 +37,6 @@ class Test_Local_Groups:
         This test verifies adding a member to a new local group
         """
         # Environment setup
-        print("@@@ ADD MEMBER TEST:")
         if LG.is_group_visible(groups['group-name']) is False:
             API_POST.create_group(groups['group-name'])
             assert LG.is_group_visible(groups['group-name']) is True
@@ -136,3 +137,68 @@ class Test_Local_Groups:
         assert LG.is_user_in_group_list(groups['username']) is False
         assert LG.is_user_in_users_list(groups['username']) is True
         COM.click_cancel_button()
+
+    @staticmethod
+    def test_delete_new_local_group(groups) -> None:
+        """
+        This test verifies a new local group can be deleted
+        """
+        # Environment setup
+        if LG.is_group_visible(groups['group-name']) is False:
+            API_POST.create_group(groups['group-name'])
+            assert LG.is_group_visible(groups['group-name']) is True
+
+        LG.delete_group_by_name(groups['group-name'])
+        assert LG.is_group_visible(groups['group-name']) is False
+
+    @staticmethod
+    def test_edit_local_group(groups) -> None:
+        """
+        This test verifies a local group can be edited
+        """
+        if LG.is_group_visible(groups['group-name']) is False:
+            API_POST.create_group(groups['group-name'])
+            assert LG.is_group_visible(groups['group-name']) is True
+
+        LG.expand_group_by_name(groups['group-name'])
+        LG.click_group_edit_button_by_name(groups['group-name'])
+        LG.set_group_name(groups['alt-group-name'])
+        LG.select_group_privileges(groups['group-privileges'])
+
+        assert LG.assert_gid_field_is_disabled() is True
+        LG.delete_group_allowed_sudo_command(groups['sudo-commands-1'])
+        LG.delete_group_allowed_sudo_command_no_password(groups['sudo-commands-2'])
+
+        LG.unset_samba_authentication()
+        COM.click_save_button()
+        assert LG.is_group_visible(groups['group-name']) is False
+        assert LG.is_group_visible(groups['alt-group-name']) is True
+        LG.expand_group_by_name(groups['alt-group-name'])
+        LG.click_group_edit_button_by_name(groups['alt-group-name'])
+        LG.set_group_name(groups['group-name'])
+        LG.add_group_allowed_sudo_command(groups['sudo-commands-2'])
+        LG.add_group_allowed_sudo_command_no_password(groups['sudo-commands-1'])
+        LG.set_group_allow_all_sudo_commands_checkbox()
+        assert LG.assert_group_allowed_sudo_commands_is_disabled() is True
+        LG.set_group_allow_all_sudo_commands_no_password_checkbox()
+        assert LG.assert_group_allowed_sudo_commands_no_password_is_disabled() is True
+        LG.set_samba_authentication()
+        COM.click_save_button()
+        assert LG.is_group_visible(groups['group-name']) is True
+        assert LG.is_group_visible(groups['alt-group-name']) is False
+        LG.expand_group_by_name(groups['group-name'])
+        LG.click_group_edit_button_by_name(groups['group-name'])
+        LG.unset_group_allow_all_sudo_commands_checkbox()
+        LG.unset_group_allow_all_sudo_commands_no_password_checkbox()
+        LG.add_group_allowed_sudo_command(groups['sudo-commands-1'])
+        LG.add_group_allowed_sudo_command(groups['sudo-commands-2'])
+        LG.add_group_allowed_sudo_command_no_password(groups['sudo-commands-1'])
+        LG.add_group_allowed_sudo_command_no_password(groups['sudo-commands-2'])
+        COM.click_save_button()
+        assert LG.is_group_visible(groups['group-name']) is True
+        LG.expand_group_by_name(groups['group-name'])
+        LG.click_group_edit_button_by_name(groups['group-name'])
+        LG.delete_all_group_allowed_sudo_commands()
+        LG.delete_all_group_allowed_sudo_commands_no_password()
+        COM.click_save_button()
+        assert LG.is_group_visible(groups['group-name']) is True
