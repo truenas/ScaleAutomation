@@ -112,7 +112,7 @@ class Directory_Services:
         COM.click_button('ldap-settings')
 
     @classmethod
-    def click_show_advanced_settings_button(cls):
+    def click_show_advanced_settings_button(cls) -> None:
         """
         This method clicks the show advanced settings button and confirms the dialog
 
