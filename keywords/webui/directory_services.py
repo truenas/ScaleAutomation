@@ -3,6 +3,40 @@ from keywords.webui.common import Common as COM
 
 
 class Directory_Services:
+    @classmethod
+    def assert_active_directory_card_visible(cls) -> bool:
+        """
+        This method checks if the Active Directory card is visible
+        :return: True if the Active Directory card is visible, otherwise it returns False.
+
+        Example:
+            - Directory_Services.assert_active_directory_card_visible()
+        """
+        return COM.is_card_visible('Active Directory')
+
+    @classmethod
+    def assert_active_directory_domain_account_name(cls, username: str) -> bool:
+        """
+        This method verifies the given domain account name is visible.
+        :param username: The name of the domain account
+        :return: Ture if the given domain account name is visible otherwise it returns False.
+
+        Example:
+            - Directory_Services.assert_active_directory_domain_account_name('admin')
+        """
+        return COM.assert_label_and_value_exist('Domain Account Name:', username)
+
+    @classmethod
+    def assert_active_directory_domain_name(cls, domain: str) -> bool:
+        """
+        This method verifies the given domain name is visible.
+        :param domain: The name of the domain.
+        :return: Ture if the given domain name is visible otherwise it returns False.
+
+        Example:
+            - Directory_Services.assert_active_directory_domain_name('admin')
+        """
+        return COM.assert_label_and_value_exist('Domain Name:', domain.upper())
 
     @classmethod
     def assert_directory_services_page_header(cls) -> bool:
@@ -10,6 +44,9 @@ class Directory_Services:
         This method returns True if the Directory Services page is displayed, otherwise False
 
         :return: is the name of the service to start
+
+        Example:
+            - Directory_Services.assert_directory_services_page_header()
         """
         return COM.assert_page_header('Directory Services')
 
@@ -19,13 +56,48 @@ class Directory_Services:
         This method returns True if the Directory Services page is displayed, otherwise False
 
         :return: is the name of the service to start
+
+        Example:
+            - Directory_Services.assert_ldap_card()
         """
         return COM.is_visible(xpaths.common_xpaths.any_header('LDAP', 3))
+
+    @classmethod
+    def assert_service_status(cls, status: str) -> bool:
+        """
+        This method verifies the given service status is visible.
+        :param status: The name of the service.
+        :return: True if the given service status is visible otherwise it returns False.
+        """
+        return COM.assert_label_and_value_exist('Status:', status.upper())
+
+    @classmethod
+    def click_active_directory_settings_button(cls) -> None:
+        """
+        This method clicks the active directory settings button
+
+        Example:
+            - Directory_Services.click_active_directory_settings_button()
+        """
+        COM.click_button('active-directory-settings')
+
+    @classmethod
+    def click_configure_active_directory_button(cls) -> None:
+        """
+        This method clicks the configure active directory button.
+
+        Example:
+            - Directory_Services.click_configure_active_directory_button()
+        """
+        COM.click_button('configure-active-directory')
 
     @classmethod
     def click_configure_ldap_button(cls) -> None:
         """
         This method clicks the configure ldap button
+
+        Example:
+            - Directory_Services.click_configure_ldap_button()
         """
         COM.click_button('configure-ldap')
 
@@ -33,13 +105,31 @@ class Directory_Services:
     def click_ldap_settings_button(cls) -> None:
         """
         This method clicks the configure ldap button
+
+        Example:
+            - Directory_Services.click_ldap_settings_button()
         """
         COM.click_button('ldap-settings')
+
+    @classmethod
+    def click_show_advanced_settings_button(cls):
+        """
+        This method clicks the show advanced settings button and confirms the dialog
+
+        Example:
+            - Directory_Services.click_show_advanced_settings_button()
+        """
+        COM.click_button('show-advanced-settings')
+        assert COM.assert_dialog_visible('Warning')
+        COM.click_button('dialog-confirm')
 
     @classmethod
     def remove_ldap(cls) -> None:
         """
         This method removes the existing ldap configuration
+
+        Example:
+            - Directory_Services.remove_ldap()
         """
         if COM.is_visible(xpaths.common_xpaths.button_field('configure-ldap')):
             cls.click_configure_ldap_button()
