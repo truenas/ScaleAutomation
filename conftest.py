@@ -1,6 +1,7 @@
+import os
 import pytest
 from helper.webui import WebUI
-from helper.global_config import private_config
+from helper.global_config import private_config, shared_config
 from helper.reporting import allure_reporting, take_screenshot
 from keywords.webui.common import Common
 
@@ -14,6 +15,9 @@ def pytest_sessionfinish(session, exitstatus):
 
 def pytest_sessionstart(session):
     Common.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
+    # Set up a unique hostname for the test session.
+    # PID is unique for each session
+    shared_config['HOSTNAME'] = f'pytest-{os.getpid()}'
 
 
 @pytest.hookimpl(hookwrapper=True)
