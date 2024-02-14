@@ -3,6 +3,18 @@ from keywords.webui.common import Common as COM
 
 
 class Directory_Services:
+
+    @classmethod
+    def assert_active_directory_card_not_visible(cls) -> bool:
+        """
+        This method checks if the Active Directory card is visible
+        :return: True if the Active Directory card is visible, otherwise it returns False.
+
+        Example:
+            - Directory_Services.assert_active_directory_card_visible()
+        """
+        return COM.is_card_not_visible('Active Directory')
+
     @classmethod
     def assert_active_directory_card_visible(cls) -> bool:
         """
