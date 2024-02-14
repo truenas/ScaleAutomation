@@ -15,6 +15,20 @@ class Active_Directory:
         return Common.assert_right_panel_header('Active Directory')
 
     @classmethod
+    def assert_nameserver_failed_to_resolve_srv_record_message(cls, nameserver2) -> bool:
+        """
+        This method verify the nameserver failed to resolve SRV record message.
+        :param nameserver2: The nameserver IP of that failed to resolve SRV record.
+        :return: This method return True if the nameserver failed to resolve SRV record message is visible
+        otherwise it returns False.
+
+        Example:
+            - Active_Directory.assert_nameserver_failed_to_resolve_srv_record_message('237.84.2.178')
+        """
+        message = f'Nameserver {nameserver2} failed to resolve SRV record for domain'
+        return Common.assert_text_is_visible(message)
+
+    @classmethod
     def click_leave_domain_button(cls):
         """
         This method clicks the Leave Domain button.
@@ -54,6 +68,7 @@ class Active_Directory:
             - Active_Directory.click_the_dialog_leave_domain_button()
         """
         Common.click_on_element(xpaths.common_xpaths.button_field_by_row('leave-domain', 1))
+
         assert Common.assert_please_wait_not_visible()
 
     @classmethod

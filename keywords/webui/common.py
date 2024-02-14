@@ -95,6 +95,7 @@ class Common:
             - Common.assert_please_wait_Not_visible()
             - Common.assert_please_wait_Not_visible(shared_config['MEDIUM_WAIT'])
         """
+        WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['SHORT_WAIT'])
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), wait)
 
     @classmethod
@@ -232,7 +233,7 @@ class Common:
         Example:
             - Common.click_advanced_options_button()
         """
-        Common.click_button('advanced-options')
+        Common.click_button('toggle-advanced')
 
     @classmethod
     def click_button(cls, name: str) -> None:
@@ -495,6 +496,7 @@ class Common:
             - Common.is_card_visible('myCard')
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.card_title(card_title))
+
 
     @classmethod
     def is_checked(cls, name: str) -> bool:
