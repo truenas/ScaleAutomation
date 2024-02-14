@@ -352,6 +352,92 @@ class Local_Groups:
         WebUI.xpath(xpaths.common_xpaths.any_data_test(f'row-{group_name}')).click()
 
     @classmethod
+    def get_group_list_allow_sudo_commands(cls, group) -> str:
+        """
+        This method returns the group allow sudo commands from the given group
+
+        :param group: is the name of the group
+        :return: returns the group allow sudo commands from the given group
+
+        Example
+         - Local_Groups.get_group_list_builtin('group name')
+        """
+        return cls.get_group_list_attribute(group, 4)
+
+    @classmethod
+    def get_group_list_attribute(cls, group: str, col: int) -> str:
+        """
+        This method returns the group list attribute from the given group and col
+
+        :param group: is the name of the group
+        :param col: is the column of the group list
+        :return: returns the group list attribute from the given group and col
+
+        Example
+         - Local_Groups.get_group_list_attribute('group name', 3)
+        """
+        # TODO: Fix/Remove this if '_ssh' group is removed or changed
+        index = 1
+        if group == "_ssh":
+            index = 2
+        group = COM.convert_to_tag_format(group)
+        return COM.get_element_property(
+            xpaths.common_xpaths.any_xpath(f'(//*[@data-test="row-{group}"][{index}]//td)[{col}]'),
+            'textContent').strip()
+
+    @classmethod
+    def get_group_list_builtin(cls, group) -> str:
+        """
+        This method returns the group builtin from the given group
+
+        :param group: is the name of the group
+        :return: returns the group builtin from the given group
+
+        Example
+         - Local_Groups.get_group_list_builtin('group name')
+        """
+        return cls.get_group_list_attribute(group, 3)
+
+    @classmethod
+    def get_group_list_gid(cls, group) -> str:
+        """
+        This method returns the group gid from the given group
+
+        :param group: is the name of the group
+        :return: returns the group gid from the given group
+
+        Example
+         - Local_Groups.get_group_list_gid('group name')
+        """
+        return cls.get_group_list_attribute(group, 2)
+
+    @classmethod
+    def get_group_list_roles(cls, group) -> str:
+        """
+        This method returns the group roles from the given group
+
+        :param group: is the name of the group
+        :return: returns the group roles from the given group
+
+        Example
+         - Local_Groups.get_group_list_roles('group name')
+        """
+        return cls.get_group_list_attribute(group, 6)
+
+    @classmethod
+    def get_group_list_samba_auth(cls, group) -> str:
+        """
+        This method returns the group samba authentication from the given group
+
+        :param group: is the name of the group
+        :return: returns the group samba authentication from the given group
+
+        Example
+         - Local_Groups.get_group_list_samba_auth('group name')
+        """
+        return cls.get_group_list_attribute(group, 5)
+
+    @classmethod
     def is_group_visible(cls, group_name: str) -> bool:
         """
         This method returns True if the given group displays, otherwise False
@@ -548,3 +634,17 @@ class Local_Groups:
          - Local_Groups.unset_show_builtin_groups_toggle()
         """
         COM.unset_toggle('show-built-in-groups')
+
+    @classmethod
+    # TODO: remove this when https://ixsystems.atlassian.net/browse/NAS-127356 is fixed and update all usages to select_option.
+    def select_group_items_per_page(cls, option: str) -> None:
+        """
+        This method selects the given option text from the given select field.
+
+        :param option: The name of the option to select. [10/20/50/100]
+
+        Example:
+            - Local_Groups.select_group_items_per_page('20')
+        """
+        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath('//mat-select'), shared_config['SHORT_WAIT']).click()
+        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{option}")]'), shared_config['SHORT_WAIT']).click()
