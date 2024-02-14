@@ -210,6 +210,22 @@ class API_POST:
         return POST('/service/started/', service).json()
 
     @classmethod
+    def leave_active_directory(cls, username: str, password: str) -> dict:
+        """
+        This method leave the active directory.
+        :param username: The username of the active directory user.
+        :param password: the password of the active directory user.
+        :return: the API request response dictionary.
+
+        Example:
+            - API_POST.leave_active_directory('admin', 'password')
+        """
+        result = POST('/activedirectory/leave', {'username': username, 'password': password})
+        assert result.status_code == 200, result.text
+        job_status = API_Common.wait_on_job(result.json(), shared_config['LONG_WAIT'])
+        return job_status['results']
+
+    @classmethod
     def restart_replication_service(cls, service: str) -> Response:
         """
         This method restart the specified service of the replication NAS.
