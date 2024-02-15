@@ -512,7 +512,7 @@ class Common:
         """
         state = False
 
-        if eval(cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked')):
+        if cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked'):
             state = True
         return state
 
@@ -551,7 +551,7 @@ class Common:
         """
         state = False
 
-        if eval(cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'disabled')):
+        if cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'disabled'):
             state = True
         return state
 
