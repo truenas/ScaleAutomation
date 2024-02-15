@@ -510,7 +510,7 @@ class Common:
             - Common.is_checked('myCheckbox')
         """
         state = False
-        if bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')):
+        if eval(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked').capitalize()):
             state = True
         return state
 
@@ -575,6 +575,22 @@ class Common:
             - Common.is_save_button_disabled()
         """
         return cls.get_element_property(xpaths.common_xpaths.button_field('save'), 'disabled')
+
+    @classmethod
+    def is_toggle_enabled(cls, name: str) -> bool:
+        """
+        This method return True if the given toggle is enabled (uses ariaChecked attr) otherwise it returns False.
+
+        :param name: name of the toggle field.
+        :return: True if the toggle is enabled, otherwise it returns False.
+
+        Example:
+            - Common.is_toggle_enabled('ftp-service')
+        """
+        state = False
+        if eval(WebUI.xpath(xpaths.common_xpaths.toggle_field(name)).get_property('ariaChecked').capitalize()):
+            state = True
+        return state
 
     @classmethod
     def is_visible(cls, xpath: str) -> bool:
