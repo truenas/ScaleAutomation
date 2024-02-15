@@ -7,7 +7,7 @@ from keywords.webui.system_services import System_Services as SERV
 
 @pytest.mark.parametrize('services', get_data_list('system_services'), scope='class')
 class Test_System_Services:
-
+    @classmethod
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self) -> None:
         """
@@ -15,6 +15,7 @@ class Test_System_Services:
         """
         NAV.navigate_to_system_settings_services()
 
+    @classmethod
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self):
         """
