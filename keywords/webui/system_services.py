@@ -29,8 +29,6 @@ class System_Services:
         :return: returns the running status of the given service.
         """
         service_backend = cls.return_backend_service_name(service)
-        print(service_backend)
-        print(COM.is_toggle_enabled(service_backend))
         return COM.is_toggle_enabled(service_backend)
 
     @classmethod
@@ -193,7 +191,7 @@ class System_Services:
             COM.set_checkbox(xpaths.common_xpaths.checkbox_field(f'{service_backend}-service'))
         autostart = COM.is_checked(f'{service_backend}-service')
         assert (autostart is state)
-        print(f'Service Name: {service} exists and running status is: {autostart}')
+        print(f'Service Name: {service} exists and auto start status is: {autostart}')
 
     @classmethod
     def toggle_service_running_status_by_name(cls, service: str, state: bool, error_dialog: bool = False):
