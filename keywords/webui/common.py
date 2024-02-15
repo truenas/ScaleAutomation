@@ -81,7 +81,8 @@ class Common:
         Example:
             - Common.assert_label_and_value_exist('Pool Status', 'Online')
         """
-        return WebUI.wait_until_visible(xpaths.xpaths.common_xpaths.label_and_value(label, value), shared_config['SHORT_WAIT'])
+        return WebUI.wait_until_visible(xpaths.xpaths.common_xpaths.label_and_value(label, value),
+                                        shared_config['SHORT_WAIT'])
 
     @classmethod
     def assert_please_wait_not_visible(cls, wait: int = shared_config['LONG_WAIT']) -> bool:
@@ -376,7 +377,6 @@ class Common:
         response = API_POST.create_non_admin_user(name, fullname, password, smb_auth)
         print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
 
-
     @classmethod
     def delete_pill(cls, xpath: str) -> None:
         """
@@ -443,7 +443,9 @@ class Common:
         Example:
             - Common.get_label_value('Label')
         """
-        return WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[contains(text(),"{label}")]/following-sibling::*')).get_property('textContent')
+        return WebUI.xpath(
+            xpaths.common_xpaths.any_xpath(f'//*[contains(text(),"{label}")]/following-sibling::*')).get_property(
+            'textContent')
 
     @classmethod
     def get_user_id_by_api(cls, username: str) -> int:
@@ -497,7 +499,6 @@ class Common:
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.card_title(card_title))
 
-
     @classmethod
     def is_checked(cls, name: str) -> bool:
         """
@@ -510,7 +511,8 @@ class Common:
             - Common.is_checked('myCheckbox')
         """
         state = False
-        if bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')):
+
+        if eval(cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked').capitalize()):
             state = True
         return state
 
@@ -539,7 +541,7 @@ class Common:
     @classmethod
     def is_checkbox_disabled(cls, name: str) -> bool:
         """
-        This method return True if the checkbox is disabled, otherwise it returns False.
+        This method returns if the checkbox is disabled, otherwise it returns False.
 
         :param name: The name of the checkbox
         :return: True if the checkbox is disabled, otherwise it returns False.
@@ -547,7 +549,11 @@ class Common:
         Example:
             - Common.is_checkbox_disabled('my-checkbox')
         """
-        return WebUI.get_attribute(xpaths.common_xpaths.checkbox_field_attribute(name), 'disabled') is True
+        state = False
+
+        if eval(cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'disabled').capitalize()):
+            state = True
+        return state
 
     @classmethod
     def is_dialog_visible(cls, dialog_title: str, level: int) -> bool:
@@ -575,6 +581,23 @@ class Common:
             - Common.is_save_button_disabled()
         """
         return cls.get_element_property(xpaths.common_xpaths.button_field('save'), 'disabled')
+
+    @classmethod
+    def is_toggle_enabled(cls, name: str) -> bool:
+        """
+        This method return True if the given toggle is enabled (uses ariaChecked attr) otherwise it returns False.
+
+        :param name: name of the toggle field.
+        :return: True if the toggle is enabled, otherwise it returns False.
+
+        Example:
+            - Common.is_toggle_enabled('ftp-service')
+        """
+        state = False
+
+        if eval(cls.get_element_property(xpaths.common_xpaths.toggle_field(name), 'ariaChecked').capitalize()):
+            state = True
+        return state
 
     @classmethod
     def is_visible(cls, xpath: str) -> bool:
@@ -662,8 +685,11 @@ class Common:
         cls.click_button('power-menu')
         cls.click_button('restart')
         cls.assert_confirm_dialog()
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Connecting to TrueNAS'), shared_config['EXTRA_LONG_WAIT'])
-        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_xpath('//ix-disconnected-message//*[contains(text(), "Connecting to TrueNAS")]'), shared_config['EXTRA_LONG_WAIT'])
+        WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Connecting to TrueNAS'),
+                                 shared_config['EXTRA_LONG_WAIT'])
+        WebUI.wait_until_not_visible(
+            xpaths.common_xpaths.any_xpath('//ix-disconnected-message//*[contains(text(), "Connecting to TrueNAS")]'),
+            shared_config['EXTRA_LONG_WAIT'])
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT'])
         assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
 
@@ -707,7 +733,8 @@ class Common:
             - Common.select_option_text('size-and-type-data', '20 GiB (HDD)')
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT']).click()
-        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{option}")]'), shared_config['SHORT_WAIT']).click()
+        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{option}")]'),
+                                   shared_config['SHORT_WAIT']).click()
 
     @classmethod
     def set_10_items_per_page(cls) -> None:

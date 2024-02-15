@@ -145,3 +145,24 @@ class Navigation:
         """
         cls.navigate_to('storage', 'Storage')
 
+    @classmethod
+    def navigate_to_system_settings_advanced(cls) -> None:
+        """
+        This method navigates to the Advanced page under the System Settings panel.
+
+        Example
+         - Navigation.navigate_to_system_settings_services()
+        """
+        cls.navigate_to('system-settings', 'Advanced', 'advanced')
+
+    @classmethod
+    def navigate_to_system_settings_services(cls) -> None:
+        """
+        This method navigates to the Services page under the System Settings panel.
+
+        Example
+         - Navigation.navigate_to_system_settings_services()
+        """
+        cls.navigate_to('system-settings', 'Services', 'services')
+
+
