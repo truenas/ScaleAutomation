@@ -547,7 +547,7 @@ class Common:
         Example:
             - Common.is_checkbox_disabled('my-checkbox')
         """
-        return WebUI.get_attribute(xpaths.common_xpaths.checkbox_field_attribute(name), 'disabled') is True
+        return eval(cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'disabled').capitalize())
 
     @classmethod
     def is_dialog_visible(cls, dialog_title: str, level: int) -> bool:
@@ -588,7 +588,8 @@ class Common:
             - Common.is_toggle_enabled('ftp-service')
         """
         state = False
-        if eval(WebUI.xpath(xpaths.common_xpaths.toggle_field(name)).get_property('ariaChecked').capitalize()):
+
+        if eval(cls.get_element_property(xpaths.common_xpaths.toggle_field(name), 'ariaChecked').capitalize()):
             state = True
         return state
 
