@@ -539,7 +539,7 @@ class Common:
     @classmethod
     def is_checkbox_disabled(cls, name: str) -> bool:
         """
-        This method return True if the checkbox is disabled, otherwise it returns False.
+        This method returns if the checkbox is disabled, otherwise it returns False.
 
         :param name: The name of the checkbox
         :return: True if the checkbox is disabled, otherwise it returns False.
@@ -547,7 +547,10 @@ class Common:
         Example:
             - Common.is_checkbox_disabled('my-checkbox')
         """
-        return eval(cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'disabled').capitalize())
+        state = False
+        if eval(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('disabled').capitalize()):
+            state = True
+        return state
 
     @classmethod
     def is_dialog_visible(cls, dialog_title: str, level: int) -> bool:
