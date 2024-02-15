@@ -97,7 +97,7 @@ class System_Services:
         """
         for items in services_list:
             if state:
-                if items is "ups":
+                if items == "ups":
                     cls.start_service_by_name(items, True, False)
                 else:
                     cls.start_service_by_name(items)

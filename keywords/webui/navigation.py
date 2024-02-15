@@ -23,7 +23,7 @@ class Navigation:
             print('@@@@@@@ RIGHT_PANEL_OPEN-'+create_timestamp())
             take_screenshot('RIGHT_PANEL_OPEN-'+create_timestamp())
             COM.close_right_panel()
-        if (COM.is_visible(xpaths.common_xpaths.any_header(header, 1)) is True) & (header is not 'Dashboard'):
+        if (COM.is_visible(xpaths.common_xpaths.any_header(header, 1)) is True) & (header != 'Dashboard'):
             cls.navigate_to_dashboard()
         COM.click_on_element(xpaths.common_xpaths.link_field(location + '-menu'))
         if location2 != "":
