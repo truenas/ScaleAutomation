@@ -84,6 +84,21 @@ class Common:
         return WebUI.wait_until_visible(xpaths.xpaths.common_xpaths.label_and_value(label, value), shared_config['SHORT_WAIT'])
 
     @classmethod
+    def assert_please_wait_not_visible(cls, wait: int = shared_config['LONG_WAIT']) -> bool:
+        """
+        This method returns True or False weather the please wait is not visible before timeout.
+
+        :param wait: The number of seconds to wait before timeout
+        :return: True if the please wait is not visible before timeout otherwise it returns False.
+
+        Example:
+            - Common.assert_please_wait_Not_visible()
+            - Common.assert_please_wait_Not_visible(shared_config['MEDIUM_WAIT'])
+        """
+        WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['SHORT_WAIT'])
+        return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), wait)
+
+    @classmethod
     def assert_progress_bar_not_visible(cls, wait: int = shared_config['LONG_WAIT']) -> bool:
         """
         This method returns True or False weather the progress bar is not visible before timeout.
@@ -209,6 +224,16 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.DELETE)
         if tab:
             WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.TAB)
+
+    @classmethod
+    def click_advanced_options_button(cls):
+        """
+        This method clicks the Advanced Options button.
+
+        Example:
+            - Common.click_advanced_options_button()
+        """
+        Common.click_button('toggle-advanced')
 
     @classmethod
     def click_button(cls, name: str) -> None:
@@ -471,6 +496,7 @@ class Common:
             - Common.is_card_visible('myCard')
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.card_title(card_title))
+
 
     @classmethod
     def is_checked(cls, name: str) -> bool:
