@@ -9,10 +9,6 @@ services_list = ['ftp', 'iscsi', 'nfs', 'smart', 'smb', 'snmp', 'ssh', 'ups']
 
 class System_Services:
     @classmethod
-    def assert_service_name(cls, service: str) -> bool:
-        return COM.is_visible(xpaths.common_xpaths.any_text(service))
-
-    @classmethod
     def is_service_autostart_set_by_name(cls, service: str) -> bool:
         """
         This method returns the state of the auto start checkbox of the given service.
@@ -96,9 +92,17 @@ class System_Services:
 
     @classmethod
     def set_all_services_running_status_by_state(cls, state: bool):
+        """
+        This method returns toggles on the auto start checkbox of all services.
+
+        :param state: The state to toggle the service running status to.
+        """
         for items in services_list:
             if state:
-                cls.start_service_by_name(items)
+                if items is "ups":
+                    cls.start_service_by_name(items, True)
+                else:
+                    cls.start_service_by_name(items)
             else:
                 cls.stop_service_by_name(items)
 
@@ -122,48 +126,55 @@ class System_Services:
 
     @classmethod
     def start_all_services(cls):
+        """
+        This method starts all services.
+        """
         cls.set_all_services_running_status_by_state(True)
 
     @classmethod
     def start_service_by_api(cls, service: str) -> None:
         """
-        This method starts the given service
+        This method starts the given service via API call.
 
         :param service: is the name of the service to start
         """
         service_backend = cls.return_backend_service_name(service, False)
         assert API_POST.start_service(service_backend).status_code == 200
 
-    # @classmethod
-    # def start_service_by_name(cls, service: str):
-    #     cls.toggle_service_running_status_by_name(service, True)
-
     @classmethod
     def start_service_by_name(cls, service: str, error_dialog: bool = False, runnable: bool = True):
+        """
+        This method starts the given service via WebUI.
+
+        :param service: The name of the service.
+        :param error_dialog: If the service displays an error dialog upon starting.
+        :param runnable: If the service is able to start without error by default.
+        """
         if runnable:
             cls.toggle_service_running_status_by_name(service, True, error_dialog)
 
     @classmethod
-    def start_service_by_name_generate_error_dialog(cls, service: str, runnable: bool):
-        if runnable:
-            COM.set_toggle(xpaths.common_xpaths.toggle_field(service))
-
-    @classmethod
     def stop_all_services(cls):
+        """
+        This method stops all services.
+        """
         cls.set_all_services_running_status_by_state(False)
 
     @classmethod
     def stop_service_by_api(cls, service: str) -> None:
         """
-        This method stops the given service
+        This method stops the given service via API call.
 
-        :param service: is the name of the service to stop
+        :param service: The name of the service to stop
         """
         service_backend = cls.return_backend_service_name(service, False)
         assert API_POST.stop_service(service_backend).status_code == 200
 
     @classmethod
     def stop_service_by_name(cls, service: str):
+        """
+        This method stops the given service via WebUI.
+        """
         cls.toggle_service_running_status_by_name(service, False)
 
     @classmethod
@@ -172,7 +183,7 @@ class System_Services:
         This method returns toggles the auto start checkbox of the given service to the given state.
 
         :param service: The name of the service.
-        :param state: The state to toggle the services to.
+        :param state: The state to toggle the service auto start status to.
         """
         service_backend = cls.return_backend_service_name(service)
         print(f'Service: {service}')
@@ -186,6 +197,13 @@ class System_Services:
 
     @classmethod
     def toggle_service_running_status_by_name(cls, service: str, state: bool, error_dialog: bool = False):
+        """
+        This toggles the running status of the given service.
+
+        :param service: The name of the service.
+        :param state: The state to toggle the given service to.
+        :param error_dialog: If the service displays an error dialog upon starting.
+        """
         service_backend = cls.return_backend_service_name(service)
         print(f'Service: {service} located with: {service_backend}')
         print(f'Set service: {service} running status to: {state} current status is: {COM.is_toggle_enabled(service_backend)}')
@@ -193,7 +211,6 @@ class System_Services:
             COM.set_toggle_by_state(service_backend, state)
             if error_dialog | state is False:
                 COM.assert_confirm_dialog()
-            # keywordutil.loginfo("@@@@ wait for attribute to be: "+state)
             i = 0
             WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(service_backend))
             while COM.is_toggle_enabled(service_backend) is not state:
