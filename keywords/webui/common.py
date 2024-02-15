@@ -375,7 +375,7 @@ class Common:
             - Common.create_non_admin_user_by_api('name', 'full name', 'password', True)
         """
         response = API_POST.create_non_admin_user(name, fullname, password, smb_auth)
-        # print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
+        print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
 
     @classmethod
     def delete_pill(cls, xpath: str) -> None:
@@ -400,7 +400,7 @@ class Common:
             - Common.delete_user_by_api('user')
         """
         response = API_DELETE.delete_user(name)
-        # print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
+        print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
 
     @classmethod
     def get_element_property(cls, xpath: str, prop: str = 'value') -> str | bool:
