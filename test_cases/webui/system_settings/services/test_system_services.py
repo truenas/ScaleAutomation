@@ -7,7 +7,6 @@ from keywords.webui.system_services import System_Services as SERV
 
 @pytest.mark.parametrize('services', get_data_list('system_services'), scope='class')
 class Test_System_Services:
-    @classmethod
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self) -> None:
         """
@@ -15,7 +14,6 @@ class Test_System_Services:
         """
         NAV.navigate_to_system_settings_services()
 
-    @classmethod
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self):
         """
@@ -24,8 +22,7 @@ class Test_System_Services:
         yield
         NAV.navigate_to_dashboard()
 
-    @staticmethod
-    def test_verify_system_services_start(services) -> None:
+    def test_verify_system_services_start(self, services):
         """
         This test verifies the that the system services can be started via the WebUI
         """
@@ -37,8 +34,7 @@ class Test_System_Services:
         assert SERV.is_service_status_running_by_name(services['service_name']) is runnable_bool
         SERV.stop_service_by_api(services['service_name'])
 
-    @staticmethod
-    def test_verify_system_services_stop(services) -> None:
+    def test_verify_system_services_stop(self, services):
         """
         This test verifies the that the system services can be stopped via the WebUI
         """
