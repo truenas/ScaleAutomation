@@ -814,9 +814,9 @@ class Common:
             - Common.set_checkbox_by_row_and_state('enabled', 1, True)
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_by_row(name, row)) is True
-        if WebUI.xpath(xpaths.common_xpaths.checkbox_field_by_row_attribute(name)).get_property('checked') is not state:
+        if WebUI.xpath(xpaths.common_xpaths.checkbox_field_by_row_attribute(name, row)).get_property('checked') is not state:
             WebUI.xpath(xpaths.common_xpaths.checkbox_field_by_row(name, row)).click()
-        assert WebUI.xpath(xpaths.common_xpaths.checkbox_field_by_row_attribute(name)).get_property('checked') is state
+        assert WebUI.xpath(xpaths.common_xpaths.checkbox_field_by_row_attribute(name, row)).get_property('checked') is state
 
     @classmethod
     def set_checkbox_by_state(cls, name: str, state: bool) -> None:
