@@ -859,9 +859,13 @@ class Common:
         Example:
             - Common.set_search_field('search text')
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.search_field())
-        WebUI.xpath(xpaths.common_xpaths.search_field()).clear()
-        WebUI.xpath(xpaths.common_xpaths.search_field()).send_keys(text)
+        field = xpaths.common_xpaths.search_field()
+        # TODO: Get this fixed (create Ticket)
+        if cls.get_element_property('//h1', 'textContext') == 'Discover':
+            field = '//*[@data-test="input"]'
+        WebUI.wait_until_visible(field)
+        WebUI.xpath(field).clear()
+        WebUI.xpath(field).send_keys(text)
 
     @classmethod
     def set_textarea_field(cls, name: str, value: str, tab: bool = False) -> None:

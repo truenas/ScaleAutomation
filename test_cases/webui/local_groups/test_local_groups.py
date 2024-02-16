@@ -11,6 +11,8 @@ from keywords.webui.navigation import Navigation as NAV
 
 @pytest.mark.parametrize('groups', get_data_list('local_groups'), scope='class')
 @allure.tag("Local_Groups")
+@allure.epic("Test")
+@allure.feature("Local Groups")
 class Test_Local_Groups:
 
     @pytest.fixture(scope='function', autouse=True)
@@ -33,9 +35,9 @@ class Test_Local_Groups:
         API_DELETE.delete_group(groups['group-name'], groups['group-privileges'])
         API_DELETE.delete_group(groups['alt-group-name'], groups['group-privileges'])
 
-    @staticmethod
     @allure.tag("Update")
-    def test_add_member_to_new_group(groups) -> None:
+    @allure.story("Add Member to Local Groups")
+    def test_add_member_to_new_group(self, groups) -> None:
         """
         This test verifies adding a member to a new local group
         """
@@ -57,30 +59,9 @@ class Test_Local_Groups:
         assert LG.is_user_in_users_list(groups['username']) is False
         COM.click_cancel_button()
 
-    @staticmethod
-    @allure.tag("Read")
-    @allure.issue("NAS-127356", name="NAS-127356")
-    @pytest.mark.parametrize('built_in', get_data_list('builtin_groups'), scope='function')
-    def test_built_in_group(built_in) -> None:
-        """
-        This test verifies built in groups display
-        """
-        # TODO: Fix - NAS-127356
-        # COM.set_100_items_per_page()
-        LG.select_group_items_per_page('100')
-        LG.set_show_builtin_groups_toggle()
-
-        assert LG.is_group_visible(built_in['group-name']) is True
-        assert LG.get_group_list_gid(built_in['group-name']) == built_in['gid']
-        assert LG.get_group_list_builtin(built_in['group-name']) == built_in['Builtin']
-        assert LG.get_group_list_allow_sudo_commands(built_in['group-name']) == built_in['Allows sudo commands']
-        assert LG.get_group_list_samba_auth(built_in['group-name']) == built_in['Samba Authentication']
-
-        LG.unset_show_builtin_groups_toggle()
-
-    @staticmethod
     @allure.tag("Create")
-    def test_create_new_local_group(groups) -> None:
+    @allure.story("Create New Local Groups")
+    def test_create_new_local_group(self, groups) -> None:
         """
         This test verifies a new local group can be created
         """
@@ -103,9 +84,9 @@ class Test_Local_Groups:
         COM.click_save_button()
         assert LG.is_group_visible(groups['group-name']) is True
 
-    @staticmethod
     @allure.tag("Create")
-    def test_create_new_local_group_with_duplicate_gid(groups) -> None:
+    @allure.story("Create New Local Groups with Duplicate GID")
+    def test_create_new_local_group_with_duplicate_gid(self, groups) -> None:
         """
         This test verifies a new local group with duplicate ID can be created
         """
@@ -132,9 +113,30 @@ class Test_Local_Groups:
         LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
         LG.delete_group_by_api(groups['alt-group-name'], groups['group-privileges'])
 
-    @staticmethod
+    @allure.tag("Read")
+    @allure.issue("NAS-127356", name="NAS-127356")
+    @allure.story("Verify Built in Local Groups")
+    @pytest.mark.parametrize('built_in', get_data_list('builtin_groups'), scope='function')
+    def test_built_in_group(self, built_in) -> None:
+        """
+        This test verifies built in groups display
+        """
+        # TODO: Fix - NAS-127356
+        # COM.set_100_items_per_page()
+        LG.select_group_items_per_page('100')
+        LG.set_show_builtin_groups_toggle()
+
+        assert LG.is_group_visible(built_in['group-name']) is True
+        assert LG.get_group_list_gid(built_in['group-name']) == built_in['gid']
+        assert LG.get_group_list_builtin(built_in['group-name']) == built_in['Builtin']
+        assert LG.get_group_list_allow_sudo_commands(built_in['group-name']) == built_in['Allows sudo commands']
+        assert LG.get_group_list_samba_auth(built_in['group-name']) == built_in['Samba Authentication']
+
+        LG.unset_show_builtin_groups_toggle()
+
     @allure.tag("Delete")
-    def test_delete_member_from_new_group(groups) -> None:
+    @allure.story("Delete Member from Local Groups")
+    def test_delete_member_from_new_group(self, groups) -> None:
         """
         This test verifies deleting a member from a new local group
         """
@@ -165,9 +167,9 @@ class Test_Local_Groups:
         assert LG.is_user_in_users_list(groups['username']) is True
         COM.click_cancel_button()
 
-    @staticmethod
     @allure.tag("Delete")
-    def test_delete_new_local_group(groups) -> None:
+    @allure.story("Delete Local Groups")
+    def test_delete_new_local_group(self, groups) -> None:
         """
         This test verifies a new local group can be deleted
         """
@@ -179,9 +181,9 @@ class Test_Local_Groups:
         LG.delete_group_by_name(groups['group-name'])
         assert LG.is_group_visible(groups['group-name']) is False
 
-    @staticmethod
     @allure.tag("Update")
-    def test_edit_local_group(groups) -> None:
+    @allure.story("Edit Local Groups")
+    def test_edit_local_group(self, groups) -> None:
         """
         This test verifies a local group can be edited
         """

@@ -268,7 +268,7 @@ def search_field() -> str:
 
     :return: xpath string for given select
     """
-    return '//*[@data-test="input"]'
+    return '//*[@data-test="input-search"]'
 
 
 def select_field(field: str) -> str:
