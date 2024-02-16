@@ -218,6 +218,8 @@ class Apps:
             cls.click_discover_apps()
             COM.set_search_field(name)
             cls.click_app(name)
+        if WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['SHORT_WAIT']) is False:
+            COM.assert_confirm_dialog()
         COM.click_button(COM.convert_to_tag_format(name) + '-install')
         if WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['SHORT_WAIT']) is False:
             COM.assert_confirm_dialog()
