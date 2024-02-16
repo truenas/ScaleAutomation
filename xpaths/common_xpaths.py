@@ -162,6 +162,28 @@ def checkbox_field_attribute(field: str) -> str:
     return f'//*[@data-test="checkbox-{field}"]//input'
 
 
+def checkbox_field_by_row(field: str, row: int) -> str:
+    """
+    This function sets the text for the given checkbox name
+
+    :param field: text of the given checkbox name
+    :param row: row number of the given checkbox
+    :return: xpath string for given checkbox
+    """
+    return f'(//*[@data-test="checkbox-{field}"])[{row}]'
+
+
+def checkbox_field_by_row_attribute(field: str, row: int) -> str:
+    """
+    This function sets the text for the given checkbox attribute name
+
+    :param field: text of the given checkbox attribute name
+    :param row: row number of the given checkbox
+    :return: xpath string for given checkbox attribute
+    """
+    return f'(//*[@data-test="checkbox-{field}"])[{row}]//input'
+
+
 def close_right_panel() -> str:
     """
     This function returns the text for the close right panel button
@@ -340,6 +362,17 @@ def share_enabled_slider(sharetype: str, name: str) -> str:
     :return: xpath string for given share name
     """
     return f'//ix-{sharetype}-card//*[contains(text(),"{name}")]/ancestor::tr/descendant::mat-slide-toggle//button'
+
+
+def step_header_is_open(header: str) -> str:
+    """
+    This function sets the text for the given step header
+
+    :param header: The name of the header of the step.
+    :return: The xpath string for the given step header.
+    """
+    # tabindex="0" means the step is open in the UI.
+    return f'//mat-step-header[@tabindex="0" and contains(.,"{header}")]'
 
 
 def textarea_field(field: str) -> str:

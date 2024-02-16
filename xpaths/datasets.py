@@ -52,6 +52,7 @@ def dataset_protection_task(task: str, value: str = '') -> str:
     """
     return f'//ix-data-protection-card//mat-card-content//div/div[contains(.,"{task}")]{value}'
 
+
 def dataset_roles_icon(share_type: str) -> str:
     """
     This function returns the xpath text of the given dataset permission item.
