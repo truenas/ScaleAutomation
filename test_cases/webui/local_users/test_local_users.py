@@ -194,7 +194,7 @@ class Test_Local_Users:
 
         COM.click_save_button()
 
-        LU.expand_user_by_full_name(self, users['fullname'])
+        LU.expand_user_by_full_name(users['fullname'])
         LU.click_user_edit_button()
 
         assert LU.assert_user_home_directory(users['home-dir'] + "/" + users['username']) is True
