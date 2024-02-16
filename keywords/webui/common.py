@@ -831,9 +831,9 @@ class Common:
             - Common.set_checkbox_by_state('myCheckbox', True)
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name)) is True
-        if bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')) is not state:
+        if cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is not state:
             WebUI.xpath(xpaths.common_xpaths.checkbox_field(name)).click()
-        assert bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')) is state
+        assert cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is state
 
     @classmethod
     def set_input_field(cls, name: str, value: str, tab: bool = False, pill: bool = False) -> None:
