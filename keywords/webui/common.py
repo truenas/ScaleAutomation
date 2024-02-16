@@ -170,6 +170,20 @@ class Common:
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(header_text, 3))
 
     @classmethod
+    def assert_step_header_is_open(cls, step_header: str) -> bool:
+        """
+        This method verifies if the given step is visible and open.
+
+        :param step_header: The name of the step
+        :return: True if the given step is visible and open otherwise it returns False.
+
+        Example:
+            - Common.assert_step_is_visible_and_open('Identifier and Type')
+        """
+        return WebUI.wait_until_visible(xpaths.common_xpaths.step_header_is_open(step_header),
+                                        shared_config['SHORT_WAIT'])
+
+    @classmethod
     def assert_text_is_visible(cls, text) -> bool:
         """
         This method return True if the given text is visible before timeout otherwise it returns False.
@@ -777,18 +791,46 @@ class Common:
         cls.set_checkbox_by_state(name, True)
 
     @classmethod
+    def set_checkbox_by_row(cls, name: str, row: int) -> None:
+        """
+        This method sets the given checkbox name by the given row
+        :param name: The name of the checkbox.
+        :param row: The row of the checkbox.
+
+        Example:
+            - Common.set_checkbox_by_row('enabled', 1)
+        """
+        cls.set_checkbox_by_row_and_state(name, row, True)
+
+    @classmethod
+    def set_checkbox_by_row_and_state(cls, name: str, row: int, state: bool) -> None:
+        """
+        This method sets the given checkbox name by the given row and state
+        :param name: The name of the checkbox.
+        :param row: The row of the checkbox.
+        :param state: The state to set the checkbox: True to set and False to unset
+
+        Example:
+            - Common.set_checkbox_by_row_and_state('enabled', 1, True)
+        """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_by_row(name, row)) is True
+        if WebUI.xpath(xpaths.common_xpaths.checkbox_field_by_row_attribute(name)).get_property('checked') is not state:
+            WebUI.xpath(xpaths.common_xpaths.checkbox_field_by_row(name, row)).click()
+        assert WebUI.xpath(xpaths.common_xpaths.checkbox_field_by_row_attribute(name)).get_property('checked') is state
+
+    @classmethod
     def set_checkbox_by_state(cls, name: str, state: bool) -> None:
         """
         This method sets the given checkbox to the given state and asserts is set correctly
 
-        :param name: name of the checkbox to set
-        :param state: state to set the checkbox to
+        :param name: The name of the checkbox to set
+        :param state: The state to set the checkbox: True to set and False to unset
 
         Example:
             - Common.set_checkbox_by_state('myCheckbox', False)
             - Common.set_checkbox_by_state('myCheckbox', True)
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name)) is True
         if bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')) is not state:
             WebUI.xpath(xpaths.common_xpaths.checkbox_field(name)).click()
         assert bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')) is state
@@ -929,6 +971,18 @@ class Common:
             - Common.unset_checkbox('myCheckbox')
         """
         cls.set_checkbox_by_state(name, False)
+
+    @classmethod
+    def unset_checkbox_by_row(cls, name: str, row: int) -> None:
+        """
+        This method unsets the given checkbox by the given row.
+        :param name: The name of the checkbox.
+        :param row: The row of the checkbox.
+
+        Example:
+            - Common.unset_checkbox_by_row('enabled', 1)
+        """
+        cls.set_checkbox_by_row_and_state(name, row, False)
 
     @classmethod
     def unset_toggle(cls, name: str) -> None:
