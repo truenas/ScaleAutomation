@@ -374,7 +374,7 @@ class Apps:
     @classmethod
     def refresh_charts(cls):
         """
-        This method clicks the Refresh Charts button to renew the apps catalog.
+        This method clicks the Refresh Charts button to renew the apps catalog and returns to the apps page.
         """
         Apps.click_discover_apps()
         COM.click_link('refresh-charts')
