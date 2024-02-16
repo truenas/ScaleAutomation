@@ -176,6 +176,7 @@ class Apps:
         Example:
             - Apps.click_app('WG Easy')
         """
+
         COM.click_on_element(f'//ix-app-card//h3[contains(text(),"{name}")]')
         WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text('Please wait'))
 
@@ -369,6 +370,16 @@ class Apps:
             - Apps.navigate_to_app_section('WG Easy')
         """
         WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[@class="section ng-star-inserted" and contains(text(),"{name}")]')).click()
+
+    @classmethod
+    def refresh_charts(cls):
+        """
+        This method clicks the Refresh Charts button to renew the apps catalog.
+        """
+        Apps.click_discover_apps()
+        COM.click_link('refresh-charts')
+        COM.assert_progress_bar_not_visible()
+        NAV.navigate_to_apps()
 
     @classmethod
     def set_app_values(cls, name: str) -> None:

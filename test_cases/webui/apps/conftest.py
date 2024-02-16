@@ -11,3 +11,4 @@ def navigate_to_apps():
     # Ensure we are on the apps page.
     NAV.navigate_to_apps()
     Apps.configure_apps_pool()
+    Apps.refresh_charts()
