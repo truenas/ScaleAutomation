@@ -69,19 +69,6 @@ class Pool_Creation_Wizard:
         return Common.assert_label_and_value_exist('Pool Name', value)
 
     @classmethod
-    def assert_step_header_is_open(cls, step_header: str):
-        """
-        This method returns True or False if the given step header is open and visible.
-
-        :param step_header: The name of the step header.
-        :return: True if the given step header is open and visible otherwise it returns False.
-
-        Example:
-            - Pool_Creation_Wizard.assert_step_header_is_open('data')
-        """
-        return WebUI.wait_until_visible(xpaths.storage.pool_wizard_step_header_open(step_header), shared_config['SHORT_WAIT'])
-
-    @classmethod
     def click_back_button(cls, step: str):
         """
         This method click on the Back button of the given step.
@@ -166,7 +153,6 @@ class Pool_Creation_Wizard:
             - Pool_Creation_Wizard.click_save_selection_button()
         """
         Common.click_button('save-selection')
-
 
     @classmethod
     def click_add_vdevs_button(cls):
@@ -263,7 +249,7 @@ class Pool_Creation_Wizard:
         Common.set_checkbox('encryption')
 
     @classmethod
-    def	set_name_entry(cls, pool_name: str):
+    def set_name_entry(cls, pool_name: str):
         """
         This method sets the pool name entry.
 
@@ -275,7 +261,7 @@ class Pool_Creation_Wizard:
         Common.set_input_field('name', pool_name)
 
     @classmethod
-    def	set_search_entry(cls, search):
+    def set_search_entry(cls, search):
         """
         This method sets the search entry.
 
