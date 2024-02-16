@@ -226,6 +226,21 @@ class Apps:
         WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['LONG_WAIT'])
 
     @classmethod
+    def configure_apps_pool(cls):
+        """
+        This method configures a pool for apps if it is not configured.
+
+        Example:
+            - Apps.configure_apps_pool()
+        """
+        if COM.is_visible(xpaths.common_xpaths.any_text('Apps Service Not Configured')):
+            COM.click_button('apps-settings')
+            COM.click_button('choose-pool')
+            COM.select_option('pool', 'pool-tank')
+            COM.click_button('choose')
+            WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Configuring...', 1), shared_config['LONG_WAIT'])
+
+    @classmethod
     def delete_app(cls, name: str) -> None:
         """
         This method deletes the given named app.
