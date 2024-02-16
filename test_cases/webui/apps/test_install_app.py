@@ -4,6 +4,7 @@ from helper.global_config import shared_config
 from keywords.webui.apps import Apps
 from keywords.webui.common import Common as COM
 from keywords.webui.datasets import Datasets as DATASET
+from keywords.webui.navigation import Navigation as NAV
 
 
 @pytest.mark.parametrize('app_data', get_data_list('apps'), scope='class')
@@ -43,6 +44,7 @@ class Test_Install_App:
         :param app_data: test data listing different apps to iterate through
         """
         # reset the change
+        NAV.navigate_to_apps()
         Apps.delete_app(app_data['app-name'])
         assert Apps.is_app_installed(app_data['app-name']) is False
         if app_data['setup-name'] == 'webdav':
