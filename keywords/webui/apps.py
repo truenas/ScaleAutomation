@@ -306,7 +306,7 @@ class Apps:
             - Apps.is_app_installed('WG Easy')
         """
         # Delay to wait for Apps section populate
-        WebUI.delay(2)
+        assert COM.assert_progress_bar_not_visible()
         if COM.is_visible(xpaths.common_xpaths.button_field("check-available-apps")):
             return False
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//ix-app-row//div[contains(text(),"{COM.convert_to_tag_format(name)}")]'), shared_config['MEDIUM_WAIT'])
