@@ -3,6 +3,7 @@ from helper.data_config import get_data_and_name_list
 from keywords.api.get import API_GET
 from keywords.api.post import API_POST
 from keywords.ssh.zpool import Zpool_SSH
+from keywords.webui.common import Common
 from keywords.webui.navigation import Navigation
 from keywords.webui.pool_creation_wizard import Pool_Creation_Wizard as PCW
 from keywords.webui.storage import Storage
@@ -32,7 +33,7 @@ class Test_Create_Data_Pool:
         """
         This test sets the name of the pool
         """
-        assert PCW.assert_step_header_is_open('General Info')
+        assert Common.assert_step_header_is_open('General Info')
         PCW.set_name_entry(data['pool-name'])
         PCW.click_next_button('general')
 
@@ -41,7 +42,7 @@ class Test_Create_Data_Pool:
         """
         This test sets the pool layout, disk size, width and vdevs
         """
-        assert PCW.assert_step_header_is_open('Data')
+        assert Common.assert_step_header_is_open('Data')
         PCW.select_layout_option('data', data['pool-layout'])
         PCW.select_disk_size_option('data', '20 GiB (HDD)')  # 20 GiB (HDD)()
         PCW.select_width_option('data', int(data['disk-width']))
@@ -53,7 +54,7 @@ class Test_Create_Data_Pool:
         """
         This test verifies the review step UI data and click on create button to creates the pool.
         """
-        assert PCW.assert_step_header_is_open('Review') is True
+        assert Common.assert_step_header_is_open('Review') is True
         assert PCW.assert_pool_name_value(data['pool-name']) is True
         assert PCW.assert_data_value(data['pool-data']) is True
         assert PCW.assert_est_usable_raw_capacity(data['raw-capacity']) is True

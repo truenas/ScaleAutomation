@@ -26,11 +26,9 @@ def browser() -> WebDriver:
     return driver
 
 
-web_driver = browser()
-
-
 class WebUI(object):
     time_waited = 0
+    web_driver = browser()
     execute_script = web_driver.execute_script
 
     @classmethod
@@ -52,7 +50,7 @@ class WebUI(object):
         Example:
             - WebUI.close_window()
         """
-        web_driver.close()
+        cls.web_driver.close()
 
     @classmethod
     def current_window_handle(cls) -> str:
@@ -64,7 +62,7 @@ class WebUI(object):
         Example:
             - WebUI.current_window_handle()
         """
-        return web_driver.current_window_handle
+        return cls.web_driver.current_window_handle
 
     @classmethod
     def current_url(cls) -> str:
@@ -76,7 +74,7 @@ class WebUI(object):
         Example:
             - WebUI.current_url()
         """
-        return web_driver.current_url
+        return cls.web_driver.current_url
 
     @classmethod
     def delay(cls, seconds: float) -> None:
@@ -110,7 +108,7 @@ class WebUI(object):
         cls.wait_until_visible(to_xpath)
         target = cls.xpath(to_xpath)
         # ActionChains(web_driver).drag_and_drop(source, target).perform() does not work.
-        ActionChains(web_driver).click_and_hold(source).move_to_element(target).release(target).perform()
+        ActionChains(cls.web_driver).click_and_hold(source).move_to_element(target).release(target).perform()
 
     @classmethod
     def find_xpath(cls, xpath: str) -> list[WebElement]:
@@ -123,7 +121,7 @@ class WebUI(object):
         Example:
             - WebUI.find_xpath('xpath')
         """
-        return web_driver.find_elements(By.XPATH, xpath)
+        return cls.web_driver.find_elements(By.XPATH, xpath)
 
     @classmethod
     def get(cls, url: str) -> None:
@@ -135,7 +133,7 @@ class WebUI(object):
         Example:
             - WebUI.get('http://my_url')
         """
-        web_driver.get(url)
+        cls.web_driver.get(url)
 
     @classmethod
     def get_attribute(cls, xpath: str, attribute: str) -> str:
@@ -171,7 +169,7 @@ class WebUI(object):
         Example:
             - WebUI.save_screenshot_as_png()
         """
-        return web_driver.get_screenshot_as_png()
+        return cls.web_driver.get_screenshot_as_png()
 
     @classmethod
     def get_text(cls, xpath: str) -> str:
@@ -207,7 +205,7 @@ class WebUI(object):
         Example:
             - WebUI.quit()
         """
-        web_driver.quit()
+        cls.web_driver.quit()
 
     @classmethod
     def refresh(cls) -> None:
@@ -217,7 +215,7 @@ class WebUI(object):
         Example:
             - WebUI.refresh()
         """
-        web_driver.refresh()
+        cls.web_driver.refresh()
         cls.delay(1)
 
     @classmethod
@@ -245,7 +243,7 @@ class WebUI(object):
         Example:
             - WebUI.set_window_size(300, 100)
         """
-        web_driver.set_window_size(width, height)
+        cls.web_driver.set_window_size(width, height)
 
     @classmethod
     def switch_to_window_index(cls, index: int) -> None:
@@ -257,7 +255,7 @@ class WebUI(object):
         Example:
             - WebUI.switch_to_window_index(1)
         """
-        web_driver.switch_to.window(web_driver.window_handles[index])
+        cls.web_driver.switch_to.window(cls.web_driver.window_handles[index])
 
     @classmethod
     def total_time_waited(cls) -> float:
@@ -285,7 +283,7 @@ class WebUI(object):
             - WebUI.wait_until_clickable('xpath')
             - WebUI.wait_until_clickable('xpath', shared_config['SHORT_WAIT'])
         """
-        wait = WebDriverWait(web_driver, timeout)
+        wait = WebDriverWait(cls.web_driver, timeout)
         return wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
 
     @classmethod
@@ -302,7 +300,7 @@ class WebUI(object):
             - WebUI.wait_until_not_visible('xpath')
             - WebUI.wait_until_not_visible('xpath', shared_config['SHORT_WAIT'])
         """
-        wait = WebDriverWait(web_driver, timeout)
+        wait = WebDriverWait(cls.web_driver, timeout)
         try:
             wait.until(EC.invisibility_of_element_located((By.XPATH, xpath)))
             return True
@@ -323,7 +321,7 @@ class WebUI(object):
             - WebUI.wait_until_number_of_windows_to_be(2)
             - WebUI.wait_until_number_of_windows_to_be(1, shared_config['SHORT_WAIT'])
         """
-        wait = WebDriverWait(web_driver, timeout)
+        wait = WebDriverWait(cls.web_driver, timeout)
         return wait.until(EC.number_of_windows_to_be(number))
 
     @classmethod
@@ -340,7 +338,7 @@ class WebUI(object):
             - WebUI.wait_until_visible('xpath')
             - WebUI.wait_until_visible('xpath', shared_config['SHORT_WAIT'])
         """
-        wait = WebDriverWait(web_driver, timeout)
+        wait = WebDriverWait(cls.web_driver, timeout)
         try:
             return wait.until(EC.visibility_of_element_located((By.XPATH, xpath))).is_displayed()
         except TimeoutException:
@@ -356,7 +354,7 @@ class WebUI(object):
         Example:
             - WebUI.window_handles()
         """
-        return web_driver.window_handles
+        return cls.web_driver.window_handles
 
     @classmethod
     def xpath(cls, xpath: str) -> WebElement:
@@ -370,4 +368,4 @@ class WebUI(object):
             - WebUI.xpath('xpath')
         """
         time.sleep(shared_config['EXECUTION_DELAY'])
-        return web_driver.find_element(By.XPATH, xpath)
+        return cls.web_driver.find_element(By.XPATH, xpath)
