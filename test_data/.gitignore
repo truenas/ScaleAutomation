@@ -1,2 +1,4 @@
 user.csv
 ldap_credentials.csv
+ad_credentials.csv
+invalid_creds.csv
