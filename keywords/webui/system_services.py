@@ -88,38 +88,28 @@ class System_Services:
         return returned_name
 
     @classmethod
-    def set_all_services_auto_start_off(cls):
+    def set_all_services_autostart_off(cls):
         """
         This method sets the auto start checkbox of all services to off.
         """
-        # cls.set_all_services_auto_start(False)
         for items in services_list:
-            cls.toggle_service_auto_start(items, False)
+            cls.toggle_service_autostart(items, False)
 
     @classmethod
-    def set_all_services_auto_start_on(cls):
+    def set_all_services_autostart_on(cls):
         """
         This method sets the auto start checkbox of all services to on.
         """
-        # cls.set_all_services_auto_start(True)
         for items in services_list:
-            cls.toggle_service_auto_start(items, True)
+            cls.toggle_service_autostart(items, True)
 
     @classmethod
-    def set_all_services_auto_start_off_by_api(cls):
+    def set_all_services_autostart_off_by_api(cls):
         """
-        This method sets the auto start status of all services to off.
-        """
-        for items in services_list:
-            assert API_PUT.set_service_autostart(items, False).status_code == 200
-
-    @classmethod
-    def set_all_services_auto_start_on_by_api(cls):
-        """
-        This method sets the auto start status of all services to on.
+        This method sets the auto start status of all services to off via api call.
         """
         for items in services_list:
-            assert API_PUT.set_service_autostart(items, True).status_code == 200
+            cls.set_service_autostart_on_by_api(items)
 
     @classmethod
     def set_all_services_running_status_by_state(cls, state: bool):
@@ -138,22 +128,42 @@ class System_Services:
                 cls.stop_service_by_name(items)
 
     @classmethod
-    def set_service_auto_start_off(cls, service: str):
+    def set_service_autostart_off(cls, service: str):
         """
         This method returns toggles off the auto start checkbox of the given service.
 
         :param service: The name of the service.
         """
-        cls.toggle_service_auto_start(service, False)
+        cls.toggle_service_autostart(service, False)
 
     @classmethod
-    def set_service_auto_start_on(cls, service: str):
+    def set_service_autostart_on(cls, service: str):
         """
         This method returns toggles on the auto start checkbox of the given service.
 
         :param service: The name of the service.
         """
-        cls.toggle_service_auto_start(service, True)
+        cls.toggle_service_autostart(service, True)
+
+    @classmethod
+    def set_service_autostart_off_by_api(cls, service: str):
+        """
+        This method sets the auto start status of the given service to off via api call..
+
+        :param service: The name of the service.
+        """
+        service_backend = cls.return_backend_service_name(service, False)
+        assert API_PUT.set_service_autostart(service_backend, False).status_code == 200
+
+    @classmethod
+    def set_service_autostart_on_by_api(cls, service: str):
+        """
+        This method sets the auto start status of the given service to on via api call.
+
+        :param service: The name of the service.
+        """
+        service_backend = cls.return_backend_service_name(service, False)
+        assert API_PUT.set_service_autostart(service_backend, True).status_code == 200
 
     @classmethod
     def start_all_services(cls):
@@ -217,7 +227,7 @@ class System_Services:
         cls.toggle_service_running_status_by_name(service, False)
 
     @classmethod
-    def toggle_service_auto_start(cls, service: str, state: bool):
+    def toggle_service_autostart(cls, service: str, state: bool):
         """
         This method returns toggles the auto start checkbox of the given service to the given state.
 
