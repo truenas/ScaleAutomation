@@ -22,6 +22,8 @@ class Test_System_Services:
         """
         yield
         SERV.stop_all_services_by_api()
+        SERV.set_all_services_auto_start_off_by_api()
+        SERV.set_service_auto_start_on("SMART")
         NAV.navigate_to_dashboard()
 
     @pytest.mark.parametrize('services', get_data_list('system_services'), scope='function')
@@ -63,3 +65,17 @@ class Test_System_Services:
         NAV.navigate_to_system_settings_services()
         SERV.assert_all_services_autostart_on()
         SERV.assert_all_services_running()
+
+    def test_verify_system_services_do_not_autostart_on_reboot(self):
+        """
+        This test verifies the that the system services will not auto start when not set via WebUI.
+        """
+        SERV.stop_all_services_by_api()
+        SERV.set_all_services_auto_start_off()
+        SERV.assert_all_services_autostart_off()
+        SERV.assert_all_services_not_running()
+        COM.reboot_system()
+        COM.set_login_form(private_config['USERNAME'], private_config['PASSWORD'])
+        NAV.navigate_to_system_settings_services()
+        SERV.assert_all_services_autostart_off()
+        SERV.assert_all_services_not_running()

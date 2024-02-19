@@ -1,6 +1,7 @@
 import xpaths
 from helper.webui import WebUI
 from keywords.api.post import API_POST
+from keywords.api.put import API_PUT
 from keywords.webui.common import Common as COM
 
 
@@ -8,6 +9,11 @@ services_list = ['ftp', 'iscsi', 'nfs', 'smart', 'smb', 'snmp', 'ssh', 'ups']
 
 
 class System_Services:
+    @classmethod
+    def assert_all_services_autostart_off(cls):
+        for items in services_list:
+            assert not cls.is_service_autostart_set_by_name(items)
+
     @classmethod
     def assert_all_services_autostart_on(cls):
         for items in services_list:
@@ -82,29 +88,46 @@ class System_Services:
         return returned_name
 
     @classmethod
-    def set_all_services_auto_start(cls, state: bool):
-        """
-        This method returns the state of the auto start checkbox of the given service.
-
-        :param state: The state to toggle the services to.
-        :return: returns the state of the auto start checkbox of the given service.
-        """
-        for items in services_list:
-            cls.toggle_service_auto_start(items, state)
-
-    @classmethod
     def set_all_services_auto_start_off(cls):
         """
-        This method returns toggles off the auto start checkbox of all services.
+        This method sets the auto start checkbox of all services to off.
         """
-        cls.set_all_services_auto_start(False)
+        # cls.set_all_services_auto_start(False)
+        for items in services_list:
+            cls.toggle_service_auto_start(items, False)
 
     @classmethod
     def set_all_services_auto_start_on(cls):
         """
-        This method returns toggles on the auto start checkbox of all services.
+        This method sets the auto start checkbox of all services to on.
         """
-        cls.set_all_services_auto_start(True)
+        # cls.set_all_services_auto_start(True)
+        for items in services_list:
+            cls.toggle_service_auto_start(items, True)
+
+    @classmethod
+    def set_all_services_auto_start_off_by_api(cls):
+        """
+        This method sets the auto start status of all services to off.
+        """
+        for items in services_list:
+            val = API_PUT.set_service_autostart(items, False)
+            # .status_code == 200
+            print(val.status_code)
+            print(val.text)
+            assert val.status_code == 200
+
+    @classmethod
+    def set_all_services_auto_start_on_by_api(cls):
+        """
+        This method sets the auto start status of all services to on.
+        """
+        for items in services_list:
+            val = API_PUT.set_service_autostart(items, True)
+            # .status_code == 200
+            print(val.status_code)
+            print(val.text)
+            assert val.status_code == 200
 
     @classmethod
     def set_all_services_running_status_by_state(cls, state: bool):
@@ -211,7 +234,7 @@ class System_Services:
         """
         service_backend = cls.return_backend_service_name(service)
         print(f'Service: {service}')
-        COM.set_checkbox(f'{service_backend}')
+        COM.set_checkbox_by_state(f'{service_backend}', state)
         assert (COM.is_checked(f'{service_backend}') is state)
 
     @classmethod
