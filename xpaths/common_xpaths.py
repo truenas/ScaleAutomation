@@ -303,6 +303,17 @@ def select_field(field: str) -> str:
     return f'//*[@data-test="select-{field}"]'
 
 
+def select_field_by_row(field: str, row: int) -> str:
+    """
+    This function sets the text for the given select name
+
+    :param field: text of the given select name
+    :param row: row number of the given select
+    :return: xpath string for given select
+    """
+    return f'(//*[@data-test="select-{field}"])[{row}]'
+
+
 def selected_dataset(name: str) -> str:
     """
     This function sets the text for the given dataset
