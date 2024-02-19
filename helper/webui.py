@@ -1,6 +1,6 @@
 import pyperclip
 import time
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from helper.global_config import shared_config
 from selenium import webdriver
 from selenium.webdriver import ActionChains
@@ -339,10 +339,17 @@ class WebUI(object):
             - WebUI.wait_until_visible('xpath', shared_config['SHORT_WAIT'])
         """
         wait = WebDriverWait(cls.web_driver, timeout)
+        obj = None
         try:
-            return wait.until(EC.visibility_of_element_located((By.XPATH, xpath))).is_displayed()
-        except TimeoutException:
-            return False
+            obj = WebUI.xpath(xpath)
+        except NoSuchElementException:
+            print("NoSuchElementException occurred trying to find object: " + xpath)
+            if obj is None:
+                try:
+                    return wait.until(EC.visibility_of_element_located((By.XPATH, xpath))).is_displayed()
+                except TimeoutException:
+                    return False
+        return obj.is_displayed()
 
     @classmethod
     def window_handles(cls) -> list:
