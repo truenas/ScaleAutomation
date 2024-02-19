@@ -111,11 +111,7 @@ class System_Services:
         This method sets the auto start status of all services to off.
         """
         for items in services_list:
-            val = API_PUT.set_service_autostart(items, False)
-            # .status_code == 200
-            print(val.status_code)
-            print(val.text)
-            assert val.status_code == 200
+            assert API_PUT.set_service_autostart(items, False).status_code == 200
 
     @classmethod
     def set_all_services_auto_start_on_by_api(cls):
@@ -123,11 +119,7 @@ class System_Services:
         This method sets the auto start status of all services to on.
         """
         for items in services_list:
-            val = API_PUT.set_service_autostart(items, True)
-            # .status_code == 200
-            print(val.status_code)
-            print(val.text)
-            assert val.status_code == 200
+            assert API_PUT.set_service_autostart(items, True).status_code == 200
 
     @classmethod
     def set_all_services_running_status_by_state(cls, state: bool):
