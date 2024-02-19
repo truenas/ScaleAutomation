@@ -152,8 +152,7 @@ class System_Services:
 
         :param service: The name of the service.
         """
-        service_backend = cls.return_backend_service_name(service, False)
-        assert API_PUT.set_service_autostart(service_backend, False).status_code == 200
+        assert API_PUT.set_service_autostart(service, False).status_code == 200
 
     @classmethod
     def set_service_autostart_on_by_api(cls, service: str):
@@ -162,8 +161,7 @@ class System_Services:
 
         :param service: The name of the service.
         """
-        service_backend = cls.return_backend_service_name(service, False)
-        assert API_PUT.set_service_autostart(service_backend, True).status_code == 200
+        assert API_PUT.set_service_autostart(service, True).status_code == 200
 
     @classmethod
     def start_all_services(cls):
