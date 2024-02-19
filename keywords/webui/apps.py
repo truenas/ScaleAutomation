@@ -443,7 +443,7 @@ class Apps:
             Apps.click_install_app(name)
             Apps.set_app_values(name)
             COM.click_save_button()
-            if WebUI.wait_until_visible(xpaths.common_xpaths.any_text("Docker Hub Rate Limit Warning"), shared_config['SHORT_WAIT']):
+            if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 1), shared_config['SHORT_WAIT']):
                 COM.assert_confirm_dialog()
                 if COM.is_clickable(xpaths.common_xpaths.button_field('save')):
                     COM.click_save_button()
