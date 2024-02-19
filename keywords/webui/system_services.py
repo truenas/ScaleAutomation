@@ -9,6 +9,24 @@ services_list = ['ftp', 'iscsi', 'nfs', 'smart', 'smb', 'snmp', 'ssh', 'ups']
 
 class System_Services:
     @classmethod
+    def assert_all_services_autostart_on(cls):
+        for items in services_list:
+            assert cls.is_service_autostart_set_by_name(items)
+
+    @classmethod
+    def assert_all_services_running(cls):
+        for items in services_list:
+            if items == 'ups':
+                assert not cls.is_service_status_running_by_name(items)
+            else:
+                assert cls.is_service_status_running_by_name(items)
+
+    @classmethod
+    def assert_all_services_not_running(cls):
+        for items in services_list:
+            assert not cls.is_service_status_running_by_name(items)
+
+    @classmethod
     def is_service_autostart_set_by_name(cls, service: str) -> bool:
         """
         This method returns the state of the auto start checkbox of the given service.
@@ -17,8 +35,8 @@ class System_Services:
         :return: returns the state of the auto start checkbox of the given service.
         """
         service_backend = cls.return_backend_service_name(service)
-        assert (COM.is_visible(xpaths.common_xpaths.checkbox_field(f'{service_backend}-service')))
-        return COM.is_checked(f'{service_backend}-service')
+        assert (COM.is_visible(xpaths.common_xpaths.checkbox_field(f'{service_backend}')))
+        return COM.is_checked(f'{service_backend}')
 
     @classmethod
     def is_service_status_running_by_name(cls, service: str) -> bool:
@@ -159,6 +177,14 @@ class System_Services:
         cls.set_all_services_running_status_by_state(False)
 
     @classmethod
+    def stop_all_services_by_api(cls):
+        """
+        This method stops all services by api call.
+        """
+        for items in services_list:
+            cls.stop_service_by_api(items)
+
+    @classmethod
     def stop_service_by_api(cls, service: str) -> None:
         """
         This method stops the given service via API call.
@@ -185,13 +211,8 @@ class System_Services:
         """
         service_backend = cls.return_backend_service_name(service)
         print(f'Service: {service}')
-        autostart = COM.is_checked(f'{service_backend}-service')
-        print(f'Set Service: {service} Auto Start to: {state} current status is: {autostart}')
-        if autostart is not state:
-            COM.set_checkbox(xpaths.common_xpaths.checkbox_field(f'{service_backend}-service'))
-        autostart = COM.is_checked(f'{service_backend}-service')
-        assert (autostart is state)
-        print(f'Service Name: {service} exists and auto start status is: {autostart}')
+        COM.set_checkbox(f'{service_backend}')
+        assert (COM.is_checked(f'{service_backend}') is state)
 
     @classmethod
     def toggle_service_running_status_by_name(cls, service: str, state: bool, error_dialog: bool = False):
@@ -203,8 +224,7 @@ class System_Services:
         :param error_dialog: If the service displays an error dialog upon starting.
         """
         service_backend = cls.return_backend_service_name(service)
-        print(f'Service: {service} located with: {service_backend}')
-        print(f'Set service: {service} running status to: {state} current status is: {COM.is_toggle_enabled(service_backend)}')
+        print(f'Service: {service}')
         if COM.is_toggle_enabled(service_backend) is not state:
             COM.set_toggle_by_state(service_backend, state)
             if error_dialog | state is False:
@@ -218,4 +238,3 @@ class System_Services:
                     print(f'Total wait: 20 seconds. Toggle still did not equal {state}')
                     break
         assert (COM.is_toggle_enabled(service_backend) is state)
-        print(f'Service: {service} exists and running status is: {COM.is_toggle_enabled(service_backend)}')
