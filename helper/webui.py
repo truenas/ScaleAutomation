@@ -219,6 +219,16 @@ class WebUI(object):
         cls.delay(1)
 
     @classmethod
+    def scroll_to_bottom_of_page(cls) -> None:
+        """
+        This method uses the height of the page and scrolls to the bottom of it.
+        Example:
+            - WebUI.scroll_to_bottom_of_page()
+        """
+        cls.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        cls.delay(1)
+
+    @classmethod
     def scroll_to_element(cls, xpath: str) -> None:
         """
         This method scroll to xpath of the element.
