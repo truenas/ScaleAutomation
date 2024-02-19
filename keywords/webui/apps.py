@@ -1,3 +1,4 @@
+import xpaths.common_xpaths
 from helper.global_config import shared_config
 from helper.webui import WebUI
 from helper.reporting import take_screenshot
@@ -442,7 +443,7 @@ class Apps:
             Apps.click_install_app(name)
             Apps.set_app_values(name)
             COM.click_save_button()
-            if WebUI.wait_until_visible("Docker Hub Rate Limit Warning", shared_config['SHORT_WAIT']):
+            if WebUI.wait_until_visible(xpaths.common_xpaths.any_text("Docker Hub Rate Limit Warning"), shared_config['SHORT_WAIT']):
                 COM.assert_confirm_dialog()
                 if COM.is_clickable(xpaths.common_xpaths.button_field('save')):
                     COM.click_save_button()
