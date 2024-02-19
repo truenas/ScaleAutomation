@@ -109,7 +109,7 @@ class System_Services:
         This method sets the auto start status of all services to off via api call.
         """
         for items in services_list:
-            cls.set_service_autostart_on_by_api(items)
+            cls.set_service_autostart_off_by_api(items)
 
     @classmethod
     def set_all_services_running_status_by_state(cls, state: bool):
