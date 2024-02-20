@@ -62,21 +62,21 @@ class Test_Local_Users:
 
         assert LU.is_user_visible(users['username']) is True
 
-    # @allure.tag("Read")
-    # @allure.story("Verify Built in Local Users")
-    # @pytest.mark.parametrize('builtin_users', get_data_list('builtin_users'), scope='function')
-    # def test_built_in_users(self, builtin_users) -> None:
-    #     """
-    #     This test verifies a built-in user in the list of users
-    #     """
-    #     COM.set_100_items_per_page()
-    #     LU.set_show_builtin_users_toggle()
-    #     COM.set_search_field(builtin_users['username'])
-    #
-    #     assert LU.is_user_visible(builtin_users['username']) is True
-    #     assert LU.get_users_list_uid(builtin_users['username']) == builtin_users['uid']
-    #     assert LU.get_users_list_builtin(builtin_users['username']) is True
-    #     assert LU.get_users_list_full_name(builtin_users['username']) == builtin_users['full-name']
+    @allure.tag("Read")
+    @allure.story("Verify Built in Local Users")
+    @pytest.mark.parametrize('builtin_users', get_data_list('builtin_users'), scope='function')
+    def test_built_in_users(self, builtin_users) -> None:
+        """
+        This test verifies a built-in user in the list of users
+        """
+        COM.set_100_items_per_page()
+        LU.set_show_builtin_users_toggle()
+        COM.set_search_field(builtin_users['username'])
+
+        assert LU.is_user_visible(builtin_users['username']) is True
+        assert LU.get_users_list_uid(builtin_users['username']) == builtin_users['uid']
+        assert LU.get_users_list_builtin(builtin_users['username']) is True
+        assert LU.get_users_list_full_name(builtin_users['username']) == builtin_users['full-name']
 
     @allure.tag("Delete")
     @allure.story("Delete Local Users")
