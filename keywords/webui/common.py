@@ -646,6 +646,7 @@ class Common:
         """
         cls.click_button('power-menu')
         cls.click_button('log-out')
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('power-menu'))
         assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod

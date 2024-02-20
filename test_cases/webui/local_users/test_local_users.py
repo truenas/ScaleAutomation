@@ -282,6 +282,7 @@ class Test_Local_Users:
         LU.click_user_edit_button()
         LU.add_user_auxiliary_group(users['aux-group'])
         COM.click_save_button()
+        NAV.navigate_to_dashboard()
         COM.logoff_truenas()
         COM.set_login_form(users['username'], users['password'])
         NAV.navigate_to_local_users()
