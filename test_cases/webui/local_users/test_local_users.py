@@ -67,22 +67,6 @@ class Test_Local_Users:
 
         assert LU.is_user_visible(users['username']) is True
 
-    @allure.tag("Read")
-    @allure.story("Verify Built in Local Users")
-    @pytest.mark.parametrize('builtin_users', get_data_list('builtin_users'), scope='function')
-    def test_built_in_users(self, builtin_users) -> None:
-        """
-        This test verifies a built-in user in the list of users
-        """
-        COM.set_100_items_per_page()
-        LU.set_show_builtin_users_toggle()
-        COM.set_search_field(builtin_users['username'])
-
-        assert LU.is_user_visible(builtin_users['username']) is True
-        assert LU.get_users_list_uid(builtin_users['username']) == builtin_users['uid']
-        assert LU.get_users_list_builtin(builtin_users['username']) is True
-        assert LU.get_users_list_full_name(builtin_users['username']) == builtin_users['full-name']
-
     @allure.tag("Delete")
     @allure.story("Delete Local Users")
     def test_delete_new_user(self, users) -> None:
@@ -294,3 +278,44 @@ class Test_Local_Users:
         # Log in with default user
         COM.logoff_truenas()
         COM.set_login_form(private_config['USERNAME'], private_config['PASSWORD'])
+
+
+class Test_Builtin_Users:
+    @pytest.fixture(scope='class', autouse=True)
+    def setup_test(self) -> None:
+        """
+        This method sets up each test to start with builtin users not shown
+        """
+        if COM.is_visible(xpaths.common_xpaths.button_field('power-menu')):
+            COM.logoff_truenas()
+            COM.set_login_form(private_config['USERNAME'], private_config['PASSWORD'])
+        if COM.is_visible(xpaths.common_xpaths.button_field('log-in')):
+            COM.set_login_form(private_config['USERNAME'], private_config['PASSWORD'])
+        NAV.navigate_to_local_users()
+
+    @pytest.fixture(scope='class', autouse=True)
+    def teardown_test(self):
+        """
+        This method clears any test users after test is run for a clean environment
+        """
+        yield
+        # Clean up environment.
+        LU.unset_show_builtin_users_toggle()
+        NAV.navigate_to_dashboard()
+
+    @allure.tag("Read")
+    @allure.story("Verify Built in Local Users")
+    @pytest.mark.parametrize('builtin_users', get_data_list('builtin_users'), scope='function')
+    def test_built_in_users(self, builtin_users) -> None:
+        """
+        This test verifies a built-in user in the list of users
+        """
+
+        COM.set_100_items_per_page()
+        LU.set_show_builtin_users_toggle()
+        COM.set_search_field(builtin_users['username'])
+
+        assert LU.is_user_visible(builtin_users['username']) is True
+        assert LU.get_users_list_uid(builtin_users['username']) == builtin_users['uid']
+        assert LU.get_users_list_builtin(builtin_users['username']) is True
+        assert LU.get_users_list_full_name(builtin_users['username']) == builtin_users['full-name']
