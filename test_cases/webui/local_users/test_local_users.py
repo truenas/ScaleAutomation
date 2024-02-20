@@ -38,11 +38,7 @@ class Test_Local_Users:
         # Clean up environment.
         API_DELETE.delete_user(users['username'])
         API_DELETE.delete_user(users['username'] + '-edt')
-        if COM.is_visible(xpaths.common_xpaths.button_field('power-menu')):
-            COM.logoff_truenas()
-            COM.set_login_form(private_config['USERNAME'], private_config['PASSWORD'])
-        if COM.is_visible(xpaths.common_xpaths.button_field('log-in')):
-            COM.set_login_form(private_config['USERNAME'], private_config['PASSWORD'])
+        assert COM.is_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
     @allure.tag("Create")
@@ -286,11 +282,7 @@ class Test_Builtin_Users:
         """
         This method sets up each test to start with builtin users not shown
         """
-        if COM.is_visible(xpaths.common_xpaths.button_field('power-menu')):
-            COM.logoff_truenas()
-            COM.set_login_form(private_config['USERNAME'], private_config['PASSWORD'])
-        if COM.is_visible(xpaths.common_xpaths.button_field('log-in')):
-            COM.set_login_form(private_config['USERNAME'], private_config['PASSWORD'])
+        assert COM.is_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_local_users()
 
     @pytest.fixture(scope='class', autouse=True)
@@ -314,8 +306,7 @@ class Test_Builtin_Users:
         COM.set_100_items_per_page()
         LU.set_show_builtin_users_toggle()
         COM.set_search_field(builtin_users['username'])
-
-        assert LU.is_user_visible(builtin_users['username']) is True
+        assert LU.is_user_visible(builtin_users['username'])
         assert LU.get_users_list_uid(builtin_users['username']) == builtin_users['uid']
-        assert LU.get_users_list_builtin(builtin_users['username']) is True
+        assert LU.get_users_list_builtin(builtin_users['username'])
         assert LU.get_users_list_full_name(builtin_users['username']) == builtin_users['full-name']

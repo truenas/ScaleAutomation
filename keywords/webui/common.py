@@ -577,6 +577,24 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.any_header(dialog_title, level))
 
     @classmethod
+    def is_logged_in_user_correct(cls, user: str, password: str) -> bool:
+        """
+        This method return True if the given username is visible on the top toolbar, otherwise it returns False.
+
+        :param user: the username used to log in TrueNAS.
+        :param password: the password of the user used to log in.
+        :return True if the given username is visible on the top toolbar, otherwise it returns False.
+        Example:
+            - Common.is_logged_in_user_correct('username', 'password')
+        """
+        if cls.is_visible(xpaths.common_xpaths.any_xpath('power-menu')):
+            if not cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]')):
+                cls.logoff_truenas()
+                cls.set_login_form(user, password)
+                return cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
+
+
+    @classmethod
     def is_save_button_disabled(cls) -> bool:
         """
         This method returns True if the Save button is disabled, otherwise it returns False.
@@ -903,7 +921,7 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.input_field('password')).send_keys(password)
         WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
         WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('log-in'))
-        WebUI.delay(2)
+        WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath('power-menu'))
 
     @classmethod
     def set_search_field(cls, text: str) -> None:
