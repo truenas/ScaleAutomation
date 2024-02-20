@@ -89,7 +89,7 @@ class Test_Local_Users:
         LU.unset_show_builtin_users_toggle()
         LU.confirm_delete_user_and_primary_group_by_full_name(users['fullname'])
 
-        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{users}"]'))
+        assert LU.is_user_not_visible(users['username'])
 
     @allure.tag("Update")
     @allure.story("Edit Local Users - Authentication Fields")

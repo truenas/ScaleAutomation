@@ -36,10 +36,7 @@ class Test_Install_App:
         Apps.click_install_app(app_data['app-name'])
         Apps.set_app_values(app_data['app-name'])
         COM.click_save_button()
-        if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 1), shared_config['SHORT_WAIT']):
-            COM.assert_confirm_dialog()
-            if COM.is_clickable(xpaths.common_xpaths.button_field('save')):
-                COM.click_save_button()
+        Apps.handle_docker_limit_dialog()
         assert COM.assert_page_header('Installed', shared_config['LONG_WAIT'])
         assert Apps.is_app_installed(app_data['app-name']) is True
 
