@@ -587,12 +587,15 @@ class Common:
         Example:
             - Common.is_logged_in_user_correct('username', 'password')
         """
-        if cls.is_visible(xpaths.common_xpaths.any_xpath('power-menu')):
+        if cls.is_visible(xpaths.common_xpaths.button_field('power-menu')):
             if not cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]')):
                 cls.logoff_truenas()
                 cls.set_login_form(user, password)
                 return cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
-
+        else:
+            cls.set_login_form(user, password)
+            return cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
+        return True
 
     @classmethod
     def is_save_button_disabled(cls) -> bool:
@@ -921,7 +924,7 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.input_field('password')).send_keys(password)
         WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
         WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('log-in'))
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath('power-menu'))
+        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('power-menu'))
 
     @classmethod
     def set_search_field(cls, text: str) -> None:
