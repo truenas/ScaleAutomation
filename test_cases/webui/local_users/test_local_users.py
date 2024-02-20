@@ -126,7 +126,7 @@ class Test_Local_Users:
         LU.set_user_password(users['password'])
         LU.set_user_password_confirm(users['password'])
         COM.click_save_button()
-
+        NAV.navigate_to_local_users()
         LU.expand_user_by_full_name(users['fullname'])
         LU.click_user_edit_button()
 
