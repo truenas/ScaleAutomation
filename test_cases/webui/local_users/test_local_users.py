@@ -1,8 +1,10 @@
 import allure
 import pytest
 
+import xpaths
 from helper.data_config import get_data_list
 from helper.global_config import private_config
+from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
@@ -82,12 +84,12 @@ class Test_Local_Users:
         """
         This test verifies a new user can be deleted
         """
-        assert LU.is_user_visible(users['username']) is True
+        assert LU.is_user_visible(users['username'])
 
         LU.unset_show_builtin_users_toggle()
         LU.confirm_delete_user_and_primary_group_by_full_name(users['fullname'])
 
-        assert LU.is_user_visible(users['username']) is False
+        assert LU.is_user_not_visible(users['username'])
 
     @allure.tag("Update")
     @allure.story("Edit Local Users - Authentication Fields")
@@ -194,7 +196,7 @@ class Test_Local_Users:
 
         COM.click_save_button()
 
-        LU.expand_user_by_full_name(self, users['fullname'])
+        LU.expand_user_by_full_name(users['fullname'])
         LU.click_user_edit_button()
 
         assert LU.assert_user_home_directory(users['home-dir'] + "/" + users['username']) is True

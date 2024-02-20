@@ -173,6 +173,37 @@ class API_PUT:
         return cls.update_network_configuration(payload)
 
     @classmethod
+    def set_service_autostart(cls, service: str, state: bool):
+        """
+        This method sets the autostart status of the given service to the given state.
+
+        :param service: the name of the service.
+        :param state: the state to set the service to.
+        :return: The API request response.
+        """
+        serviceid = ''
+        match service.lower():
+            case 'smb':
+                serviceid = '4'
+            case 'ftp':
+                serviceid = '6'
+            case 'iscsi':
+                serviceid = '7'
+            case 'nfs':
+                serviceid = '9'
+            case 'snmp':
+                serviceid = '10'
+            case 'ssh':
+                serviceid = '11'
+            case 'ups':
+                serviceid = '14'
+            case 'smart' | 's.m.a.r.t.':
+                serviceid = '18'
+            case _:
+                pass
+        return PUT(f'/service/id/{serviceid}', {"enable": state})
+
+    @classmethod
     def set_user_groups(cls, username: str, groups: list) -> Response:
         """
         This method set the groups for the specified user.
@@ -253,3 +284,4 @@ class API_PUT:
         """
         userid = API_Common.get_user_id(username)
         return PUT(f'/user/id/{userid}', payload)
+

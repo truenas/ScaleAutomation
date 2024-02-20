@@ -1,6 +1,9 @@
 import pytest
+
+import xpaths
 from helper.data_config import get_data_list
 from helper.global_config import shared_config
+from helper.webui import WebUI
 from keywords.webui.apps import Apps
 from keywords.webui.common import Common as COM
 from keywords.webui.datasets import Datasets as DATASET
@@ -33,6 +36,7 @@ class Test_Install_App:
         Apps.click_install_app(app_data['app-name'])
         Apps.set_app_values(app_data['app-name'])
         COM.click_save_button()
+        Apps.handle_docker_limit_dialog()
         assert COM.assert_page_header('Installed', shared_config['LONG_WAIT'])
         assert Apps.is_app_installed(app_data['app-name']) is True
 
