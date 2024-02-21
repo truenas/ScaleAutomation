@@ -274,7 +274,6 @@ class Common_Shares:
         :param name: name of the given share
         :return: True if the share is enabled otherwise it returns False.
         """
-        # val = WebUI.xpath(xpaths.common_xpaths.share_enabled_slider(sharetype, name)).get_property('ariaChecked')
         val = COM.get_element_property(xpaths.common_xpaths.share_enabled_slider(sharetype, name), 'ariaChecked')
         val = val.capitalize()
         return eval(val)
@@ -294,7 +293,6 @@ class Common_Shares:
             - cls.assert_share_service_in_expected_state(xpath, 'RUNNING', True)
         """
         state = False
-        # icon_text = WebUI.xpath(xpaths.common_xpaths.button_field('service-status-'+xpath)).get_property('innerText')
         icon_text = COM.get_element_property(xpaths.common_xpaths.button_field('service-status-'+xpath), 'innerText')
         if (icon_text == expected_text) & (API_POST.is_service_running(xpath) is expected_state):
             state = True

@@ -150,7 +150,6 @@ class Replication:
             - Replication.login_to_destination_box('user', 'password')
         """
         WebUI.execute_script('window.open();', [])
-        # WebUI.switch_to_window_index(WebUI.get_window_index(WebUI.current_window_handle()) + 1)
         WebUI.switch_to_window_index(1)
         WebUI.get(f'http://{private_config["REP_DEST_IP"]}/ui/sessions/signin')
         COM.set_login_form(username, password)
@@ -325,6 +324,5 @@ class Replication:
         Example:
             - Replication.wait_for_task_to_stop_running('myRepTask')
         """
-        # while WebUI.xpath(xpaths.common_xpaths.button_field(f'state-replication-task-{name}-row-state')).get_property('innerText') == 'RUNNING':
         while COM.get_element_property(xpaths.common_xpaths.button_field(f'state-replication-task-{name}-row-state'), 'innerText') == 'RUNNING':
             WebUI.delay(1)
