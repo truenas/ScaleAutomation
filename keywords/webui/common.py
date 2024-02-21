@@ -646,6 +646,7 @@ class Common:
         """
         cls.click_button('power-menu')
         cls.click_button('log-out')
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('power-menu'))
         assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod
@@ -902,7 +903,7 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.input_field('password')).send_keys(password)
         WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
         WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('log-in'))
-        WebUI.delay(2)
+        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('power-menu'))
 
     @classmethod
     def set_search_field(cls, text: str) -> None:
@@ -1008,3 +1009,22 @@ class Common:
             - Common.unset_toggle('myToggle')
         """
         cls.set_toggle_by_state(name, False)
+
+    @classmethod
+    def verify_logged_in_user_correct(cls, user: str, password: str):
+        """
+        This method verifies the NAS is logged in as the given user and if not, logs in as the given user.
+
+        :param user: the username used to log in to TrueNAS.
+        :param password: the password of the user used to log in.
+        Example:
+            - Common.verify_logged_in_user_correct('username', 'password')
+        """
+        if cls.is_visible(xpaths.common_xpaths.button_field('power-menu')):
+            if not cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]')):
+                cls.logoff_truenas()
+                cls.set_login_form(user, password)
+                assert cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
+        else:
+            cls.set_login_form(user, password)
+            assert cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
