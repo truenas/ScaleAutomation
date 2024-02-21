@@ -723,7 +723,21 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.select_field(name)).send_keys(Keys.TAB)
 
     @classmethod
-    # TODO: remove this when https://ixsystems.atlassian.net/browse/NAS-126826 is fixed and update all usages to select_option.
+    def select_option_by_row(cls, name: str, row: int, option: str) -> None:
+        """
+        This method selects the given option from the given select field row
+
+        :param name: The name of the select field to select from.
+        :param row: The row number of the select field.
+        :param option: The name of the option to select.
+
+        Example:
+            - Common.select_option_text('size-and-type-data', 1, '20-gi-b-hdd')
+        """
+        cls.click_on_element(xpaths.common_xpaths.select_field_by_row(name, row))
+        cls.click_on_element(xpaths.common_xpaths.option_field(option))
+
+    @classmethod
     def select_option_text(cls, name: str, option: str) -> None:
         """
         This method selects the given option text from the given select field.
@@ -734,9 +748,8 @@ class Common:
         Example:
             - Common.select_option_text('size-and-type-data', '20 GiB (HDD)')
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT']).click()
-        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{option}")]'),
-                                   shared_config['SHORT_WAIT']).click()
+        cls.click_on_element(xpaths.common_xpaths.select_field(name))
+        cls.click_on_element(f'//mat-option[contains(.,"{option}")]')
 
     @classmethod
     def set_10_items_per_page(cls) -> None:
@@ -903,7 +916,7 @@ class Common:
         """
         field = xpaths.common_xpaths.search_field()
         # TODO: Get this fixed (create Ticket)
-        if cls.get_element_property('//h1', 'textContext') == 'Discover':
+        if cls.assert_page_header('Discover', shared_config['MEDIUM_WAIT']):
             field = '//*[@data-test="input"]'
         WebUI.wait_until_visible(field)
         WebUI.xpath(field).clear()
