@@ -32,6 +32,26 @@ class SSH_Connection:
         return cls.is_ssh_connection_visible(connection)
 
     @classmethod
+    def click_add_ssh_keypairs_button(cls):
+        """
+        This method clicks the add ssh keypairs button
+
+        Example:
+            - SSH_Connection.click_add_ssh_keypairs_button()
+        """
+        COM.click_button('add-ssh-keypair')
+
+    @classmethod
+    def click_add_ssh_connection_button(cls):
+        """
+        This method clicks the add ssh connection button
+
+        Example:
+            - SSH_Connection.click_add_ssh_connection_button()
+        """
+        COM.click_button('add-ssh-connection')
+
+    @classmethod
     def click_generate_new_private_key(cls):
         """
         This method sets the ssh connection to generate a new private key
@@ -131,11 +151,35 @@ class SSH_Connection:
             COM.set_checkbox('sudo')
 
     @classmethod
+    def set_ssh_keypair_name(cls, name):
+        """
+        This method sets the ssh keypair name to the given name
+
+        :param name: is the ssh keypair name to set
+
+        Example:
+            - SSH_Connection.set_ssh_keypair_name('my Keypair Name')
+        """
+        COM.set_input_field('-name', name)
+
+    @classmethod
+    def set_ssh_connection_name(cls, name):
+        """
+        This method sets the ssh connection name to the given name
+
+        :param name: is the ssh connection name to set
+
+        Example:
+            - SSH_Connection.set_ssh_connection_name('my Connection Name')
+        """
+        COM.set_input_field('connection-name', name)
+
+    @classmethod
     def set_ssh_name_by_type(cls, sshtype: str, name: str) -> str:
         """
         This method returns the given connection by the connection type
 
-        :param sshtype: is the type of the connection
+        :param sshtype: is the type of the connection [connection/keypair]
         :param name: is the name of the connection
         :return: the given connection by the connection type.
 
@@ -174,4 +218,3 @@ class SSH_Connection:
         """
 
         COM.set_input_field('username', username)
-
