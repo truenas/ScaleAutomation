@@ -23,7 +23,7 @@ class Test_Local_Users:
         API_DELETE.delete_user(users['username'])
         API_DELETE.delete_user(users['username'] + '-edt')
         API_POST.create_non_admin_user(users['username'], users['fullname'], users['password'], 'False')
-        assert COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
+        COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_local_users()
         LU.unset_show_builtin_users_toggle()
 
@@ -36,7 +36,7 @@ class Test_Local_Users:
         # Clean up environment.
         API_DELETE.delete_user(users['username'])
         API_DELETE.delete_user(users['username'] + '-edt')
-        assert COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
+        COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
     @allure.tag("Create")

@@ -1013,11 +1013,10 @@ class Common:
     @classmethod
     def verify_logged_in_user_correct(cls, user: str, password: str):
         """
-        This method return True if the given username is visible on the top toolbar, otherwise it returns False.
+        This method verifies the NAS is logged in as the given user and if not, logs in as the given user.
 
         :param user: the username used to log in TrueNAS.
         :param password: the password of the user used to log in.
-        :return: True if the given username is visible on the top toolbar, otherwise it returns False.
         Example:
             - Common.verify_logged_in_user_correct('username', 'password')
         """
