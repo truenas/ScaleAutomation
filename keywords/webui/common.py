@@ -1015,7 +1015,7 @@ class Common:
         """
         This method verifies the NAS is logged in as the given user and if not, logs in as the given user.
 
-        :param user: the username used to log in TrueNAS.
+        :param user: the username used to log in to TrueNAS.
         :param password: the password of the user used to log in.
         Example:
             - Common.verify_logged_in_user_correct('username', 'password')
