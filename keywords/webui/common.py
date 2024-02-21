@@ -577,27 +577,6 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.any_header(dialog_title, level))
 
     @classmethod
-    def is_logged_in_user_correct(cls, user: str, password: str) -> bool:
-        """
-        This method return True if the given username is visible on the top toolbar, otherwise it returns False.
-
-        :param user: the username used to log in TrueNAS.
-        :param password: the password of the user used to log in.
-        :return True if the given username is visible on the top toolbar, otherwise it returns False.
-        Example:
-            - Common.is_logged_in_user_correct('username', 'password')
-        """
-        if cls.is_visible(xpaths.common_xpaths.button_field('power-menu')):
-            if not cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]')):
-                cls.logoff_truenas()
-                cls.set_login_form(user, password)
-                return cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
-        else:
-            cls.set_login_form(user, password)
-            return cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
-        return True
-
-    @classmethod
     def is_save_button_disabled(cls) -> bool:
         """
         This method returns True if the Save button is disabled, otherwise it returns False.
@@ -1030,3 +1009,23 @@ class Common:
             - Common.unset_toggle('myToggle')
         """
         cls.set_toggle_by_state(name, False)
+
+    @classmethod
+    def verify_logged_in_user_correct(cls, user: str, password: str):
+        """
+        This method return True if the given username is visible on the top toolbar, otherwise it returns False.
+
+        :param user: the username used to log in TrueNAS.
+        :param password: the password of the user used to log in.
+        :return: True if the given username is visible on the top toolbar, otherwise it returns False.
+        Example:
+            - Common.verify_logged_in_user_correct('username', 'password')
+        """
+        if cls.is_visible(xpaths.common_xpaths.button_field('power-menu')):
+            if not cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]')):
+                cls.logoff_truenas()
+                cls.set_login_form(user, password)
+                assert cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
+        else:
+            cls.set_login_form(user, password)
+            assert cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))

@@ -1,10 +1,8 @@
 import allure
 import pytest
 
-import xpaths
 from helper.data_config import get_data_list
 from helper.global_config import private_config
-from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
@@ -25,6 +23,7 @@ class Test_Local_Users:
         API_DELETE.delete_user(users['username'])
         API_DELETE.delete_user(users['username'] + '-edt')
         API_POST.create_non_admin_user(users['username'], users['fullname'], users['password'], 'False')
+        assert COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_local_users()
         LU.unset_show_builtin_users_toggle()
 
@@ -37,7 +36,7 @@ class Test_Local_Users:
         # Clean up environment.
         API_DELETE.delete_user(users['username'])
         API_DELETE.delete_user(users['username'] + '-edt')
-        assert COM.is_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
+        assert COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
     @allure.tag("Create")
