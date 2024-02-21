@@ -11,7 +11,7 @@ from keywords.webui.navigation import Navigation as NAV
 
 
 @allure.tag("Local Users")
-@allure.epic("Test")
+@allure.epic("Credentials")
 @allure.feature("Local Users")
 @pytest.mark.parametrize('users', get_data_list('local_users'), scope='class')
 class Test_Local_Users:
