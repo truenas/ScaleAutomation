@@ -9,17 +9,27 @@ from keywords.webui.replication import Replication as REP
 
 
 @allure.tag("Replication")
-@allure.epic("Test")
-@allure.feature("Replication")
+@allure.epic("Data Protection")
+@allure.feature("Replication-Local")
 @pytest.mark.random_order(disabled=True)
 @pytest.mark.parametrize('rep', get_data_list('replication')[:2], scope='class')
 class Test_Create_Replicate_Task_Same_Box:
+
+    @pytest.fixture(scope='function', autouse=True)
+    def setup_test(self, rep) -> None:
+        """
+        This method sets up each test to start with test replication tasks deleted
+        """
+        NAV.navigate_to_data_protection()
+        if REP.is_replication_task_visible(rep['task-name']) is True:
+            REP.delete_replication_task_by_name(rep['task-name'])
 
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self, rep) -> None:
         """
         This test removes the replicate task
         """
+        yield
         # reset the change
         DP.delete_all_periodic_snapshot_tasks()
         DP.delete_all_snapshots()
@@ -27,7 +37,7 @@ class Test_Create_Replicate_Task_Same_Box:
         REP.delete_replication_task_by_name(rep['task-name'])
 
     @allure.tag("Create")
-    @allure.story("Setup and Run Replication Task")
+    @allure.story("Setup and Run Replication Task to Local Box")
     def test_setup_and_run_replicate_task(self, rep) -> None:
         """
         This test verifies a replicate task can be setup
@@ -51,6 +61,5 @@ class Test_Create_Replicate_Task_Same_Box:
             COM.cancel_confirm_dialog()
         assert REP.is_replication_task_visible(rep['task-name']) is True
 
-        assert REP.is_replication_task_visible(rep['task-name']) is True
         REP.click_run_now_replication_task_by_name(rep['task-name'])
         assert REP.get_replication_status(rep['task-name']) == rep['status']

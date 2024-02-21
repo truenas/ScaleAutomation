@@ -284,6 +284,16 @@ def radio_button_field(field: str) -> str:
     return f'//*[@data-test="radio-button-{field}"]'
 
 
+def radio_button_field_attribute(field: str) -> str:
+    """
+    This function sets the text for the given checkbox attribute name
+
+    :param field: text of the given checkbox attribute name
+    :return: xpath string for given checkbox attribute
+    """
+    return f'//*[@data-test="radio-button-{field}"]//input'
+
+
 def search_field() -> str:
     """
     This function sets the text for the search field

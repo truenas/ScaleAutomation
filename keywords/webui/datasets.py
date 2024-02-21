@@ -773,7 +773,8 @@ class Datasets:
             value = "expand_more"
 
         if Common.is_visible(xpaths.common_xpaths.button_field(name)):
-            if WebUI.xpath(xpaths.common_xpaths.button_field(name)).get_property("innerText") == value:
+            # if WebUI.xpath(xpaths.common_xpaths.button_field(name)).get_property("innerText") == value:
+            if Common.get_element_property(xpaths.common_xpaths.button_field(name), 'innerText') == value:
                 WebUI.xpath(xpaths.common_xpaths.button_field(name)).click()
 
     @classmethod

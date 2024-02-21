@@ -72,7 +72,7 @@ class Replication:
         Example:
             - Replication.get_replication_status('myRepTask')
     """
-        return WebUI.xpath(xpaths.common_xpaths.button_field(f'state-replication-task-{COM.convert_to_tag_format(name)}-row-state')).text
+        return COM.get_element_property(xpaths.common_xpaths.button_field(f'state-replication-task-{COM.convert_to_tag_format(name)}-row-state'), 'innerText').strip(' ')
 
     @classmethod
     def is_destination_snapshots_dialog_visible(cls) -> bool:
@@ -228,7 +228,10 @@ class Replication:
         Example:
             - Replication.set_run_once_button()
         """
-        COM.click_radio_button('schedule-method-run-once')
+        if not COM.get_element_property(xpaths.common_xpaths.radio_button_field_attribute('schedule-method-run-once'), 'checked'):
+            COM.click_radio_button('schedule-method-run-once')
+            WebUI.delay(0.2)
+        assert COM.get_element_property(xpaths.common_xpaths.radio_button_field_attribute('schedule-method-run-once'), 'checked')
 
     @classmethod
     def set_source_location_on_different_box(cls, path: str, connection: str) -> None:
@@ -310,7 +313,7 @@ class Replication:
         Example:
             - Replication.unset_read_only_destination_checkbox()
         """
-        COM.set_checkbox('readonly')
+        COM.unset_checkbox('readonly')
 
     @classmethod
     def wait_for_task_to_stop_running(cls, name: str) -> None:
@@ -322,6 +325,6 @@ class Replication:
         Example:
             - Replication.wait_for_task_to_stop_running('myRepTask')
         """
-        while WebUI.xpath(xpaths.common_xpaths.button_field(f'state-replication-task-{name}-row-state')).get_property('innerText') == 'RUNNING':
+        # while WebUI.xpath(xpaths.common_xpaths.button_field(f'state-replication-task-{name}-row-state')).get_property('innerText') == 'RUNNING':
+        while COM.get_element_property(xpaths.common_xpaths.button_field(f'state-replication-task-{name}-row-state'), 'innerText') == 'RUNNING':
             WebUI.delay(1)
-
