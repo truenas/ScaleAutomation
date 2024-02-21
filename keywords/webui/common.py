@@ -317,7 +317,8 @@ class Common:
         Example:
             - Common.click_next_button()
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('next'), shared_config['MEDIUM_WAIT']).click()
+        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('next'), shared_config['MEDIUM_WAIT'])
+        WebUI.xpath(xpaths.common_xpaths.button_field('next')).click()
         WebUI.wait_until_visible(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT'])
         assert cls.assert_text_is_visible('What and Where')
 
