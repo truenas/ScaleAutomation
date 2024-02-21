@@ -8,3 +8,47 @@ games,5,Games pseudo-user
 man,6,Mister Man Pages
 lp,7,lp
 mail,8,mail
+news,9,News Subsystem
+uucp,10,UUCP pseudo-user
+proxy,13,Packet Filter pseudo-user
+www-data,33,www-data
+backup,34,backup
+list,38,Mailing List Manager
+irc,39,ircd
+gnats,41,Gnats Bug-Reporting System (admin)
+_apt,100,
+systemd-timesync,101,systemd Time Synchronization
+systemd-network,102,systemd Network Management
+systemd-resolve,103,systemd Resolver
+messagebus,104,messagebus user
+avahi,105,avahi user
+_rpc,106,
+statd,107,
+consul,108,Consul Daemon
+nvpd,109,NVIDIA Persistence Daemon
+nslcd,110,Nslcd Daemon
+sshd,111,Secure Shell Daemon
+systemd-coredump,112,systemd Core Dumper
+Debian-snmp,113,
+ntp,114,
+Debian-exim,115,
+tftp,116,tftp daemon
+tcpdump,118,
+proftpd,120,
+ftp,121,
+nut,122,
+dnsmasq,123,dnsmasq
+ladvd,124,ladvd user
+nova,125,
+haproxy,126,
+uuidd,127,
+ntpsec,128,
+tss,129,TPM software stack
+iperf3,130,
+_chrony,131,Chrony daemon
+apps,568,Unprivileged Apps User
+webdav,666,WebDAV Anonymous User
+polkitd,998,polkit
+netdata,999,
+libvirt-qemu,64055,Libvirt Qemu
+nobody,65534,Unprivileged user
