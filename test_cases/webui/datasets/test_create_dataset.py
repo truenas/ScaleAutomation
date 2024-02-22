@@ -11,23 +11,22 @@ class Test_Create_Dataset:
     """
     This test cass creates a dataset and verifies it is in the datasets page.
     """
-
     @pytest.fixture(scope='function', autouse=True)
-    def setup_class(self, data):
+    def setup_test(self, data):
         """
         This fixture deletes the created dataset for the class.
         """
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["dataset"]}')
 
     @pytest.fixture(scope='function', autouse=True)
-    def teardown_class(self, data):
+    def teardown_test(self, data):
         """
         This fixture deletes the created dataset for the class.
         """
         yield
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["dataset"]}')
 
-    def test_create_dataset(seff, data):
+    def test_create_dataset(self, data):
         """
         This test navigates to datasets page.
         """
