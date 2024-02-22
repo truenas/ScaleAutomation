@@ -34,7 +34,7 @@ class SSH_Connection:
         return cls.is_ssh_connection_visible(connection)
 
     @classmethod
-    def click_add_ssh_keypairs_button(cls):
+    def click_add_ssh_keypairs_button(cls) -> None:
         """
         This method clicks the add ssh keypairs button
 
@@ -44,7 +44,7 @@ class SSH_Connection:
         COM.click_button('add-ssh-keypair')
 
     @classmethod
-    def click_add_ssh_connection_button(cls):
+    def click_add_ssh_connection_button(cls) -> None:
         """
         This method clicks the add ssh connection button
 
@@ -54,7 +54,7 @@ class SSH_Connection:
         COM.click_button('add-ssh-connection')
 
     @classmethod
-    def click_delete_ssh_keypair_button(cls, name):
+    def click_delete_ssh_keypair_button(cls, name) -> None:
         """
         This method clicks the delete ssh keypair button for the given keypair.
         Also deletes the SSH Connection if it exists
@@ -71,7 +71,7 @@ class SSH_Connection:
         COM.assert_confirm_dialog()
 
     @classmethod
-    def click_delete_ssh_connection_button(cls, name):
+    def click_delete_ssh_connection_button(cls, name) -> None:
         """
         This method clicks the delete ssh connection button for the given connection
 
@@ -85,7 +85,56 @@ class SSH_Connection:
         COM.assert_confirm_dialog()
 
     @classmethod
-    def click_generate_new_private_key(cls):
+    def click_edit_ssh_keypairs_button(cls, name) -> None:
+        """
+        This method clicks the edit ssh keypairs button for the given keypair
+
+        :param name: is the name of the keypair
+
+        Example:
+            - SSH_Connection.click_edit_ssh_keypairs_button('my SSH keypair')
+        """
+        name = COM.convert_to_tag_format(name)
+        COM.click_button(f'ssh-keypair-{name}-key-edit-row-action')
+        assert COM.assert_right_panel_header('SSH Keypairs')
+
+    @classmethod
+    def click_edit_ssh_keypairs_download_actions_button(cls) -> None:
+        """
+        This method clicks the edit ssh keypairs download actions button
+
+        Example:
+            - SSH_Connection.click_edit_ssh_keypairs_download_actions_button()
+        """
+        assert COM.is_clickable(xpaths.common_xpaths.button_field('download-actions'))
+        COM.click_button('download-actions')
+
+    @classmethod
+    def click_edit_ssh_keypairs_download_private_key_button(cls) -> None:
+        """
+        This method clicks the edit ssh keypairs download private key button
+
+        Example:
+            - SSH_Connection.click_edit_ssh_keypairs_download_private_key_button()
+        """
+        assert COM.is_clickable(xpaths.common_xpaths.button_field('download-private-key'))
+        COM.click_button('download-private-key')
+        WebUI.delay(0.5)
+
+    @classmethod
+    def click_edit_ssh_keypairs_download_public_key_button(cls) -> None:
+        """
+        This method clicks the edit ssh keypairs download public key button
+
+        Example:
+            - SSH_Connection.click_edit_ssh_keypairs_download_public_key_button()
+        """
+        assert COM.is_clickable(xpaths.common_xpaths.button_field('download-public-key'))
+        COM.click_button('download-public-key')
+        WebUI.delay(0.5)
+
+    @classmethod
+    def click_generate_new_private_key(cls) -> None:
         """
         This method sets the ssh connection to generate a new private key
 
@@ -186,7 +235,7 @@ class SSH_Connection:
         COM.set_input_field('password', password)
 
     @classmethod
-    def set_passwordless_sudo_checkbox(cls):
+    def set_passwordless_sudo_checkbox(cls) -> None:
         """
         This method sets the enable passwordless sudo checkbox
 
@@ -197,7 +246,7 @@ class SSH_Connection:
             COM.set_checkbox('sudo')
 
     @classmethod
-    def set_ssh_keypair_name(cls, name):
+    def set_ssh_keypair_name(cls, name) -> None:
         """
         This method sets the ssh keypair name to the given name
 
@@ -209,7 +258,7 @@ class SSH_Connection:
         COM.set_input_field('-name', name)
 
     @classmethod
-    def set_ssh_connection_name(cls, name):
+    def set_ssh_connection_name(cls, name) -> None:
         """
         This method sets the ssh connection name to the given name
 
@@ -253,7 +302,7 @@ class SSH_Connection:
         COM.set_input_field('url', url)
 
     @classmethod
-    def set_username(cls, username):
+    def set_username(cls, username) -> None:
         """
         This method sets the user for the ssh connection
 

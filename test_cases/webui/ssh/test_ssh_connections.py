@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from helper.data_config import get_data_list
-from helper.global_config import private_config
+from helper.global_config import private_config, downloads
 from keywords.api.delete import API_DELETE
 from keywords.webui.common import Common as COM
 from keywords.webui.ssh_connection import SSH_Connection as SSH
@@ -22,6 +22,8 @@ class Test_SSH:
         """
         API_DELETE.delete_ssh_connection(ssh['connection_name'])
         API_DELETE.delete_ssh_keypairs(ssh['keypair_name'])
+        COM.delete_file(downloads, ssh['keypair_name'] + " Key_private_key_rsa.txt")
+        COM.delete_file(downloads, ssh['keypair_name'] + " Key_public_key_rsa.txt")
         NAV.navigate_to_backup_credentials()
 
     @pytest.fixture(scope='function', autouse=True)
@@ -33,6 +35,8 @@ class Test_SSH:
         # Clean up environment.
         API_DELETE.delete_ssh_connection(ssh['connection_name'])
         API_DELETE.delete_ssh_keypairs(ssh['keypair_name'])
+        COM.delete_file(downloads, ssh['keypair_name'] + " Key_private_key_rsa.txt")
+        COM.delete_file(downloads, ssh['keypair_name'] + " Key_public_key_rsa.txt")
 
     @allure.tag("Create")
     @allure.story("Create SSH Connection")
@@ -82,3 +86,21 @@ class Test_SSH:
         assert SSH.is_ssh_keypair_visible(ssh['keypair_name']) is True
         SSH.click_delete_ssh_keypair_button(ssh['keypair_name'])
         assert SSH.is_ssh_keypair_visible(ssh['keypair_name']) is False
+
+    @allure.tag("Download")
+    @allure.story("Verify Download SSH Keys")
+    def test_verify_ssh_keys_downloaded(self, ssh) -> None:
+        """
+        This test verifies downloading a private and public ssh keys
+        """
+        assert SSH.assert_ssh_connection_exists(ssh['connection_name'])
+
+        # button for each download private and public keys
+        SSH.click_edit_ssh_keypairs_button(ssh['keypair_name'])
+        SSH.click_edit_ssh_keypairs_download_actions_button()
+        SSH.click_edit_ssh_keypairs_download_private_key_button()
+        assert COM.is_file_downloaded(downloads, ssh['keypair_name'] + " Key_private_key_rsa.txt") is True
+
+        SSH.click_edit_ssh_keypairs_download_actions_button()
+        SSH.click_edit_ssh_keypairs_download_public_key_button()
+        assert COM.is_file_downloaded(downloads, ssh['keypair_name'] + " Key_public_key_rsa.txt") is True
