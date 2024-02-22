@@ -35,11 +35,6 @@ def setup_class(rep):
     Navigation.navigate_to_backup_credentials()
     SSHCON.assert_ssh_connection_exists(rep['connection-name'])
 
-    # Remove Replication task if exists
-    Navigation.navigate_to_data_protection()
-    if Replication.is_replication_task_visible(rep['task-name']) is True:
-        Replication.delete_replication_task_by_name(rep['task-name'])
-
     # Remove Snapshots if exists
     DP.delete_all_periodic_snapshot_tasks()
     DP.delete_all_snapshots()
