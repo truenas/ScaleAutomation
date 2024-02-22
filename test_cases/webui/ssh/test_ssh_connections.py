@@ -55,3 +55,30 @@ class Test_SSH:
         COM.click_save_button()
 
         assert SSH.is_ssh_connection_visible(ssh['connection_name']) is True
+
+    @allure.tag("Delete")
+    @allure.story("Delete SSH Connection")
+    def test_delete_ssh_connection(self, ssh) -> None:
+        """
+        This test verifies deleting a new ssh connection
+        """
+        # add connection and key pair if they don't already exist
+        if SSH.is_ssh_connection_visible(ssh['connection_name']) is False:
+            assert SSH.assert_ssh_connection_exists(ssh['connection_name'])
+
+        SSH.click_delete_ssh_connection_button(ssh['connection_name'])
+        assert SSH.is_ssh_connection_visible(ssh['connection_name']) is False
+
+    @allure.tag("Delete")
+    @allure.story("Delete SSH Keypair")
+    def test_delete_ssh_keypair(self, ssh) -> None:
+        """
+        This test verifies deleting a new ssh keypair
+        """
+        # add connection and key pair if they don't already exist
+        if SSH.is_ssh_connection_visible(ssh['connection_name']) is False:
+            assert SSH.assert_ssh_connection_exists(ssh['connection_name'])
+
+        assert SSH.is_ssh_keypair_visible(ssh['keypair_name']) is True
+        SSH.click_delete_ssh_keypair_button(ssh['keypair_name'])
+        assert SSH.is_ssh_keypair_visible(ssh['keypair_name']) is False

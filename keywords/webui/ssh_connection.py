@@ -1,5 +1,6 @@
 import xpaths
 from helper.global_config import private_config
+from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 
 
@@ -7,7 +8,7 @@ class SSH_Connection:
     @classmethod
     def assert_ssh_connection_exists(cls, connection: str) -> bool:
         """
-        This method verifies the given connection exists
+        This method verifies the given connection exists and creates it if it doesn't
 
         :param connection: is the name of the given connection
 
@@ -29,6 +30,7 @@ class SSH_Connection:
             cls.set_passwordless_sudo_checkbox()
             cls.click_generate_new_private_key()
             COM.click_save_button()
+            WebUI.refresh()
         return cls.is_ssh_connection_visible(connection)
 
     @classmethod
@@ -50,6 +52,37 @@ class SSH_Connection:
             - SSH_Connection.click_add_ssh_connection_button()
         """
         COM.click_button('add-ssh-connection')
+
+    @classmethod
+    def click_delete_ssh_keypair_button(cls, name):
+        """
+        This method clicks the delete ssh keypair button for the given keypair.
+        Also deletes the SSH Connection if it exists
+
+        :param name: is the name of the keypair
+
+        Example:
+            - SSH_Connection.click_delete_ssh_keypair_button('my SSH Keypair')
+        """
+        if cls.is_ssh_connection_visible(name):
+            cls.click_delete_ssh_connection_button(name)
+        name = COM.convert_to_tag_format(name)
+        COM.click_button(f'ssh-keypair-{name}-key-delete-row-action')
+        COM.assert_confirm_dialog()
+
+    @classmethod
+    def click_delete_ssh_connection_button(cls, name):
+        """
+        This method clicks the delete ssh connection button for the given connection
+
+        :param name: is the name of the connection
+
+        Example:
+            - SSH_Connection.click_delete_ssh_connection_button('my SSH Connection')
+        """
+        name = COM.convert_to_tag_format(name)
+        COM.click_button(f'ssh-con-{name}-delete-row-action')
+        COM.assert_confirm_dialog()
 
     @classmethod
     def click_generate_new_private_key(cls):
@@ -107,6 +140,19 @@ class SSH_Connection:
             - SSH_Connection.is_ssh_connection_visible('myConnection')
         """
         return cls.is_ssh_type_visible('connection', name)
+
+    @classmethod
+    def is_ssh_keypair_visible(cls, name: str) -> bool:
+        """
+        This method returns True if the given keypair is visible, otherwise False
+
+        :param name: is the name of the keypair
+        :return: True if the given keypair is visible, otherwise False.
+
+        Example:
+            - SSH_Connection.is_ssh_keypair_visible('myKeypair')
+        """
+        return cls.is_ssh_type_visible('keypair', name)
 
     @classmethod
     def is_ssh_type_visible(cls, sshtype: str, name: str) -> bool:
