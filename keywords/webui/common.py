@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.keys import Keys
 
@@ -393,6 +395,20 @@ class Common:
         print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
 
     @classmethod
+    def delete_file(cls, path: str, filename: str) -> None:
+        """
+        This method deletes the given file if it exists in the given directory
+
+        :param path: the username used to log in to TrueNAS.
+        :param filename: the password of the user used to log in.
+
+        Example:
+            - Common.is_file_downloaded('C:/path', 'myfile.txt')
+        """
+        file = Path(path + '/' + filename)
+        file.unlink(True)
+
+    @classmethod
     def delete_pill(cls, xpath: str) -> None:
         """
         This method deletes the given pill
@@ -574,6 +590,22 @@ class Common:
             - Common.is_dialog_visible('Dialog Title', 3)
         """
         return cls.is_visible(xpaths.common_xpaths.any_header(dialog_title, level))
+
+    @classmethod
+    def is_file_downloaded(cls, download_path: str, filename: str) -> bool:
+        """
+        This method returns True if the given file exists in the given download directory, otherwise returns False
+
+        :param download_path: the username used to log in to TrueNAS.
+        :param filename: the password of the user used to log in.
+
+        Example:
+            - Common.is_file_downloaded('C:/path', 'myfile.txt')
+        """
+        print("@@@ PATH: " + download_path)
+        file = Path(download_path + '/' + filename)
+        print("@@@ FILE: " + str(file))
+        return file.is_file()
 
     @classmethod
     def is_save_button_disabled(cls) -> bool:
@@ -1010,12 +1042,13 @@ class Common:
         cls.set_toggle_by_state(name, False)
 
     @classmethod
-    def verify_logged_in_user_correct(cls, user: str, password: str):
+    def verify_logged_in_user_correct(cls, user: str, password: str) -> None:
         """
         This method verifies the NAS is logged in as the given user and if not, logs in as the given user.
 
         :param user: the username used to log in to TrueNAS.
         :param password: the password of the user used to log in.
+
         Example:
             - Common.verify_logged_in_user_correct('username', 'password')
         """

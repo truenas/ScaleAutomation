@@ -1,7 +1,7 @@
 connection_name,url,ssh_username,keypair_name
-self,IP-PLACEHOLDER,admin,null
-other,IP-PLACEHOLDER,admin,null
-admin-self,IP-PLACEHOLDER,admin,null
-admin-other,IP-PLACEHOLDER,admin,null
-new_ssh,IP-PLACEHOLDER,admin,null
+self,IP-PLACEHOLDER,admin,self
+other,IP-PLACEHOLDER,admin,other
+admin-self,IP-PLACEHOLDER,admin,admin-self
+admin-other,IP-PLACEHOLDER,admin,admin-other
+new_ssh,IP-PLACEHOLDER,admin,new_ssh
 rsync_api,IP-PLACEHOLDER,admin,rsync_api
