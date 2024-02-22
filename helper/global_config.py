@@ -6,6 +6,8 @@ test_cases = str(Path('/test_cases'))
 keywords = str(Path('/keywords'))
 workdir = os.getcwd().partition(test_cases)[0].partition(keywords)[0]
 screenshots = str(Path(f'{workdir}/screenshots'))
+home = str(Path.home())
+downloads = home + str(Path('/Downloads'))
 
 shared = str(Path('/profiles/shared.toml'))
 shared_file = open(workdir + shared, 'r')

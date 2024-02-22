@@ -66,11 +66,42 @@ class API_DELETE:
         return response
 
     @classmethod
+    def delete_ssh_keypairs(cls, name: str) -> Response:
+        """
+        This method deletes the given ssh keypairs.
+
+        :param name: is name of the ssh keypairs.
+        :return: the API request response.
+        """
+        name = name + " Key"
+        response = GET(f'/keychaincredential?name={name}').json()
+        if response:
+            ssh_id = API.get_ssh_id(name)
+            response = DELETE(f'/keychaincredential/id/{ssh_id}')
+            assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def delete_ssh_connection(cls, name: str) -> Response:
+        """
+        This method deletes the given ssh connection.
+
+        :param name: is name of the ssh connection.
+        :return: the API request response.
+        """
+        response = GET(f'/keychaincredential?name={name}').json()
+        if response:
+            ssh_id = API.get_ssh_id(name)
+            response = DELETE(f'/keychaincredential/id/{ssh_id}')
+            assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
     def delete_user(cls, name: str) -> Response:
         """
         This method deletes the user.
 
-        :param name: is nane of the user.
+        :param name: is name of the user.
         :return: the API request response.
         """
         response = GET(f'/user?username={name}').json()
@@ -79,4 +110,3 @@ class API_DELETE:
             response = DELETE(f'/user/id/{user_id}')
             assert response.status_code == 200, response.text
         return response
-
