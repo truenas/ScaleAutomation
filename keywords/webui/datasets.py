@@ -725,6 +725,7 @@ class Datasets:
         if WebUI.wait_until_visible(xpaths.common_xpaths.any_text(dataset), shared_config['SHORT_WAIT']):
             cls.click_dataset_location(dataset)
             Common.click_button('delete-dataset')
+            Common.assert_progress_spinner_not_visible()
             Common.assert_dialog_visible(f'Delete dataset {pool}/{dataset}')
             Common.set_input_field('confirm-dataset-name', f'{pool}/{dataset}')
             Common.set_checkbox('confirm')
