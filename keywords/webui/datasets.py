@@ -1119,6 +1119,7 @@ class Datasets:
         xpath = '//*[@data-test="button-cancel"]/following-sibling::button'
         Common.click_on_element(xpaths.common_xpaths.any_xpath(xpath))
         Common.assert_progress_bar_not_visible()
+        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text("Locking Dataset"))
 
     @classmethod
     def select_dataset(cls, dataset_name: str) -> None:
