@@ -23,6 +23,10 @@ class Navigation:
             print('@@@@@@@ RIGHT_PANEL_OPEN-'+create_timestamp())
             take_screenshot('RIGHT_PANEL_OPEN-'+create_timestamp())
             COM.close_right_panel()
+        if COM.is_visible(xpaths.common_xpaths.button_field('dialog-cancel')):
+            print('@@@@@@@ DIALOG LEFT OPEN-'+create_timestamp())
+            take_screenshot('DIALOG_LEFT_OPEN-'+create_timestamp())
+            COM.cancel_confirm_dialog()
         if (COM.is_visible(xpaths.common_xpaths.any_header(header, 1)) is True) & (header != 'Dashboard'):
             cls.navigate_to_dashboard()
         COM.click_on_element(xpaths.common_xpaths.link_field(location + '-menu'))

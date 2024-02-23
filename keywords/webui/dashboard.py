@@ -375,9 +375,9 @@ class Dashboard:
         :param state: is True to enable the toggle and False to disable it.
         """
         cls.click_the_configure_button()
-        assert cls.assert_dashboard_configure_panel_is_visible() is True
+        assert cls.assert_dashboard_configure_panel_is_visible()
         if state:
             Common.set_toggle(card)
         else:
             Common.unset_toggle(card)
-        Common.click_save_button()
+        Common.click_save_button_and_wait_for_progress_bar()

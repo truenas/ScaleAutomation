@@ -9,7 +9,7 @@ from keywords.webui.navigation import Navigation
 class Test_Delete_Dataset:
 
     @pytest.fixture(scope='class', autouse=True)
-    def setup_test_class(self, data):
+    def setup_test(self, data):
         """
         This setup fixture the dataset for the test class.
         """

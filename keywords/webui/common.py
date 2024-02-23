@@ -1054,9 +1054,15 @@ class Common:
         """
         if cls.is_visible(xpaths.common_xpaths.button_field('power-menu')):
             if not cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]')):
+                print("Wrong user. Logging off.")
                 cls.logoff_truenas()
+                print("Logging in as correct user.")
                 cls.set_login_form(user, password)
                 assert cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
+            else:
+                print("\nLogged in as correct user.")
         else:
+            print("Not logged in. Logging in as correct user.")
             cls.set_login_form(user, password)
             assert cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
+
