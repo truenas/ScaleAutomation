@@ -11,7 +11,7 @@ from keywords.webui.common import Common
 def pytest_sessionfinish(session, exitstatus):
     print(f"\nTotal time (in seconds) spent on hard delays using WebUI.delay(): {WebUI.total_time_waited()} seconds waited")
     allure_reporting()
-    WebUI.quit()
+    # WebUI.quit()
 
 
 def pytest_sessionstart(session):
