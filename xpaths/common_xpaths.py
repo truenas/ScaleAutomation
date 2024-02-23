@@ -1,3 +1,7 @@
+"""This module contains common xpath strings"""
+
+overlay_container = '//*[@class="cdk-overlay-container"]'
+"""This variable returns the overlay container xpath text and is used to close the select option dropdown"""
 progress_bar = '//mat-progress-bar'
 """This variable returns the default progress bar xpath text"""
 progress_spinner = '//mat-spinner'
@@ -130,6 +134,18 @@ def button_share_actions_menu(sharetype: str) -> str:
     :return: xpath string for the given acton button
     """
     return f'//ix-{sharetype}-card//ix-service-extra-actions//button'
+
+
+def card_label_and_value(card_tile: str, label: str, value: str) -> str:
+    """
+    This function sets the text for the given card label and value.
+
+    :param card_tile: text of the given card tile.
+    :param label: text of the given label.
+    :param value: text of the given value.
+    :return: the xpath text of the given card label and value.
+    """
+    return f'//mat-card[contains(text(),"{card_tile}")]//*[contains(.,"{label}") and contains(text(),"{value}")]'
 
 
 def card_title(text: str) -> str:
