@@ -40,13 +40,13 @@ class Certificates:
         return Common.assert_right_panel_header('Add Certificate')
 
     @classmethod
-    def is_add_create_acme_certificate_side_panel_visible(cls) -> bool:
+    def assert_add_create_acme_certificate_side_panel_visible(cls) -> bool:
         """
         This method verifies that the Create ACME Certificate side panel is visible.
         :return: True if the Create ACME Certificate side panel is visible, otherwise it returns False.
 
         Example:
-            - Certificates.is_add_create_acme_certificate_side_panel_visible()
+            - Certificates.assert_add_create_acme_certificate_side_panel_visible()
         """
         return Common.assert_right_panel_header('Create ACME Certificate')
 
