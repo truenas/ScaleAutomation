@@ -1,3 +1,4 @@
+import xpaths.common_xpaths
 from helper.global_config import shared_config
 from helper.webui import WebUI
 from helper.reporting import take_screenshot
@@ -176,6 +177,7 @@ class Apps:
         Example:
             - Apps.click_app('WG Easy')
         """
+
         COM.click_on_element(f'//ix-app-card//h3[contains(text(),"{name}")]')
         WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text('Please wait'))
 
@@ -218,10 +220,27 @@ class Apps:
             cls.click_discover_apps()
             COM.set_search_field(name)
             cls.click_app(name)
+        if WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['SHORT_WAIT']) is False:
+            COM.assert_confirm_dialog()
         COM.click_button(COM.convert_to_tag_format(name) + '-install')
         if WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['SHORT_WAIT']) is False:
             COM.assert_confirm_dialog()
         WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['LONG_WAIT'])
+
+    @classmethod
+    def configure_apps_pool(cls):
+        """
+        This method configures a pool for apps if it is not configured.
+
+        Example:
+            - Apps.configure_apps_pool()
+        """
+        if COM.is_visible(xpaths.common_xpaths.any_text('Apps Service Not Configured')):
+            COM.click_button('apps-settings')
+            COM.click_button('choose-pool')
+            COM.select_option('pool', 'pool-tank')
+            COM.click_button('choose')
+            WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Configuring...', 1), shared_config['LONG_WAIT'])
 
     @classmethod
     def delete_app(cls, name: str) -> None:
@@ -267,11 +286,24 @@ class Apps:
 
         Example:
             - Apps.get_app_status('WG Easy')
-    """
+        """
         return WebUI.xpath(xpaths.common_xpaths.any_child_parent_target(
             f'//*[text()="{COM.convert_to_tag_format(name)}"]',
             'ix-app-row',
             'ix-app-status-cell')).text
+
+    @classmethod
+    def handle_docker_limit_dialog(cls):
+        """
+        This method handles the Docker Hub Rate Limit Warning if present.
+
+        Example:
+            - Apps.handle_docker_limit_dialog()
+        """
+        if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 1), shared_config['SHORT_WAIT']):
+            COM.assert_confirm_dialog()
+            if COM.is_clickable(xpaths.common_xpaths.button_field('save')):
+                COM.click_save_button()
 
     @classmethod
     def is_app_deployed(cls, name: str) -> bool:
@@ -304,7 +336,7 @@ class Apps:
             - Apps.is_app_installed('WG Easy')
         """
         # Delay to wait for Apps section populate
-        WebUI.delay(2)
+        assert COM.assert_progress_bar_not_visible()
         if COM.is_visible(xpaths.common_xpaths.button_field("check-available-apps")):
             return False
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//ix-app-row//div[contains(text(),"{COM.convert_to_tag_format(name)}")]'), shared_config['MEDIUM_WAIT'])
@@ -352,6 +384,16 @@ class Apps:
             - Apps.navigate_to_app_section('WG Easy')
         """
         WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[@class="section ng-star-inserted" and contains(text(),"{name}")]')).click()
+
+    @classmethod
+    def refresh_charts(cls):
+        """
+        This method clicks the Refresh Charts button to renew the apps catalog and returns to the apps page.
+        """
+        Apps.click_discover_apps()
+        COM.click_link('refresh-charts')
+        COM.assert_progress_bar_not_visible()
+        NAV.navigate_to_apps()
 
     @classmethod
     def set_app_values(cls, name: str) -> None:
@@ -414,6 +456,8 @@ class Apps:
             Apps.click_install_app(name)
             Apps.set_app_values(name)
             COM.click_save_button()
+            cls.handle_docker_limit_dialog()
             assert COM.assert_page_header('Installed', shared_config['LONG_WAIT'])
         assert Apps.is_app_installed(name) is True
         return Apps.is_app_deployed(name) is True
+

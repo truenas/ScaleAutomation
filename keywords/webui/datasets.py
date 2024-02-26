@@ -5,7 +5,6 @@ from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common
-from keywords.webui.navigation import Navigation as NAV
 
 
 class Datasets:
@@ -421,7 +420,7 @@ class Datasets:
         Example:
             - Dataset.assert_data_written_size('96 KiB')
         """
-        return Common.assert_label_and_value_exist('Data Written:', size)
+        return Common.assert_label_and_value_exist('Data Written', size)
 
     @classmethod
     def assert_reserved_for_dataset_size(cls, size):
@@ -471,23 +470,6 @@ class Datasets:
             - Dataset.assert_selected_dataset_name('root')
         """
         return WebUI.wait_until_visible(xpaths.datasets.selected_dataset_name(dataset), shared_config['SHORT_WAIT'])
-
-    @classmethod
-    def assert_share_role_dataset_exists(cls):
-        """
-        This method returns True or False whether the share role dataset exists.
-
-        :return: True if the share role dataset exists, otherwise it returns False.
-
-        Example:
-            - Dataset.assert_share_role_dataset_exists()
-        """
-        if cls.is_dataset_visible('tank', 'smb_share') is False:
-            API_POST.create_dataset('tank/smb_share')
-            API_POST.create_share("smb", "smb_share", "/mnt/tank/smb_share")
-        NAV.navigate_to_datasets()
-        assert Common.assert_progress_bar_not_visible()
-        return WebUI.wait_until_visible(xpaths.datasets.dataset_roles_icon('smb_share'))
 
     @classmethod
     def assert_space_available_to_dataset_size(cls, size: str) -> bool:
@@ -743,10 +725,11 @@ class Datasets:
         if WebUI.wait_until_visible(xpaths.common_xpaths.any_text(dataset), shared_config['SHORT_WAIT']):
             cls.click_dataset_location(dataset)
             Common.click_button('delete-dataset')
+            Common.assert_progress_spinner_not_visible()
             Common.assert_dialog_visible(f'Delete dataset {pool}/{dataset}')
             Common.set_input_field('confirm-dataset-name', f'{pool}/{dataset}')
             Common.set_checkbox('confirm')
-            Common.click_on_element(xpaths.common_xpaths.button_field_by_row('confirm-dataset', 2))
+            Common.click_on_element(xpaths.common_xpaths.button_field_by_row('delete-dataset', 2))
             WebUI.delay(1)
 
     @classmethod
@@ -791,7 +774,7 @@ class Datasets:
             value = "expand_more"
 
         if Common.is_visible(xpaths.common_xpaths.button_field(name)):
-            if WebUI.xpath(xpaths.common_xpaths.button_field(name)).get_property("innerText") == value:
+            if Common.get_element_property(xpaths.common_xpaths.button_field(name), 'innerText') == value:
                 WebUI.xpath(xpaths.common_xpaths.button_field(name)).click()
 
     @classmethod
@@ -953,6 +936,19 @@ class Datasets:
         return Common.assert_right_panel_header('Capacity Settings')
 
     @classmethod
+    def is_dataset_not_visible(cls, dataset: str) -> bool:
+        """
+        This method checks if the given dataset is not visible.
+        :param dataset: Test name of the dataset.
+        :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+            - Dataset.is_dataset_not_visible('test-dataset')
+        """
+        Common.assert_progress_bar_not_visible()
+        return WebUI.wait_until_not_visible(xpaths.datasets.link_dataset(dataset), shared_config['SHORT_WAIT']) is True
+
+    @classmethod
     def is_dataset_visible(cls, pool: str, dataset: str) -> bool:
         """
         This method checks if the given dataset is visible and expanded.
@@ -1004,9 +1000,7 @@ class Datasets:
         Example:
             - Dataset.is_locked('test-dataset')
         """
-        xpath = xpaths.common_xpaths.tree_node_field(dataset)
-        to = xpaths.common_xpaths.any_child_parent_target(xpath, 'ix-dataset-node', 'ix-dataset-locked-cell')
-        return WebUI.get_attribute(to, 'innerText') == 'Locked'
+        return WebUI.get_text(xpaths.datasets.dataset_encryption_text(dataset)) == 'Locked'
 
     @classmethod
     def is_permissions_advanced_item_visible(cls, name: str, permission_item: str) -> bool:
@@ -1125,6 +1119,7 @@ class Datasets:
         xpath = '//*[@data-test="button-cancel"]/following-sibling::button'
         Common.click_on_element(xpaths.common_xpaths.any_xpath(xpath))
         Common.assert_progress_bar_not_visible()
+        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text("Locking Dataset"))
 
     @classmethod
     def select_dataset(cls, dataset_name: str) -> None:

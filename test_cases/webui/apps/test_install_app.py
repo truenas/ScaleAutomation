@@ -1,9 +1,13 @@
 import pytest
+
+import xpaths
 from helper.data_config import get_data_list
 from helper.global_config import shared_config
+from helper.webui import WebUI
 from keywords.webui.apps import Apps
 from keywords.webui.common import Common as COM
 from keywords.webui.datasets import Datasets as DATASET
+from keywords.webui.navigation import Navigation as NAV
 
 
 @pytest.mark.parametrize('app_data', get_data_list('apps'), scope='class')
@@ -32,6 +36,7 @@ class Test_Install_App:
         Apps.click_install_app(app_data['app-name'])
         Apps.set_app_values(app_data['app-name'])
         COM.click_save_button()
+        Apps.handle_docker_limit_dialog()
         assert COM.assert_page_header('Installed', shared_config['LONG_WAIT'])
         assert Apps.is_app_installed(app_data['app-name']) is True
 
@@ -43,6 +48,7 @@ class Test_Install_App:
         :param app_data: test data listing different apps to iterate through
         """
         # reset the change
+        NAV.navigate_to_apps()
         Apps.delete_app(app_data['app-name'])
         assert Apps.is_app_installed(app_data['app-name']) is False
         if app_data['setup-name'] == 'webdav':

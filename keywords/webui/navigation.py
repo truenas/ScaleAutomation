@@ -23,14 +23,17 @@ class Navigation:
             print('@@@@@@@ RIGHT_PANEL_OPEN-'+create_timestamp())
             take_screenshot('RIGHT_PANEL_OPEN-'+create_timestamp())
             COM.close_right_panel()
-        if (COM.is_visible(xpaths.common_xpaths.any_header(header, 1)) is True) & (header is not 'Dashboard'):
+        if COM.is_visible(xpaths.common_xpaths.button_field('dialog-cancel')):
+            print('@@@@@@@ DIALOG LEFT OPEN-'+create_timestamp())
+            take_screenshot('DIALOG_LEFT_OPEN-'+create_timestamp())
+            COM.cancel_confirm_dialog()
+        if (COM.is_visible(xpaths.common_xpaths.any_header(header, 1)) is True) & (header != 'Dashboard'):
             cls.navigate_to_dashboard()
         COM.click_on_element(xpaths.common_xpaths.link_field(location + '-menu'))
         if location2 != "":
             WebUI.delay(0.2)
             COM.click_on_element(xpaths.common_xpaths.any_xpath(f'(//*[@data-test="link-{location2}"])[2]'))
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header, 1))
-        assert COM.is_visible(xpaths.common_xpaths.any_header(header, 1))
+        assert COM.assert_page_header(header)
         WebUI.delay(2)
 
     @classmethod
@@ -82,6 +85,7 @@ class Navigation:
          - Navigation.navigate_to_datasets()
         """
         cls.navigate_to('datasets', 'Datasets')
+        COM.assert_progress_bar_not_visible()
 
     @classmethod
     def navigate_to_directory_services(cls) -> None:
@@ -145,4 +149,25 @@ class Navigation:
          - Navigation.navigate_to_storage()
         """
         cls.navigate_to('storage', 'Storage')
+
+    @classmethod
+    def navigate_to_system_settings_advanced(cls) -> None:
+        """
+        This method navigates to the Advanced page under the System Settings panel.
+
+        Example
+         - Navigation.navigate_to_system_settings_services()
+        """
+        cls.navigate_to('system-settings', 'Advanced', 'advanced')
+
+    @classmethod
+    def navigate_to_system_settings_services(cls) -> None:
+        """
+        This method navigates to the Services page under the System Settings panel.
+
+        Example
+         - Navigation.navigate_to_system_settings_services()
+        """
+        cls.navigate_to('system-settings', 'Services', 'services')
+
 

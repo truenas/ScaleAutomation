@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.keys import Keys
 
@@ -81,7 +83,23 @@ class Common:
         Example:
             - Common.assert_label_and_value_exist('Pool Status', 'Online')
         """
-        return WebUI.wait_until_visible(xpaths.xpaths.common_xpaths.label_and_value(label, value), shared_config['SHORT_WAIT'])
+        return WebUI.wait_until_visible(xpaths.xpaths.common_xpaths.label_and_value(label, value),
+                                        shared_config['SHORT_WAIT'])
+
+    @classmethod
+    def assert_please_wait_not_visible(cls, wait: int = shared_config['LONG_WAIT']) -> bool:
+        """
+        This method returns True or False weather the please wait is not visible before timeout.
+
+        :param wait: The number of seconds to wait before timeout
+        :return: True if the please wait is not visible before timeout otherwise it returns False.
+
+        Example:
+            - Common.assert_please_wait_Not_visible()
+            - Common.assert_please_wait_Not_visible(shared_config['MEDIUM_WAIT'])
+        """
+        WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['SHORT_WAIT'])
+        return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), wait)
 
     @classmethod
     def assert_progress_bar_not_visible(cls, wait: int = shared_config['LONG_WAIT']) -> bool:
@@ -154,6 +172,20 @@ class Common:
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(header_text, 3))
 
     @classmethod
+    def assert_step_header_is_open(cls, step_header: str) -> bool:
+        """
+        This method verifies if the given step is visible and open.
+
+        :param step_header: The name of the step
+        :return: True if the given step is visible and open otherwise it returns False.
+
+        Example:
+            - Common.assert_step_is_visible_and_open('Identifier and Type')
+        """
+        return WebUI.wait_until_visible(xpaths.common_xpaths.step_header_is_open(step_header),
+                                        shared_config['SHORT_WAIT'])
+
+    @classmethod
     def assert_text_is_visible(cls, text) -> bool:
         """
         This method return True if the given text is visible before timeout otherwise it returns False.
@@ -209,6 +241,16 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.DELETE)
         if tab:
             WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.TAB)
+
+    @classmethod
+    def click_advanced_options_button(cls):
+        """
+        This method clicks the Advanced Options button.
+
+        Example:
+            - Common.click_advanced_options_button()
+        """
+        Common.click_button('toggle-advanced')
 
     @classmethod
     def click_button(cls, name: str) -> None:
@@ -277,7 +319,8 @@ class Common:
         Example:
             - Common.click_next_button()
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('next'), shared_config['MEDIUM_WAIT']).click()
+        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('next'), shared_config['MEDIUM_WAIT'])
+        WebUI.xpath(xpaths.common_xpaths.button_field('next')).click()
         WebUI.wait_until_visible(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT'])
         assert cls.assert_text_is_visible('What and Where')
 
@@ -351,6 +394,19 @@ class Common:
         response = API_POST.create_non_admin_user(name, fullname, password, smb_auth)
         print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
 
+    @classmethod
+    def delete_file(cls, path: str, filename: str) -> None:
+        """
+        This method deletes the given file if it exists in the given directory
+
+        :param path: the username used to log in to TrueNAS.
+        :param filename: the password of the user used to log in.
+
+        Example:
+            - Common.is_file_downloaded('C:/path', 'myfile.txt')
+        """
+        file = Path(path + '/' + filename)
+        file.unlink(True)
 
     @classmethod
     def delete_pill(cls, xpath: str) -> None:
@@ -418,7 +474,7 @@ class Common:
         Example:
             - Common.get_label_value('Label')
         """
-        return WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[contains(text(),"{label}")]/following-sibling::*')).get_property('textContent')
+        return cls.get_element_property(xpaths.common_xpaths.any_xpath(f'//*[contains(text(),"{label}")]/following-sibling::*'), 'textContent')
 
     @classmethod
     def get_user_id_by_api(cls, username: str) -> int:
@@ -483,10 +539,7 @@ class Common:
         Example:
             - Common.is_checked('myCheckbox')
         """
-        state = False
-        if bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')):
-            state = True
-        return state
+        return cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked')
 
     @classmethod
     def is_clickable(cls, xpath: str, timeout: int = shared_config['WAIT']) -> bool:
@@ -513,7 +566,7 @@ class Common:
     @classmethod
     def is_checkbox_disabled(cls, name: str) -> bool:
         """
-        This method return True if the checkbox is disabled, otherwise it returns False.
+        This method returns if the checkbox is disabled, otherwise it returns False.
 
         :param name: The name of the checkbox
         :return: True if the checkbox is disabled, otherwise it returns False.
@@ -521,7 +574,7 @@ class Common:
         Example:
             - Common.is_checkbox_disabled('my-checkbox')
         """
-        return WebUI.get_attribute(xpaths.common_xpaths.checkbox_field_attribute(name), 'disabled') is True
+        return cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'disabled')
 
     @classmethod
     def is_dialog_visible(cls, dialog_title: str, level: int) -> bool:
@@ -539,6 +592,22 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.any_header(dialog_title, level))
 
     @classmethod
+    def is_file_downloaded(cls, download_path: str, filename: str) -> bool:
+        """
+        This method returns True if the given file exists in the given download directory, otherwise returns False
+
+        :param download_path: the username used to log in to TrueNAS.
+        :param filename: the password of the user used to log in.
+
+        Example:
+            - Common.is_file_downloaded('C:/path', 'myfile.txt')
+        """
+        print("@@@ PATH: " + download_path)
+        file = Path(download_path + '/' + filename)
+        print("@@@ FILE: " + str(file))
+        return file.is_file()
+
+    @classmethod
     def is_save_button_disabled(cls) -> bool:
         """
         This method returns True if the Save button is disabled, otherwise it returns False.
@@ -549,6 +618,19 @@ class Common:
             - Common.is_save_button_disabled()
         """
         return cls.get_element_property(xpaths.common_xpaths.button_field('save'), 'disabled')
+
+    @classmethod
+    def is_toggle_enabled(cls, name: str) -> bool:
+        """
+        This method return True if the given toggle is enabled (uses ariaChecked attr) otherwise it returns False.
+
+        :param name: name of the toggle field.
+        :return: True if the toggle is enabled, otherwise it returns False.
+
+        Example:
+            - Common.is_toggle_enabled('ftp-service')
+        """
+        return eval(cls.get_element_property(xpaths.common_xpaths.toggle_field(name), 'ariaChecked').capitalize())
 
     @classmethod
     def is_visible(cls, xpath: str) -> bool:
@@ -595,6 +677,7 @@ class Common:
         """
         cls.click_button('power-menu')
         cls.click_button('log-out')
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('power-menu'))
         assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod
@@ -636,8 +719,11 @@ class Common:
         cls.click_button('power-menu')
         cls.click_button('restart')
         cls.assert_confirm_dialog()
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Connecting to TrueNAS'), shared_config['EXTRA_LONG_WAIT'])
-        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_xpath('//ix-disconnected-message//*[contains(text(), "Connecting to TrueNAS")]'), shared_config['EXTRA_LONG_WAIT'])
+        WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Connecting to TrueNAS'),
+                                 shared_config['EXTRA_LONG_WAIT'])
+        WebUI.wait_until_not_visible(
+            xpaths.common_xpaths.any_xpath('//ix-disconnected-message//*[contains(text(), "Connecting to TrueNAS")]'),
+            shared_config['EXTRA_LONG_WAIT'])
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT'])
         assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
 
@@ -669,7 +755,21 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.select_field(name)).send_keys(Keys.TAB)
 
     @classmethod
-    # TODO: remove this when https://ixsystems.atlassian.net/browse/NAS-126826 is fixed and update all usages to select_option.
+    def select_option_by_row(cls, name: str, row: int, option: str) -> None:
+        """
+        This method selects the given option from the given select field row
+
+        :param name: The name of the select field to select from.
+        :param row: The row number of the select field.
+        :param option: The name of the option to select.
+
+        Example:
+            - Common.select_option_text('size-and-type-data', 1, '20-gi-b-hdd')
+        """
+        cls.click_on_element(xpaths.common_xpaths.select_field_by_row(name, row))
+        cls.click_on_element(xpaths.common_xpaths.option_field(option))
+
+    @classmethod
     def select_option_text(cls, name: str, option: str) -> None:
         """
         This method selects the given option text from the given select field.
@@ -680,8 +780,8 @@ class Common:
         Example:
             - Common.select_option_text('size-and-type-data', '20 GiB (HDD)')
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT']).click()
-        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{option}")]'), shared_config['SHORT_WAIT']).click()
+        cls.click_on_element(xpaths.common_xpaths.select_field(name))
+        cls.click_on_element(f'//mat-option[contains(.,"{option}")]')
 
     @classmethod
     def set_10_items_per_page(cls) -> None:
@@ -736,21 +836,49 @@ class Common:
         cls.set_checkbox_by_state(name, True)
 
     @classmethod
+    def set_checkbox_by_row(cls, name: str, row: int) -> None:
+        """
+        This method sets the given checkbox name by the given row
+        :param name: The name of the checkbox.
+        :param row: The row of the checkbox.
+
+        Example:
+            - Common.set_checkbox_by_row('enabled', 1)
+        """
+        cls.set_checkbox_by_row_and_state(name, row, True)
+
+    @classmethod
+    def set_checkbox_by_row_and_state(cls, name: str, row: int, state: bool) -> None:
+        """
+        This method sets the given checkbox name by the given row and state
+        :param name: The name of the checkbox.
+        :param row: The row of the checkbox.
+        :param state: The state to set the checkbox: True to set and False to unset
+
+        Example:
+            - Common.set_checkbox_by_row_and_state('enabled', 1, True)
+        """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_by_row(name, row)) is True
+        if cls.get_element_property(xpaths.common_xpaths.checkbox_field_by_row_attribute(name, row), 'checked') is not state:
+            WebUI.xpath(xpaths.common_xpaths.checkbox_field_by_row(name, row)).click()
+        assert cls.get_element_property(xpaths.common_xpaths.checkbox_field_by_row_attribute(name, row), 'checked') is state
+
+    @classmethod
     def set_checkbox_by_state(cls, name: str, state: bool) -> None:
         """
         This method sets the given checkbox to the given state and asserts is set correctly
 
-        :param name: name of the checkbox to set
-        :param state: state to set the checkbox to
+        :param name: The name of the checkbox to set
+        :param state: The state to set the checkbox: True to set and False to unset
 
         Example:
             - Common.set_checkbox_by_state('myCheckbox', False)
             - Common.set_checkbox_by_state('myCheckbox', True)
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name))
-        if bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')) is not state:
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name)) is True
+        if cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is not state:
             WebUI.xpath(xpaths.common_xpaths.checkbox_field(name)).click()
-        assert bool(WebUI.xpath(xpaths.common_xpaths.checkbox_field_attribute(name)).get_property('checked')) is state
+        assert cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is state
 
     @classmethod
     def set_input_field(cls, name: str, value: str, tab: bool = False, pill: bool = False) -> None:
@@ -806,7 +934,7 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.input_field('password')).send_keys(password)
         WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
         WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('log-in'))
-        WebUI.delay(2)
+        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('power-menu'))
 
     @classmethod
     def set_search_field(cls, text: str) -> None:
@@ -818,9 +946,13 @@ class Common:
         Example:
             - Common.set_search_field('search text')
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.search_field())
-        WebUI.xpath(xpaths.common_xpaths.search_field()).clear()
-        WebUI.xpath(xpaths.common_xpaths.search_field()).send_keys(text)
+        field = xpaths.common_xpaths.search_field()
+        # TODO: Get this fixed (create Ticket)
+        if cls.assert_page_header('Discover', shared_config['MEDIUM_WAIT']):
+            field = '//*[@data-test="input"]'
+        WebUI.wait_until_visible(field)
+        WebUI.xpath(field).clear()
+        WebUI.xpath(field).send_keys(text)
 
     @classmethod
     def set_textarea_field(cls, name: str, value: str, tab: bool = False) -> None:
@@ -886,6 +1018,18 @@ class Common:
         cls.set_checkbox_by_state(name, False)
 
     @classmethod
+    def unset_checkbox_by_row(cls, name: str, row: int) -> None:
+        """
+        This method unsets the given checkbox by the given row.
+        :param name: The name of the checkbox.
+        :param row: The row of the checkbox.
+
+        Example:
+            - Common.unset_checkbox_by_row('enabled', 1)
+        """
+        cls.set_checkbox_by_row_and_state(name, row, False)
+
+    @classmethod
     def unset_toggle(cls, name: str) -> None:
         """
         This method unsets the given toggle.
@@ -896,3 +1040,29 @@ class Common:
             - Common.unset_toggle('myToggle')
         """
         cls.set_toggle_by_state(name, False)
+
+    @classmethod
+    def verify_logged_in_user_correct(cls, user: str, password: str) -> None:
+        """
+        This method verifies the NAS is logged in as the given user and if not, logs in as the given user.
+
+        :param user: the username used to log in to TrueNAS.
+        :param password: the password of the user used to log in.
+
+        Example:
+            - Common.verify_logged_in_user_correct('username', 'password')
+        """
+        if cls.is_visible(xpaths.common_xpaths.button_field('power-menu')):
+            if not cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]')):
+                print("Wrong user. Logging off.")
+                cls.logoff_truenas()
+                print("Logging in as correct user.")
+                cls.set_login_form(user, password)
+                assert cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
+            else:
+                print("\nLogged in as correct user.")
+        else:
+            print("Not logged in. Logging in as correct user.")
+            cls.set_login_form(user, password)
+            assert cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
+

@@ -1,4 +1,14 @@
 
+def dataset_encryption_text(dataset_name: str) -> str:
+    """
+    This function returns the xpath text of the given dataset encryption text.
+
+    :param dataset_name: The name of the dataset.
+    :return: The xpath text of the given dataset encryption text.
+    """
+    return f'//ix-dataset-node[contains(.,"{dataset_name}")]//ix-dataset-encryption-cell/div/div'
+
+
 def dataset_permissions_item(name: str, permissions: str) -> str:
     """
     This function returns the xpath text of the given dataset permission item.

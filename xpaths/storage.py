@@ -29,14 +29,3 @@ def pool_name_header(pool_name: str) -> str:
     :return: the xpath text of the given pool name header.
     """
     return f'//*[contains(text(),"{pool_name}") and @class="pool-name"]'
-
-
-def pool_wizard_step_header_open(header: str) -> str:
-    """
-    This function returns the xpath text of the given pool name header.
-
-    :param header: the name of the header
-    :return: the xpath text of the given pool name header.
-    """
-    # tabindex="0" means the header is visible in the UI.
-    return f'//mat-step-header[@tabindex="0" and contains(.,"{header}")]'

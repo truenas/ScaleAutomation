@@ -5,7 +5,7 @@ from keywords.ssh.common import Common_SSH as SSH
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
 from keywords.webui.datasets import Datasets as DATASET
-from keywords.webui.services import Services as SERVICE
+from keywords.webui.system_services import System_Services as SERVICE
 from keywords.webui.smb import SMB
 
 

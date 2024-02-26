@@ -1,2 +1,0 @@
-username,password,source_IP,destination_IP,pool_name,replicate_dataset_name,receive_dataset_name
-ix_auto_tester,changeMeNow!,10.234.27.212,10.234.27.201,tank,replicate,receive

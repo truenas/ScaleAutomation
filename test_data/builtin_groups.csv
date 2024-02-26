@@ -1,4 +1,4 @@
-groupname,gid,Builtin,Allows sudo commands,Samba Authentication
+group-name,gid,Builtin,Allows sudo commands,Samba Authentication
 root,0,Yes,No,No
 wheel,0,Yes,No,No
 daemon,1,Yes,No,No
@@ -62,7 +62,6 @@ Debian-exim,120,Yes,No,No
 tftp,121,Yes,No,No
 tcpdump,123,Yes,No,No
 rdma,124,Yes,No,No
-gluster,125,Yes,No,No
 nut,126,Yes,No,No
 ladvd,127,Yes,No,No
 libvirt,128,Yes,No,No

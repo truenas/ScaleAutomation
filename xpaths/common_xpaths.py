@@ -1,3 +1,7 @@
+"""This module contains common xpath strings"""
+
+overlay_container = '//*[@class="cdk-overlay-container"]'
+"""This variable returns the overlay container xpath text and is used to close the select option dropdown"""
 progress_bar = '//mat-progress-bar'
 """This variable returns the default progress bar xpath text"""
 progress_spinner = '//mat-spinner'
@@ -131,6 +135,19 @@ def button_share_actions_menu(sharetype: str) -> str:
     """
     return f'//ix-{sharetype}-card//ix-service-extra-actions//button'
 
+
+def card_label_and_value(card_tile: str, label: str, value: str) -> str:
+    """
+    This function sets the text for the given card label and value.
+
+    :param card_tile: text of the given card tile.
+    :param label: text of the given label.
+    :param value: text of the given value.
+    :return: the xpath text of the given card label and value.
+    """
+    return f'//mat-card[contains(text(),"{card_tile}")]//*[contains(.,"{label}") and contains(text(),"{value}")]'
+
+
 def card_title(text: str) -> str:
     """
     The function returns the xpath text of the given card title.
@@ -159,6 +176,28 @@ def checkbox_field_attribute(field: str) -> str:
     :return: xpath string for given checkbox attribute
     """
     return f'//*[@data-test="checkbox-{field}"]//input'
+
+
+def checkbox_field_by_row(field: str, row: int) -> str:
+    """
+    This function sets the text for the given checkbox name
+
+    :param field: text of the given checkbox name
+    :param row: row number of the given checkbox
+    :return: xpath string for given checkbox
+    """
+    return f'(//*[@data-test="checkbox-{field}"])[{row}]'
+
+
+def checkbox_field_by_row_attribute(field: str, row: int) -> str:
+    """
+    This function sets the text for the given checkbox attribute name
+
+    :param field: text of the given checkbox attribute name
+    :param row: row number of the given checkbox
+    :return: xpath string for given checkbox attribute
+    """
+    return f'(//*[@data-test="checkbox-{field}"])[{row}]//input'
 
 
 def close_right_panel() -> str:
@@ -261,13 +300,23 @@ def radio_button_field(field: str) -> str:
     return f'//*[@data-test="radio-button-{field}"]'
 
 
+def radio_button_field_attribute(field: str) -> str:
+    """
+    This function sets the text for the given checkbox attribute name
+
+    :param field: text of the given checkbox attribute name
+    :return: xpath string for given checkbox attribute
+    """
+    return f'//*[@data-test="radio-button-{field}"]//input'
+
+
 def search_field() -> str:
     """
     This function sets the text for the search field
 
     :return: xpath string for given select
     """
-    return '//*[@data-test="input"]'
+    return '//*[@data-test="input-search"]'
 
 
 def select_field(field: str) -> str:
@@ -278,6 +327,17 @@ def select_field(field: str) -> str:
     :return: xpath string for given select
     """
     return f'//*[@data-test="select-{field}"]'
+
+
+def select_field_by_row(field: str, row: int) -> str:
+    """
+    This function sets the text for the given select name
+
+    :param field: text of the given select name
+    :param row: row number of the given select
+    :return: xpath string for given select
+    """
+    return f'(//*[@data-test="select-{field}"])[{row}]'
 
 
 def selected_dataset(name: str) -> str:
@@ -339,6 +399,17 @@ def share_enabled_slider(sharetype: str, name: str) -> str:
     :return: xpath string for given share name
     """
     return f'//ix-{sharetype}-card//*[contains(text(),"{name}")]/ancestor::tr/descendant::mat-slide-toggle//button'
+
+
+def step_header_is_open(header: str) -> str:
+    """
+    This function sets the text for the given step header
+
+    :param header: The name of the header of the step.
+    :return: The xpath string for the given step header.
+    """
+    # tabindex="0" means the step is open in the UI.
+    return f'//mat-step-header[@tabindex="0" and contains(.,"{header}")]'
 
 
 def textarea_field(field: str) -> str:

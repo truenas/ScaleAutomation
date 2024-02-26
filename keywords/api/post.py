@@ -43,6 +43,30 @@ class API_POST:
         return response
 
     @classmethod
+    def create_encrypted_dataset(cls, dataset: str) -> Response:
+        """
+        This method creates an encrypted dataset.
+
+        :param dataset: The dataset pool and name.
+        :return: The API response.
+
+        Example:
+            - API_POST.create_encrypted_dataset('tank/test-dataset')
+        """
+        payload = {
+            "name": dataset,
+            "encryption_options": {
+                "generate_key": False,
+                "pbkdf2iters": 555000,
+                "algorithm": "AES-256-GCM",
+                "passphrase": "encryption"
+            },
+            "inherit_encryption": False,
+            "encryption": True
+        }
+        return POST('/pool/dataset/', payload)
+
+    @classmethod
     def create_group(cls, group_name: str, smb_access: bool = False) -> Response:
         """
         This method creates the given group by API call
@@ -60,6 +84,29 @@ class API_POST:
             response = POST('/group', payload)
             assert response.status_code == 200, response.text
         return response
+
+    @classmethod
+    def create_inherit_encrypted_dataset(cls, dataset: str) -> Response:
+        """
+        This method creates a dataset that inherit encrypted for the parent dataset.
+        :param dataset: The dataset pool and name.
+        :return: The API response.
+
+        Example:
+            - API_POST.create_inherit_encrypted_dataset('tank/parent-dataset/child-dataset')
+        """
+        payload = {
+            "name": dataset,
+            "encryption_options": {
+                "generate_key": False,
+                "pbkdf2iters": 555000,
+                "algorithm": "AES-256-GCM",
+                "passphrase": "encryption"
+            },
+            "inherit_encryption": True,
+            "encryption": False
+        }
+        return POST('/pool/dataset/', payload)
 
     @classmethod
     def create_non_admin_user(cls, name: str, fullname: str, password: str, smb_auth: str = 'False') -> Response:
@@ -161,6 +208,22 @@ class API_POST:
         :return: True if the service is running, otherwise False.
         """
         return POST('/service/started/', service).json()
+
+    @classmethod
+    def leave_active_directory(cls, username: str, password: str) -> dict:
+        """
+        This method leave the active directory.
+        :param username: The username of the active directory user.
+        :param password: the password of the active directory user.
+        :return: the API request response dictionary.
+
+        Example:
+            - API_POST.leave_active_directory('admin', 'password')
+        """
+        result = POST('/activedirectory/leave', {'username': username, 'password': password})
+        assert result.status_code == 200, result.text
+        job_status = API_Common.wait_on_job(result.json(), shared_config['LONG_WAIT'])
+        return job_status['results']
 
     @classmethod
     def restart_replication_service(cls, service: str) -> Response:

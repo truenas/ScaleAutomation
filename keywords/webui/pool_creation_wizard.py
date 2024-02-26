@@ -69,19 +69,6 @@ class Pool_Creation_Wizard:
         return Common.assert_label_and_value_exist('Pool Name', value)
 
     @classmethod
-    def assert_step_header_is_open(cls, step_header: str):
-        """
-        This method returns True or False if the given step header is open and visible.
-
-        :param step_header: The name of the step header.
-        :return: True if the given step header is open and visible otherwise it returns False.
-
-        Example:
-            - Pool_Creation_Wizard.assert_step_header_is_open('data')
-        """
-        return WebUI.wait_until_visible(xpaths.storage.pool_wizard_step_header_open(step_header), shared_config['SHORT_WAIT'])
-
-    @classmethod
     def click_back_button(cls, step: str):
         """
         This method click on the Back button of the given step.
@@ -167,7 +154,6 @@ class Pool_Creation_Wizard:
         """
         Common.click_button('save-selection')
 
-
     @classmethod
     def click_add_vdevs_button(cls):
         """
@@ -202,8 +188,6 @@ class Pool_Creation_Wizard:
         Example:
             - Pool_Creation_Wizard.select_disk_size_option('data', '20-gi-b-hdd')
         """
-        # TODO: Replace select_option_text with select_option when https://ixsystems.atlassian.net/browse/NAS-126826 is fixed.
-        # Common.select_option(f'size-and-type-{step}', f'size-and-type-{option}')
         Common.select_option_text(f'size-and-type-{step}', option)
 
     @classmethod
@@ -212,15 +196,24 @@ class Pool_Creation_Wizard:
         This method selects the given layout option from the given step.
 
         :param step: The name of the step. Available options are: data, log, metadata or dedup.
-        :param option: The name of the layout. Available options are: stripe, mirror, raidz-1' raidz-2, raidz-3,
-         d-raid-1, d-raid-2 and d-raid-3.
+        :param option: The name of the layout. Available options are: Stripe, Mirror, RAIDZ1' RAIDZ2, RAIDZ3,
+         dRAID1, dRAID2 and dRAID3.
 
         Example:
             - Pool_Creation_Wizard.select_layout_option('data', 'raidz-1')
         """
-        # TODO: Replace select_option_text with select_option when https://ixsystems.atlassian.net/browse/NAS-126826 is fixed.
-        # Common.select_option(f'size-and-type-{step}', f'layout-{option}')
-        Common.select_option_text(f'layout-{step}', option)
+        match step.lower():
+            case 'data':
+                row = 1
+            case 'log':
+                row = 2
+            case 'metadata':
+                row = 3
+            case 'dedup':
+                row = 4
+            case _:
+                row = None
+        Common.select_option_by_row(f'layout', row, f'layout-{option}')
 
     @classmethod
     def select_number_of_vdevs_option(cls, step: str, option: int):
@@ -233,8 +226,6 @@ class Pool_Creation_Wizard:
         Example:
             - Pool_Creation_Wizard.select_number_of_vdevs_option('data', 2)
         """
-        # TODO: Replace select_option_text with select_option when https://ixsystems.atlassian.net/browse/NAS-126826 is fixed.
-        # Common.select_option(f'vdevs-number-{step}', f'vdevs-number-{option})
         Common.select_option_text(f'vdevs-number-{step}', str(option))
 
     @classmethod
@@ -248,8 +239,6 @@ class Pool_Creation_Wizard:
         Example:
             - Pool_Creation_Wizard.select_width_option('data', 2)
         """
-        # TODO: Replace select_option_text with select_option when https://ixsystems.atlassian.net/browse/NAS-126826 is fixed.
-        # Common.select_option(f'width-{step}', f'width-{option})
         Common.select_option_text(f'width-{step}', str(option))
 
     @classmethod
@@ -263,7 +252,7 @@ class Pool_Creation_Wizard:
         Common.set_checkbox('encryption')
 
     @classmethod
-    def	set_name_entry(cls, pool_name: str):
+    def set_name_entry(cls, pool_name: str):
         """
         This method sets the pool name entry.
 
@@ -275,7 +264,7 @@ class Pool_Creation_Wizard:
         Common.set_input_field('name', pool_name)
 
     @classmethod
-    def	set_search_entry(cls, search):
+    def set_search_entry(cls, search):
         """
         This method sets the search entry.
 

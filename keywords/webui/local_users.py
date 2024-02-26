@@ -604,6 +604,20 @@ class Local_Users:
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
 
     @classmethod
+    def is_user_not_visible(cls, username: str) -> bool:
+        """
+        This method returns True if the given user is not displayed, otherwise False
+
+        :param username: is the name of the user.
+        :return: returns True if the given user is not displayed, otherwise False.
+
+        Example
+         - Local_Users.is_user_not_visible('username')
+        """
+        name = COM.convert_to_tag_format(username)
+        return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
+
+    @classmethod
     def refresh_local_user_page(cls, count: str = 50) -> None:
         """
         This method refreshes the local users page

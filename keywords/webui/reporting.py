@@ -1,3 +1,4 @@
+from helper.webui import WebUI
 from keywords.webui.common import Common
 
 
@@ -63,6 +64,9 @@ class Reporting:
 
         :return: True if the disk card is visible, otherwise it returns False.
         """
+        # TODO: This will fail sporadically due to the dynamic/lazy loading of the reporting page.
+        #   NAS-127431 has been created for the non-alphabetical portion of the failure but we should
+        #   come up with a better solution anyways to actually verify the disks on the system are present.
         return Common.is_card_visible(f'Disk I/O {name}')
 
     @classmethod

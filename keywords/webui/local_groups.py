@@ -12,14 +12,12 @@ class Local_Groups:
     @classmethod
     def add_group_allowed_sudo_command(cls, command: str) -> None:
         COM.set_input_field('sudo-commands', command, True, True)
-        assert COM.is_visible(xpaths.common_xpaths.any_xpath(
-            f'//*[@formcontrolname="sudo_commands"]/descendant::*[contains(text(),"{command}")]'))
+        assert COM.is_visible(xpaths.common_xpaths.any_pill("sudo-commands", command))
 
     @classmethod
     def add_group_allowed_sudo_command_no_password(cls, command: str) -> None:
         COM.set_input_field('sudo-commands-nopasswd', command, True, True)
-        assert COM.is_visible(xpaths.common_xpaths.any_xpath(
-            f'//*[@formcontrolname="sudo_commands_nopasswd"]/descendant::*[contains(text(),"{command}")]'))
+        assert COM.is_visible(xpaths.common_xpaths.any_pill("sudo-commands-nopasswd", command))
 
     @classmethod
     def assert_gid_field_is_disabled(cls) -> bool:
@@ -256,6 +254,58 @@ class Local_Groups:
         API_POST.create_group(group_name, smb_access)
 
     @classmethod
+    def delete_all_group_allowed_sudo_commands(cls):
+        """
+        This method deletes all sudo command commands.
+
+        Example
+         - Local_Groups.delete_all_group_allowed_sudo_commands()
+        """
+        while COM.is_visible(xpaths.common_xpaths.any_pill_delete("sudo-commands", '/')):
+            command = COM.get_element_property(xpaths.common_xpaths.any_pill("sudo-commands", '/'), 'innerText')
+            cls.delete_group_allowed_sudo_command(command)
+
+    @classmethod
+    def delete_all_group_allowed_sudo_commands_no_password(cls):
+        """
+        This method deletes all sudo command no password commands.
+
+        Example
+         - Local_Groups.delete_all_group_allowed_sudo_commands_no_password()
+        """
+        while COM.is_visible(xpaths.common_xpaths.any_pill_delete("sudo-commands-nopasswd", '/')):
+            command = COM.get_element_property(xpaths.common_xpaths.any_pill("sudo-commands-nopasswd", '/'), 'innerText')
+            cls.delete_group_allowed_sudo_command_no_password(command)
+
+    @classmethod
+    def delete_group_allowed_sudo_command(cls, command: str) -> None:
+        """
+        This method deletes the given group allow sudo command command
+
+        :param command: The command of the pill to delete.
+
+        Example
+         - Local_Users.delete_group_allowed_sudo_command('/usr/sbin/zfs')
+        """
+        if COM.is_visible(xpaths.common_xpaths.any_pill_delete('sudo-commands', command)):
+            WebUI.xpath(xpaths.common_xpaths.any_pill_delete('sudo-commands', command)).click()
+        assert not COM.is_visible(xpaths.common_xpaths.any_pill('sudo-commands', command))
+
+    @classmethod
+    def delete_group_allowed_sudo_command_no_password(cls, command: str) -> None:
+        """
+        This method deletes the given group allow sudo command no password command
+
+        :param command: The command of the pill to delete.
+
+        Example
+         - Local_Users.delete_group_allowed_sudo_command_no_password('/usr/sbin/zfs')
+        """
+        if COM.is_visible(xpaths.common_xpaths.any_pill_delete('sudo-commands-nopasswd', command)):
+            WebUI.xpath(xpaths.common_xpaths.any_pill_delete('sudo-commands-nopasswd', command)).click()
+        assert not COM.is_visible(xpaths.common_xpaths.any_pill('sudo-commands-nopasswd', command))
+
+    @classmethod
     def delete_group_by_api(cls, name: str, privilege: str = None) -> None:
         """
         This method deletes the given group by API call
@@ -268,6 +318,25 @@ class Local_Groups:
          - Local_Users.delete_group_by_api('group name', 'Read-Only Administrator')
         """
         API_DELETE.delete_group(name, privilege)
+
+    @classmethod
+    def delete_group_by_name(cls, group_name: str, state: bool = False) -> None:
+        """
+        This method deletes the given group
+
+        :param group_name: is the name of the group to be deleted
+        :param state: whether to delete primary group as well [True/False]
+
+        Example
+         - Local_Groups.delete_group_by_name('Group Name')
+         - Local_Groups.delete_group_by_name('Group Name', True)
+        """
+        cls.expand_group_by_name(group_name)
+        cls.click_group_delete_button_by_name(COM.convert_to_tag_format(group_name))
+        if state:
+            COM.set_checkbox('delete-primary-group')
+        COM.click_button('delete')
+        COM.assert_page_header('delete group', shared_config['SHORT_WAIT'])
 
     @classmethod
     def expand_group_by_name(cls, group_name: str) -> None:
@@ -283,6 +352,92 @@ class Local_Groups:
         WebUI.xpath(xpaths.common_xpaths.any_data_test(f'row-{group_name}')).click()
 
     @classmethod
+    def get_group_list_allow_sudo_commands(cls, group) -> str:
+        """
+        This method returns the group allow sudo commands from the given group
+
+        :param group: is the name of the group
+        :return: returns the group allow sudo commands from the given group
+
+        Example
+         - Local_Groups.get_group_list_builtin('group name')
+        """
+        return cls.get_group_list_attribute(group, 4)
+
+    @classmethod
+    def get_group_list_attribute(cls, group: str, col: int) -> str:
+        """
+        This method returns the group list attribute from the given group and col
+
+        :param group: is the name of the group
+        :param col: is the column of the group list
+        :return: returns the group list attribute from the given group and col
+
+        Example
+         - Local_Groups.get_group_list_attribute('group name', 3)
+        """
+        # TODO: Fix/Remove this if '_ssh' group is removed or changed
+        index = 1
+        if group == "_ssh":
+            index = 2
+        group = COM.convert_to_tag_format(group)
+        return COM.get_element_property(
+            xpaths.common_xpaths.any_xpath(f'(//*[@data-test="row-{group}"][{index}]//td)[{col}]'),
+            'textContent').strip()
+
+    @classmethod
+    def get_group_list_builtin(cls, group) -> str:
+        """
+        This method returns the group builtin from the given group
+
+        :param group: is the name of the group
+        :return: returns the group builtin from the given group
+
+        Example
+         - Local_Groups.get_group_list_builtin('group name')
+        """
+        return cls.get_group_list_attribute(group, 3)
+
+    @classmethod
+    def get_group_list_gid(cls, group) -> str:
+        """
+        This method returns the group gid from the given group
+
+        :param group: is the name of the group
+        :return: returns the group gid from the given group
+
+        Example
+         - Local_Groups.get_group_list_gid('group name')
+        """
+        return cls.get_group_list_attribute(group, 2)
+
+    @classmethod
+    def get_group_list_roles(cls, group) -> str:
+        """
+        This method returns the group roles from the given group
+
+        :param group: is the name of the group
+        :return: returns the group roles from the given group
+
+        Example
+         - Local_Groups.get_group_list_roles('group name')
+        """
+        return cls.get_group_list_attribute(group, 6)
+
+    @classmethod
+    def get_group_list_samba_auth(cls, group) -> str:
+        """
+        This method returns the group samba authentication from the given group
+
+        :param group: is the name of the group
+        :return: returns the group samba authentication from the given group
+
+        Example
+         - Local_Groups.get_group_list_samba_auth('group name')
+        """
+        return cls.get_group_list_attribute(group, 5)
+
+    @classmethod
     def is_group_visible(cls, group_name: str) -> bool:
         """
         This method returns True if the given group displays, otherwise False
@@ -293,9 +448,10 @@ class Local_Groups:
         Example
          - Local_Groups.is_group_visible('group-name')
         """
-        NAV.navigate_to_dashboard()
-        NAV.navigate_to_local_groups()
         name = COM.convert_to_tag_format(group_name)
+        if not COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]')):
+            NAV.navigate_to_dashboard()
+            NAV.navigate_to_local_groups()
         if not COM.assert_page_header('Groups'):
             NAV.navigate_to_local_groups()
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
@@ -460,6 +616,16 @@ class Local_Groups:
         COM.unset_checkbox('sudo-commands-nopasswd-all')
 
     @classmethod
+    def unset_samba_authentication(cls) -> None:
+        """
+        This method unsets the samba authentication checkbox
+
+        Example
+         - Local_Groups.unset_samba_authentication()
+        """
+        COM.unset_checkbox('smb')
+
+    @classmethod
     def unset_show_builtin_groups_toggle(cls) -> None:
         """
         This method unsets the show built-in groups toggle
@@ -468,3 +634,17 @@ class Local_Groups:
          - Local_Groups.unset_show_builtin_groups_toggle()
         """
         COM.unset_toggle('show-built-in-groups')
+
+    @classmethod
+    # TODO: remove this when https://ixsystems.atlassian.net/browse/NAS-127356 is fixed and update all usages to select_option.
+    def select_group_items_per_page(cls, option: str) -> None:
+        """
+        This method selects the given option text from the given select field.
+
+        :param option: The name of the option to select. [10/20/50/100]
+
+        Example:
+            - Local_Groups.select_group_items_per_page('20')
+        """
+        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath('//mat-select'), shared_config['SHORT_WAIT']).click()
+        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{option}")]'), shared_config['SHORT_WAIT']).click()
