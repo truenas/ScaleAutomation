@@ -347,7 +347,29 @@ class Common:
         return cls.assert_progress_bar_not_visible()
 
     @classmethod
-    def close_right_panel(cls) -> None:
+    def click_update_button(cls) -> None:
+        """
+        This method clicks the update button
+
+        Example:
+            - Common.click_update_button()
+        """
+        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('update'), shared_config['MEDIUM_WAIT']).click()
+        WebUI.delay(2)
+
+    @classmethod
+    def click_update_button_and_wait_for_progress_bar(cls) -> bool:
+        """
+        This method clicks the update button and waits for the progress bar to disappear
+
+        Example:
+            - Common.click_update_button_and_wait_for_progress_bar()
+        """
+        cls.click_update_button()
+        return cls.assert_progress_bar_not_visible()
+
+    @classmethod
+    def close_right_panel(cls):
         """
         This method clicks the close right panel button
 
@@ -355,6 +377,7 @@ class Common:
             - Common.close_right_panel()
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.close_right_panel(), shared_config['MEDIUM_WAIT']).click()
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.close_right_panel())
 
     @classmethod
     def convert_to_tag_format(cls, name: str) -> str:
@@ -896,6 +919,7 @@ class Common:
             - Common.set_input_field('myInput', 'text', '', True)
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
+        WebUI.wait_until_clickable(xpaths.common_xpaths.input_field(name))
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).clear()
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(value)
         if tab:

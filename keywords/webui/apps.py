@@ -223,7 +223,7 @@ class Apps:
         if WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['SHORT_WAIT']) is False:
             COM.assert_confirm_dialog()
         COM.click_button(COM.convert_to_tag_format(name) + '-install')
-        if WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['SHORT_WAIT']) is False:
+        if WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['MEDIUM_WAIT']) is False:
             COM.assert_confirm_dialog()
         WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['LONG_WAIT'])
 

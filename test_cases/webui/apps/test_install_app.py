@@ -12,7 +12,6 @@ from keywords.webui.navigation import Navigation as NAV
 
 @pytest.mark.parametrize('app_data', get_data_list('apps'), scope='class')
 class Test_Install_App:
-
     @staticmethod
     def set_app_ready_for_install(app_data):
         """
