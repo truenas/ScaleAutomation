@@ -332,7 +332,7 @@ class Common:
         Example:
             - Common.click_save_button()
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT']).click()
+        cls.click_button('save')
         WebUI.delay(2)
 
     @classmethod
@@ -344,28 +344,6 @@ class Common:
             - Common.click_save_button_and_wait_for_progress_bar_to_disappear()
         """
         cls.click_save_button()
-        return cls.assert_progress_bar_not_visible()
-
-    @classmethod
-    def click_update_button(cls) -> None:
-        """
-        This method clicks the update button
-
-        Example:
-            - Common.click_update_button()
-        """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('update'), shared_config['MEDIUM_WAIT']).click()
-        WebUI.delay(2)
-
-    @classmethod
-    def click_update_button_and_wait_for_progress_bar(cls) -> bool:
-        """
-        This method clicks the update button and waits for the progress bar to disappear
-
-        Example:
-            - Common.click_update_button_and_wait_for_progress_bar()
-        """
-        cls.click_update_button()
         return cls.assert_progress_bar_not_visible()
 
     @classmethod
