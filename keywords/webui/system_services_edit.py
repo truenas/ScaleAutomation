@@ -17,15 +17,15 @@ ssh_fields = ['General Options', 'tcpport', 'password-login-groups', 'passwordau
 ups_fields = ['General Options', 'identifier', 'mode', 'driver', 'port', 'Shutdown', 'shutdown', 'shutdowntimer', 'shutdowncmd', 'powerdown', 'Other Options', 'nocommwarntime', 'hostsync', 'description', 'options', 'optionsupsd', 'Monitor', 'monuser', 'monpwd', 'extrausers', 'rmonitor']
 
 
-class system_service_edit:
+class System_Services_Edit:
     @classmethod
-    def click_Service_Name_Edit_button(cls, servicename: str):
+    def click_edit_button_by_servicename(cls, servicename: str):
         name = SERV.return_backend_service_name(servicename)
         COM.click_button(f'{name}-edit')
         WebUI.wait_until_visible(xpaths.common_xpaths.any_header(servicename, 3))
 
     @classmethod
-    def is_edit_service_ui_tabs(cls, servicename: str) -> bool:
+    def verify_edit_button_visible_by_servicename(cls, servicename: str):
         name = SERV.return_backend_service_name(servicename)
-        return COM.is_visible(xpaths.common_xpaths.button_field(f'{name}-edit'))
+        assert COM.is_visible(xpaths.common_xpaths.button_field(f'{name}-edit'))
 
