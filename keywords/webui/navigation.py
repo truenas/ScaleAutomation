@@ -57,6 +57,16 @@ class Navigation:
         cls.navigate_to('credentials', 'Backup Credentials', 'backup-credentials')
 
     @classmethod
+    def navigate_to_certificates(cls) -> None:
+        """
+        This method navigates to the Shares page
+
+        Example
+         - Navigation.navigate_to_certificates()
+        """
+        cls.navigate_to('credentials', 'Certificates', 'certificates')
+
+    @classmethod
     def navigate_to_dashboard(cls) -> None:
         """
         This method navigates to the Dashboard page
