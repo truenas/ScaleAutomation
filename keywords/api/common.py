@@ -4,28 +4,6 @@ from helper.api import GET
 
 class API_Common:
     @classmethod
-    def get_user_id(cls, username: str) -> int:
-        """
-        This method return the ID of the specified username.
-
-        :param username: is the username of the user to get the ID from.
-        :return: the ID of the specified username.
-        """
-        return cls.get_id_by_type("user?user", username)
-
-    @classmethod
-    def get_user_uid(cls, username: str) -> int:
-        """
-        This method return the ID of the specified username.
-
-        :param username: is the username of the user to get the ID from.
-        :return: the ID of the specified username.
-        """
-        user_results = GET(f"/user?username={username}")
-        assert user_results.status_code == 200, user_results.text
-        return user_results.json()[0]['uid']
-
-    @classmethod
     def get_id_by_type(cls, path: str, name: str) -> int:
         """
         This method search name of specified path and return the ID.
@@ -72,6 +50,38 @@ class API_Common:
         user_results = GET(f"/privilege?name={privilege}")
         assert user_results.status_code == 200, user_results.text
         return user_results.json()[0]['local_groups'][0]['gid']
+
+    @classmethod
+    def get_ssh_id(cls, ssh: str) -> int:
+        """
+        This method return the ID of the specified ssh connection.
+
+        :param ssh: is the name of the ssh connection to get the ID from.
+        :return: the ID of the specified ssh connection.
+        """
+        return cls.get_id_by_type("keychaincredential?", ssh)
+
+    @classmethod
+    def get_user_id(cls, username: str) -> int:
+        """
+        This method return the ID of the specified username.
+
+        :param username: is the username of the user to get the ID from.
+        :return: the ID of the specified username.
+        """
+        return cls.get_id_by_type("user?user", username)
+
+    @classmethod
+    def get_user_uid(cls, username: str) -> int:
+        """
+        This method return the ID of the specified username.
+
+        :param username: is the username of the user to get the ID from.
+        :return: the ID of the specified username.
+        """
+        user_results = GET(f"/user?username={username}")
+        assert user_results.status_code == 200, user_results.text
+        return user_results.json()[0]['uid']
 
     @classmethod
     def wait_on_job(cls, job_id: int, max_timeout: int) -> dict:

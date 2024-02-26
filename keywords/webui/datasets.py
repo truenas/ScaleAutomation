@@ -725,6 +725,7 @@ class Datasets:
         if WebUI.wait_until_visible(xpaths.common_xpaths.any_text(dataset), shared_config['SHORT_WAIT']):
             cls.click_dataset_location(dataset)
             Common.click_button('delete-dataset')
+            Common.assert_progress_spinner_not_visible()
             Common.assert_dialog_visible(f'Delete dataset {pool}/{dataset}')
             Common.set_input_field('confirm-dataset-name', f'{pool}/{dataset}')
             Common.set_checkbox('confirm')
@@ -773,7 +774,7 @@ class Datasets:
             value = "expand_more"
 
         if Common.is_visible(xpaths.common_xpaths.button_field(name)):
-            if WebUI.xpath(xpaths.common_xpaths.button_field(name)).get_property("innerText") == value:
+            if Common.get_element_property(xpaths.common_xpaths.button_field(name), 'innerText') == value:
                 WebUI.xpath(xpaths.common_xpaths.button_field(name)).click()
 
     @classmethod
@@ -1118,6 +1119,7 @@ class Datasets:
         xpath = '//*[@data-test="button-cancel"]/following-sibling::button'
         Common.click_on_element(xpaths.common_xpaths.any_xpath(xpath))
         Common.assert_progress_bar_not_visible()
+        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text("Locking Dataset"))
 
     @classmethod
     def select_dataset(cls, dataset_name: str) -> None:

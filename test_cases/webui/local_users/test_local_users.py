@@ -1,10 +1,8 @@
 import allure
 import pytest
 
-import xpaths
 from helper.data_config import get_data_list
 from helper.global_config import private_config
-from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
@@ -13,11 +11,10 @@ from keywords.webui.navigation import Navigation as NAV
 
 
 @allure.tag("Local Users")
-@allure.epic("Test")
+@allure.epic("Credentials")
 @allure.feature("Local Users")
 @pytest.mark.parametrize('users', get_data_list('local_users'), scope='class')
 class Test_Local_Users:
-
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self, users) -> None:
         """
@@ -26,6 +23,7 @@ class Test_Local_Users:
         API_DELETE.delete_user(users['username'])
         API_DELETE.delete_user(users['username'] + '-edt')
         API_POST.create_non_admin_user(users['username'], users['fullname'], users['password'], 'False')
+        COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_local_users()
         LU.unset_show_builtin_users_toggle()
 
@@ -38,6 +36,7 @@ class Test_Local_Users:
         # Clean up environment.
         API_DELETE.delete_user(users['username'])
         API_DELETE.delete_user(users['username'] + '-edt')
+        COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
     @allure.tag("Create")
@@ -56,7 +55,7 @@ class Test_Local_Users:
         LU.set_user_password_confirm(users['password'])
         LU.set_user_email(users['email'])
 
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
         LU.unset_show_builtin_users_toggle()
         LU.refresh_local_user_page('100')
 
@@ -72,10 +71,9 @@ class Test_Local_Users:
         COM.set_100_items_per_page()
         LU.set_show_builtin_users_toggle()
         COM.set_search_field(builtin_users['username'])
-
-        assert LU.is_user_visible(builtin_users['username']) is True
+        assert LU.is_user_visible(builtin_users['username'])
         assert LU.get_users_list_uid(builtin_users['username']) == builtin_users['uid']
-        assert LU.get_users_list_builtin(builtin_users['username']) is True
+        assert LU.get_users_list_builtin(builtin_users['username'])
         assert LU.get_users_list_full_name(builtin_users['username']) == builtin_users['full-name']
 
     @allure.tag("Delete")
@@ -125,8 +123,7 @@ class Test_Local_Users:
 
         LU.set_user_password(users['password'])
         LU.set_user_password_confirm(users['password'])
-        COM.click_save_button()
-
+        COM.click_save_button_and_wait_for_progress_bar()
         LU.expand_user_by_full_name(users['fullname'])
         LU.click_user_edit_button()
 
@@ -140,8 +137,7 @@ class Test_Local_Users:
 
         LU.set_user_allow_all_sudo_commands_checkbox()
         LU.set_user_allow_all_sudo_commands_no_password_checkbox()
-        COM.click_save_button()
-
+        COM.click_save_button_and_wait_for_progress_bar()
         LU.expand_user_by_full_name(users['fullname'])
         LU.click_user_edit_button()
 
@@ -194,7 +190,7 @@ class Test_Local_Users:
 
         LU.set_user_home_directory_permission_user_read_checkbox()
 
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
 
         LU.expand_user_by_full_name(users['fullname'])
         LU.click_user_edit_button()
@@ -233,7 +229,7 @@ class Test_Local_Users:
         LU.set_user_password(users['password'] + '-edt')
         LU.set_user_password_confirm(users['password'] + '-edt')
         LU.set_user_email(users['email'] + '-edt')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
 
         LU.expand_user_by_full_name(users['fullname'] + '-edt')
         LU.click_user_edit_button()
@@ -260,7 +256,7 @@ class Test_Local_Users:
 
         LU.add_user_auxiliary_group(users['aux-group'])
         LU.set_user_primary_group(users['primary-group'])
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
 
         LU.expand_user_by_full_name(users['fullname'])
         LU.click_user_edit_button()
@@ -281,7 +277,8 @@ class Test_Local_Users:
         LU.expand_user_by_full_name(users['fullname'])
         LU.click_user_edit_button()
         LU.add_user_auxiliary_group(users['aux-group'])
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
+        NAV.navigate_to_dashboard()
         COM.logoff_truenas()
         COM.set_login_form(users['username'], users['password'])
         NAV.navigate_to_local_users()
@@ -289,4 +286,4 @@ class Test_Local_Users:
 
         # Log in with default user
         COM.logoff_truenas()
-        COM.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
+        COM.set_login_form(private_config['USERNAME'], private_config['PASSWORD'])
