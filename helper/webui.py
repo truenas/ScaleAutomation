@@ -354,7 +354,7 @@ class WebUI(object):
         try:
             obj = WebUI.xpath(xpath)
         except NoSuchElementException:
-            print("NoSuchElementException occurred trying to find object: " + xpath)
+            print("With initial check NoSuchElementException occurred trying to find object: " + xpath)
             if obj is None:
                 try:
                     return wait.until(EC.visibility_of_element_located((By.XPATH, xpath))).is_displayed()
