@@ -1,4 +1,6 @@
 import xpaths
+from helper.cli import SSH_Command_Line
+from helper.global_config import private_config
 from helper.webui import WebUI
 from selenium.webdriver.common.keys import Keys
 from keywords.webui.common import Common as COM
@@ -105,6 +107,13 @@ class NFS:
         COM.click_button('remove-from-list')
 
     @classmethod
+    def create_non_admin_user_on_share_client(cls):
+        """
+        This method creates a non-admin user on the remote client for NFS use.
+        """
+
+
+    @classmethod
     def set_host_and_ip(cls, text: str):
         """
         This method sets the Authorized Hosts and IP addresses field on the Hosts section of the NFS share edit panel.
@@ -192,6 +201,17 @@ class NFS:
         COM.select_option('security', f'security-{securitytype}')
 
     @classmethod
+    def unmount_nfs_share(cls, path: str):
+        ip = private_config['NFS_CLIENT_IP']
+        username = private_config['NFS_CLIENT_USERNAME']
+        password = private_config['NFS_CLIENT_PASSWORD']
+        command = f'sudo umount {path}'
+        response = SSH_Command_Line(command, ip, username, password)
+        print(f'RESPONSE: {response.status}')
+        print(f'SUCCESS RESPONSE: {response.stdout}')
+        print(f'ERROR RESPONSE: {response.stderr}')
+
+    @classmethod
     def unset_mapall_group(cls):
         """
         This method unsets the Mapall Group field on the NFS share edit panel.
@@ -218,4 +238,17 @@ class NFS:
         This method unsets the Maproot User field on the NFS share edit panel.
         """
         COM.clear_input_field('maproot-user', True)
+
+    @classmethod
+    def verify_nfs_share_mounted(cls, path: str) -> bool:
+        ip = private_config['NFS_ACL_IP']
+        username = private_config['NFS_PASSWORD']
+        password = private_config['NFS_USERNAME']
+        command = f'mount {path}'
+        response = SSH_Command_Line(command, ip, username, password)
+        print(f'RESPONSE: {response.status}')
+        print(f'SUCCESS RESPONSE: {response.stdout}')
+        print(f'ERROR RESPONSE: {response.stderr}')
+        return response.stdout.contains(path)
+
 
