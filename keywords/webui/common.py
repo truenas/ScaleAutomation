@@ -773,8 +773,10 @@ class Common:
         Example:
             - Common.select_option('mySelect', 'myOption')
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT']).click()
-        WebUI.wait_until_clickable(xpaths.common_xpaths.option_field(option), shared_config['SHORT_WAIT']).click()
+        WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT'])
+        cls.click_on_element(xpaths.common_xpaths.select_field(name))
+        WebUI.wait_until_clickable(xpaths.common_xpaths.option_field(option), shared_config['MEDIUM_WAIT'])
+        cls.click_on_element(xpaths.common_xpaths.option_field(option))
         WebUI.xpath(xpaths.common_xpaths.select_field(name)).send_keys(Keys.TAB)
 
     @classmethod
