@@ -95,6 +95,7 @@ class Navigation:
          - Navigation.navigate_to_datasets()
         """
         cls.navigate_to('datasets', 'Datasets')
+        COM.assert_progress_bar_not_visible()
 
     @classmethod
     def navigate_to_directory_services(cls) -> None:

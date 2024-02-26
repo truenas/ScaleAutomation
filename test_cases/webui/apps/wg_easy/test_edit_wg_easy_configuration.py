@@ -20,7 +20,7 @@ class Test_Edit_WG_Easy_Configuration:
         COM.set_input_field('client-mtu', '2840')
         COM.set_input_field('client-address-range', '10.16.0.x')
         COM.set_input_field('client-dns-server', '2.2.2.2')
-        COM.click_save_button()
+        assert COM.click_save_button_and_wait_for_progress_bar()
         assert COM.assert_page_header('Installed')
         assert Apps.is_app_running('WG Easy')
 
