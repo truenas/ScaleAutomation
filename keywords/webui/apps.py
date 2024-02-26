@@ -255,10 +255,15 @@ class Apps:
         if COM.assert_page_header('Installed') is False:
             NAV.navigate_to_apps()
         COM.set_checkbox(COM.convert_to_tag_format(name))
+        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('bulk-actions-menu'))
         COM.click_button('bulk-actions-menu')
+        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('delete-selected'))
         COM.click_button('delete-selected')
         COM.assert_confirm_dialog()
         WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Deleting...', 1), shared_config['WAIT'])
+        if COM.is_visible(xpaths.common_xpaths.button_field('bulk-actions-menu')):
+            WebUI.refresh()
+            COM.assert_page_header('Installed')
         assert not cls.is_app_installed(name)
 
     @classmethod
