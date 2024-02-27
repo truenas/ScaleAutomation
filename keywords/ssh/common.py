@@ -8,6 +8,21 @@ from os import path
 class Common_SSH:
 
     @classmethod
+    def add_test_file(cls, full_file_path: str, ip: str, user: str, password: str) -> None:
+        """
+        This method adds the given file to the given ip
+
+        :param full_file_path: is the full file path and file to be created
+        :param ip: the IP of the box
+        :param user: is the user to be sending the files
+        :param password: is the password of the user
+
+        Example:
+            - Common_SSH.add_test_file('/mnt/tank/dir/file.txt', '10.0.0.1', 'user', 'password')
+        """
+        SSH_Command_Line(f'touch {full_file_path}', ip, user, password)
+
+    @classmethod
     def add_smb_test_files(cls, user: str, dataset_path: str, ip: str) -> None:
         """
         This method adds the files used for testing smb permissions
@@ -50,6 +65,33 @@ class Common_SSH:
         SSH_Command_Line(f'rm * | grep file', private_config['SMB_ACL_IP'], user, 'testing')
 
     @classmethod
+    def get_checksum_of_file(cls, ip: str, filename: str) -> str:
+        """
+        This method returns the checksum of the given file
+
+        :param ip: the IP of the box
+        :param filename: is the filename to get the checksum
+
+        Example:
+            - Common_SSH.get_checksum_of_file('10.0.0.1', 'myfile.txt')
+        """
+
+        response = SSH_Command_Line('sha256sum ' + filename, ip, private_config["USERNAME"], private_config["PASSWORD"])
+        return response.stdout[0:response.stdout.index(" ")]
+
+    @classmethod
+    def get_file_checksum(cls, filename: str) -> str:
+        """
+        This method returns the checksum of the given file
+
+        :param filename: is the filename to get the checksum
+
+        Example:
+            - Common_SSH.get_file_checksum('myfile.txt')
+        """
+        return cls.get_checksum_of_file(private_config['IP'], filename)
+
+    @classmethod
     def get_output_from_ssh(cls, command: str, ip: str, user: str) -> SSH_Command_Line:
         """
         This method verify that the command through succeed and return its output.
@@ -87,12 +129,24 @@ class Common_SSH:
             command = 'ls -al ~'
             ip = private_config['SMB_ACL_IP']
         response = SSH_Command_Line(command, ip, user, 'testing')
-        print(f'{perm} RESPONSE: {response.status}')
-        print(f'{perm} SUCCESS RESPONSE: {response.stdout}')
-        print(f'{perm} ERROR RESPONSE: {response.stderr}')
+        # print(f'{perm} RESPONSE: {response.status}')
+        # print(f'{perm} SUCCESS RESPONSE: {response.stdout}')
+        # print(f'{perm} ERROR RESPONSE: {response.stderr}')
         if "NT_STATUS_ACCESS_DENIED" in response.stdout:
             return bool(state) is False
         return (value in response.stdout) == bool(state)
+
+    @classmethod
+    def get_remote_file_checksum(cls, filename: str) -> str:
+        """
+        This method returns the checksum of the given file
+
+        :param filename: is the filename to get the checksum
+
+        Example:
+            - Common_SSH.get_remote_file_checksum('myfile.txt')
+        """
+        return cls.get_checksum_of_file(private_config['REP_DEST_IP'], filename)
 
     @classmethod
     def get_ssh_pub_key(cls) -> str:
@@ -102,6 +156,21 @@ class Common_SSH:
         :return: the SSH public key
         """
         return open(path.expanduser(f'{shared_config["KEYPATH"]}.pub'), 'r').read().strip()
+
+    @classmethod
+    def list_directory(cls, full_path: str, ip: str, user: str, password: str) -> str:
+        """
+        This method adds the given file to the given ip
+
+        :param full_path: is the full directory path
+        :param ip: the IP of the box
+        :param user: is the user to be listing the directory
+        :param password: is the password of the user
+
+        Example:
+            - Common_SSH.list_directory('/mnt/tank/dir', '10.0.0.1', 'user', 'password')
+        """
+        return SSH_Command_Line(f'ls -al {full_path}', ip, user, password).stdout
 
     @classmethod
     def set_host_ssh_key_and_enable_ssh_on_the_nas(cls, username: str):

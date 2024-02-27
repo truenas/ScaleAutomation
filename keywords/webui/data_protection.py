@@ -11,9 +11,19 @@ class Data_Protection:
         This method clicks the Add Replication task button
 
         Example:
-            - Data_Protection.click_Add_Replication_button()
+            - Data_Protection.click_add_replication_button()
         """
         COM.click_button('replication-task-add')
+
+    @classmethod
+    def click_add_rsync_button(cls) -> None:
+        """
+        This method clicks the Add Rsync task button
+
+        Example:
+            - Data_Protection.click_add_rsync_button()
+        """
+        COM.click_button('rsync-task-add')
 
     @classmethod
     def click_snapshots_button(cls):

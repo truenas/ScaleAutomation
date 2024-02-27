@@ -24,7 +24,7 @@ class SSH_Connection:
             cls.set_url(url)
             cls.set_admin_credentials(private_config['USERNAME'], private_config['PASSWORD'])
             ssh_username = 'root'
-            if ssh_username.__contains__('admin'):
+            if connection.__contains__('admin'):
                 ssh_username = 'admin'
             cls.set_username(ssh_username)
             cls.set_passwordless_sudo_checkbox()

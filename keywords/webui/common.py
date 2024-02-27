@@ -14,11 +14,11 @@ import xpaths
 
 
 class Common:
+
     @classmethod
     def assert_confirm_dialog(cls) -> None:
         """
         This method confirms and dismisses a confirmation dialog popup
-
 
         Example:
             - Common.assert_confirm_dialog()
@@ -1065,4 +1065,3 @@ class Common:
             print("Not logged in. Logging in as correct user.")
             cls.set_login_form(user, password)
             assert cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
-
