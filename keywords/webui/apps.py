@@ -362,7 +362,7 @@ class Apps:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_child_parent_target(
             f'//*[text()="{COM.convert_to_tag_format(name)}"]',
             'ix-app-row',
-            '*[contains(text(),"Running")]'), shared_config['LONG_WAIT'])
+            '*[contains(text(),"Running")]'), shared_config['EXTRA_LONG_WAIT'])
 
     @classmethod
     def is_app_stopped(cls, name: str) -> bool:
@@ -378,7 +378,7 @@ class Apps:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_child_parent_target(
             f'//*[text()="{COM.convert_to_tag_format(name)}"]',
             'ix-app-row',
-            '*[contains(text(),"Stopped")]'), shared_config['LONG_WAIT'])
+            '*[contains(text(),"Stopped")]'), shared_config['EXTRA_LONG_WAIT'])
 
     @classmethod
     def navigate_to_app_section(cls, name: str) -> None:
