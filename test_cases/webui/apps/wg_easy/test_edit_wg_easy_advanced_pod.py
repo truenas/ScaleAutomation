@@ -1,5 +1,6 @@
 import pytest
 
+from helper.webui import WebUI
 from keywords.webui.apps import Apps
 from keywords.webui.common import Common as COM
 
@@ -17,7 +18,8 @@ class Test_Edit_WG_Easy_Advanced_Pod:
         COM.click_button('add-item-dns-options')
         COM.set_input_field('name', 'Option Name')
         COM.set_input_field('value', 'Option Value')
-        COM.click_save_button()
+        WebUI.scroll_to_bottom_of_page()
+        COM.click_save_button_and_wait_for_progress_bar()
         assert COM.assert_page_header('Installed')
         assert Apps.is_app_running('WG Easy')
 

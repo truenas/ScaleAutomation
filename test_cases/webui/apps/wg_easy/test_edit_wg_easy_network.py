@@ -1,5 +1,6 @@
 import pytest
 
+from helper.webui import WebUI
 from keywords.webui.apps import Apps
 from keywords.webui.common import Common as COM
 
@@ -17,7 +18,8 @@ class Test_Edit_WG_Easy_Network:
         COM.set_input_field('udp-port', '30000')
         COM.set_input_field('web-port', '30001')
         COM.unset_checkbox('host-network')
-        COM.click_save_button()
+        WebUI.scroll_to_bottom_of_page()
+        COM.click_save_button_and_wait_for_progress_bar()
         assert COM.assert_page_header('Installed')
         assert Apps.is_app_running('WG Easy')
 
