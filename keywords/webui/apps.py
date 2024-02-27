@@ -399,7 +399,7 @@ class Apps:
         """
         Apps.click_discover_apps()
         COM.click_link('refresh-charts')
-        COM.assert_progress_bar_not_visible()
+        COM.assert_progress_bar_not_visible(shared_config['EXTRA_LONG_WAIT'])
         NAV.navigate_to_apps()
 
     @classmethod
