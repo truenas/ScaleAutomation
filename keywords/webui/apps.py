@@ -308,10 +308,10 @@ class Apps:
         Example:
             - Apps.handle_docker_limit_dialog()
         """
-        if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 1), shared_config['SHORT_WAIT']):
+        if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 3), shared_config['SHORT_WAIT']):
             print("Handling Docker Hub Rate Limit Warning dialog.")
             COM.click_button('close')
-            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 1), shared_config['MEDIUM_WAIT'])
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 3), shared_config['MEDIUM_WAIT'])
 
     @classmethod
     def is_app_deployed(cls, name: str) -> bool:
