@@ -21,7 +21,11 @@ class Test_Creating_Certificate:
         API_DELETE.delete_certificate(data['name'])
 
     @pytest.mark.parametrize('data', get_data_list('certificates')[0:1])
-    def test_creating_certificate_a_signing_requests(self, data):
+    def test_creating_a_certificate_signing_requests(self, data):
+        """
+        This method creates a Certificate Signing Request with the given data
+        and verify the created certificate details are visible on the Certificates page.
+        """
         # Navigate to the Certificates page
         Navigation.navigate_to_certificates()
         assert Certificates.assert_certificates_page_header() is True
