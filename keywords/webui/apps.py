@@ -190,6 +190,7 @@ class Apps:
             - Apps.click_custom_app()
         """
         COM.click_link('custom-app')
+        cls.handle_docker_limit_dialog()
 
     @classmethod
     def click_discover_apps(cls) -> None:
