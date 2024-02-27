@@ -28,6 +28,95 @@ class API_POST:
         shared_config['SMB_ACL_ENTRY'] = []
 
     @classmethod
+    def create_certificate(cls, data: dict, ca_id: int) -> dict:
+        payload = {
+            'name': data['name'],
+            'create_type': 'CERTIFICATE_CREATE_INTERNAL',
+            'signedby': ca_id,
+            'key_type': data['key_type'].upper(),
+            'digest_algorithm': data['confirm_digest_algorithm'],
+            'lifetime': data['lifetime'],
+            'country': data['api_country'],
+            'state': data['state'],
+            'city': data['city'],
+            'organization': data['organization'],
+            'organizational_unit': data['organizational_unit'],
+            'email': data['email'],
+            'common': data['common_name'],
+            'san': [data['san']],
+        }
+        response = POST('/certificate/', payload)
+        assert response.status_code == 200, response.text
+        job_status = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
+        return job_status
+
+    @classmethod
+    def create_certificate_authority(cls, data: dict) -> Response:
+        """
+        This method creates a certificate authority with the given data.
+
+        :param data: A dictionary of the data to create the certificate authority.
+        :return: The API request response.
+        """
+        payload = {
+            'name': data['name'],
+            'create_type': 'CA_CREATE_INTERNAL',
+            'key_type': data['key_type'].upper(),
+            'digest_algorithm': data['confirm_digest_algorithm'],
+            'lifetime': data['lifetime'],
+            'country': data['api_country'],
+            'state': data['state'],
+            'city': data['city'],
+            'organization': data['organization'],
+            'organizational_unit': data['organizational_unit'],
+            'email': data['email'],
+            'common': data['common_name'],
+            'san': [data['san']],
+            'cert_extensions': {
+                'BasicConstraints': {
+                    'ca': True,
+                    'path_length': 0,
+                    'extension_critical': False
+                },
+                'KeyUsage': {
+                    'enabled': True,
+                    'key_cert_sign': True,
+                    'crl_sign': True,
+                    'extension_critical': True
+                }
+            }
+        }
+        response = POST('/certificateauthority/', payload)
+        return response
+
+    @classmethod
+    def create_certificate_signing_requests(cls, data: dict) -> dict:
+        """
+        This method creates a certificate signing request with the given data.
+
+        :param data: A dictionary of the data to create the certificate signing request.
+        :return: The API request response.
+        """
+        payload = {
+            'name': data['name'],
+            'create_type': 'CERTIFICATE_CREATE_CSR',
+            'key_type': data['key_type'].upper(),
+            'key_length': int(data['key_length']),
+            'digest_algorithm': data['confirm_digest_algorithm'],
+            'country': data['api_country'],
+            'state': data['state'],
+            'city': data['city'],
+            'organization': data['organization'],
+            'organizational_unit': data['organizational_unit'],
+            'email': data['email'],
+            'common': data['common_name'],
+            'san': [data['san']],
+        }
+        response = POST('/certificate/', payload)
+        job_status = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
+        return job_status
+
+    @classmethod
     def create_dataset(cls, name: str, sharetype: str = 'GENERIC') -> Response:
         """
         This method creates the given dataset.

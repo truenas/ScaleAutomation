@@ -166,7 +166,7 @@ class Certificates:
         Example:
             - Certificates.assert_certificate_name_deleted('Certificate Authorities', 'test')
         """
-        return Common.is_visible(xpaths.common_xpaths.card_label_and_value(card_tile, 'Name:', name))
+        return WebUI.wait_until_not_visible(xpaths.common_xpaths.card_label_and_value(card_tile, 'Name:', name))
 
     @classmethod
     def assert_certificate_san(cls, card_tile: str, san) -> bool:
@@ -689,8 +689,6 @@ class Certificates:
         Example:
             - Certificates.click_the_field_button_by_card_certificate_name('acme-dns-authenticator', 'test', 'delete')
         """
-        # data-test="button-cert-truenas-default-delete-row-action"
-        # data-test="button-csr-test-delete-row-action"
         # replace spaces and underscores with hyphens.
         certification_name = re.sub(r'([ _])', '-', cert_name.lower())
         Common.click_button(f'{card}-{certification_name}-{field}-row-action')
@@ -711,8 +709,10 @@ class Certificates:
         if WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field('force'), shared_config['SHORT_WAIT']):
             Common.set_checkbox('force')
             Common.click_button('delete')
-        if WebUI.wait_until_clickable(xpaths.common_xpaths.checkbox_field('confirm')):
+        elif WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field('confirm')):
             Common.assert_confirm_dialog()
+        WebUI.delay(1)
+        Common.assert_progress_bar_not_visible()
 
     @classmethod
     def select_acme_first_domain_option(cls, option: str) -> None:
