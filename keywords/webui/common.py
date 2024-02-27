@@ -250,7 +250,7 @@ class Common:
         Example:
             - Common.click_advanced_options_button()
         """
-        Common.click_button('toggle-advanced')
+        Common.click_button('toggle-advanced-options')
 
     @classmethod
     def click_button(cls, name: str) -> None:

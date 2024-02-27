@@ -22,16 +22,9 @@ ups_fields = ['General Options', 'identifier', 'mode', 'driver', 'port', 'Shutdo
 
 
 class System_Services_Edit:
-    @classmethod
-    def click_edit_button_by_servicename(cls, servicename: str):
-        name = SERV.return_backend_service_name(servicename)
-        COM.click_button(f'{name}-edit')
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_header(servicename, 3))
 
-    @classmethod
-    def verify_edit_button_visible_by_servicename(cls, servicename: str):
-        name = SERV.return_backend_service_name(servicename)
-        assert COM.is_visible(xpaths.common_xpaths.button_field(f'{name}-edit'))
+
+
 
     @classmethod
     def verify_edit_service_ui_buttons(cls, service: str):

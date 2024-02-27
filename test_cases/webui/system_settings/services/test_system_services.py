@@ -89,9 +89,11 @@ class Test_System_Services:
         """
         This test verifies the edit UI for the FTP service.
         """
-        SERV.click_service_edit_button('FTP')
+        SERV.click_edit_button_by_servicename('FTP')
         assert COM.assert_right_panel_header('FTP') is True
-        assert SERV.verify_ftp_service_edit_ui() is True
+        SERV.verify_ftp_service_basic_edit_ui()
+        COM.click_advanced_options_button()
+        SERV.verify_ftp_service_advanced_edit_ui()
         COM.close_right_panel()
         assert COM.assert_page_header("Services") is True
 
