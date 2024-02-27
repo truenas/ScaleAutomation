@@ -463,7 +463,7 @@ class Apps:
             COM.set_search_field(name)
             Apps.click_app(name)
             Apps.click_install_app(name)
-            # cls.handle_docker_limit_dialog()
+            cls.handle_docker_limit_dialog()
             Apps.set_app_values(name)
             COM.click_save_button()
             assert COM.assert_page_header('Installed', shared_config['LONG_WAIT'])
