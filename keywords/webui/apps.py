@@ -227,6 +227,7 @@ class Apps:
         if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['MEDIUM_WAIT']):
             print("Information dialog present. Attempting to close.")
             COM.assert_confirm_dialog()
+        cls.handle_docker_limit_dialog()
         WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['LONG_WAIT'])
 
     @classmethod
@@ -308,9 +309,9 @@ class Apps:
             - Apps.handle_docker_limit_dialog()
         """
         if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 1), shared_config['SHORT_WAIT']):
+            print("Handling Docker Hub Rate Limit Warning dialog.")
             COM.click_button('close')
-            if COM.is_clickable(xpaths.common_xpaths.button_field('save')):
-                COM.click_save_button()
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 1), shared_config['MEDIUM_WAIT'])
 
     @classmethod
     def is_app_deployed(cls, name: str) -> bool:
@@ -461,7 +462,7 @@ class Apps:
             COM.set_search_field(name)
             Apps.click_app(name)
             Apps.click_install_app(name)
-            cls.handle_docker_limit_dialog()
+            # cls.handle_docker_limit_dialog()
             Apps.set_app_values(name)
             COM.click_save_button()
             assert COM.assert_page_header('Installed', shared_config['LONG_WAIT'])
