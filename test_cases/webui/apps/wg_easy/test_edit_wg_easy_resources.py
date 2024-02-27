@@ -17,7 +17,6 @@ class Test_Edit_WG_Easy_Resources:
         Apps.navigate_to_app_section('Resources Configuration')
         COM.set_input_field('cpu', '8000m')
         COM.set_input_field('memory', '16Gi')
-        WebUI.scroll_to_bottom_of_page()
         COM.click_save_button_and_wait_for_progress_bar()
         assert COM.assert_page_header('Installed')
         assert Apps.is_app_running('WG Easy')
