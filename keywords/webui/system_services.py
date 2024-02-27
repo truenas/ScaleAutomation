@@ -261,3 +261,10 @@ class System_Services:
                     print(f'Total wait: 20 seconds. Toggle still did not equal {state}')
                     break
         assert (COM.is_toggle_enabled(service_backend) is state)
+
+    @classmethod
+    def verify_ftp_service_edit_ui(cls):
+        """
+        This method verifies the edit UI of the FTP service.
+        """
+        assert COM.is_visible(xpaths.common_xpaths.button_field("")) is True
