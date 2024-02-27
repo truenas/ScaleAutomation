@@ -332,7 +332,7 @@ class Common:
         Example:
             - Common.click_save_button()
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT']).click()
+        cls.click_button('save')
         WebUI.delay(2)
 
     @classmethod
@@ -347,7 +347,7 @@ class Common:
         return cls.assert_progress_bar_not_visible()
 
     @classmethod
-    def close_right_panel(cls) -> None:
+    def close_right_panel(cls):
         """
         This method clicks the close right panel button
 
@@ -355,6 +355,7 @@ class Common:
             - Common.close_right_panel()
         """
         WebUI.wait_until_clickable(xpaths.common_xpaths.close_right_panel(), shared_config['MEDIUM_WAIT']).click()
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.close_right_panel())
 
     @classmethod
     def convert_to_tag_format(cls, name: str) -> str:
@@ -750,8 +751,10 @@ class Common:
         Example:
             - Common.select_option('mySelect', 'myOption')
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT']).click()
-        WebUI.wait_until_clickable(xpaths.common_xpaths.option_field(option), shared_config['SHORT_WAIT']).click()
+        WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT'])
+        cls.click_on_element(xpaths.common_xpaths.select_field(name))
+        WebUI.wait_until_clickable(xpaths.common_xpaths.option_field(option), shared_config['MEDIUM_WAIT'])
+        cls.click_on_element(xpaths.common_xpaths.option_field(option))
         WebUI.xpath(xpaths.common_xpaths.select_field(name)).send_keys(Keys.TAB)
 
     @classmethod
@@ -896,6 +899,7 @@ class Common:
             - Common.set_input_field('myInput', 'text', '', True)
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
+        WebUI.wait_until_clickable(xpaths.common_xpaths.input_field(name))
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).clear()
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(value)
         if tab:
