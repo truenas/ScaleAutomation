@@ -4,15 +4,33 @@ from keywords.api.common import API_Common as API
 
 class API_DELETE:
     @classmethod
-    def delete_certificate_authority(cls, ca_id: int) -> Response:
+    def delete_certificate(cls, cert_name: str) -> Response:
+        """
+        This method deletes the given certificate.
+
+        :param cert_name: is name of the certificate.
+        :return: the API request response.
+        """
+        response = GET(f'/certificate?name={cert_name}').json()
+        if response:
+            cert_id = response[0]['id']
+            response = DELETE(f'/certificate/id/{cert_id}')
+            assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def delete_certificate_authority(cls, ca_name: str) -> Response:
         """
         This method deletes the given certificate authority.
 
-        :param ca_id: is the id of the certificate authority.
+        :param ca_name: is name of the certificate authority.
         :return: the API request response.
         """
-        response = DELETE(f'/certificateauthority/id/{ca_id}')
-        assert response.status_code == 200, response.text
+        response = GET(f'/certificateauthority?name={ca_name}').json()
+        if response:
+            ca_id = response[0]['id']
+            response = DELETE(f'/certificateauthority/id/{ca_id}')
+            assert response.status_code == 200, response.text
         return response
 
     @classmethod

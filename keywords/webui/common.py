@@ -116,6 +116,20 @@ class Common:
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.progress_bar, wait)
 
     @classmethod
+    def assert_progress_bar_visible(cls, wait: int = shared_config['SHORT_WAIT']) -> bool:
+        """
+        This method returns True or False weather the progress bar is visible before timeout.
+
+        :param wait: The number of seconds to wait before timeout
+        :return: True if the progress bar is visible before timeout otherwise it returns False.
+
+        Example:
+            - Common.assert_progress_bar_visible()
+            - Common.assert_progress_bar_visible(shared_config['MEDIUM_WAIT'])
+        """
+        return WebUI.wait_until_visible(xpaths.common_xpaths.progress_bar, wait)
+
+    @classmethod
     def assert_progress_spinner_not_visible(cls, wait: int = shared_config['LONG_WAIT']) -> bool:
         """
         This method returns True or False weather the progress spinner is not visible before timeout.
@@ -344,6 +358,8 @@ class Common:
             - Common.click_save_button_and_wait_for_progress_bar_to_disappear()
         """
         cls.click_save_button()
+        # if there is no progress bar visible, it needs to fail.
+        assert cls.assert_progress_bar_visible() is True
         return cls.assert_progress_bar_not_visible()
 
     @classmethod
@@ -751,9 +767,8 @@ class Common:
         Example:
             - Common.select_option('mySelect', 'myOption')
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT'])
         cls.click_on_element(xpaths.common_xpaths.select_field(name))
-        WebUI.wait_until_clickable(xpaths.common_xpaths.option_field(option), shared_config['MEDIUM_WAIT'])
+        WebUI.delay(0.1)
         cls.click_on_element(xpaths.common_xpaths.option_field(option))
         WebUI.xpath(xpaths.common_xpaths.select_field(name)).send_keys(Keys.TAB)
 
@@ -770,6 +785,7 @@ class Common:
             - Common.select_option_text('size-and-type-data', 1, '20-gi-b-hdd')
         """
         cls.click_on_element(xpaths.common_xpaths.select_field_by_row(name, row))
+        WebUI.delay(0.1)
         cls.click_on_element(xpaths.common_xpaths.option_field(option))
 
     @classmethod
@@ -784,6 +800,7 @@ class Common:
             - Common.select_option_text('size-and-type-data', '20 GiB (HDD)')
         """
         cls.click_on_element(xpaths.common_xpaths.select_field(name))
+        WebUI.delay(0.1)
         cls.click_on_element(f'//mat-option[contains(.,"{option}")]')
 
     @classmethod
