@@ -3,6 +3,7 @@ import pytest
 
 from helper.cli import SSH_Command_Line
 from helper.global_config import private_config
+from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.ssh.common import Common_SSH as SSHCOM
 from keywords.webui.common import Common as COM
@@ -46,6 +47,8 @@ class Test_Rsync:
         NAV.navigate_to_data_protection()
         RSYNC.delete_rsync_task_by_path('tank/rsync-enc')
         RSYNC.delete_rsync_task_by_path('tank/rsync-non')
+        API_DELETE.delete_ssh_keypairs('rsync-non-to-enc')
+        API_DELETE.delete_ssh_connection('rsync-non-to-enc')
 
     @allure.tag("Create")
     @allure.story("Create a Rsync Task from non-encrypted to encrypted-locked")
