@@ -36,4 +36,4 @@ def ftp_permissions_table_checkbox(table: str, level: str, perm: str) -> str:
     :example: ftp_permissions_table_checkbox('file', 'user', 'read')
               ftp_permissions_table_checkbox('dir', 'group', 'execute')
     """
-    return f'//*[@data-test="row-{table}mask-user-permissions"]/ancestor::table//*[@data-test="checkbox-{level}-{perm}"]'
+    return f'//*[@data-test="row-{table}mask-{level}-permissions"]/ancestor::table//*[@data-test="checkbox-{level}-{perm}"]'
