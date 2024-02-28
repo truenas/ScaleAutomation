@@ -46,7 +46,7 @@ class System_Services:
             COM.click_button('toggle-advanced-settings')
 
     @classmethod
-    def click_edit_button_by_servicename(cls, servicename: str):
+    def click_edit_button_by_servicename(cls, servicename: str) -> None:
         name = cls.return_backend_service_name(servicename, False)
         COM.click_button(f'{name}-edit')
         WebUI.wait_until_visible(xpaths.common_xpaths.any_header(servicename, 3))
