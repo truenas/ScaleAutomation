@@ -751,11 +751,11 @@ class Common:
         Example:
             - Common.select_option('mySelect', 'myOption')
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.select_field(name), shared_config['MEDIUM_WAIT'])
         cls.click_on_element(xpaths.common_xpaths.select_field(name))
-        WebUI.wait_until_clickable(xpaths.common_xpaths.option_field(option), shared_config['MEDIUM_WAIT'])
+        WebUI.delay(0.1)
         cls.click_on_element(xpaths.common_xpaths.option_field(option))
         WebUI.xpath(xpaths.common_xpaths.select_field(name)).send_keys(Keys.TAB)
+        WebUI.delay(0.1)
 
     @classmethod
     def select_option_by_row(cls, name: str, row: int, option: str) -> None:
@@ -770,6 +770,7 @@ class Common:
             - Common.select_option_text('size-and-type-data', 1, '20-gi-b-hdd')
         """
         cls.click_on_element(xpaths.common_xpaths.select_field_by_row(name, row))
+        WebUI.delay(0.1)
         cls.click_on_element(xpaths.common_xpaths.option_field(option))
 
     @classmethod
@@ -784,6 +785,7 @@ class Common:
             - Common.select_option_text('size-and-type-data', '20 GiB (HDD)')
         """
         cls.click_on_element(xpaths.common_xpaths.select_field(name))
+        WebUI.delay(0.1)
         cls.click_on_element(f'//mat-option[contains(.,"{option}")]')
 
     @classmethod
