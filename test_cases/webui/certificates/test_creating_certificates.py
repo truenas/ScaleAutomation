@@ -2,6 +2,7 @@ import allure
 import pytest
 from helper.data_config import get_data_list
 from keywords.api.delete import API_DELETE
+from keywords.api.post import API_POST
 from keywords.webui.certificates import Certificates
 from keywords.webui.common import Common
 from keywords.webui.navigation import Navigation
