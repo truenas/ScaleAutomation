@@ -328,7 +328,7 @@ class System_Services:
     @classmethod
     def verify_ftp_service_permission_tables_ui(cls):
         """
-        This method verifies the advanced edit UI of the FTP service.
+        This method verifies the file and directory permissions tables on the advanced FTP Edit UI.
         """
         assert COM.is_visible(xpaths.services.ftp_file_permissions_table_checkbox('user', 'read')) is True
         assert COM.is_visible(xpaths.services.ftp_file_permissions_table_checkbox('user', 'write')) is True
