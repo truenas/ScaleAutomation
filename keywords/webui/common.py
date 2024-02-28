@@ -28,7 +28,7 @@ class Common:
             cls.set_checkbox('confirm')
         assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('dialog-confirm')) is True
         cls.click_button('dialog-confirm')
-        WebUI.delay(1.1)
+        WebUI.delay(1)
 
     @classmethod
     def assert_copyright_text_is_correct(cls) -> bool:
