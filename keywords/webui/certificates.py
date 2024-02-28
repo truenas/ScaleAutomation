@@ -785,8 +785,6 @@ class Certificates:
             - Certificates.select_authority_key_config_option('authority-cert-issuer')
         """
         Common.select_option('authority-key-identifier', f'authority-key-identifier-{option}')
-        # required to close select option dropdown
-        Common.click_on_element(xpaths.common_xpaths.overlay_container)
 
     @classmethod
     def select_basic_constraints_config_option(cls, option: str) -> None:
@@ -832,7 +830,7 @@ class Certificates:
         Example:
             - Certificates.select_certificates_type_option('select')
         """
-        Common.select_option('create-type', f'create-type{option}')
+        Common.select_option('create-type', f'create-type-{option}')
 
     @classmethod
     def select_country_option(cls, country: str) -> None:
