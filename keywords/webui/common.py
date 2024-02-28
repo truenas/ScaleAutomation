@@ -23,10 +23,11 @@ class Common:
         Example:
             - Common.assert_confirm_dialog()
         """
-        if cls.is_clickable(xpaths.common_xpaths.checkbox_field('confirm'), shared_config['SHORT_WAIT']):
-            WebUI.xpath(xpaths.common_xpaths.checkbox_field('confirm')).click()
-        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('dialog-confirm'))
-        WebUI.xpath(xpaths.common_xpaths.button_field('dialog-confirm')).click()
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('dialog-confirm')) is True
+        if cls.is_visible(xpaths.common_xpaths.checkbox_field('confirm')):
+            cls.set_checkbox('confirm')
+        assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('dialog-confirm')) is True
+        cls.click_button('dialog-confirm')
         WebUI.delay(1)
 
     @classmethod
@@ -250,7 +251,7 @@ class Common:
         Example:
             - Common.click_advanced_options_button()
         """
-        Common.click_button('toggle-advanced')
+        Common.click_button('toggle-advanced-options')
 
     @classmethod
     def click_button(cls, name: str) -> None:
@@ -751,11 +752,11 @@ class Common:
         Example:
             - Common.select_option('mySelect', 'myOption')
         """
-
         cls.click_on_element(xpaths.common_xpaths.select_field(name))
         WebUI.delay(0.1)
         cls.click_on_element(xpaths.common_xpaths.option_field(option))
         WebUI.xpath(xpaths.common_xpaths.select_field(name)).send_keys(Keys.TAB)
+        WebUI.delay(0.1)
 
     @classmethod
     def select_option_by_row(cls, name: str, row: int, option: str) -> None:
