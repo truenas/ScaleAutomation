@@ -119,7 +119,7 @@ class Test_Rsync:
         response = SSHCOM.list_directory('/mnt/tank/rsync-non', private_config['IP'],
                                          'sshuser', 'testing')
         assert response.__contains__('newfile.txt')
-        checksum = SSHCOM.get_file_checksum('/mnt/tank/rsync-non/newfile.txt')
+        checksum = SSHCOM.get_file_checksum('/mnt/tank/rsync-non/newfile.txt', 'sshuser', 'testing')
 
         # verify file does not exist on remote dataset
         response = SSHCOM.list_directory('/mnt/tank/rsync-enc', private_config['REP_DEST_IP'],
@@ -132,7 +132,7 @@ class Test_Rsync:
                                          'sshuser', 'testing')
         assert response.__contains__('newfile.txt')
         print("@@@ REMOTE RESPONSE: " + response)
-        assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-non/newfile.txt') == checksum
+        assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-non/newfile.txt', 'sshuser', 'testing') == checksum
 
     @allure.tag("Create")
     @allure.story("Create a Rsync Task from encrypted-locked to encrypted-unlocked")
@@ -164,7 +164,7 @@ class Test_Rsync:
         response = SSHCOM.list_directory('/mnt/tank/rsync-enc', private_config['IP'],
                                          'sshuser', 'testing')
         assert response.__contains__('newfile.txt')
-        checksum = SSHCOM.get_file_checksum('/mnt/tank/rsync-enc/newfile.txt')
+        checksum = SSHCOM.get_file_checksum('/mnt/tank/rsync-enc/newfile.txt', 'sshuser', 'testing')
 
         # verify file does not exist on remote dataset
         response = SSHCOM.list_directory('/mnt/tank/rsync-enc', private_config['REP_DEST_IP'],
@@ -177,4 +177,4 @@ class Test_Rsync:
                                          'sshuser', 'testing')
         assert response.__contains__('newfile.txt')
         print("@@@ REMOTE RESPONSE: " + response)
-        assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-enc/newfile.txt') == checksum
+        assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-enc/newfile.txt', 'sshuser', 'testing') == checksum

@@ -65,32 +65,36 @@ class Common_SSH:
         SSH_Command_Line(f'rm * | grep file', private_config['SMB_ACL_IP'], user, 'testing')
 
     @classmethod
-    def get_checksum_of_file(cls, ip: str, filename: str) -> str:
+    def get_checksum_of_file(cls, ip: str, filename: str, user: str = private_config["USERNAME"], password: str = private_config["PASSWORD"]) -> str:
         """
         This method returns the checksum of the given file
 
         :param ip: the IP of the box
         :param filename: is the filename to get the checksum
+        :param user: is the user to ssh into box with
+        :param password: is the password of user
 
         Example:
             - Common_SSH.get_checksum_of_file('10.0.0.1', 'myfile.txt')
         """
 
-        response = SSH_Command_Line('sha256sum ' + filename, ip, private_config["USERNAME"], private_config["PASSWORD"])
+        response = SSH_Command_Line(f'sha256sum {filename}', ip, user, password)
         print("@@@ SHA: " + response.stdout)
         return response.stdout[0:response.stdout.index(" ")]
 
     @classmethod
-    def get_file_checksum(cls, filename: str) -> str:
+    def get_file_checksum(cls, filename: str, user: str = private_config["USERNAME"], password: str = private_config["PASSWORD"]) -> str:
         """
         This method returns the checksum of the given file
 
         :param filename: is the filename to get the checksum
+        :param user: is the user to ssh into box with
+        :param password: is the password of user
 
         Example:
             - Common_SSH.get_file_checksum('myfile.txt')
         """
-        return cls.get_checksum_of_file(private_config['IP'], filename)
+        return cls.get_checksum_of_file(private_config['IP'], filename, user, password)
 
     @classmethod
     def get_output_from_ssh(cls, command: str, ip: str, user: str) -> SSH_Command_Line:
@@ -138,16 +142,18 @@ class Common_SSH:
         return (value in response.stdout) == bool(state)
 
     @classmethod
-    def get_remote_file_checksum(cls, filename: str) -> str:
+    def get_remote_file_checksum(cls, filename: str, user: str = private_config["USERNAME"], password: str = private_config["PASSWORD"]) -> str:
         """
         This method returns the checksum of the given file
 
         :param filename: is the filename to get the checksum
+        :param user: is the user to ssh into box with
+        :param password: is the password of user
 
         Example:
             - Common_SSH.get_remote_file_checksum('myfile.txt')
         """
-        return cls.get_checksum_of_file(private_config['REP_DEST_IP'], filename)
+        return cls.get_checksum_of_file(private_config['REP_DEST_IP'], filename, user, password)
 
     @classmethod
     def get_ssh_pub_key(cls) -> str:
