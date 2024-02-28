@@ -20,5 +20,5 @@ KEYPATH = "~/.ssh/id_rsa_pytest"
 LONG_WAIT = 60
 MEDIUM_WAIT = 15
 SHORT_WAIT = 5
-WAIT = 30
 SMB_ACL_ENTRY = [{"ae_who_sid" = "S-1-1-0", "ae_type" = "ALLOWED", "ae_perm" = "FULL"}]
+WAIT = 30

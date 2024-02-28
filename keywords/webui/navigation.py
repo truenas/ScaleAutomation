@@ -1,5 +1,4 @@
 import xpaths
-from helper.global_config import shared_config
 from helper.reporting import take_screenshot, create_timestamp
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
@@ -24,7 +23,7 @@ class Navigation:
             take_screenshot('RIGHT_PANEL_OPEN-'+create_timestamp())
             COM.close_right_panel()
         if COM.is_visible(xpaths.common_xpaths.button_field('dialog-cancel')):
-            print('@@@@@@@ DIALOG LEFT OPEN-'+create_timestamp())
+            print('@@@@@@@ DIALOG_LEFT_OPEN-'+create_timestamp())
             take_screenshot('DIALOG_LEFT_OPEN-'+create_timestamp())
             COM.cancel_confirm_dialog()
         if (COM.is_visible(xpaths.common_xpaths.any_header(header, 1)) is True) & (header != 'Dashboard'):

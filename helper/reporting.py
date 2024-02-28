@@ -1,4 +1,3 @@
-import os
 import allure
 from allure_commons.types import AttachmentType
 from datetime import datetime
@@ -6,7 +5,6 @@ from helper.cli import Local_Command_Line
 from helper.global_config import workdir
 from helper.webui import WebUI
 from pathlib import Path
-from platform import system
 
 
 # make the timestamp global

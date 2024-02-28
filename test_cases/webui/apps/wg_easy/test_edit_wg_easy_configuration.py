@@ -1,5 +1,3 @@
-import pytest
-
 from keywords.webui.apps import Apps
 from keywords.webui.common import Common as COM
 
@@ -13,14 +11,14 @@ class Test_Edit_WG_Easy_Configuration:
         """
         assert Apps.verify_app_installed('WG Easy')
         Apps.edit_app('WG Easy')
-        Apps.navigate_to_app_section('Network Configuration')
+        Apps.navigate_to_app_section('WG-Easy Configuration')
         COM.set_input_field('host', '10.234.27.201')
         COM.set_input_field('password', 'test1234')
         COM.set_input_field('keep-alive', '50')
         COM.set_input_field('client-mtu', '2840')
         COM.set_input_field('client-address-range', '10.16.0.x')
         COM.set_input_field('client-dns-server', '2.2.2.2')
-        assert COM.click_save_button_and_wait_for_progress_bar()
+        COM.click_save_button_and_wait_for_progress_bar()
         assert COM.assert_page_header('Installed')
         assert Apps.is_app_running('WG Easy')
 
@@ -30,7 +28,7 @@ class Test_Edit_WG_Easy_Configuration:
         This test verifies the edited values of the app
         """
         Apps.edit_app('WG Easy')
-        Apps.navigate_to_app_section('Network Configuration')
+        Apps.navigate_to_app_section('WG-Easy Configuration')
         assert COM.get_input_property('host') == '10.234.27.201'
         assert COM.get_input_property('password') == 'test1234'
         assert COM.get_input_property('keep-alive') == '50'

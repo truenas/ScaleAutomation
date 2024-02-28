@@ -1,5 +1,3 @@
-import pytest
-
 from keywords.webui.apps import Apps
 from keywords.webui.common import Common as COM
 from keywords.webui.datasets import Datasets as DATASET

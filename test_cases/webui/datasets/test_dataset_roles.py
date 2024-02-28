@@ -34,7 +34,7 @@ class Test_Dataset_Roles:
         assert Common.assert_text_is_visible(role['role text']) is True
         assert Common.assert_text_is_visible(role['link text']) is True
 
-    def test_dataset_roles_manage_links(self,role):
+    def test_dataset_roles_manage_links(self, role):
         """
         This test verifies the manage role link opens the correct page.
         """

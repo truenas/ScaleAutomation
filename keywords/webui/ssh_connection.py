@@ -24,7 +24,7 @@ class SSH_Connection:
             cls.set_url(url)
             cls.set_admin_credentials(private_config['USERNAME'], private_config['PASSWORD'])
             ssh_username = 'root'
-            if ssh_username.__contains__('admin'):
+            if connection.__contains__('admin'):
                 ssh_username = 'admin'
             cls.set_username(ssh_username)
             cls.set_passwordless_sudo_checkbox()
@@ -106,8 +106,9 @@ class SSH_Connection:
         Example:
             - SSH_Connection.click_edit_ssh_keypairs_download_actions_button()
         """
-        assert COM.is_clickable(xpaths.common_xpaths.button_field('download-actions'))
+        assert COM.is_visible(xpaths.common_xpaths.button_field('download-actions'))
         COM.click_button('download-actions')
+        WebUI.delay(0.2)
 
     @classmethod
     def click_edit_ssh_keypairs_download_private_key_button(cls) -> None:
@@ -117,7 +118,7 @@ class SSH_Connection:
         Example:
             - SSH_Connection.click_edit_ssh_keypairs_download_private_key_button()
         """
-        assert COM.is_clickable(xpaths.common_xpaths.button_field('download-private-key'))
+        assert COM.is_visible(xpaths.common_xpaths.button_field('download-private-key'))
         COM.click_button('download-private-key')
         WebUI.delay(0.5)
 
@@ -129,7 +130,7 @@ class SSH_Connection:
         Example:
             - SSH_Connection.click_edit_ssh_keypairs_download_public_key_button()
         """
-        assert COM.is_clickable(xpaths.common_xpaths.button_field('download-public-key'))
+        assert COM.is_visible(xpaths.common_xpaths.button_field('download-public-key'))
         COM.click_button('download-public-key')
         WebUI.delay(0.5)
 

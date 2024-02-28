@@ -19,7 +19,7 @@ class Replication:
     @classmethod
     def click_run_now_replication_task_by_name(cls, name):
         """
-        This method unsets the read only destination checkbox
+        This method clicks the run now button for the given replication task
 
         :param name: the name of the given replication task
 

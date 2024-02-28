@@ -35,7 +35,6 @@ def test_create_new_smb_share_without_acl(smb_data) -> None:
         COM.cancel_confirm_dialog()
         COMSHARE.handle_share_service_dialog('smb')
 
-
     # Verify Share attached to Dataset
     NAV.navigate_to_datasets()
     DATASET.expand_dataset('tank')
