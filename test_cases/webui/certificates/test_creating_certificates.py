@@ -18,7 +18,88 @@ class Test_Creating_Certificate:
         This fixture deletes the dataset created for the test class.
         """
         yield
-        API_DELETE.delete_certificate(data['name'])
+        if data['type'] == 'ca':
+            API_DELETE.delete_certificate_authority(data['name'])
+        else:
+            API_DELETE.delete_certificate(data['name'])
+
+    @pytest.mark.parametrize('data', get_data_list('certificates')[1:2])
+    def test_creating_a_certificate_authority(self, data):
+        """
+        This method will create a certificate authority.
+        """
+        # Navigate to the Certificates page
+        Navigation.navigate_to_certificates()
+        assert Certificates.assert_certificates_page_header() is True
+
+        # Click on the Add button on the Certificate Authorities card
+        assert Certificates.assert_certificate_authorities_card_visible() is True
+        Certificates.click_certificate_authorities_add_button()
+        assert Certificates.assert_add_certificate_authority_side_panel_visible() is True
+
+        # Fill the Identifier and Type step form and clink on the next button
+        assert Common.assert_step_header_is_open('Identifier and Type') is True
+        Certificates.set_name(data['name'])
+        Certificates.select_certificates_type_option(data['option_type'])
+        Certificates.select_profile_option(data['profile_option'])
+        Certificates.click_identifier_and_type_next_button()
+
+        # Fill the Certificate Options step form and clink on the next button
+        assert Common.assert_step_header_is_open('Certificate Options') is True
+        Certificates.select_key_type_option(data['key_type'])
+        Certificates.select_ec_curve_option(data['ec_curve'])
+        Certificates.select_digest_algorithm_option(data['algorithm'])
+        Certificates.set_lifetime(int(data['lifetime']))
+        Certificates.click_certificate_options_next_button()
+
+        # Fill the Certificate Subject step form and clink on the next button
+        assert Common.assert_step_header_is_open('Certificate Subject') is True
+        Certificates.select_country_option(data['country'])
+        Certificates.set_state(data['state'])
+        Certificates.set_locality(data['city'])
+        Certificates.set_organization(data['organization'])
+        Certificates.set_organizational_unit(data['organizational_unit'])
+        Certificates.set_email(data['email'])
+        Certificates.set_common_name(data['common_name'])
+        Certificates.set_subject_alternative_name(data['san'])
+        Certificates.click_certificate_subject_next_button()
+
+        # Fill the Extra Constraints step form and clink on the next button
+        assert Common.assert_step_header_is_open('Extra Constraints') is True
+        Certificates.set_path_length(int(data['path_length']))
+        Certificates.set_authority_key_identifier_checkbox()
+        Certificates.select_authority_key_config_option(data['authority_key_config'])
+        Certificates.set_critical_extension()
+        Certificates.click_extra_constraints_next_button()
+
+        # Verify the Confirm Options step form and clink on the submit button
+        assert Common.assert_step_header_is_open('Confirm Options') is True
+        Certificates.assert_confirm_name_option_value(data['name'])
+        Certificates.assert_confirm_type_option_value(data['confirm_type'])
+        Certificates.assert_confirm_profile_option_value(data['confirm_profile'])
+        Certificates.assert_confirm_key_type_option_value(data['confirm_key_type'])
+        Certificates.assert_confirm_ec_curve_option_value(data['confirm_ec_curve'])
+        Certificates.assert_confirm_digest_algorithm_option_value(data['confirm_digest_algorithm'])
+        Certificates.assert_confirm_lifetime_option_value(data['lifetime'])
+        Certificates.assert_confirm_san_option_value(data['san'])
+        Certificates.assert_confirm_common_name_option_value(data['common_name'])
+        Certificates.assert_confirm_email_option_value(data['email'])
+        Certificates.assert_confirm_subject_option_value(data['confirm_subject'])
+        Certificates.assert_confirm_basic_constraints_option_value(data['confirm_basic_constraints'])
+        Certificates.assert_confirm_path_length_option_value(data['path_length'])
+        Certificates.assert_confirm_authority_key_identifier_option_value(data['confirm_authority_key_id'])
+        Certificates.assert_confirm_extended_key_usage_option_value(data['confirm_extended_key_usage'])
+        Certificates.assert_confirm_critical_extension_option_value(data['confirm_critical_extension'])
+        Certificates.assert_confirm_key_usage_option_value(data['confirm_key_usage'])
+        Common.click_save_button_and_wait_for_progress_bar()
+
+        # Verify the new Certificate Authority information after the creation.
+        assert Certificates.assert_certificate_name(data['card'], data['name']) is True
+        assert Certificates.assert_certificate_issuer(data['card'], data['certificate_issuer']) is True
+        assert Certificates.assert_certificate_cn(data['card'], data['common_name']) is True
+        assert Certificates.assert_certificate_san(data['card'], data['san']) is True
+
+
 
     @pytest.mark.parametrize('data', get_data_list('certificates')[0:1])
     def test_creating_a_certificate_signing_requests(self, data):
