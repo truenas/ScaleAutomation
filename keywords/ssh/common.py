@@ -77,6 +77,7 @@ class Common_SSH:
         """
 
         response = SSH_Command_Line('sha256sum ' + filename, ip, private_config["USERNAME"], private_config["PASSWORD"])
+        print("@@@ SHA: " + response.stdout)
         return response.stdout[0:response.stdout.index(" ")]
 
     @classmethod
