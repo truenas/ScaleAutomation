@@ -81,25 +81,6 @@ class API_DELETE:
         return response
 
     @classmethod
-    def delete_share(cls, sharetype: str, name: str) -> Response:
-        """
-        This method deletes the given share by given share type.
-
-        :param sharetype: is the type of the given share.
-        :param name: is the share nome.
-        :return: the API request response.
-        """
-        search = 'name='
-        if sharetype == 'nfs':
-            search = 'path=/mnt/'
-        response = GET(f'/sharing/{sharetype}?{search}{name}').json()
-        if response:
-            smb_id = str(API.get_id_by_type(f'/sharing/{sharetype}?', name))
-            response = DELETE(f'/sharing/{sharetype}/id/' + smb_id)
-            assert response.status_code == 200, response.text
-        return response
-
-    @classmethod
     def delete_remote_dataset(cls, name: str, recursive: bool = False, force: bool = False) -> Response:
         """
         This method deletes the given remote dataset.
@@ -135,6 +116,25 @@ class API_DELETE:
         private_config['API_IP'] = private_config['REP_DEST_IP']
         response = cls.delete_user(name)
         private_config['API_IP'] = private_config['IP']
+        return response
+
+    @classmethod
+    def delete_share(cls, sharetype: str, name: str) -> Response:
+        """
+        This method deletes the given share by given share type.
+
+        :param sharetype: is the type of the given share.
+        :param name: is the share nome.
+        :return: the API request response.
+        """
+        search = 'name='
+        if sharetype == 'nfs':
+            search = 'path=/mnt/'
+        response = GET(f'/sharing/{sharetype}?{search}{name}').json()
+        if response:
+            smb_id = str(API.get_id_by_type(f'/sharing/{sharetype}?', name))
+            response = DELETE(f'/sharing/{sharetype}/id/' + smb_id)
+            assert response.status_code == 200, response.text
         return response
 
     @classmethod
