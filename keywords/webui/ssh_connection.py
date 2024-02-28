@@ -106,7 +106,7 @@ class SSH_Connection:
         Example:
             - SSH_Connection.click_edit_ssh_keypairs_download_actions_button()
         """
-        assert COM.is_clickable(xpaths.common_xpaths.button_field('download-actions'))
+        assert COM.is_visible(xpaths.common_xpaths.button_field('download-actions'))
         COM.click_button('download-actions')
 
     @classmethod
