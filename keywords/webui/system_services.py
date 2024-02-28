@@ -47,9 +47,13 @@ class System_Services:
 
     @classmethod
     def click_edit_button_by_servicename(cls, servicename: str) -> None:
+        """
+        This method clicks the edit button for the given service.
+
+        :param servicename: the name of the service.
+        """
         name = cls.return_backend_service_name(servicename, False)
         COM.click_button(f'{name}-edit')
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_header(servicename, 3))
 
     @classmethod
     def is_service_autostart_set_by_name(cls, service: str) -> bool:
