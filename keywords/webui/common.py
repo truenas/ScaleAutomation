@@ -14,19 +14,20 @@ import xpaths
 
 
 class Common:
-
     @classmethod
     def assert_confirm_dialog(cls) -> None:
         """
         This method confirms and dismisses a confirmation dialog popup
 
+
         Example:
             - Common.assert_confirm_dialog()
         """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('dialog-confirm')) is True
         if cls.is_visible(xpaths.common_xpaths.checkbox_field('confirm')):
-            WebUI.xpath(xpaths.common_xpaths.checkbox_field('confirm')).click()
-        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('dialog-confirm'))
-        WebUI.xpath(xpaths.common_xpaths.button_field('dialog-confirm')).click()
+            cls.set_checkbox('confirm')
+        assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('dialog-confirm')) is True
+        cls.click_button('dialog-confirm')
         WebUI.delay(1)
 
     @classmethod
@@ -250,7 +251,7 @@ class Common:
         Example:
             - Common.click_advanced_options_button()
         """
-        Common.click_button('toggle-advanced')
+        Common.click_button('toggle-advanced-options')
 
     @classmethod
     def click_button(cls, name: str) -> None:
@@ -898,7 +899,7 @@ class Common:
         Example:
             - Common.set_input_field('myInput', 'text')
             - Common.set_input_field('myInput', 'text', True)
-            - Common.set_input_field('myInput', 'text', '', True )
+            - Common.set_input_field('myInput', 'text', '', True)
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
         WebUI.wait_until_clickable(xpaths.common_xpaths.input_field(name))
@@ -1071,3 +1072,4 @@ class Common:
             print("Not logged in. Logging in as correct user.")
             cls.set_login_form(user, password)
             assert cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
+

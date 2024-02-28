@@ -33,6 +33,25 @@ class System_Services:
             assert not cls.is_service_status_running_by_name(items)
 
     @classmethod
+    def click_advanced_settings_button(cls, service: str = None) -> None:
+        """
+        This method clicks the Advanced Settings button.
+
+        Example:
+            - Common.click_advanced_settings_button()
+        """
+        if service.lower() == "ssh":
+            COM.click_advanced_options_button()
+        else:
+            COM.click_button('toggle-advanced-settings')
+
+    @classmethod
+    def click_edit_button_by_servicename(cls, servicename: str) -> None:
+        name = cls.return_backend_service_name(servicename, False)
+        COM.click_button(f'{name}-edit')
+        WebUI.wait_until_visible(xpaths.common_xpaths.any_header(servicename, 3))
+
+    @classmethod
     def is_service_autostart_set_by_name(cls, service: str) -> bool:
         """
         This method returns the state of the auto start checkbox of the given service.
@@ -261,3 +280,71 @@ class System_Services:
                     print(f'Total wait: 20 seconds. Toggle still did not equal {state}')
                     break
         assert (COM.is_toggle_enabled(service_backend) is state)
+
+    @classmethod
+    def verify_edit_button_visible_by_servicename(cls, servicename: str) -> None:
+        name = cls.return_backend_service_name(servicename)
+        assert COM.is_visible(xpaths.common_xpaths.button_field(f'{name}-edit'))
+
+    @classmethod
+    def verify_ftp_service_basic_edit_ui(cls) -> None:
+        """
+        This method verifies the basic edit UI of the FTP service.
+        """
+        assert COM.is_visible(xpaths.common_xpaths.input_field('port')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('clients')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('ipconnections')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('loginattempt')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('timeout-notransfer')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('timeout')) is True
+
+    @classmethod
+    def verify_ftp_service_advanced_edit_ui(cls) -> None:
+        """
+        This method verifies the advanced edit UI of the FTP service.
+        """
+        cls.verify_ftp_service_basic_edit_ui()
+        assert COM.is_visible(xpaths.common_xpaths.input_field('port')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('defaultroot')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('rootlogin')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('onlyanonymous')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('onlylocal')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('ident')) is True
+        cls.verify_ftp_service_permission_tables_ui()
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('tls')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('passiveportsmin')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('passiveportsmax')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('fxp')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('resume')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('reversedns')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('masqaddress')) is True
+        assert COM.is_visible(xpaths.common_xpaths.textarea_field('banner')) is True
+        assert COM.is_visible(xpaths.common_xpaths.textarea_field('options')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('localuserbw')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('localuserdlbw')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('anonuserbw')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('anonuserdlbw')) is True
+
+    @classmethod
+    def verify_ftp_service_permission_tables_ui(cls) -> None:
+        """
+        This method verifies the file and directory permissions tables on the advanced FTP Edit UI.
+        """
+        assert COM.is_visible(xpaths.services.ftp_file_permissions_table_checkbox('user', 'read')) is True
+        assert COM.is_visible(xpaths.services.ftp_file_permissions_table_checkbox('user', 'write')) is True
+        assert COM.is_visible(xpaths.services.ftp_file_permissions_table_checkbox('user', 'execute')) is True
+        assert COM.is_visible(xpaths.services.ftp_file_permissions_table_checkbox('group', 'read')) is True
+        assert COM.is_visible(xpaths.services.ftp_file_permissions_table_checkbox('group', 'write')) is True
+        assert COM.is_visible(xpaths.services.ftp_file_permissions_table_checkbox('group', 'execute')) is True
+        assert COM.is_visible(xpaths.services.ftp_file_permissions_table_checkbox('other', 'read')) is True
+        assert COM.is_visible(xpaths.services.ftp_file_permissions_table_checkbox('other', 'write')) is True
+        assert COM.is_visible(xpaths.services.ftp_file_permissions_table_checkbox('other', 'execute')) is True
+        assert COM.is_visible(xpaths.services.ftp_directory_permissions_table_checkbox('user', 'read')) is True
+        assert COM.is_visible(xpaths.services.ftp_directory_permissions_table_checkbox('user', 'write')) is True
+        assert COM.is_visible(xpaths.services.ftp_directory_permissions_table_checkbox('user', 'execute')) is True
+        assert COM.is_visible(xpaths.services.ftp_directory_permissions_table_checkbox('group', 'read')) is True
+        assert COM.is_visible(xpaths.services.ftp_directory_permissions_table_checkbox('group', 'write')) is True
+        assert COM.is_visible(xpaths.services.ftp_directory_permissions_table_checkbox('group', 'execute')) is True
+        assert COM.is_visible(xpaths.services.ftp_directory_permissions_table_checkbox('other', 'read')) is True
+        assert COM.is_visible(xpaths.services.ftp_directory_permissions_table_checkbox('other', 'write')) is True
+        assert COM.is_visible(xpaths.services.ftp_directory_permissions_table_checkbox('other', 'execute')) is True

@@ -29,6 +29,16 @@ class Active_Directory:
         return Common.assert_text_is_visible(message)
 
     @classmethod
+    def click_advanced_options_button(cls) -> None:
+        """
+        This method clicks the Advanced Options button on the Active Directory Setup/Edit panel.
+
+        Example:
+            - Common.click_advanced_options_button()
+        """
+        Common.click_button('toggle-advanced')
+
+    @classmethod
     def click_leave_domain_button(cls):
         """
         This method clicks the Leave Domain button.
