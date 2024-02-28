@@ -65,7 +65,7 @@ class Common_SSH:
         SSH_Command_Line(f'rm * | grep file', private_config['SMB_ACL_IP'], user, 'testing')
 
     @classmethod
-    def get_checksum_of_file(cls, ip: str, filename: str, user: str = private_config["USERNAME"], password: str = private_config["PASSWORD"]) -> str:
+    def get_checksum_of_file(cls, ip: str, filename: str, user: str = private_config["SSH_USERNAME"], password: str = private_config["SSH_PASSWORD"]) -> str:
         """
         This method returns the checksum of the given file
 
@@ -79,11 +79,10 @@ class Common_SSH:
         """
 
         response = SSH_Command_Line(f'sha256sum {filename}', ip, user, password)
-        print("@@@ SHA: " + response.stdout)
         return response.stdout[0:response.stdout.index(" ")]
 
     @classmethod
-    def get_file_checksum(cls, filename: str, user: str = private_config["USERNAME"], password: str = private_config["PASSWORD"]) -> str:
+    def get_file_checksum(cls, filename: str, user: str = private_config["SSH_USERNAME"], password: str = private_config["SSH_PASSWORD"]) -> str:
         """
         This method returns the checksum of the given file
 
@@ -142,7 +141,7 @@ class Common_SSH:
         return (value in response.stdout) == bool(state)
 
     @classmethod
-    def get_remote_file_checksum(cls, filename: str, user: str = private_config["USERNAME"], password: str = private_config["PASSWORD"]) -> str:
+    def get_remote_file_checksum(cls, filename: str, user: str = private_config["SSH_USERNAME"], password: str = private_config["SSH_PASSWORD"]) -> str:
         """
         This method returns the checksum of the given file
 

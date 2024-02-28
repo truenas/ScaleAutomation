@@ -131,7 +131,6 @@ class Test_Rsync:
         response = SSHCOM.list_directory('/mnt/tank/rsync-enc/rsync-non', private_config['REP_DEST_IP'],
                                          'sshuser', 'testing')
         assert response.__contains__('newfile.txt')
-        print("@@@ REMOTE RESPONSE: " + response)
         assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-non/newfile.txt', 'sshuser', 'testing') == checksum
 
     @allure.tag("Create")
@@ -176,5 +175,4 @@ class Test_Rsync:
         response = SSHCOM.list_directory('/mnt/tank/rsync-enc/rsync-enc', private_config['REP_DEST_IP'],
                                          'sshuser', 'testing')
         assert response.__contains__('newfile.txt')
-        print("@@@ REMOTE RESPONSE: " + response)
         assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-enc/newfile.txt', 'sshuser', 'testing') == checksum
