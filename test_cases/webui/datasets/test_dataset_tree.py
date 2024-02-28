@@ -68,8 +68,8 @@ class Test_Dataset_Tree:
     def test_dataset_tree_storage(self):
         Navigation.navigate_to_datasets()
 
-        assert Datasets.get_dataset_size_usage_by_type('tank', 'USED')  != ""
-        assert Datasets.get_dataset_size_usage_by_type('tank', 'AVAILABLE')  != ""
+        assert Datasets.get_dataset_size_usage_by_type('tank', 'USED') != ""
+        assert Datasets.get_dataset_size_usage_by_type('tank', 'AVAILABLE') != ""
 
     @pytest.fixture(scope='function')
     def tear_down_class(self):

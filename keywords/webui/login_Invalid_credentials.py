@@ -1,7 +1,6 @@
 from helper.webui import WebUI
 import xpaths
 from keywords.webui.common import Common as COM
-from helper.global_config import private_config
 
 
 class Login_Invalid_Credentials:
