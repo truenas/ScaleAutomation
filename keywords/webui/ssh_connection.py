@@ -117,7 +117,7 @@ class SSH_Connection:
         Example:
             - SSH_Connection.click_edit_ssh_keypairs_download_private_key_button()
         """
-        assert COM.is_clickable(xpaths.common_xpaths.button_field('download-private-key'))
+        assert COM.is_visible(xpaths.common_xpaths.button_field('download-private-key'))
         COM.click_button('download-private-key')
         WebUI.delay(0.5)
 
@@ -129,7 +129,7 @@ class SSH_Connection:
         Example:
             - SSH_Connection.click_edit_ssh_keypairs_download_public_key_button()
         """
-        assert COM.is_clickable(xpaths.common_xpaths.button_field('download-public-key'))
+        assert COM.is_visible(xpaths.common_xpaths.button_field('download-public-key'))
         COM.click_button('download-public-key')
         WebUI.delay(0.5)
 
