@@ -31,3 +31,5 @@ def teardown_class():
     API_DELETE.delete_dataset('tank/rsync-enc')
     API_DELETE.delete_dataset('tank/rsync-non')
     API_DELETE.delete_remote_dataset('tank/rsync-enc')
+    API_DELETE.delete_ssh_connection('rsync-non-to-enc')
+    API_DELETE.delete_ssh_keypairs('rsync-non-to-enc')
