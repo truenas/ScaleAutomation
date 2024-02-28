@@ -1,6 +1,3 @@
-import pytest
-
-from helper.webui import WebUI
 from keywords.webui.apps import Apps
 from keywords.webui.common import Common as COM
 
