@@ -131,6 +131,7 @@ class Test_Rsync:
         response = SSHCOM.list_directory('/mnt/tank/rsync-enc/rsync-non', private_config['REP_DEST_IP'],
                                          'sshuser', 'testing')
         assert response.__contains__('newfile.txt')
+        print("@@@ REMOTE RESPONSE: " + response)
         assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-non/newfile.txt') == checksum
 
     @allure.tag("Create")
@@ -171,8 +172,9 @@ class Test_Rsync:
         assert not response.__contains__('newfile.txt')
         RSYNC.click_run_now_rsync_task_by_path('/mnt/tank/rsync-enc')
         assert RSYNC.get_rsync_status('/mnt/tank/rsync-enc') == 'SUCCESS'
-        # verify file does exist on remote dataset
+        # verify file does on remote dataset
         response = SSHCOM.list_directory('/mnt/tank/rsync-enc/rsync-enc', private_config['REP_DEST_IP'],
                                          'sshuser', 'testing')
         assert response.__contains__('newfile.txt')
+        print("@@@ REMOTE RESPONSE: " + response)
         assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-enc/newfile.txt') == checksum
