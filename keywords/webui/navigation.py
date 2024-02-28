@@ -1,5 +1,4 @@
 import xpaths
-from helper.global_config import shared_config
 from helper.reporting import take_screenshot, create_timestamp
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM

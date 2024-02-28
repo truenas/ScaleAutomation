@@ -19,7 +19,8 @@ class Test_Dataset_Default_UI:
         Datasets.assert_datasets_page_header()
         Datasets.click_dataset_location('tank')
 
-    def verify_dataset_search_and_tree(self):
+    @staticmethod
+    def verify_dataset_search_and_tree():
         """
         Verify that the search field and the dataset tree are visible.
         """
@@ -33,6 +34,7 @@ class Test_Dataset_Default_UI:
         """
         assert Common.is_card_visible(card) is True
 
+    @staticmethod
     def verify_dataset_default_buttons(self):
         """
         Verify that the dataset default buttons are visible.

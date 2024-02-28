@@ -1,12 +1,9 @@
 import pytest
 
 from helper.data_config import get_data_list
-from helper.global_config import private_config
-from keywords.webui.common import Common
 from keywords.webui.data_protection import Data_Protection as DP
 from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation
-from keywords.webui.replication import Replication
 from keywords.webui.ssh_connection import SSH_Connection as SSHCON
 
 
