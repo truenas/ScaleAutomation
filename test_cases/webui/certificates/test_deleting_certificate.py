@@ -1,3 +1,4 @@
+import allure
 import pytest
 from helper.data_config import get_data_list
 from keywords.api.delete import API_DELETE
@@ -6,6 +7,9 @@ from keywords.webui.certificates import Certificates
 from keywords.webui.navigation import Navigation
 
 
+@allure.tag("Deleting Certificates")
+@allure.epic("Credentials")
+@allure.feature("Certificates")
 class Test_Deleting_Certificate:
     """
     Test class for deleting certificate.
@@ -33,6 +37,8 @@ class Test_Deleting_Certificate:
             API_DELETE.delete_certificate_authority(ca_data['name'])
 
     @pytest.mark.parametrize('data', get_data_list('certificates')[0:3])
+    @allure.tag("Delete")
+    @allure.story("Delete Various Type Of Certificates")
     def test_deleting_certificate(self, data):
         """
         This method will delete the given certificate.

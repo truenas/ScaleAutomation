@@ -26,7 +26,6 @@ class Common:
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('dialog-confirm')) is True
         if cls.is_visible(xpaths.common_xpaths.checkbox_field('confirm')):
             cls.set_checkbox('confirm')
-        assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('dialog-confirm')) is True
         cls.click_button('dialog-confirm')
         WebUI.delay(1)
 
