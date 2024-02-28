@@ -435,7 +435,7 @@ class Certificates:
         Example:
             - Certificates.click_certificates_add_button()
         """
-        Common.click_on_element(xpaths.common_xpaths.button_field_by_row('add-certificate', 1))
+        Common.click_on_element(xpaths.common_xpaths.button_field('add-certificate'))
 
     @classmethod
     def click_certificate_options_back_button(cls) -> None:
@@ -477,7 +477,7 @@ class Certificates:
         Example:
             - Certificates.click_certificate_signing_requests_add_button()
         """
-        Common.click_on_element(xpaths.common_xpaths.button_field_by_row('add-certificate', 2))
+        Common.click_on_element(xpaths.common_xpaths.button_field('add-certificate-signing-request'))
 
     @classmethod
     def click_certificate_subject_next_button(cls) -> None:

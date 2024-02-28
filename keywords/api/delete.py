@@ -1,10 +1,11 @@
 from helper.api import GET, DELETE, PUT, Response
+from helper.global_config import shared_config
 from keywords.api.common import API_Common as API
 
 
 class API_DELETE:
     @classmethod
-    def delete_certificate(cls, cert_name: str) -> Response:
+    def delete_certificate(cls, cert_name: str) -> dict:
         """
         This method deletes the given certificate.
 
@@ -16,6 +17,8 @@ class API_DELETE:
             cert_id = response[0]['id']
             response = DELETE(f'/certificate/id/{cert_id}')
             assert response.status_code == 200, response.text
+            job_status = API.wait_on_job(response.json(), shared_config['LONG_WAIT'])
+            return job_status
         return response
 
     @classmethod
