@@ -1,9 +1,7 @@
 import pytest
 
-import xpaths
 from helper.data_config import get_data_list
 from helper.global_config import shared_config
-from helper.webui import WebUI
 from keywords.webui.apps import Apps
 from keywords.webui.common import Common as COM
 from keywords.webui.datasets import Datasets as DATASET

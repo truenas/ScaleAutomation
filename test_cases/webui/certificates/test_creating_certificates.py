@@ -1,7 +1,6 @@
 import pytest
 from helper.data_config import get_data_list
 from keywords.api.delete import API_DELETE
-from keywords.api.post import API_POST
 from keywords.webui.certificates import Certificates
 from keywords.webui.common import Common
 from keywords.webui.navigation import Navigation
@@ -98,8 +97,6 @@ class Test_Creating_Certificate:
         assert Certificates.assert_certificate_issuer(data['card'], data['certificate_issuer']) is True
         assert Certificates.assert_certificate_cn(data['card'], data['common_name']) is True
         assert Certificates.assert_certificate_san(data['card'], data['san']) is True
-
-
 
     @pytest.mark.parametrize('data', get_data_list('certificates')[0:1])
     def test_creating_a_certificate_signing_requests(self, data):
