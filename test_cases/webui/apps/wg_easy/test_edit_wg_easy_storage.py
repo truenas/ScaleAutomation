@@ -15,7 +15,7 @@ class Test_Edit_WG_Easy_Storage:
         COM.click_button('add-item-additional-storage')
         COM.set_input_field('mount-path', '/mnt/anywhere', True)
         COM.set_input_field('dataset-name', 'storage')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
         assert COM.assert_page_header('Installed')
         assert Apps.is_app_running('WG Easy')
 

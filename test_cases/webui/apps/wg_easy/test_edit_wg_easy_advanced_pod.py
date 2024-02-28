@@ -15,7 +15,7 @@ class Test_Edit_WG_Easy_Advanced_Pod:
         COM.click_button('add-item-dns-options')
         COM.set_input_field('name', 'Option Name')
         COM.set_input_field('value', 'Option Value')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
         assert COM.assert_page_header('Installed')
         assert Apps.is_app_running('WG Easy')
 
@@ -25,7 +25,7 @@ class Test_Edit_WG_Easy_Advanced_Pod:
         This test verifies the edited values of the app
         """
         Apps.edit_app('WG Easy')
-        Apps.navigate_to_app_section('Network Configuration')
+        Apps.navigate_to_app_section('Advanced Pod Configuration')
         assert COM.get_input_property('name') == 'Option Name'
         assert COM.get_input_property('value') == 'Option Value'
         COM.click_link('breadcrumb-applications')

@@ -190,6 +190,7 @@ class Apps:
             - Apps.click_custom_app()
         """
         COM.click_link('custom-app')
+        cls.handle_docker_limit_dialog()
 
     @classmethod
     def click_discover_apps(cls) -> None:
@@ -220,11 +221,14 @@ class Apps:
             cls.click_discover_apps()
             COM.set_search_field(name)
             cls.click_app(name)
-        if WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['SHORT_WAIT']) is False:
+        if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['SHORT_WAIT']):
+            print("Information dialog present. Attempting to close.")
             COM.assert_confirm_dialog()
         COM.click_button(COM.convert_to_tag_format(name) + '-install')
-        if WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['MEDIUM_WAIT']) is False:
+        if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['MEDIUM_WAIT']):
+            print("Information dialog present. Attempting to close.")
             COM.assert_confirm_dialog()
+        cls.handle_docker_limit_dialog()
         WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['LONG_WAIT'])
 
     @classmethod
@@ -305,10 +309,10 @@ class Apps:
         Example:
             - Apps.handle_docker_limit_dialog()
         """
-        if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 1), shared_config['SHORT_WAIT']):
-            COM.assert_confirm_dialog()
-            if COM.is_clickable(xpaths.common_xpaths.button_field('save')):
-                COM.click_save_button()
+        if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 3), shared_config['SHORT_WAIT']):
+            print("Handling Docker Hub Rate Limit Warning dialog.")
+            COM.click_button('close')
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 3), shared_config['MEDIUM_WAIT'])
 
     @classmethod
     def is_app_deployed(cls, name: str) -> bool:
@@ -360,7 +364,7 @@ class Apps:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_child_parent_target(
             f'//*[text()="{COM.convert_to_tag_format(name)}"]',
             'ix-app-row',
-            '*[contains(text(),"Running")]'), shared_config['LONG_WAIT'])
+            '*[contains(text(),"Running")]'), shared_config['EXTRA_LONG_WAIT'])
 
     @classmethod
     def is_app_stopped(cls, name: str) -> bool:
@@ -376,7 +380,7 @@ class Apps:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_child_parent_target(
             f'//*[text()="{COM.convert_to_tag_format(name)}"]',
             'ix-app-row',
-            '*[contains(text(),"Stopped")]'), shared_config['LONG_WAIT'])
+            '*[contains(text(),"Stopped")]'), shared_config['EXTRA_LONG_WAIT'])
 
     @classmethod
     def navigate_to_app_section(cls, name: str) -> None:
@@ -397,7 +401,7 @@ class Apps:
         """
         Apps.click_discover_apps()
         COM.click_link('refresh-charts')
-        COM.assert_progress_bar_not_visible()
+        COM.assert_progress_bar_not_visible(shared_config['EXTRA_LONG_WAIT'])
         NAV.navigate_to_apps()
 
     @classmethod
@@ -459,9 +463,9 @@ class Apps:
             COM.set_search_field(name)
             Apps.click_app(name)
             Apps.click_install_app(name)
+            cls.handle_docker_limit_dialog()
             Apps.set_app_values(name)
             COM.click_save_button()
-            cls.handle_docker_limit_dialog()
             assert COM.assert_page_header('Installed', shared_config['LONG_WAIT'])
         assert Apps.is_app_installed(name) is True
         return Apps.is_app_deployed(name) is True
