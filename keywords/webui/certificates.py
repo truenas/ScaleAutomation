@@ -29,7 +29,7 @@ class Certificates:
         return Common.assert_right_panel_header('Add Certificate Authority')
 
     @classmethod
-    def assert_add_certificate_side_panels_visible(cls) -> bool:
+    def assert_add_certificate_side_panel_visible(cls) -> bool:
         """
         This method verifies that the Add Certificate side panels are visible.
         :return: True if the Add Certificate side panels are visible, otherwise it returns False.
@@ -948,7 +948,7 @@ class Certificates:
         Example:
             - Certificates.select_signing_certificate_authority_option('letsencrypt')
         """
-        Common.select_option('signing', f'signing-{option}')
+        Common.select_option('signedby', f'signedby-{option}')
 
     @classmethod
     def select_usages_option(cls, option: str) -> None:
