@@ -33,7 +33,6 @@ class Test_Install_App:
         :param app_data: test data listing different apps to iterate through
         """
         Apps.click_install_app(app_data['app-name'])
-        # Apps.handle_docker_limit_dialog()
         Apps.set_app_values(app_data['app-name'])
         COM.click_save_button()
         Apps.handle_docker_limit_dialog()
