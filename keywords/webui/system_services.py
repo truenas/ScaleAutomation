@@ -282,12 +282,12 @@ class System_Services:
         assert (COM.is_toggle_enabled(service_backend) is state)
 
     @classmethod
-    def verify_edit_button_visible_by_servicename(cls, servicename: str):
+    def verify_edit_button_visible_by_servicename(cls, servicename: str) -> None:
         name = cls.return_backend_service_name(servicename)
         assert COM.is_visible(xpaths.common_xpaths.button_field(f'{name}-edit'))
 
     @classmethod
-    def verify_ftp_service_basic_edit_ui(cls):
+    def verify_ftp_service_basic_edit_ui(cls) -> None:
         """
         This method verifies the basic edit UI of the FTP service.
         """
@@ -299,7 +299,7 @@ class System_Services:
         assert COM.is_visible(xpaths.common_xpaths.input_field('timeout')) is True
 
     @classmethod
-    def verify_ftp_service_advanced_edit_ui(cls):
+    def verify_ftp_service_advanced_edit_ui(cls) -> None:
         """
         This method verifies the advanced edit UI of the FTP service.
         """
@@ -326,7 +326,7 @@ class System_Services:
         assert COM.is_visible(xpaths.common_xpaths.input_field('anonuserdlbw')) is True
 
     @classmethod
-    def verify_ftp_service_permission_tables_ui(cls):
+    def verify_ftp_service_permission_tables_ui(cls) -> None:
         """
         This method verifies the file and directory permissions tables on the advanced FTP Edit UI.
         """
