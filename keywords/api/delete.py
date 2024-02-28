@@ -1,18 +1,40 @@
 from helper.api import GET, DELETE, PUT, Response
+from helper.global_config import shared_config
+from helper.global_config import private_config
 from keywords.api.common import API_Common as API
 
 
 class API_DELETE:
     @classmethod
-    def delete_certificate_authority(cls, ca_id: int) -> Response:
+    def delete_certificate(cls, cert_name: str) -> dict:
+        """
+        This method deletes the given certificate.
+
+        :param cert_name: is name of the certificate.
+        :return: the API request response.
+        """
+        response = GET(f'/certificate?name={cert_name}').json()
+        if response:
+            cert_id = response[0]['id']
+            response = DELETE(f'/certificate/id/{cert_id}')
+            assert response.status_code == 200, response.text
+            job_status = API.wait_on_job(response.json(), shared_config['LONG_WAIT'])
+            return job_status
+        return response
+
+    @classmethod
+    def delete_certificate_authority(cls, ca_name: str) -> Response:
         """
         This method deletes the given certificate authority.
 
-        :param ca_id: is the id of the certificate authority.
+        :param ca_name: is name of the certificate authority.
         :return: the API request response.
         """
-        response = DELETE(f'/certificateauthority/id/{ca_id}')
-        assert response.status_code == 200, response.text
+        response = GET(f'/certificateauthority?name={ca_name}').json()
+        if response:
+            ca_id = response[0]['id']
+            response = DELETE(f'/certificateauthority/id/{ca_id}')
+            assert response.status_code == 200, response.text
         return response
 
     @classmethod
@@ -20,7 +42,7 @@ class API_DELETE:
         """
         This method deletes the given dataset.
 
-        :param name: is the share nome.
+        :param name: is the dataset name.
         :param recursive: is True to delete recursively.
         :param force: is True to force delete.
         :return: the API request response.
@@ -56,6 +78,44 @@ class API_DELETE:
             group_id = str(API.get_group_id(name))
             response = DELETE(f'/group/id/{group_id}')
             assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def delete_remote_dataset(cls, name: str, recursive: bool = False, force: bool = False) -> Response:
+        """
+        This method deletes the given remote dataset.
+
+        :param name: is the remote dataset name.
+        :param recursive: is True to delete recursively.
+        :param force: is True to force delete.
+        :return: the API request response.
+        """
+        name = name.replace('/', '%2F')
+        private_config['API_IP'] = private_config['REP_DEST_IP']
+        response = GET(f'/pool/dataset?name={name}').json()
+        private_config['API_IP'] = private_config['IP']
+        if response:
+            private_config['API_IP'] = private_config['REP_DEST_IP']
+            # response = DELETE(f'/pool/dataset/id/{name}', {'recursive': recursive, 'force': force})
+            response = cls.delete_dataset(name, recursive, force)
+            private_config['API_IP'] = private_config['IP']
+            assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def delete_remote_user(cls, name: str) -> Response:
+        """
+        This method deletes the user.
+
+        :param name: is name of the user.
+        :return: the API request response.
+
+        Example:
+            - API_DELETE.delete_remote_user('myUser')
+        """
+        private_config['API_IP'] = private_config['REP_DEST_IP']
+        response = cls.delete_user(name)
+        private_config['API_IP'] = private_config['IP']
         return response
 
     @classmethod
@@ -115,6 +175,9 @@ class API_DELETE:
 
         :param name: is name of the user.
         :return: the API request response.
+
+        Example:
+            - API_DELETE.delete_user('myUser')
         """
         response = GET(f'/user?username={name}').json()
         if response:

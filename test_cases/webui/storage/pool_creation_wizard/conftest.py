@@ -2,7 +2,6 @@ import pytest
 from helper.global_config import private_config
 from keywords.api.put import API_PUT
 from keywords.ssh.common import Common_SSH
-from keywords.webui.common import Common
 from keywords.webui.dashboard import Dashboard
 from keywords.webui.navigation import Navigation
 

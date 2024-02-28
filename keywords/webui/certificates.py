@@ -206,6 +206,18 @@ class Certificates:
         return Common.assert_label_and_value_exist('Basic Constraints:', constraints)
 
     @classmethod
+    def assert_confirm_common_name_option_value(cls, common_name: str) -> bool:
+        """
+        This method verifies that the Common Name value is correct.
+        :param common_name: The Common Name value.
+        :return: True if the Common Name value is correct, otherwise it returns False.
+
+        Example:
+            - Certificates.assert_confirm_common_name_option_value('common_name')
+        """
+        return Common.assert_label_and_value_exist('Common Name:', common_name)
+
+    @classmethod
     def assert_confirm_critical_extension_option_value(cls, critical_extension: str) -> bool:
         """
         This method verifies that the Critical Extension value is correct.
@@ -423,7 +435,7 @@ class Certificates:
         Example:
             - Certificates.click_certificates_add_button()
         """
-        Common.click_on_element(xpaths.common_xpaths.button_field_by_row('add-certificate', 1))
+        Common.click_on_element(xpaths.common_xpaths.button_field('add-certificate'))
 
     @classmethod
     def click_certificate_options_back_button(cls) -> None:
@@ -465,7 +477,7 @@ class Certificates:
         Example:
             - Certificates.click_certificate_signing_requests_add_button()
         """
-        Common.click_on_element(xpaths.common_xpaths.button_field_by_row('add-certificate', 2))
+        Common.click_on_element(xpaths.common_xpaths.button_field('add-certificate-signing-request'))
 
     @classmethod
     def click_certificate_subject_next_button(cls) -> None:
@@ -773,8 +785,6 @@ class Certificates:
             - Certificates.select_authority_key_config_option('authority-cert-issuer')
         """
         Common.select_option('authority-key-identifier', f'authority-key-identifier-{option}')
-        # required to close select option dropdown
-        Common.click_on_element(xpaths.common_xpaths.overlay_container)
 
     @classmethod
     def select_basic_constraints_config_option(cls, option: str) -> None:
@@ -787,8 +797,6 @@ class Certificates:
             - Certificates.select_basic_constraints_config_option('ca')
         """
         Common.select_option('basic-constraints', f'basic-constraints-{option}')
-        # required to close select option dropdown
-        Common.click_on_element(xpaths.common_xpaths.overlay_container)
 
     @classmethod
     def select_certificate_authority_profile_option(cls, option: str) -> None:
@@ -822,7 +830,7 @@ class Certificates:
         Example:
             - Certificates.select_certificates_type_option('select')
         """
-        Common.select_option('create-type', f'create-type{option}')
+        Common.select_option('create-type', f'create-type-{option}')
 
     @classmethod
     def select_country_option(cls, country: str) -> None:
@@ -1347,7 +1355,7 @@ class Certificates:
         Example:
             - Certificates.set_subject_alternative_name('www.example.com')
         """
-        Common.set_input_field('san', san)
+        Common.set_input_field('san', san, tab=True, pill=True)
 
     @classmethod
     def set_terms_of_service_checkbox(cls) -> None:

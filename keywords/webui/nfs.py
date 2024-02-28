@@ -33,7 +33,6 @@ class NFS:
         """
         return COM.is_visible(xpaths.common_xpaths.any_text('Network is required'))
 
-
     @classmethod
     def assert_error_nfs_share_mapall_user_override(cls) -> bool:
         """
@@ -88,7 +87,6 @@ class NFS:
         This method clicks the Add Hosts button on the NFS share edit panel.
         """
         COM.click_button('add-item-hosts')
-
 
     @classmethod
     def click_add_networks_button(cls):
