@@ -6,7 +6,6 @@ from keywords.webui.certificates import Certificates
 from keywords.webui.navigation import Navigation
 
 
-# @pytest.mark.parametrize('data', get_data_list('certificates'))
 class Test_Deleting_Certificate:
     """
     Test class for deleting certificate.
@@ -25,9 +24,13 @@ class Test_Deleting_Certificate:
             ca_data = get_data_list('certificates')[1]
             ca_id = API_POST.create_certificate_authority(ca_data).json()['id']
             API_POST.create_certificate(data, ca_id)
+
+    @pytest.fixture(scope='function', autouse=True)
+    def tear_down_test(self, data):
         yield
         if data['type'] == 'cert':
-            API_DELETE.delete_certificate_authority(ca_id)
+            ca_data = get_data_list('certificates')[1]
+            API_DELETE.delete_certificate_authority(ca_data['name'])
 
     @pytest.mark.parametrize('data', get_data_list('certificates')[0:3])
     def test_deleting_certificate(self, data):
