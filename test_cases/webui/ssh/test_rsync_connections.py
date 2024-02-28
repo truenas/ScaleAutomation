@@ -51,7 +51,7 @@ class Test_Rsync:
     @allure.story("Create a Rsync Task from non-encrypted to encrypted-locked")
     def test_create_rsync_non_to_encrypted_locked(self) -> None:
         """
-        This test verifies creating a new ssh connection
+        This test verifies Rsync Task from non-encrypted to encrypted-locked fails
         """
         # add connection and key pair if they don't already exist
         API_POST.lock_remote_dataset('tank/rsync-enc')
@@ -93,7 +93,7 @@ class Test_Rsync:
     @allure.story("Create a Rsync Task from non-encrypted to encrypted-unlocked")
     def test_create_rsync_non_to_encrypted_unlocked(self) -> None:
         """
-        This test verifies creating a new ssh connection
+        This test verifies Rsync Task from non-encrypted to encrypted-unlocked passes
         """
         # add connection and key pair if they don't already exist
         NAV.navigate_to_backup_credentials()
@@ -137,7 +137,7 @@ class Test_Rsync:
     @allure.story("Create a Rsync Task from encrypted-locked to encrypted-unlocked")
     def test_create_rsync_encrypted_locked_to_encrypted_unlocked(self) -> None:
         """
-        This test verifies creating a new ssh connection
+        This test verifies Rsync Task from encrypted-locked to encrypted-unlocked passes
         """
         # add connection and key pair if they don't already exist
         NAV.navigate_to_backup_credentials()
