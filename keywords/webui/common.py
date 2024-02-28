@@ -23,7 +23,7 @@ class Common:
         Example:
             - Common.assert_confirm_dialog()
         """
-        if cls.is_clickable(xpaths.common_xpaths.checkbox_field('confirm'), shared_config['SHORT_WAIT']):
+        if cls.is_visible(xpaths.common_xpaths.checkbox_field('confirm')):
             WebUI.xpath(xpaths.common_xpaths.checkbox_field('confirm')).click()
         WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('dialog-confirm'))
         WebUI.xpath(xpaths.common_xpaths.button_field('dialog-confirm')).click()
@@ -898,7 +898,7 @@ class Common:
         Example:
             - Common.set_input_field('myInput', 'text')
             - Common.set_input_field('myInput', 'text', True)
-            - Common.set_input_field('myInput', 'text', '', True)
+            - Common.set_input_field('myInput', 'text', '', True )
         """
         WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
         WebUI.wait_until_clickable(xpaths.common_xpaths.input_field(name))

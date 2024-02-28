@@ -3,7 +3,6 @@ import pytest
 
 from helper.cli import SSH_Command_Line
 from helper.global_config import private_config
-from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.ssh.common import Common_SSH as SSHCOM
 from keywords.webui.common import Common as COM
