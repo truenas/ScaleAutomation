@@ -145,7 +145,7 @@ def card_label_and_value(card_tile: str, label: str, value: str) -> str:
     :param value: text of the given value.
     :return: the xpath text of the given card label and value.
     """
-    return f'//mat-card[contains(text(),"{card_tile}")]//*[contains(.,"{label}") and contains(text(),"{value}")]'
+    return f'//mat-card[contains(.,"{card_tile}")]//*[contains(.,"{label}") and contains(.,"{value}")]'
 
 
 def card_title(text: str) -> str:

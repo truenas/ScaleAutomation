@@ -1,25 +1,39 @@
 from helper.api import GET, DELETE, PUT, Response
+from helper.global_config import shared_config
 from helper.global_config import private_config
 from keywords.api.common import API_Common as API
 
 
 class API_DELETE:
     @classmethod
-    def delete_share(cls, sharetype: str, name: str) -> Response:
+    def delete_certificate(cls, cert_name: str) -> dict:
         """
-        This method deletes the given share by given share type.
+        This method deletes the given certificate.
 
-        :param sharetype: is the type of the given share.
-        :param name: is the share nome.
+        :param cert_name: is name of the certificate.
         :return: the API request response.
         """
-        search = 'name='
-        if sharetype == 'nfs':
-            search = 'path=/mnt/'
-        response = GET(f'/sharing/{sharetype}?{search}{name}').json()
+        response = GET(f'/certificate?name={cert_name}').json()
         if response:
-            smb_id = str(API.get_id_by_type(f'/sharing/{sharetype}?', name))
-            response = DELETE(f'/sharing/{sharetype}/id/' + smb_id)
+            cert_id = response[0]['id']
+            response = DELETE(f'/certificate/id/{cert_id}')
+            assert response.status_code == 200, response.text
+            job_status = API.wait_on_job(response.json(), shared_config['LONG_WAIT'])
+            return job_status
+        return response
+
+    @classmethod
+    def delete_certificate_authority(cls, ca_name: str) -> Response:
+        """
+        This method deletes the given certificate authority.
+
+        :param ca_name: is name of the certificate authority.
+        :return: the API request response.
+        """
+        response = GET(f'/certificateauthority?name={ca_name}').json()
+        if response:
+            ca_id = response[0]['id']
+            response = DELETE(f'/certificateauthority/id/{ca_id}')
             assert response.status_code == 200, response.text
         return response
 
@@ -63,6 +77,25 @@ class API_DELETE:
         if response:
             group_id = str(API.get_group_id(name))
             response = DELETE(f'/group/id/{group_id}')
+            assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def delete_share(cls, sharetype: str, name: str) -> Response:
+        """
+        This method deletes the given share by given share type.
+
+        :param sharetype: is the type of the given share.
+        :param name: is the share nome.
+        :return: the API request response.
+        """
+        search = 'name='
+        if sharetype == 'nfs':
+            search = 'path=/mnt/'
+        response = GET(f'/sharing/{sharetype}?{search}{name}').json()
+        if response:
+            smb_id = str(API.get_id_by_type(f'/sharing/{sharetype}?', name))
+            response = DELETE(f'/sharing/{sharetype}/id/' + smb_id)
             assert response.status_code == 200, response.text
         return response
 
