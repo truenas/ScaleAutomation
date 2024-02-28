@@ -108,6 +108,7 @@ class SSH_Connection:
         """
         assert COM.is_visible(xpaths.common_xpaths.button_field('download-actions'))
         COM.click_button('download-actions')
+        WebUI.delay(0.2)
 
     @classmethod
     def click_edit_ssh_keypairs_download_private_key_button(cls) -> None:
