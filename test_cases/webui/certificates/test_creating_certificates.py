@@ -1,3 +1,4 @@
+import allure
 import pytest
 from helper.data_config import get_data_list
 from keywords.api.delete import API_DELETE
@@ -7,7 +8,10 @@ from keywords.webui.common import Common
 from keywords.webui.navigation import Navigation
 
 
-class Test_Creating_Certificate:
+@allure.tag("Creating Certificates")
+@allure.epic("Credentials")
+@allure.feature("Certificates")
+class Test_Creating_Certificates:
     """
     Test class for creating certificates
     """
@@ -36,7 +40,13 @@ class Test_Creating_Certificate:
                 API_DELETE.delete_certificate_authority(ca_data['name'])
 
     @pytest.mark.parametrize('data', get_data_list('certificates')[2:3])
+    @allure.tag("Create")
+    @allure.story("Create A Certificate")
     def test_creating_a_certificate(self, data):
+        """
+        This test creates a certificate with the given data and verify
+        that the certificate is created on the Certificates page.
+        """
         # Navigate to the Certificates page
         Navigation.navigate_to_certificates()
         assert Certificates.assert_certificates_page_header() is True
@@ -111,6 +121,8 @@ class Test_Creating_Certificate:
         assert Certificates.assert_certificate_san(data['card'], data['san']) is True
 
     @pytest.mark.parametrize('data', get_data_list('certificates')[1:2])
+    @allure.tag("Create")
+    @allure.story("Create A Certificate Authority")
     def test_creating_a_certificate_authority(self, data):
         """
         This test creates a Certificate Authority with the given data
@@ -188,6 +200,8 @@ class Test_Creating_Certificate:
         assert Certificates.assert_certificate_san(data['card'], data['san']) is True
 
     @pytest.mark.parametrize('data', get_data_list('certificates')[0:1])
+    @allure.tag("Create")
+    @allure.story("Create A Certificate Signing Request")
     def test_creating_a_certificate_signing_requests(self, data):
         """
         This test creates a Certificate Signing Request with the given data
