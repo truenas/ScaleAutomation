@@ -50,7 +50,7 @@ class Test_Edit_Webdav:
 
         # verify edited app values
         Apps.edit_app('WebDAV')
-        assert not COM.is_checked('http') is True
+        assert COM.is_checked('http') is False
         assert COM.is_checked('https') is True
         assert COM.get_input_property('certificate-id') == "'truenas_default' Certificate"
         assert COM.get_input_property('https-port') == '30035'
