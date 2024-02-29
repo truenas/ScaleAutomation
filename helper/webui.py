@@ -350,17 +350,10 @@ class WebUI(object):
             - WebUI.wait_until_visible('xpath', shared_config['SHORT_WAIT'])
         """
         wait = WebDriverWait(cls.web_driver, timeout)
-        obj = None
         try:
-            obj = WebUI.xpath(xpath)
-        except NoSuchElementException:
-            print("With initial check NoSuchElementException occurred trying to find object: " + xpath)
-            if obj is None:
-                try:
-                    return wait.until(EC.visibility_of_element_located((By.XPATH, xpath))).is_displayed()
-                except TimeoutException:
-                    return False
-        return obj.is_displayed()
+            return wait.until(EC.visibility_of_element_located((By.XPATH, xpath))).is_displayed()
+        except TimeoutException:
+            return False
 
     @classmethod
     def window_handles(cls) -> list:

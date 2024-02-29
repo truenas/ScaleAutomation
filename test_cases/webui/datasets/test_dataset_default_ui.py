@@ -35,7 +35,7 @@ class Test_Dataset_Default_UI:
         assert Common.is_card_visible(card) is True
 
     @staticmethod
-    def verify_dataset_default_buttons(self):
+    def verify_dataset_default_buttons():
         """
         Verify that the dataset default buttons are visible.
         """
