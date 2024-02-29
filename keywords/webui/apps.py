@@ -97,7 +97,9 @@ class Apps:
             case 'Running':
                 COM.set_checkbox(COM.convert_to_tag_format(name))
                 COM.click_button('bulk-actions-menu')
+                WebUI.delay(0.1)
                 COM.click_button('stop-selected')
+                WebUI.delay(0.1)
                 assert cls.is_app_stopped(name)
             case 'Stopped':
                 pass
@@ -113,12 +115,14 @@ class Apps:
             assert cls.is_app_stopped(name)
             COM.click_button('bulk-actions-menu')
             take_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu')
+            WebUI.delay(0.1)
             if WebUI.xpath(xpaths.common_xpaths.button_field('start-selected')).get_attribute('disabled'):
                 WebUI.refresh()
                 COM.set_checkbox(COM.convert_to_tag_format(name))
                 COM.click_button('bulk-actions-menu')
                 take_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu_2')
             COM.click_button('start-selected')
+            WebUI.delay(0.1)
             WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(
                 child,
                 parent,
@@ -148,7 +152,9 @@ class Apps:
             case 'Stopped':
                 COM.set_checkbox(COM.convert_to_tag_format(name))
                 COM.click_button('bulk-actions-menu')
+                WebUI.delay(0.1)
                 COM.click_button('start-selected')
+                WebUI.delay(0.1)
                 assert cls.is_app_running(name)
             case 'Running':
                 pass
@@ -160,7 +166,9 @@ class Apps:
         if cls.get_app_status(name) != 'Stopped':
             COM.set_checkbox(COM.convert_to_tag_format(name))
             COM.click_button('bulk-actions-menu')
+            WebUI.delay(0.1)
             COM.click_button('stop-selected')
+            WebUI.delay(0.1)
             assert WebUI.wait_until_visible(xpaths.common_xpaths.any_child_parent_target(
                 f'//*[text()="{COM.convert_to_tag_format(name)}"]',
                 'ix-app-row',
@@ -262,10 +270,11 @@ class Apps:
             NAV.navigate_to_apps()
         if COM.is_visible(xpaths.common_xpaths.checkbox_field(COM.convert_to_tag_format(name))):
             COM.set_checkbox(COM.convert_to_tag_format(name))
-            WebUI.wait_until_visible(xpaths.common_xpaths.button_field('bulk-actions-menu'))
+            WebUI.wait_until_visible(xpaths.common_xpaths.button_field('bulk-actions-menu'), shared_config['LONG_WAIT'])
             COM.click_button('bulk-actions-menu')
-            WebUI.wait_until_visible(xpaths.common_xpaths.button_field('delete-selected'))
+            assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('delete-selected'), shared_config['LONG_WAIT']) is True
             COM.click_button('delete-selected')
+            WebUI.delay(0.1)
             COM.assert_confirm_dialog()
             WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Deleting...', 1), shared_config['WAIT'])
         if COM.is_visible(xpaths.common_xpaths.button_field('bulk-actions-menu')):
@@ -351,7 +360,6 @@ class Apps:
         assert COM.assert_progress_bar_not_visible()
         if COM.is_visible(xpaths.common_xpaths.button_field("check-available-apps")):
             return False
-        # return WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//ix-app-row//div[contains(text(),"{COM.convert_to_tag_format(name)}")]'), shared_config['MEDIUM_WAIT'])
         return WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(COM.convert_to_tag_format(name)), shared_config['SHORT_WAIT'])
 
     @classmethod

@@ -8,7 +8,7 @@ from keywords.webui.common import Common as COM
 @allure.tag("Apps", "WG Easy")
 @allure.epic("Apps")
 @allure.feature("Apps-Edit")
-class Test_Edit_Webdav:
+class Test_Edit_WG_Easy:
 
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self):
@@ -29,7 +29,7 @@ class Test_Edit_Webdav:
 
     @allure.tag("Update")
     @allure.story("Edit App WG Easy values-Configuration")
-    def test_edit_webdav_app_configuration(self):
+    def test_edit_wg_easy_app_configuration(self):
         """
         This method verifies the WG Easy app configuration values can be edited
         """
@@ -59,7 +59,7 @@ class Test_Edit_Webdav:
 
     @allure.tag("Update")
     @allure.story("Edit App WG Easy values-Advanced Pod")
-    def test_edit_webdav_app_advanced_pod(self):
+    def test_edit_wg_easy_app_advanced_pod(self):
         """
         This method verifies the WG Easy app advanced pod values can be edited
         """
@@ -82,7 +82,7 @@ class Test_Edit_Webdav:
 
     @allure.tag("Update")
     @allure.story("Edit App WG Easy values-Network")
-    def test_edit_webdav_app_network(self):
+    def test_edit_wg_easy_app_network(self):
         """
         This method verifies the WG Easy app network values can be edited
         """
@@ -106,7 +106,7 @@ class Test_Edit_Webdav:
 
     @allure.tag("Update")
     @allure.story("Edit App WG Easy values-Storage")
-    def test_edit_webdav_app_storage(self):
+    def test_edit_wg_easy_app_storage(self):
         """
         This method verifies the WG Easy app storage values can be edited
         """
@@ -129,7 +129,7 @@ class Test_Edit_Webdav:
 
     @allure.tag("Update")
     @allure.story("Edit App WG Easy values-Resources")
-    def test_edit_webdav_app_resources(self):
+    def test_edit_wg_easy_app_resources(self):
         """
         This method verifies the WG Easy app resources values can be edited
         """
