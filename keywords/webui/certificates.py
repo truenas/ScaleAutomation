@@ -642,7 +642,7 @@ class Certificates:
         Example:
             - Certificates.click_certificate_authorities_sign_csr_button_by_name('ca_name')
         """
-        cls.click_the_field_button_by_card_certificate_name('ca', 'beenhere', certificate_name)
+        cls.click_the_field_button_by_card_certificate_name('ca', certificate_name, 'beenhere')
 
     @classmethod
     def click_the_certificates_delete_button_by_name(cls, certificate_name: str) -> None:
