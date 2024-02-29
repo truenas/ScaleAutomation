@@ -4,6 +4,7 @@ import xpaths
 from helper.global_config import private_config
 from helper.data_config import get_data_list
 from keywords.webui.common import Common as COM
+from keywords.webui.iscsi import iSCSI
 from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.system_services import System_Services as SERV
 
@@ -97,3 +98,16 @@ class Test_System_Services:
         COM.close_right_panel()
         assert COM.assert_page_header("Services") is True
 
+    def test_verify_iscsi_service_edit_ui(self):
+        """
+        This test verifies the edit UI for the iSCSI service.
+        """
+        SERV.click_edit_button_by_servicename('iSCSI')
+        iSCSI.verify_iscsi_sharing_configuration_page_opens()
+        iSCSI.verify_iscsi_global_configuration_ui()
+        iSCSI.verify_iscsi_configuration_tabs()
+        COM.click_button('wizard')
+        assert COM.assert_right_panel_header('iSCSI Wizard') is True
+        iSCSI.verify_iscsi_configuration_wizard_create_choose_block_device_ui()
+        COM.close_right_panel()
+        assert COM.assert_page_header("iSCSI") is True
