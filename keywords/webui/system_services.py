@@ -256,7 +256,6 @@ class System_Services:
         :param state: The state to toggle the service auto start status to.
         """
         service_backend = cls.return_backend_service_name(service)
-        print(f'Service: {service}')
         COM.set_checkbox_by_state(f'{service_backend}', state)
         assert (COM.is_checked(f'{service_backend}') is state)
 
@@ -270,7 +269,6 @@ class System_Services:
         :param error_dialog: If the service displays an error dialog upon starting.
         """
         service_backend = cls.return_backend_service_name(service)
-        print(f'Service: {service}')
         if COM.is_toggle_enabled(service_backend) is not state:
             COM.set_toggle_by_state(service_backend, state)
             if error_dialog | state is False:
