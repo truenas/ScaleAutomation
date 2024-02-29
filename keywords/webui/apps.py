@@ -2,8 +2,8 @@ import xpaths.common_xpaths
 from helper.global_config import shared_config
 from helper.webui import WebUI
 from helper.reporting import take_screenshot
+from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
-from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation as NAV
 import xpaths
 
@@ -245,6 +245,8 @@ class Apps:
             COM.select_option('pool', 'pool-tank')
             COM.click_button('choose')
             WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Configuring...', 1), shared_config['LONG_WAIT'])
+            WebUI.wait_until_visible('//*[@fonticon="mdi-check-circle"]', shared_config['LONG_WAIT'])
+            assert COM.is_visible(xpaths.common_xpaths.any_text('Apps Service Running'))
 
     @classmethod
     def delete_app(cls, name: str) -> None:
@@ -258,17 +260,18 @@ class Apps:
         """
         if COM.assert_page_header('Installed') is False:
             NAV.navigate_to_apps()
-        COM.set_checkbox(COM.convert_to_tag_format(name))
-        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('bulk-actions-menu'))
-        COM.click_button('bulk-actions-menu')
-        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('delete-selected'))
-        COM.click_button('delete-selected')
-        COM.assert_confirm_dialog()
-        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Deleting...', 1), shared_config['WAIT'])
+        if COM.is_visible(xpaths.common_xpaths.checkbox_field(COM.convert_to_tag_format(name))):
+            COM.set_checkbox(COM.convert_to_tag_format(name))
+            WebUI.wait_until_visible(xpaths.common_xpaths.button_field('bulk-actions-menu'))
+            COM.click_button('bulk-actions-menu')
+            WebUI.wait_until_visible(xpaths.common_xpaths.button_field('delete-selected'))
+            COM.click_button('delete-selected')
+            COM.assert_confirm_dialog()
+            WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Deleting...', 1), shared_config['WAIT'])
         if COM.is_visible(xpaths.common_xpaths.button_field('bulk-actions-menu')):
             WebUI.refresh()
             COM.assert_page_header('Installed')
-        assert not cls.is_app_installed(name)
+        assert cls.is_app_installed(name) is False
 
     @classmethod
     def edit_app(cls, name: str) -> None:
@@ -348,7 +351,8 @@ class Apps:
         assert COM.assert_progress_bar_not_visible()
         if COM.is_visible(xpaths.common_xpaths.button_field("check-available-apps")):
             return False
-        return WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//ix-app-row//div[contains(text(),"{COM.convert_to_tag_format(name)}")]'), shared_config['MEDIUM_WAIT'])
+        # return WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//ix-app-row//div[contains(text(),"{COM.convert_to_tag_format(name)}")]'), shared_config['MEDIUM_WAIT'])
+        return WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(COM.convert_to_tag_format(name)), shared_config['SHORT_WAIT'])
 
     @classmethod
     def is_app_running(cls, name: str) -> bool:
@@ -433,7 +437,7 @@ class Apps:
             - Apps.set_webdav_fields('WebDAV')
         """
         name = COM.convert_to_tag_format(name)
-        DATASET.create_dataset_by_api('tank/' + name)
+        API_POST.create_dataset(f'tank/{name}')
         COM.click_button('add-item-shares')
         COM.set_input_field('name', name)
         COM.set_input_field('host-path', '/mnt/tank/' + name, True)
@@ -469,4 +473,3 @@ class Apps:
             assert COM.assert_page_header('Installed', shared_config['LONG_WAIT'])
         assert Apps.is_app_installed(name) is True
         return Apps.is_app_deployed(name) is True
-
