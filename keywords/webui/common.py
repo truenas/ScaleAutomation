@@ -447,8 +447,8 @@ class Common:
             - Common.get_element_property('//myButton', 'disabled')
             - Common.get_element_property('//myCheckbox', 'checked')
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(xpath))
-        return WebUI.xpath(xpaths.common_xpaths.any_xpath(xpath)).get_property(prop)
+        assert WebUI.wait_until_presence_is_located(xpath) is True
+        return WebUI.xpath(xpath).get_property(prop)
 
     @classmethod
     def get_input_property(cls, name: str, prop: str = 'value') -> str | bool:
@@ -880,10 +880,14 @@ class Common:
             - Common.set_checkbox_by_state('myCheckbox', False)
             - Common.set_checkbox_by_state('myCheckbox', True)
         """
+        print('before first wait')
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name)) is True
+        print('after first wait')
         if cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is not state:
             WebUI.xpath(xpaths.common_xpaths.checkbox_field(name)).click()
+        print('before assert')
         assert cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is state
+        print('after assert')
 
     @classmethod
     def set_input_field(cls, name: str, value: str, tab: bool = False, pill: bool = False) -> None:

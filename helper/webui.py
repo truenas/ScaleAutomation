@@ -336,6 +336,27 @@ class WebUI(object):
         return wait.until(EC.number_of_windows_to_be(number))
 
     @classmethod
+    def wait_until_presence_is_located(cls, xpath: str, timeout: int = shared_config['WAIT']) -> bool:
+        """
+        This method return True if the xpath element is present before timeout otherwise it returns False.
+
+        :param xpath: is the xpath to wait to be present.
+        :param timeout: is optional and is the number of second to wait before timeout, it is defaulted to
+        shared_config['WAIT'].
+        :return: True if the xpath element is present before timeout otherwise it returns False.
+
+        Example:
+            - WebUI.wait_until_present('xpath')
+            - WebUI.wait_until_present('xpath', shared_config['SHORT_WAIT'])
+        """
+        wait = WebDriverWait(cls.web_driver, timeout)
+        try:
+            wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+            return True
+        except TimeoutException:
+            return False
+
+    @classmethod
     def wait_until_visible(cls, xpath: str, timeout: int = shared_config['WAIT']) -> bool:
         """
         This method return True if the xpath element is visible before timeout otherwise it returns False.
