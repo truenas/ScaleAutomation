@@ -354,8 +354,8 @@ class Common:
         Example:
             - Common.close_right_panel()
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.close_right_panel(), shared_config['MEDIUM_WAIT']).click()
-        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.close_right_panel())
+        cls.click_on_element(xpaths.common_xpaths.close_right_panel())
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.close_right_panel()) is True
 
     @classmethod
     def convert_to_tag_format(cls, name: str) -> str:
