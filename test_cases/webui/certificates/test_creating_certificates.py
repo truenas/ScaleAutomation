@@ -269,5 +269,3 @@ class Test_Creating_Certificates:
         assert Certificates.assert_certificate_issuer(data['card'], data['certificate_issuer']) is True
         assert Certificates.assert_certificate_cn(data['card'], data['common_name']) is True
         assert Certificates.assert_certificate_san(data['card'], data['san']) is True
-
-
