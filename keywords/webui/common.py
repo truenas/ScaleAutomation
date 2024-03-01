@@ -222,7 +222,7 @@ class Common:
             - Common.cancel_confirm_dialog()
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('dialog-cancel')) is True
-        WebUI.xpath(xpaths.common_xpaths.button_field('dialog-cancel')).click()
+        cls.click_button('dialog-cancel')
         WebUI.delay(1)
 
     @classmethod
@@ -321,7 +321,7 @@ class Common:
             - Common.click_next_button()
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('next'), shared_config['MEDIUM_WAIT']) is True
-        WebUI.xpath(xpaths.common_xpaths.button_field('next')).click()
+        cls.click_button('next')
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT']) is True
         assert cls.assert_text_is_visible('What and Where')
 
@@ -866,7 +866,8 @@ class Common:
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_by_row(name, row)) is True
         if cls.get_element_property(xpaths.common_xpaths.checkbox_field_by_row_attribute(name, row), 'checked') is not state:
-            WebUI.xpath(xpaths.common_xpaths.checkbox_field_by_row(name, row)).click()
+            obj = WebUI.xpath(xpaths.common_xpaths.checkbox_field_by_row(name, row))
+            obj.click()
         assert cls.get_element_property(xpaths.common_xpaths.checkbox_field_by_row_attribute(name, row), 'checked') is state
 
     @classmethod
@@ -883,7 +884,8 @@ class Common:
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name)) is True
         if cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is not state:
-            WebUI.xpath(xpaths.common_xpaths.checkbox_field(name)).click()
+            obj = WebUI.xpath(xpaths.common_xpaths.checkbox_field(name))
+            obj.click()
         assert cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is state
 
     @classmethod
@@ -939,7 +941,7 @@ class Common:
         WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
         WebUI.xpath(xpaths.common_xpaths.input_field('username')).send_keys(username)
         WebUI.xpath(xpaths.common_xpaths.input_field('password')).send_keys(password)
-        WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
+        cls.click_button('log-in')
         assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('log-in')) is True
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('power-menu')) is True
 

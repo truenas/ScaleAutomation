@@ -55,10 +55,11 @@ class Replication:
             - Replication.delete_replication_task_by_name('myRepTask')
         """
         if cls.is_replication_task_visible(name):
-            WebUI.xpath(xpaths.common_xpaths.any_child_parent_target(
+            obj = WebUI.xpath(xpaths.common_xpaths.any_child_parent_target(
                     f'//*[contains(text(),"{name}")]',
                     'tr',
-                    f'button[contains(@data-test,"-delete")]')).click()
+                    f'button[contains(@data-test,"-delete")]'))
+            obj.click()
             COM.assert_confirm_dialog()
 
     @classmethod

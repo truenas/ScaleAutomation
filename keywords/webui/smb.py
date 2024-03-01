@@ -44,7 +44,7 @@ class SMB:
 
         :param name: name of the given share
         """
-        WebUI.xpath(xpaths.common_xpaths.button_field(f'card-smb-share-{name.lower()}-security-row-action')).click()
+        COM.click_button(f'card-smb-share-{name.lower()}-security-row-action')
         assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit ACL', 1)) is True
 
     @classmethod
@@ -52,7 +52,8 @@ class SMB:
         """
         This method deletes the given share on the Shares page
         """
-        WebUI.xpath(xpaths.common_xpaths.button_share_action_by_name(sharetype, name, action)).click()
+        obj = WebUI.xpath(xpaths.common_xpaths.button_share_action_by_name(sharetype, name, action))
+        obj.click()
         COM.assert_confirm_dialog()
 
     @classmethod
@@ -84,9 +85,11 @@ class SMB:
         :param name: name of the account to ignore
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('ignore-list'))
-        WebUI.xpath(xpaths.common_xpaths.input_field('ignore-list')).click()
+        obj = WebUI.xpath(xpaths.common_xpaths.input_field('ignore-list'))
+        obj.click()
         name = COM.convert_to_tag_format('ignore-list-'+name)
-        WebUI.xpath(xpaths.common_xpaths.option_field(name)).click()
+        obj = WebUI.xpath(xpaths.common_xpaths.option_field(name))
+        obj.click()
 
     @classmethod
     def set_share_purpose(cls, purpose: str) -> None:
@@ -94,9 +97,11 @@ class SMB:
         This method sets the purpose for the share on the Edit Share right panel
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.select_field('purpose')) is True
-        WebUI.xpath(xpaths.common_xpaths.select_field('purpose')).click()
+        obj = WebUI.xpath(xpaths.common_xpaths.select_field('purpose'))
+        obj.click()
         purpose = purpose.replace(' ', '-').lower()
-        WebUI.xpath(xpaths.common_xpaths.option_field('purpose-' + purpose)).click()
+        obj = WebUI.xpath(xpaths.common_xpaths.option_field('purpose-' + purpose))
+        obj.click()
 
     @classmethod
     def set_smb_acl_by_api(cls, name: str):
@@ -115,6 +120,9 @@ class SMB:
         :param name: name of the account to watch
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('watch-list'))
-        WebUI.xpath(xpaths.common_xpaths.input_field('watch-list')).click()
+        obj = WebUI.xpath(xpaths.common_xpaths.input_field('watch-list'))
+        obj.click()
+
         name = COM.convert_to_tag_format('watch-list-'+name)
-        WebUI.xpath(xpaths.common_xpaths.option_field(name)).click()
+        obj = WebUI.xpath(xpaths.common_xpaths.option_field(name))
+        obj.click()

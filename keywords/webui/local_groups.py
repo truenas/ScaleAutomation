@@ -288,7 +288,8 @@ class Local_Groups:
          - Local_Users.delete_group_allowed_sudo_command('/usr/sbin/zfs')
         """
         if COM.is_visible(xpaths.common_xpaths.any_pill_delete('sudo-commands', command)):
-            WebUI.xpath(xpaths.common_xpaths.any_pill_delete('sudo-commands', command)).click()
+            obj = WebUI.xpath(xpaths.common_xpaths.any_pill_delete('sudo-commands', command))
+            obj.click()
         assert not COM.is_visible(xpaths.common_xpaths.any_pill('sudo-commands', command))
 
     @classmethod
@@ -302,7 +303,8 @@ class Local_Groups:
          - Local_Users.delete_group_allowed_sudo_command_no_password('/usr/sbin/zfs')
         """
         if COM.is_visible(xpaths.common_xpaths.any_pill_delete('sudo-commands-nopasswd', command)):
-            WebUI.xpath(xpaths.common_xpaths.any_pill_delete('sudo-commands-nopasswd', command)).click()
+            obj = WebUI.xpath(xpaths.common_xpaths.any_pill_delete('sudo-commands-nopasswd', command))
+            obj.click()
         assert not COM.is_visible(xpaths.common_xpaths.any_pill('sudo-commands-nopasswd', command))
 
     @classmethod
@@ -349,7 +351,8 @@ class Local_Groups:
          - Local_Groups.expand_group_by_name('group_name')
         """
         group_name = COM.convert_to_tag_format(group_name)
-        WebUI.xpath(xpaths.common_xpaths.any_data_test(f'row-{group_name}')).click()
+        obj = WebUI.xpath(xpaths.common_xpaths.any_data_test(f'row-{group_name}'))
+        obj.click()
 
     @classmethod
     def get_group_list_allow_sudo_commands(cls, group) -> str:
