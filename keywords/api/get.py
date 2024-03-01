@@ -3,7 +3,7 @@ from helper.api import GET, Response
 
 class API_GET:
     @classmethod
-    def get_system_product_name(self) -> Response:
+    def get_system_product_name(cls) -> Response:
         """
         This method gets the system product name.
 
@@ -16,7 +16,7 @@ class API_GET:
         return response
 
     @classmethod
-    def get_system_product_type(self) -> Response:
+    def get_system_product_type(cls) -> Response:
         """
         This method gets the system product type.
 
@@ -29,7 +29,7 @@ class API_GET:
         return response
 
     @classmethod
-    def get_system_version(self) -> Response:
+    def get_system_version(cls) -> Response:
         """
         This method gets the system version.
 
@@ -42,7 +42,7 @@ class API_GET:
         return response
 
     @classmethod
-    def get_system_version_short(self) -> Response:
+    def get_system_version_short(cls) -> Response:
         """
         This method gets the system version short.
 

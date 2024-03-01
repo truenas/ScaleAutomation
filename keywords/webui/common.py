@@ -941,7 +941,7 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.input_field('password')).send_keys(password)
         WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
         assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('log-in')) is True
-        assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('power-menu')) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('power-menu')) is True
 
     @classmethod
     def set_search_field(cls, text: str) -> None:
