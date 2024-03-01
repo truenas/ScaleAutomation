@@ -1131,8 +1131,7 @@ class Datasets:
         Example:
             - Dataset.select_dataset('test-dataset')
         """
-        obj = WebUI.xpath(xpaths.datasets.link_dataset(dataset_name))
-        obj.click()
+        Common.click_on_element(f'//ix-dataset-node//*[contains(text(),"{dataset_name}")]')
         WebUI.delay(0.5)
 
     @classmethod

@@ -288,8 +288,7 @@ class Local_Groups:
          - Local_Users.delete_group_allowed_sudo_command('/usr/sbin/zfs')
         """
         if COM.is_visible(xpaths.common_xpaths.any_pill_delete('sudo-commands', command)):
-            obj = WebUI.xpath(xpaths.common_xpaths.any_pill_delete('sudo-commands', command))
-            obj.click()
+            COM.click_on_element(xpaths.common_xpaths.any_pill_delete('sudo-commands', command))
         assert not COM.is_visible(xpaths.common_xpaths.any_pill('sudo-commands', command))
 
     @classmethod
@@ -303,8 +302,7 @@ class Local_Groups:
          - Local_Users.delete_group_allowed_sudo_command_no_password('/usr/sbin/zfs')
         """
         if COM.is_visible(xpaths.common_xpaths.any_pill_delete('sudo-commands-nopasswd', command)):
-            obj = WebUI.xpath(xpaths.common_xpaths.any_pill_delete('sudo-commands-nopasswd', command))
-            obj.click()
+            COM.click_on_element(xpaths.common_xpaths.any_pill_delete('sudo-commands-nopasswd', command))
         assert not COM.is_visible(xpaths.common_xpaths.any_pill('sudo-commands-nopasswd', command))
 
     @classmethod
@@ -351,8 +349,7 @@ class Local_Groups:
          - Local_Groups.expand_group_by_name('group_name')
         """
         group_name = COM.convert_to_tag_format(group_name)
-        obj = WebUI.xpath(xpaths.common_xpaths.any_data_test(f'row-{group_name}'))
-        obj.click()
+        COM.click_on_element(f'//*[@data-test="row-{group_name}"]')
 
     @classmethod
     def get_group_list_allow_sudo_commands(cls, group) -> str:
@@ -495,10 +492,8 @@ class Local_Groups:
         Example:
             - Local_Groups.select_group_privileges('Read-Only Administrator')
         """
-        obj = WebUI.wait_until_clickable(xpaths.common_xpaths.input_field('privileges'), shared_config['SHORT_WAIT'])
-        obj.click()
-        obj = WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{privilege}")]'), shared_config['SHORT_WAIT'])
-        obj.click()
+        COM.click_on_element(f'//*[@data-test="input-privileges"]')
+        COM.click_on_element(f'//mat-option[contains(.,"{privilege}")]')
 
     @classmethod
     def set_allow_duplicate_gids(cls) -> None:
@@ -651,7 +646,5 @@ class Local_Groups:
         Example:
             - Local_Groups.select_group_items_per_page('20')
         """
-        obj = WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath('//mat-select'), shared_config['SHORT_WAIT'])
-        obj.click()
-        obj = WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{option}")]'), shared_config['SHORT_WAIT'])
-        obj.click()
+        COM.click_on_element('//mat-select')
+        COM.click_on_element(f'//mat-option[contains(.,"{option}")]')

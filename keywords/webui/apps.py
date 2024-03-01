@@ -31,8 +31,7 @@ class Apps:
 
             if key in shared_config['CUSTOM_APP_UI_LEGEND_LIST']:
                 test_obj = xpaths.common_xpaths.any_xpath(f'//legend[contains(text(),"{text}")]')
-                obj = WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[@class="section ng-star-inserted" and contains(text(),"{text}")]'))
-                obj.click()
+                COM.click_on_element(f'//*[@class="section ng-star-inserted" and contains(text(),"{text}")]')
             if key in shared_config['CUSTOM_APP_UI_BUTTON_LIST']:
                 test_obj = xpaths.common_xpaths.button_field(f'add-item-{text}')
                 click_add_button = True
@@ -407,8 +406,7 @@ class Apps:
         Example:
             - Apps.navigate_to_app_section('WG Easy')
         """
-        obj = WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[@class="section ng-star-inserted" and contains(text(),"{name}")]'))
-        obj.click()
+        COM.click_on_element(f'//*[@class="section ng-star-inserted" and contains(text(),"{name}")]')
 
     @classmethod
     def refresh_charts(cls):

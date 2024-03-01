@@ -18,8 +18,7 @@ class Local_Users:
          - Local_Users.add_user_auxiliary_group('wheel')
         """
         COM.click_on_element(xpaths.common_xpaths.input_field('groups'))
-        obj = WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{group}")]'))
-        obj.click()
+        COM.click_on_element(f'//mat-option[contains(.,"{group}")]')
         WebUI.delay(0.5)
 
     @classmethod
@@ -484,8 +483,7 @@ class Local_Users:
             cls.click_user_delete_button(cls.get_username_from_full_name(fullname))
             if primary_group:
                 if COM.is_visible(xpaths.common_xpaths.checkbox_field('delete-primary-group')):
-                    obj = WebUI.xpath(xpaths.common_xpaths.checkbox_field('delete-primary-group'))
-                    obj.click()
+                    COM.click_on_element(f'//*[@data-test="checkbox-delete-primary-group"]')
             COM.click_button('delete')
             COM.assert_page_header('Users')
             WebUI.delay(0.5)
@@ -525,8 +523,7 @@ class Local_Users:
         name = cls.get_username_from_full_name(fullname)
         name = COM.convert_to_tag_format(name)
         if COM.is_visible(xpaths.common_xpaths.button_field('edit-' + name)) is False:
-            obj = WebUI.xpath(xpaths.common_xpaths.any_text(fullname))
-            obj.click()
+            COM.click_on_element(f'//*[contains(text(),"{fullname}")]')
 
     @classmethod
     def get_username_from_full_name(cls, fullname: str) -> str:
@@ -823,8 +820,7 @@ class Local_Users:
          - Local_Users.set_user_primary_group('wheel')
         """
         COM.set_input_field('group', group)
-        obj = WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{group}")]'))
-        obj.click()
+        COM.click_on_element(f'//mat-option[contains(.,"{group}")]')
 
     @classmethod
     def set_user_samba_authentication_checkbox(cls) -> None:

@@ -124,8 +124,7 @@ class Login_Page_Ui:
         :return: true if iXSystem link is correct
         """
         assert WebUI.current_url() == 'http://'+private_config["IP"]+'/ui/sessions/signin'
-        obj = WebUI.xpath(xpaths.common_xpaths.any_xpath('//img[@src="assets/images/ix_logo_full.png"]'))
-        obj.click()
+        COM.click_on_element('//img[@src="assets/images/ix_logo_full.png"]')
 
         # verify still on current page
         assert WebUI.current_url() == 'http://'+private_config["IP"]+'/ui/sessions/signin'

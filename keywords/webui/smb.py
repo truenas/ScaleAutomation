@@ -52,8 +52,7 @@ class SMB:
         """
         This method deletes the given share on the Shares page
         """
-        obj = WebUI.xpath(xpaths.common_xpaths.button_share_action_by_name(sharetype, name, action))
-        obj.click()
+        COM.click_on_element(xpaths.common_xpaths.button_share_action_by_name(sharetype, name, action))
         COM.assert_confirm_dialog()
 
     @classmethod
@@ -85,11 +84,9 @@ class SMB:
         :param name: name of the account to ignore
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('ignore-list'))
-        obj = WebUI.xpath(xpaths.common_xpaths.input_field('ignore-list'))
-        obj.click()
+        COM.click_on_element(f'//*[@data-test="input-ignore-list"]')
         name = COM.convert_to_tag_format('ignore-list-'+name)
-        obj = WebUI.xpath(xpaths.common_xpaths.option_field(name))
-        obj.click()
+        COM.click_on_element(f'//*[@data-test="option-{name}"]')
 
     @classmethod
     def set_share_purpose(cls, purpose: str) -> None:
@@ -97,11 +94,9 @@ class SMB:
         This method sets the purpose for the share on the Edit Share right panel
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.select_field('purpose')) is True
-        obj = WebUI.xpath(xpaths.common_xpaths.select_field('purpose'))
-        obj.click()
+        COM.click_on_element(f'//*[@data-test="select-purpose"]')
         purpose = purpose.replace(' ', '-').lower()
-        obj = WebUI.xpath(xpaths.common_xpaths.option_field('purpose-' + purpose))
-        obj.click()
+        COM.click_on_element(f'//*[@data-test="option-purpose-{purpose}"]')
 
     @classmethod
     def set_smb_acl_by_api(cls, name: str):
@@ -120,9 +115,7 @@ class SMB:
         :param name: name of the account to watch
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('watch-list'))
-        obj = WebUI.xpath(xpaths.common_xpaths.input_field('watch-list'))
-        obj.click()
+        COM.click_on_element(f'//*[@data-test="input-watch-list"]')
 
         name = COM.convert_to_tag_format('watch-list-'+name)
-        obj = WebUI.xpath(xpaths.common_xpaths.option_field(name))
-        obj.click()
+        COM.click_on_element(f'//*[@data-test="option-{name}"]')

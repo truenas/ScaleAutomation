@@ -272,8 +272,7 @@ class Common:
         Example:
             - Common.click_cancel_button()
         """
-        obj = WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('cancel'), shared_config['SHORT_WAIT'])
-        obj.click()
+        cls.click_button('cancel')
 
     @classmethod
     def click_link(cls, name: str) -> None:
@@ -866,8 +865,7 @@ class Common:
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_by_row(name, row)) is True
         if cls.get_element_property(xpaths.common_xpaths.checkbox_field_by_row_attribute(name, row), 'checked') is not state:
-            obj = WebUI.xpath(xpaths.common_xpaths.checkbox_field_by_row(name, row))
-            obj.click()
+            cls.click_on_element(f'(//*[@data-test="checkbox-{name}"])[{row}]')
         assert cls.get_element_property(xpaths.common_xpaths.checkbox_field_by_row_attribute(name, row), 'checked') is state
 
     @classmethod
@@ -884,8 +882,7 @@ class Common:
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name)) is True
         if cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is not state:
-            obj = WebUI.xpath(xpaths.common_xpaths.checkbox_field(name))
-            obj.click()
+            cls.click_on_element(f'//*[@data-test="checkbox-{name}"]')
         assert cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is state
 
     @classmethod
