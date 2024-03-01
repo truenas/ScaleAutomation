@@ -1,6 +1,7 @@
 import allure
 from keywords.webui.dashboard import Dashboard
 
+
 @allure.tag('Dashboard')
 @allure.epic('Dashboard')
 @allure.feature('CPU Card')
