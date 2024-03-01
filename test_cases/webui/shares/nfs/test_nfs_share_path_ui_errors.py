@@ -45,7 +45,6 @@ def test_nfs_share_path_ui_errors(nfs_data) -> None:
     COM.click_save_button()
 
     # Assert error message displays and saving disabled
-    COM.print_defect_and_screenshot('NAS-127220')
     assert NFS.assert_error_nfs_share_path_duplicate(nfs_data['share_page_path_alt'])
     assert COM.is_save_button_disabled()
 
