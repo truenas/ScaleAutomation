@@ -62,7 +62,7 @@ class Test_Active_Directory:
         # Navigate to directory services page.
         Navigation.navigate_to_directory_services()
 
-        # Click on the active directory settings button and setup the active directory.
+        # Click on the active directory settings button and set up the active directory.
         Directory_Services.click_configure_active_directory_button()
         assert Active_Directory.is_edit_active_directory_visible()
         Active_Directory.set_domain_name(ad_data['domain'])
@@ -89,7 +89,7 @@ class Test_Active_Directory:
         # Navigate to directory services page.
         Navigation.navigate_to_directory_services()
 
-        # Click on the active directory settings button and setup the active directory.
+        # Click on the active directory settings button and set up the active directory.
         Directory_Services.click_configure_active_directory_button()
         assert Active_Directory.is_edit_active_directory_visible() is True
         Active_Directory.set_domain_name(ad_data['domain'])

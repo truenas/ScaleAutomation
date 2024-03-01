@@ -64,7 +64,7 @@ class Data_Protection:
                 COM.click_button('delete-selected')
                 COM.set_checkbox('confirm')
                 COM.click_button('delete')
-                # delay to allow delete to complete
+                # delay to allow 'delete' to complete
                 assert COM.is_visible(xpaths.common_xpaths.button_field('close')) is True
                 COM.click_button('close')
                 COM.assert_text_is_visible('No records have been added yet')
