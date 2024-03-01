@@ -45,7 +45,7 @@ class SMB:
         :param name: name of the given share
         """
         WebUI.xpath(xpaths.common_xpaths.button_field(f'card-smb-share-{name.lower()}-security-row-action')).click()
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit ACL', 1))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit ACL', 1)) is True
 
     @classmethod
     def delete_share_by_name(cls, sharetype: str, name: str, action: str) -> None:
@@ -93,7 +93,7 @@ class SMB:
         """
         This method sets the purpose for the share on the Edit Share right panel
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.select_field('purpose'))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.select_field('purpose')) is True
         WebUI.xpath(xpaths.common_xpaths.select_field('purpose')).click()
         purpose = purpose.replace(' ', '-').lower()
         WebUI.xpath(xpaths.common_xpaths.option_field('purpose-' + purpose)).click()
@@ -118,4 +118,3 @@ class SMB:
         WebUI.xpath(xpaths.common_xpaths.input_field('watch-list')).click()
         name = COM.convert_to_tag_format('watch-list-'+name)
         WebUI.xpath(xpaths.common_xpaths.option_field(name)).click()
-

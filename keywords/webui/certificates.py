@@ -173,7 +173,7 @@ class Certificates:
         """
         This method verifies that the given certificate SAN is visible in the card.
         :param card_tile: The card tile name.
-        :param san: The SAN of the certificate.
+        :param san: The 'SAN' of the certificate.
         :return: True if the given certificate SAN is visible in the card, otherwise it returns False.
 
         Example:
@@ -1281,7 +1281,7 @@ class Certificates:
     @classmethod
     def set_renew_certificate_days(cls, days: int) -> None:
         """
-        This method sets the renew certificate days input field.
+        This method sets the 'renew certificate' days input field.
         :param days: The numbers of days to renew the certificate.
 
         Example:

@@ -174,7 +174,7 @@ class NFS:
         :param text: The text to enter.
         """
         path = xpaths.common_xpaths.any_xpath(f'//*[contains(text(), "{field}")]/ancestor::ix-list//*[@data-test="input"]')
-        WebUI.wait_until_visible(path)
+        assert WebUI.wait_until_visible(path) is True
         WebUI.xpath(path).clear()
         WebUI.xpath(path).send_keys(text)
         WebUI.xpath(path).send_keys(Keys.TAB)
@@ -215,4 +215,3 @@ class NFS:
         This method unsets the Maproot User field on the NFS share edit panel.
         """
         COM.clear_input_field('maproot-user', True)
-

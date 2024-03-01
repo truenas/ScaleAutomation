@@ -209,7 +209,7 @@ class Common_Shares:
         path = f'card-{sharetype}-share-{name.lower()}-edit-row-action'
         path = path.replace('--', '-')
         WebUI.xpath(xpaths.common_xpaths.button_field(path)).click()
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit {sharetype.upper()}', 3))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit {sharetype.upper()}', 3)) is True
 
     @classmethod
     def create_share_by_api(cls, sharetype: str, name: str, path: str) -> Response:
@@ -256,7 +256,7 @@ class Common_Shares:
         """
         name = ''
         if sharetype == 'smb':
-            WebUI.wait_until_visible(xpaths.common_xpaths.any_text('SMB Service'))
+            assert WebUI.wait_until_visible(xpaths.common_xpaths.any_text('SMB Service')) is True
         if COM.is_visible(xpaths.common_xpaths.button_field('enable-service')):
             name = 'enable-service'
         if COM.is_visible(xpaths.common_xpaths.button_field('restart-service')):
@@ -399,4 +399,4 @@ class Common_Shares:
         text = 'STOPPED'
         if toggle == 'on':
             text = 'RUNNING'
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f"""//*[@data-test="button-service-status-{service}"]//*[contains(text(),"{text}")]"""))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f"""//*[@data-test="button-service-status-{service}"]//*[contains(text(),"{text}")]""")) is True

@@ -7,6 +7,7 @@ from keywords.api.post import API_POST
 from keywords.webui.certificates import Certificates
 from keywords.webui.navigation import Navigation
 
+
 @allure.tag("Signing Certificate")
 @allure.epic("Credentials")
 @allure.feature("Certificates")

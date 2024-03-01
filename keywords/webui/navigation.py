@@ -135,7 +135,7 @@ class Navigation:
          - Navigation.navigate_to_periodic_snapshots()
         """
         cls.navigate_to_data_protection()
-        WebUI.wait_until_clickable(xpaths.common_xpaths.link_field('snapshot-task-snapshots'))
+        assert WebUI.wait_until_clickable(xpaths.common_xpaths.link_field('snapshot-task-snapshots')) is True
         COM.click_link('snapshot-task-snapshots')
         assert COM.assert_page_header('Snapshots')
 
@@ -178,5 +178,3 @@ class Navigation:
          - Navigation.navigate_to_system_settings_services()
         """
         cls.navigate_to('system-settings', 'Services', 'services')
-
-

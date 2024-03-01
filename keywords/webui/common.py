@@ -98,7 +98,7 @@ class Common:
             - Common.assert_please_wait_Not_visible()
             - Common.assert_please_wait_Not_visible(shared_config['MEDIUM_WAIT'])
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['SHORT_WAIT'])
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['SHORT_WAIT']) is True
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), wait)
 
     @classmethod
@@ -221,7 +221,7 @@ class Common:
         Example:
             - Common.cancel_confirm_dialog()
         """
-        assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('dialog-cancel'))
+        assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('dialog-cancel')) is True
         WebUI.xpath(xpaths.common_xpaths.button_field('dialog-cancel')).click()
         WebUI.delay(1)
 
@@ -236,7 +236,7 @@ class Common:
         Example:
             - Common.clear_input_field('myInput')
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name)) is True
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.CONTROL + 'a')
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.DELETE)
         if tab:
@@ -272,7 +272,8 @@ class Common:
         Example:
             - Common.click_cancel_button()
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('cancel'), shared_config['SHORT_WAIT']).click()
+        obj = WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('cancel'), shared_config['SHORT_WAIT'])
+        obj.click()
 
     @classmethod
     def click_link(cls, name: str) -> None:
@@ -319,9 +320,9 @@ class Common:
         Example:
             - Common.click_next_button()
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('next'), shared_config['MEDIUM_WAIT'])
+        assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('next'), shared_config['MEDIUM_WAIT']) is True
         WebUI.xpath(xpaths.common_xpaths.button_field('next')).click()
-        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT'])
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT']) is True
         assert cls.assert_text_is_visible('What and Where')
 
     @classmethod
@@ -557,7 +558,7 @@ class Common:
             - Common.is_clickable('myXpath', shared_config['SHORT_WAIT'])
         """
         try:
-            WebUI.wait_until_clickable(xpath, timeout)
+            assert WebUI.wait_until_clickable(xpath, timeout) is True
         except TimeoutException:
             print("TimeoutException occurred trying to find object: " + xpath)
             return False
@@ -692,7 +693,7 @@ class Common:
             - Common.navigate_to_login_screen('10.0.0.1')
         """
         WebUI.get(f'http://{ip}/ui/sessions/signin')
-        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('log-in'))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('log-in')) is True
 
     @classmethod
     def print_defect_and_screenshot(cls, ticketnumber: str) -> None:
@@ -720,12 +721,12 @@ class Common:
         cls.click_button('power-menu')
         cls.click_button('restart')
         cls.assert_confirm_dialog()
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Connecting to TrueNAS'),
-                                 shared_config['EXTRA_LONG_WAIT'])
-        WebUI.wait_until_not_visible(
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Connecting to TrueNAS'),
+                                        shared_config['EXTRA_LONG_WAIT']) is True
+        assert WebUI.wait_until_not_visible(
             xpaths.common_xpaths.any_xpath('//ix-disconnected-message//*[contains(text(), "Connecting to TrueNAS")]'),
-            shared_config['EXTRA_LONG_WAIT'])
-        WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT'])
+            shared_config['EXTRA_LONG_WAIT']) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT']) is True
         assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod
@@ -900,8 +901,8 @@ class Common:
             - Common.set_input_field('myInput', 'text', True)
             - Common.set_input_field('myInput', 'text', '', True)
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name))
-        WebUI.wait_until_clickable(xpaths.common_xpaths.input_field(name))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name)) is True
+        assert WebUI.wait_until_clickable(xpaths.common_xpaths.input_field(name)) is True
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).clear()
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(value)
         if tab:
@@ -939,8 +940,8 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.input_field('username')).send_keys(username)
         WebUI.xpath(xpaths.common_xpaths.input_field('password')).send_keys(password)
         WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
-        WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('log-in'))
-        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('power-menu'))
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('log-in')) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('power-menu')) is True
 
     @classmethod
     def set_search_field(cls, text: str) -> None:
@@ -956,7 +957,7 @@ class Common:
         # TODO: Get this fixed (create Ticket)
         if cls.assert_page_header('Discover', shared_config['MEDIUM_WAIT']):
             field = '//*[@data-test="input"]'
-        WebUI.wait_until_visible(field)
+        assert WebUI.wait_until_visible(field) is True
         WebUI.xpath(field).clear()
         WebUI.xpath(field).send_keys(text)
 
@@ -971,7 +972,7 @@ class Common:
         Example:
             - Common.set_textarea_field('name', 'text')
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.textarea_field(name))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.textarea_field(name)) is True
         WebUI.xpath(xpaths.common_xpaths.textarea_field(name)).clear()
         WebUI.xpath(xpaths.common_xpaths.textarea_field(name)).send_keys(value)
         if tab:
