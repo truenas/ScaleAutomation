@@ -171,7 +171,7 @@ class System_Services:
     @classmethod
     def set_service_autostart_off_by_api(cls, service: str):
         """
-        This method sets the auto start status of the given service to off via api call..
+        This method sets the auto start status of the given service to off via api call.
 
         :param service: The name of the service.
         """
@@ -274,7 +274,7 @@ class System_Services:
             if error_dialog | state is False:
                 COM.assert_confirm_dialog()
             i = 0
-            WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(service_backend))
+            assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(service_backend)) is True
             while COM.is_toggle_enabled(service_backend) is not state:
                 WebUI.delay(2)
                 i += 1

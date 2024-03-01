@@ -18,7 +18,8 @@ class Local_Users:
          - Local_Users.add_user_auxiliary_group('wheel')
         """
         COM.click_on_element(xpaths.common_xpaths.input_field('groups'))
-        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{group}")]')).click()
+        obj = WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{group}")]'))
+        obj.click()
         WebUI.delay(0.5)
 
     @classmethod
@@ -712,7 +713,7 @@ class Local_Users:
     @classmethod
     def set_user_create_home_directory_checkbox(cls) -> None:
         """
-        This method sets the create home directory checkbox
+        This method sets the 'create home directory' checkbox
 
         Example
          - Local_Users.set_user_create_home_directory_checkbox()
@@ -963,4 +964,3 @@ class Local_Users:
          - Local_Users.unset_user_home_directory_permission_user_write_checkbox()
         """
         COM.unset_checkbox('user-write')
-
