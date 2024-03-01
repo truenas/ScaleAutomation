@@ -775,7 +775,7 @@ class Datasets:
 
         if Common.is_visible(xpaths.common_xpaths.button_field(name)):
             if Common.get_element_property(xpaths.common_xpaths.button_field(name), 'innerText') == value:
-                WebUI.xpath(xpaths.common_xpaths.button_field(name)).click()
+                Common.click_button(name)
 
     @classmethod
     def get_dataset_size_usage_by_type(cls, dataset: str, usage_type: str) -> str:
@@ -1131,8 +1131,7 @@ class Datasets:
         Example:
             - Dataset.select_dataset('test-dataset')
         """
-        obj = WebUI.xpath(xpaths.datasets.link_dataset(dataset_name))
-        obj.click()
+        Common.click_on_element(f'//ix-dataset-node//*[contains(text(),"{dataset_name}")]')
         WebUI.delay(0.5)
 
     @classmethod

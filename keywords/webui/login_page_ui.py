@@ -57,7 +57,7 @@ class Login_Page_Ui:
         """
         WebUI.refresh()
         COM.select_then_deselect_input_field('username')
-        WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
+        COM.click_button('log-in')
         WebUI.delay(1)
         return COM.is_visible(xpaths.common_xpaths.any_text('Either "username" or "uid" must be specified'))
 
@@ -81,7 +81,7 @@ class Login_Page_Ui:
         """
         WebUI.refresh()
         COM.select_then_deselect_input_field('username')
-        WebUI.xpath(xpaths.common_xpaths.button_field('log-in')).click()
+        COM.click_button('log-in')
         WebUI.delay(1)
         return COM.is_visible(xpaths.common_xpaths.any_text('Either "username" or "uid" must be specified'))
 
@@ -124,7 +124,7 @@ class Login_Page_Ui:
         :return: true if iXSystem link is correct
         """
         assert WebUI.current_url() == 'http://'+private_config["IP"]+'/ui/sessions/signin'
-        WebUI.xpath(xpaths.common_xpaths.any_xpath('//img[@src="assets/images/ix_logo_full.png"]')).click()
+        COM.click_on_element('//img[@src="assets/images/ix_logo_full.png"]')
 
         # verify still on current page
         assert WebUI.current_url() == 'http://'+private_config["IP"]+'/ui/sessions/signin'
@@ -208,7 +208,7 @@ class Login_Page_Ui:
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('toggle-password-password')) is True
         if WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f"//*[@fonticon='{initial_state}']")):
-            WebUI.xpath(xpaths.common_xpaths.button_field('toggle-password-password')).click()
+            COM.click_button('toggle-password-password')
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f"//*[@fonticon='{after_state}']")) is True
 
     @classmethod

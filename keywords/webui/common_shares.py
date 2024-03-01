@@ -171,7 +171,7 @@ class Common_Shares:
 
         :param sharetype: type of the given share
         """
-        WebUI.xpath(xpaths.common_xpaths.button_field(f'{sharetype}-share-add')).click()
+        COM.click_button(f'{sharetype}-share-add')
         assert COM.is_visible(xpaths.common_xpaths.any_header(f'Add {sharetype.upper()}', 3))
 
     @classmethod
@@ -194,7 +194,7 @@ class Common_Shares:
             name = name.replace('/', '-')
         path = f'card-{sharetype}-share-{name.lower()}-delete-row-action'
         path = path.replace('--', '-')
-        WebUI.xpath(xpaths.common_xpaths.button_field(path)).click()
+        COM.click_button(path)
 
     @classmethod
     def click_edit_share(cls, sharetype: str, name: str) -> None:
@@ -208,7 +208,7 @@ class Common_Shares:
             name = name.replace('/', '-')
         path = f'card-{sharetype}-share-{name.lower()}-edit-row-action'
         path = path.replace('--', '-')
-        WebUI.xpath(xpaths.common_xpaths.button_field(path)).click()
+        COM.click_button(path)
         assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit {sharetype.upper()}', 3)) is True
 
     @classmethod
@@ -262,7 +262,7 @@ class Common_Shares:
         if COM.is_visible(xpaths.common_xpaths.button_field('restart-service')):
             name = 'restart-service'
         if name != '':
-            WebUI.xpath(xpaths.common_xpaths.button_field(name)).click()
+            COM.click_button(name)
         WebUI.delay(2)
 
     @classmethod
