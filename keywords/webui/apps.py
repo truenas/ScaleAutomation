@@ -121,6 +121,7 @@ class Apps:
                 COM.set_checkbox(COM.convert_to_tag_format(name))
                 COM.click_button('bulk-actions-menu')
                 take_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu_2')
+                WebUI.delay(0.1)
             COM.click_button('start-selected')
             WebUI.delay(0.1)
             WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(
@@ -272,6 +273,7 @@ class Apps:
             COM.set_checkbox(COM.convert_to_tag_format(name))
             WebUI.wait_until_visible(xpaths.common_xpaths.button_field('bulk-actions-menu'), shared_config['LONG_WAIT'])
             COM.click_button('bulk-actions-menu')
+            WebUI.delay(0.1)
             assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('delete-selected'), shared_config['LONG_WAIT']) is True
             COM.click_button('delete-selected')
             WebUI.delay(0.1)
