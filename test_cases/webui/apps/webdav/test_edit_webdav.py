@@ -1,17 +1,43 @@
+import allure
+import pytest
+
+from keywords.api.delete import API_DELETE
+from keywords.api.post import API_POST
 from keywords.webui.apps import Apps
 from keywords.webui.common import Common as COM
-from keywords.webui.datasets import Datasets as DATASET
 
 
+@allure.tag("Apps", "WebDAV")
+@allure.epic("Apps")
+@allure.feature("Apps-Edit")
 class Test_Edit_Webdav:
 
-    @staticmethod
-    def test_edit_app() -> None:
+    @pytest.fixture(scope='function', autouse=True)
+    def setup_test(self):
         """
-        This method verifies the app can be edited
+        This method sets up Dataset and WebDAV app for test
         """
-        DATASET.create_dataset_by_api('tank/webdav')
-        assert Apps.verify_app_installed('WebDAV')
+        API_POST.create_dataset('tank/webdav')
+        assert Apps.verify_app_installed('WebDAV') is True
+
+    @pytest.fixture(scope='function', autouse=True)
+    def teardown_test(self):
+        """
+        This method clears any Apps and Datasets after test is run for a clean environment
+        """
+        yield
+        # Clean up environment.
+        Apps.delete_app('WebDAV')
+        assert Apps.is_app_installed('WebDAV') is False
+        API_DELETE.delete_dataset('tank/webdav')
+
+    @allure.tag("Update")
+    @allure.story("Edit App WebDAV values")
+    def test_edit_webdav_app(self):
+        """
+        This method verifies the webdav app can be edited
+        """
+        # edit app initial values
         Apps.edit_app('WebDAV')
         COM.unset_checkbox('http')
         COM.set_checkbox('https')
@@ -19,27 +45,13 @@ class Test_Edit_Webdav:
         COM.click_on_element('//*[contains(text(),"\'truenas_default\' Certificate")]')
         COM.set_input_field('https-port', '30035')
         COM.click_save_button()
-        assert COM.assert_page_header('Installed')
-        assert Apps.is_app_running('WebDAV')
+        assert COM.assert_page_header('Installed') is True
+        assert Apps.is_app_running('WebDAV') is True
 
-    @staticmethod
-    def verify_edit_values() -> None:
-        """
-        This test verifies the edited values of the app
-        """
+        # verify edited app values
         Apps.edit_app('WebDAV')
-        assert not COM.is_checked('http')
-        assert COM.is_checked('https')
+        assert COM.is_checked('http') is False
+        assert COM.is_checked('https') is True
         assert COM.get_input_property('certificate-id') == "'truenas_default' Certificate"
         assert COM.get_input_property('https-port') == '30035'
         COM.click_link('breadcrumb-applications')
-
-    @staticmethod
-    def verify_teardown() -> None:
-        """
-        This test removes the given app
-        """
-        # reset the change
-        Apps.delete_app('WebDAV')
-        assert Apps.is_app_installed('WebDAV') is False
-        DATASET.delete_dataset_by_api('tank/webdav')

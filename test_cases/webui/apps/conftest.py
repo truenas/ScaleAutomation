@@ -4,7 +4,7 @@ import pytest
 
 
 @pytest.fixture(scope='class', autouse=True)
-def navigate_to_apps():
+def setup_class():
     """
     This method navigates to the apps page and configures the apps pool if not configured.
     """
