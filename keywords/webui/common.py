@@ -447,8 +447,8 @@ class Common:
             - Common.get_element_property('//myButton', 'disabled')
             - Common.get_element_property('//myCheckbox', 'checked')
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(xpath))
-        return WebUI.xpath(xpaths.common_xpaths.any_xpath(xpath)).get_property(prop)
+        assert WebUI.wait_until_presence_is_located(xpath) is True
+        return WebUI.xpath(xpath).get_property(prop)
 
     @classmethod
     def get_input_property(cls, name: str, prop: str = 'value') -> str | bool:

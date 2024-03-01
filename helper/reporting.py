@@ -4,6 +4,7 @@ from datetime import datetime
 from helper.cli import Local_Command_Line
 from helper.global_config import workdir
 from helper.webui import WebUI
+from keywords.api.get import API_GET
 from pathlib import Path
 
 
@@ -27,6 +28,19 @@ report_dir = f'{real_workdir}/Reports/{timestamp_test_name}'
 print(f'report_dir: {report_dir}')
 mkdircommand = Local_Command_Line(f'mkdir -p {report_dir}')
 assert mkdircommand.status is True, f'{mkdircommand.stdout} \n{mkdircommand.stderr}'
+
+
+def allure_environment():
+    product_name = API_GET.get_system_product_name().json()
+    product_type = API_GET.get_system_product_type().json()
+    version = API_GET.get_system_version().json()
+    version_short = API_GET.get_system_version_short().json()
+
+    with open(f'{full_test_path}/allure-results/environment.properties', 'w') as file:
+        file.write(f'product_name={product_name}\n')
+        file.write(f'product_type={product_type}\n')
+        file.write(f'version={version}\n')
+        file.write(f'short_version={version_short}\n')
 
 
 def allure_reporting():
