@@ -492,8 +492,10 @@ class Local_Groups:
         Example:
             - Local_Groups.select_group_privileges('Read-Only Administrator')
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.input_field('privileges'), shared_config['SHORT_WAIT']).click()
-        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{privilege}")]'), shared_config['SHORT_WAIT']).click()
+        obj = WebUI.wait_until_clickable(xpaths.common_xpaths.input_field('privileges'), shared_config['SHORT_WAIT'])
+        obj.click()
+        obj = WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{privilege}")]'), shared_config['SHORT_WAIT'])
+        obj.click()
 
     @classmethod
     def set_allow_duplicate_gids(cls) -> None:
@@ -646,5 +648,7 @@ class Local_Groups:
         Example:
             - Local_Groups.select_group_items_per_page('20')
         """
-        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath('//mat-select'), shared_config['SHORT_WAIT']).click()
-        WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{option}")]'), shared_config['SHORT_WAIT']).click()
+        obj = WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath('//mat-select'), shared_config['SHORT_WAIT'])
+        obj.click()
+        obj = WebUI.wait_until_clickable(xpaths.common_xpaths.any_xpath(f'//mat-option[contains(.,"{option}")]'), shared_config['SHORT_WAIT'])
+        obj.click()

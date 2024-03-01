@@ -310,10 +310,10 @@ class Datasets:
     @classmethod
     def assert_details_enable_atime(cls, value):
         """
-        This method returns True or False if the enable atime is visible.
+        This method returns True or False if the 'enable atime' is visible.
 
         :param value: The enable atime
-        :return: True if the enable atime is visible, otherwise it returns False.
+        :return: True if the 'enable atime' is visible, otherwise it returns False.
 
         Example:
             - Dataset.assert_details_enable_atime('Enabled')
@@ -1119,7 +1119,7 @@ class Datasets:
         xpath = '//*[@data-test="button-cancel"]/following-sibling::button'
         Common.click_on_element(xpaths.common_xpaths.any_xpath(xpath))
         Common.assert_progress_bar_not_visible()
-        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text("Locking Dataset"))
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text("Locking Dataset")) is True
 
     @classmethod
     def select_dataset(cls, dataset_name: str) -> None:
@@ -1131,7 +1131,8 @@ class Datasets:
         Example:
             - Dataset.select_dataset('test-dataset')
         """
-        WebUI.xpath(xpaths.datasets.link_dataset(dataset_name)).click()
+        obj = WebUI.xpath(xpaths.datasets.link_dataset(dataset_name))
+        obj.click()
         WebUI.delay(0.5)
 
     @classmethod

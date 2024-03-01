@@ -18,10 +18,10 @@ class Storage:
         Common.set_checkbox('confirm')
         Common.set_input_field('name-input', pool_name)
         Common.click_button('disconnect')
-        WebUI.wait_until_visible(xpaths.common_xpaths.progress_bar)
-        WebUI.wait_until_not_visible(xpaths.common_xpaths.progress_bar, shared_config['EXTRA_LONG_WAIT'])
-        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('dialog-close'))
-        assert Common.is_visible(xpaths.common_xpaths.any_text(f'disconnected {pool_name}'))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.progress_bar) is True
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.progress_bar, shared_config['EXTRA_LONG_WAIT']) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('dialog-close')) is True
+        assert Common.is_visible(xpaths.common_xpaths.any_text(f'disconnected {pool_name}')) is True
         Common.click_button('dialog-close')
 
     @classmethod

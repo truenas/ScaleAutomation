@@ -206,7 +206,7 @@ class Login_Page_Ui:
         :param after_state: state of password field after toggle
         :return: true if password state equals after_state
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('toggle-password-password'))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('toggle-password-password')) is True
         if WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f"//*[@fonticon='{initial_state}']")):
             WebUI.xpath(xpaths.common_xpaths.button_field('toggle-password-password')).click()
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f"//*[@fonticon='{after_state}']")) is True

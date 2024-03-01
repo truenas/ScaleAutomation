@@ -29,8 +29,8 @@ class Replication:
         WebUI.refresh()
         COM.click_button(f'replication-task-{COM.convert_to_tag_format(name)}-play-arrow-row-action')
         COM.assert_confirm_dialog()
-        WebUI.wait_until_visible(
-            f'//*[@data-test="button-state-replication-task-{COM.convert_to_tag_format(name)}-row-state" and contains(@class,"fn-theme-green")]', shared_config['LONG_WAIT'])
+        assert WebUI.wait_until_visible(
+            f'//*[@data-test="button-state-replication-task-{COM.convert_to_tag_format(name)}-row-state" and contains(@class,"fn-theme-green")]', shared_config['LONG_WAIT']) is True
 
     @classmethod
     def close_destination_box(cls) -> None:
