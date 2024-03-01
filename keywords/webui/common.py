@@ -393,7 +393,6 @@ class Common:
             - Common.create_non_admin_user_by_api('name', 'full name', 'password', True)
         """
         response = API_POST.create_non_admin_user(name, fullname, password, smb_auth)
-        print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
 
     @classmethod
     def delete_file(cls, path: str, filename: str) -> None:
