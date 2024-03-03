@@ -1,7 +1,4 @@
 import allure
-import pytest
-from time import sleep
-from helper.global_config import shared_config
 from keywords.webui.dashboard import Dashboard
 from keywords.webui.reporting import Reporting
 
