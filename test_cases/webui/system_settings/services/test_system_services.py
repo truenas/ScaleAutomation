@@ -4,9 +4,16 @@ import xpaths
 from helper.global_config import private_config
 from helper.data_config import get_data_list
 from keywords.webui.common import Common as COM
-from keywords.webui.iscsi import iSCSI
-from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.system_services import System_Services as SERV
+from keywords.webui.navigation import Navigation as NAV
+from keywords.webui.ftp import FTP
+from keywords.webui.iscsi import iSCSI
+from keywords.webui.nfs import NFS
+# from keywords.webui.smart import SMART
+# from keywords.webui.smb import SMB
+# from keywords.webui.snmp import SNMP
+# from keywords.webui.ssh import SSH
+# from keywords.webui.ups import UPS
 
 
 class Test_System_Services:
@@ -92,9 +99,9 @@ class Test_System_Services:
         """
         SERV.click_edit_button_by_servicename('FTP')
         assert COM.assert_right_panel_header('FTP') is True
-        SERV.verify_ftp_service_basic_edit_ui()
+        FTP.verify_ftp_service_basic_edit_ui()
         COM.click_advanced_options_button()
-        SERV.verify_ftp_service_advanced_edit_ui()
+        FTP.verify_ftp_service_advanced_edit_ui()
         COM.close_right_panel()
         assert COM.assert_page_header("Services") is True
 
