@@ -98,7 +98,7 @@ class Common:
             - Common.assert_please_wait_Not_visible()
             - Common.assert_please_wait_Not_visible(shared_config['MEDIUM_WAIT'])
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['SHORT_WAIT'])
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Please wait', 6), shared_config['SHORT_WAIT']) is True
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), wait)
 
     @classmethod
