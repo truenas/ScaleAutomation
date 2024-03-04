@@ -281,7 +281,7 @@ class Datasets:
         :return: True if the given details card field value is visible, otherwise it returns False.
 
         Example:
-            - Dataset.assert_details_card_field_value('Type:', 'FILESYSTEM')
+            - Dataset.assert_details_card_field_value("Type:", "FILESYSTEM")
         """
         return Common.assert_label_and_value_exist(label, value)
 

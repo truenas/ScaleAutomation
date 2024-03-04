@@ -897,7 +897,7 @@ class Common:
         Example:
             - Common.set_input_field('myInput', 'text')
             - Common.set_input_field('myInput', 'text', True)
-            - Common.set_input_field('myInput', 'text', '', True)
+            - Common.set_input_field("myInput", "text", "", True)
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name)) is True
         # assert WebUI.wait_until_clickable(xpaths.common_xpaths.input_field(name)) is True

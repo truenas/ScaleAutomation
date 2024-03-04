@@ -163,7 +163,7 @@ class API_PUT:
             - API_PUT.set_nameservers('1.1.1.1', '2.2.2.2', '3.3.3.3')
             - API_PUT.set_nameservers('1.1.1.1')
             - API_PUT.set_nameservers('1.1.1.1', '2.2.2.2')
-            - API_PUT.set_nameservers('1.1.1.1', '', '')
+            - API_PUT.set_nameservers("1.1.1.1", "", "")
         """
         payload = {
             'nameserver1': f'{nameserver1}',

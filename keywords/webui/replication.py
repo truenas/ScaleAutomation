@@ -204,7 +204,7 @@ class Replication:
         :param path: is the path of the given source or destination
 
         Example:
-            - Replication.set_location('source-datasets', 'this', '', 'tank/replicate')
+            - Replication.set_location("source-datasets", "this", "", "tank/replicate")
             - Replication.set_location('target-dataset', 'different', 'mySSHConnection', 'tank/receive')
         """
         prefix = '-on-' if system == 'this' else '-on-a-'
