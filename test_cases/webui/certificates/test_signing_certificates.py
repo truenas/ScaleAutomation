@@ -40,7 +40,7 @@ class Test_Signing_Certificates:
         """
         # Navigate to the Certificates page
         Navigation.navigate_to_certificates()
-        Certificates.assert_certificates_page_header()
+        assert Certificates.assert_certificates_page_header() is True
 
         # On a Certificate Authority, click on Sign CSR button.
         assert Certificates.assert_certificate_authorities_card_visible() is True

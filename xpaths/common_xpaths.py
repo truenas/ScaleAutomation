@@ -340,14 +340,13 @@ def select_field_by_row(field: str, row: int) -> str:
     return f'(//*[@data-test="select-{field}"])[{row}]'
 
 
-def selected_dataset(name: str) -> str:
+def selected_dataset() -> str:
     """
-    This function sets the text for the given dataset
+    This function sets the text for the selected dataset
 
-    :param name: name of the given dataset
     :return: xpath string for given dataset
     """
-    return f'//*[contains(@class,"own-name") and contains(text(),"{name}")]'
+    return f'//*[contains(@class," selected")]'
 
 
 def share_attached(name: str, sharetype: str) -> str:

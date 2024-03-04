@@ -18,13 +18,13 @@ def test_edit_smb_share_acl(smb_data) -> None:
     COMSHARE.create_share_by_api('smb', smb_data['name'], smb_data['path'])
 
     NAV.navigate_to_shares()
-    assert COMSHARE.assert_share_card_displays('smb')
+    assert COMSHARE.assert_share_card_displays('smb') is True
 
     # Edit ACL Permissions
     SMB.click_edit_share_filesystem_acl(smb_data['name'])
     if COM.assert_page_header('Select a preset ACL'):
         COM.click_button('cancel')
-    assert COM.assert_page_header('Edit ACL')
+    assert COM.assert_page_header('Edit ACL') is True
     PERM.set_dataset_owner(smb_data['acl_owner'])
     PERM.set_dataset_owner_group(smb_data['acl_group'])
     COM.set_checkbox('apply-owner')
@@ -33,9 +33,9 @@ def test_edit_smb_share_acl(smb_data) -> None:
 
     # Verify ACL Permissions of Dataset
     COM.assert_page_header('Datasets')
-    assert DATASET.assert_dataset_selected(smb_data['name'])
-    assert DATASET.assert_dataset_owner(smb_data['acl_owner'])
-    assert DATASET.assert_dataset_group(smb_data['acl_group'])
+    assert DATASET.assert_dataset_selected(smb_data['name']) is True
+    assert DATASET.assert_dataset_owner(smb_data['acl_owner']) is True
+    assert DATASET.assert_dataset_group(smb_data['acl_group']) is True
 
     # Environment Teardown
     COMSHARE.delete_share_by_api('smb', smb_data['name'])

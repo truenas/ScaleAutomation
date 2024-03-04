@@ -359,7 +359,7 @@ class Apps:
             - Apps.is_app_installed('WG Easy')
         """
         # Delay to wait for Apps section populate
-        assert COM.assert_progress_bar_not_visible()
+        assert COM.assert_progress_bar_not_visible() is True
         if COM.is_visible(xpaths.common_xpaths.button_field("check-available-apps")):
             return False
         return WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(COM.convert_to_tag_format(name)), shared_config['SHORT_WAIT'])
@@ -481,5 +481,7 @@ class Apps:
             Apps.set_app_values(name)
             COM.click_save_button()
             assert COM.assert_page_header('Installed', shared_config['LONG_WAIT'])
+            assert COM.assert_progress_bar_not_visible() is True
+            cls.is_app_running(name)
         assert Apps.is_app_installed(name) is True
         return Apps.is_app_deployed(name) is True

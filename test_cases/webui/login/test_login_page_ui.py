@@ -11,6 +11,7 @@ class Test_Login_Page_UI:
     @classmethod
     def teardown_class(cls):
         COM.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
+        COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
 
     @staticmethod
     def test_login_page_ui():

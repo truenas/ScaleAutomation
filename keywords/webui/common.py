@@ -98,7 +98,7 @@ class Common:
             - Common.assert_please_wait_Not_visible()
             - Common.assert_please_wait_Not_visible(shared_config['MEDIUM_WAIT'])
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['SHORT_WAIT']) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Please wait', 6), shared_config['SHORT_WAIT']) is True
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), wait)
 
     @classmethod
@@ -392,7 +392,7 @@ class Common:
             - Common.create_non_admin_user_by_api('name', 'full name', 'password')
             - Common.create_non_admin_user_by_api('name', 'full name', 'password', True)
         """
-        response = API_POST.create_non_admin_user(name, fullname, password, smb_auth)
+        API_POST.create_non_admin_user(name, fullname, password, smb_auth)
 
     @classmethod
     def delete_file(cls, path: str, filename: str) -> None:
@@ -897,7 +897,7 @@ class Common:
         Example:
             - Common.set_input_field('myInput', 'text')
             - Common.set_input_field('myInput', 'text', True)
-            - Common.set_input_field('myInput', 'text', '', True)
+            - Common.set_input_field("myInput", "text", "", True)
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field(name)) is True
         # assert WebUI.wait_until_clickable(xpaths.common_xpaths.input_field(name)) is True
