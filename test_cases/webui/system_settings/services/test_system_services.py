@@ -13,7 +13,7 @@ from keywords.webui.smart import SMART
 from keywords.webui.smb import SMB
 from keywords.webui.snmp import SNMP
 from keywords.webui.ssh_connection import SSH_Connection as SSH
-# from keywords.webui.ups import UPS
+from keywords.webui.ups import UPS
 
 
 class Test_System_Services:
@@ -179,5 +179,15 @@ class Test_System_Services:
         SSH.verify_ssh_service_basic_edit_ui()
         SERV.click_advanced_settings_button('SSH')
         SSH.verify_ssh_service_advanced_edit_ui()
+        COM.close_right_panel()
+        assert COM.assert_page_header("Services") is True
+
+    def test_verify_ups_service_edit_ui(self):
+        """
+        This test verifies the edit UI for the UPS service.
+        """
+        SERV.click_edit_button_by_servicename('UPS')
+        assert COM.assert_right_panel_header('UPS') is True
+        UPS.verify_ups_service_edit_ui()
         COM.close_right_panel()
         assert COM.assert_page_header("Services") is True
