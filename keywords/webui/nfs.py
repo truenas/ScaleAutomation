@@ -219,7 +219,7 @@ class NFS:
         COM.clear_input_field('maproot-user', True)
 
     @classmethod
-    def verify_nfs_edit_ui(cls) -> None:
+    def verify_nfs_service_edit_ui(cls) -> None:
         """
         This method verifies the edit UI of the NFS service.
         """
