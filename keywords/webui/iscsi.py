@@ -44,3 +44,4 @@ class iSCSI:
         assert COM.is_visible(xpaths.common_xpaths.input_field('isns-servers')) is True
         assert COM.is_visible(xpaths.common_xpaths.input_field('pool-avail-threshold')) is True
         assert COM.is_visible(xpaths.common_xpaths.input_field('listen-port')) is True
+        assert COM.is_visible(xpaths.common_xpaths.button_field('save')) is True

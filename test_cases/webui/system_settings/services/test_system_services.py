@@ -118,3 +118,16 @@ class Test_System_Services:
         iSCSI.verify_iscsi_configuration_wizard_create_choose_block_device_ui()
         COM.close_right_panel()
         assert COM.assert_page_header("iSCSI") is True
+
+    def test_verify_nfs_service_edit_ui(self):
+        """
+        This test verifies the edit UI for the NFS service.
+        """
+        NFS.verify_nfs_sessions_page_opens()
+        NAV.navigate_to_system_settings_services()
+        assert COM.assert_page_header("Services") is True
+        SERV.click_edit_button_by_servicename('NFS')
+        assert COM.assert_right_panel_header('NFS') is True
+        NFS.verify_nfs_edit_ui()
+        COM.close_right_panel()
+        assert COM.assert_page_header("Services") is True
