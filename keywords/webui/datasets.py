@@ -32,7 +32,7 @@ class Datasets:
         return WebUI.wait_until_visible(xpaths.common_xpaths.button_field('add-zvol'))
 
     @classmethod
-    def assert_applied_dataset_quota_size(cls, size):
+    def assert_applied_dataset_quota_size(cls, size) -> bool:
         """
         This method returns True or False whether the applied dataset quota size is visible.
 
@@ -45,7 +45,7 @@ class Datasets:
         return Common.assert_label_and_value_exist('Applied Dataset Quota:', size)
 
     @classmethod
-    def assert_applied_inherited_quotas_size(cls, size):
+    def assert_applied_inherited_quotas_size(cls, size) -> bool:
         """
         This method returns True or False whether the applied inherited quotas size is visible.
 
@@ -97,7 +97,7 @@ class Datasets:
         return Common.assert_label_and_value_exist('Owner:', name)
 
     @classmethod
-    def assert_dataset_permissions_edit_button(cls):
+    def assert_dataset_permissions_edit_button(cls) -> bool:
         """
         This method returns True or False whether the edit permissions button is visible.
 
@@ -151,7 +151,7 @@ class Datasets:
         return result
 
     @classmethod
-    def assert_dataset_roles_iscsi_icon(cls):
+    def assert_dataset_roles_iscsi_icon(cls) -> bool:
         """
         This method return True or False whether the given dataset displays the iscsi share connected icon
 
@@ -163,7 +163,7 @@ class Datasets:
         return Common.is_visible(xpaths.datasets.dataset_roles_icon('iscsi_share'))
 
     @classmethod
-    def assert_dataset_roles_nfs_icon(cls):
+    def assert_dataset_roles_nfs_icon(cls) -> bool:
         """
         This method return True or False whether the given dataset displays the nfs share connected icon
 
@@ -177,7 +177,7 @@ class Datasets:
     @classmethod
     def assert_dataset_roles_share_icon(cls, name: str, share_type: str) -> bool:
         """
-        This method return True if the given dataset is selected otherwise it returns False.
+        This method return True if the given dataset share icon displays otherwise it returns False.
 
         :param name: name of the given dataset
         :param share_type: the type of share connected to the dataset
@@ -192,7 +192,7 @@ class Datasets:
         return Common.is_visible(xpaths.common_xpaths.any_child_parent_target(child, parent, target))
 
     @classmethod
-    def assert_dataset_roles_smb_icon(cls):
+    def assert_dataset_roles_smb_icon(cls) -> bool:
         """
         This method return True or False whether the given dataset displays the smb share connected icon
 
@@ -209,12 +209,16 @@ class Datasets:
         This method return True if the given dataset is selected otherwise it returns False.
 
         :param name: name of the given dataset.
-        :return: True if the given dataset is selected otherwise it returns False.
+        :return: True if the given dataset displays the specified share connected icon otherwise it returns False.
 
         Example:
             - Dataset.assert_dataset_selected('root')
         """
-        return WebUI.wait_until_visible(xpaths.common_xpaths.selected_dataset(name))
+        selected = xpaths.common_xpaths.selected_dataset()
+        WebUI.wait_until_visible(selected)
+        if Common.get_element_property(selected, 'innerHTML').__contains__(name) is False:
+            cls.select_dataset(name)
+        return Common.get_element_property(selected, 'innerHTML').__contains__(name) is True
 
     @classmethod
     def assert_dataset_share_attached(cls, name: str, share_type: str) -> bool:

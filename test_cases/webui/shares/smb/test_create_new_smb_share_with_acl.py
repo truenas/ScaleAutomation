@@ -17,7 +17,7 @@ def test_create_new_smb_share_with_acl(smb_data) -> None:
     DATASET.create_dataset_by_api(smb_data['path'])
 
     NAV.navigate_to_shares()
-    assert COMSHARE.assert_share_card_displays('smb')
+    assert COMSHARE.assert_share_card_displays('smb') is True
 
     # Add SMB Share
     running = COMSHARE.is_share_service_running('cifs')
@@ -46,9 +46,9 @@ def test_create_new_smb_share_with_acl(smb_data) -> None:
 
     # Verify ACL Permissions of Dataset
     COM.assert_page_header('Datasets')
-    DATASET.select_dataset(smb_data['name'])
-    assert DATASET.assert_dataset_owner(smb_data['acl_owner'])
-    assert DATASET.assert_dataset_group(smb_data['acl_group'])
+    assert DATASET.assert_dataset_selected(smb_data['name']) is True
+    assert DATASET.assert_dataset_owner(smb_data['acl_owner']) is True
+    assert DATASET.assert_dataset_group(smb_data['acl_group']) is True
 
     # Environment Teardown
     COMSHARE.delete_share_by_api('smb', smb_data['name'])
