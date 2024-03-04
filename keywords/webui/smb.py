@@ -125,7 +125,11 @@ class SMB:
         """
         This method verifies the Audit page is opens with SMB filter entered.
         """
-        COM.click_link('cifs-logs')
+        if COM.assert_page_header('Services'):
+            COM.click_link('cifs-logs')
+        elif COM.assert_page_header('Sharing'):
+            COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('SMB'))
+            COM.click_button('cifs-actions-menu-logs')
         assert COM.assert_page_header('Audit') is True
         assert COM.assert_text_is_visible('"Service" = "SMB"') is True
 
@@ -166,6 +170,10 @@ class SMB:
         """
         This method verifies the SMB Sessions page is opens.
         """
-        COM.click_link('cifs-sessions')
+        if COM.assert_page_header('Services'):
+            COM.click_link('cifs-sessions')
+        elif COM.assert_page_header('Sharing'):
+            COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('SMB'))
+            COM.click_button('cifs-actions-menu-sessions')
         assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-sharing')) is True
         assert COM.assert_page_header('SMB Status') is True
