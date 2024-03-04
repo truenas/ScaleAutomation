@@ -119,3 +119,53 @@ class SMB:
 
         name = COM.convert_to_tag_format('watch-list-'+name)
         COM.click_on_element(f'//*[@data-test="option-{name}"]')
+
+    @classmethod
+    def verify_smb_audit_page_opens(cls):
+        """
+        This method verifies the Audit page is opens with SMB filter entered.
+        """
+        COM.click_link('cifs-logs')
+        assert COM.assert_page_header('Audit') is True
+        assert COM.assert_text_is_visible('"Service" = "SMB"') is True
+
+    @classmethod
+    def verify_smb_service_advanced_edit_ui(cls):
+        """
+        This method verifies the advanced edit UI of the SMB service.
+        """
+        cls.verify_smb_service_basic_edit_ui()
+        assert COM.is_visible(xpaths.common_xpaths.select_field('unixcharset')) is True
+        assert COM.is_visible(xpaths.common_xpaths.select_field('loglevel')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('syslog')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('localmaster')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('aapl-extensions')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('multichannel')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('admin-group')) is True
+        assert COM.is_visible(xpaths.common_xpaths.select_field('guest')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('filemask')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('dirmask')) is True
+        assert COM.is_visible(xpaths.common_xpaths.select_field('bindip')) is True
+        assert COM.is_visible(xpaths.common_xpaths.button_field('save')) is True
+
+    @classmethod
+    def verify_smb_service_basic_edit_ui(cls):
+        """
+        This method verifies the basic edit UI of the SMB service.
+        """
+        assert COM.is_visible(xpaths.common_xpaths.input_field('netbiosname')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('netbiosalias')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('workgroup')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('description')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('enable-smb-1')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('ntlmv-1-auth')) is True
+        assert COM.is_visible(xpaths.common_xpaths.button_field('save')) is True
+
+    @classmethod
+    def verify_smb_sessions_page_opens(cls):
+        """
+        This method verifies the SMB Sessions page is opens.
+        """
+        COM.click_link('cifs-sessions')
+        assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-sharing')) is True
+        assert COM.assert_page_header('SMB Status') is True

@@ -33,7 +33,7 @@ class System_Services:
             assert not cls.is_service_status_running_by_name(items)
 
     @classmethod
-    def click_advanced_settings_button(cls, service: str = None) -> None:
+    def click_advanced_settings_button(cls, service: str = '') -> None:
         """
         This method clicks the Advanced Settings button.
 
