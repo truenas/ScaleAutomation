@@ -8,11 +8,18 @@ class Permissions:
         """
         This method returns the permissions text for the given user category for the given level.
 
-        :param user_category: the user type. EX: person (user/owner), people (group), groups (other).
+        :param user_category: the user type. EX: user/owner, group/owner group, other.
         :param level: the permissions level. EX: read, write, execute.
         :return: returns the permissions text for the given user category for the given level.
         """
-        return COM.get_element_property(f"//*[@name='{user_category}']/ancestor::ix-permissions-item/descendant::*[@class='{level}']", "textContent")
+        translated_level = ''
+        if level == 'user' or level == 'owner':
+            translated_level = 'person'
+        elif level == 'group' or level == 'owner group':
+            translated_level = 'people'
+        elif level == 'other':
+            translated_level = 'groups'
+        return COM.get_element_property(f"//*[@name='{user_category}']/ancestor::ix-permissions-item/descendant::*[@class='{translated_level}']", "textContent")
 
     @classmethod
     def set_apply_group_checkbox(cls):
