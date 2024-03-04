@@ -9,8 +9,8 @@ from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.ftp import FTP
 from keywords.webui.iscsi import iSCSI
 from keywords.webui.nfs import NFS
-# from keywords.webui.smart import SMART
-# from keywords.webui.smb import SMB
+from keywords.webui.smart import SMART
+from keywords.webui.smb import SMB
 # from keywords.webui.snmp import SNMP
 # from keywords.webui.ssh import SSH
 # from keywords.webui.ups import UPS
@@ -128,6 +128,34 @@ class Test_System_Services:
         assert COM.assert_page_header("Services") is True
         SERV.click_edit_button_by_servicename('NFS')
         assert COM.assert_right_panel_header('NFS') is True
-        NFS.verify_nfs_edit_ui()
+        NFS.verify_nfs_service_edit_ui()
+        COM.close_right_panel()
+        assert COM.assert_page_header("Services") is True
+
+    def test_verify_smart_service_edit_ui(self):
+        """
+        This test verifies the edit UI for the S.M.A.R.T. service.
+        """
+        SERV.click_edit_button_by_servicename('S.M.A.R.T.')
+        assert COM.assert_right_panel_header('S.M.A.R.T.') is True
+        SMART.verify_smart_service_edit_ui()
+        COM.close_right_panel()
+        assert COM.assert_page_header("Services") is True
+
+    def test_verify_smb_service_edit_ui(self):
+        """
+        This test verifies the edit UI for the SMB service.
+        """
+        SMB.verify_smb_audit_page_opens()
+        NAV.navigate_to_system_settings_services()
+        assert COM.assert_page_header("Services") is True
+        SMB.verify_smb_sessions_page_opens()
+        NAV.navigate_to_system_settings_services()
+        assert COM.assert_page_header("Services") is True
+        SERV.click_edit_button_by_servicename('SMB')
+        assert COM.assert_right_panel_header('SMB') is True
+        SMB.verify_smb_service_basic_edit_ui()
+        SERV.click_advanced_settings_button()
+        SMB.verify_smb_service_advanced_edit_ui()
         COM.close_right_panel()
         assert COM.assert_page_header("Services") is True
