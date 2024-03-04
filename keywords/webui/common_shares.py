@@ -171,7 +171,7 @@ class Common_Shares:
 
         :param sharetype: type of the given share
         """
-        WebUI.xpath(xpaths.common_xpaths.button_field(f'{sharetype}-share-add')).click()
+        COM.click_button(f'{sharetype}-share-add')
         assert COM.is_visible(xpaths.common_xpaths.any_header(f'Add {sharetype.upper()}', 3))
 
     @classmethod
@@ -194,7 +194,7 @@ class Common_Shares:
             name = name.replace('/', '-')
         path = f'card-{sharetype}-share-{name.lower()}-delete-row-action'
         path = path.replace('--', '-')
-        WebUI.xpath(xpaths.common_xpaths.button_field(path)).click()
+        COM.click_button(path)
 
     @classmethod
     def click_edit_share(cls, sharetype: str, name: str) -> None:
@@ -208,8 +208,8 @@ class Common_Shares:
             name = name.replace('/', '-')
         path = f'card-{sharetype}-share-{name.lower()}-edit-row-action'
         path = path.replace('--', '-')
-        WebUI.xpath(xpaths.common_xpaths.button_field(path)).click()
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit {sharetype.upper()}', 3))
+        COM.click_button(path)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit {sharetype.upper()}', 3)) is True
 
     @classmethod
     def create_share_by_api(cls, sharetype: str, name: str, path: str) -> Response:
@@ -256,13 +256,13 @@ class Common_Shares:
         """
         name = ''
         if sharetype == 'smb':
-            WebUI.wait_until_visible(xpaths.common_xpaths.any_text('SMB Service'))
+            assert WebUI.wait_until_visible(xpaths.common_xpaths.any_text('SMB Service')) is True
         if COM.is_visible(xpaths.common_xpaths.button_field('enable-service')):
             name = 'enable-service'
         if COM.is_visible(xpaths.common_xpaths.button_field('restart-service')):
             name = 'restart-service'
         if name != '':
-            WebUI.xpath(xpaths.common_xpaths.button_field(name)).click()
+            COM.click_button(name)
         WebUI.delay(2)
 
     @classmethod
@@ -399,4 +399,4 @@ class Common_Shares:
         text = 'STOPPED'
         if toggle == 'on':
             text = 'RUNNING'
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f"""//*[@data-test="button-service-status-{service}"]//*[contains(text(),"{text}")]"""))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f"""//*[@data-test="button-service-status-{service}"]//*[contains(text(),"{text}")]""")) is True

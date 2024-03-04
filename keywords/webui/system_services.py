@@ -33,6 +33,29 @@ class System_Services:
             assert not cls.is_service_status_running_by_name(items)
 
     @classmethod
+    def click_advanced_settings_button(cls, service: str = '') -> None:
+        """
+        This method clicks the Advanced Settings button.
+
+        Example:
+            - Common.click_advanced_settings_button()
+        """
+        if service.lower() == "ssh":
+            COM.click_advanced_options_button()
+        else:
+            COM.click_button('toggle-advanced-settings')
+
+    @classmethod
+    def click_edit_button_by_servicename(cls, servicename: str) -> None:
+        """
+        This method clicks the edit button for the given service.
+
+        :param servicename: the name of the service.
+        """
+        name = cls.return_backend_service_name(servicename, False)
+        COM.click_button(f'{name}-edit')
+
+    @classmethod
     def is_service_autostart_set_by_name(cls, service: str) -> bool:
         """
         This method returns the state of the auto start checkbox of the given service.
@@ -148,7 +171,7 @@ class System_Services:
     @classmethod
     def set_service_autostart_off_by_api(cls, service: str):
         """
-        This method sets the auto start status of the given service to off via api call..
+        This method sets the auto start status of the given service to off via api call.
 
         :param service: The name of the service.
         """
@@ -233,7 +256,6 @@ class System_Services:
         :param state: The state to toggle the service auto start status to.
         """
         service_backend = cls.return_backend_service_name(service)
-        print(f'Service: {service}')
         COM.set_checkbox_by_state(f'{service_backend}', state)
         assert (COM.is_checked(f'{service_backend}') is state)
 
@@ -247,13 +269,12 @@ class System_Services:
         :param error_dialog: If the service displays an error dialog upon starting.
         """
         service_backend = cls.return_backend_service_name(service)
-        print(f'Service: {service}')
         if COM.is_toggle_enabled(service_backend) is not state:
             COM.set_toggle_by_state(service_backend, state)
             if error_dialog | state is False:
                 COM.assert_confirm_dialog()
             i = 0
-            WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(service_backend))
+            assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(service_backend)) is True
             while COM.is_toggle_enabled(service_backend) is not state:
                 WebUI.delay(2)
                 i += 1
@@ -261,3 +282,9 @@ class System_Services:
                     print(f'Total wait: 20 seconds. Toggle still did not equal {state}')
                     break
         assert (COM.is_toggle_enabled(service_backend) is state)
+
+    @classmethod
+    def verify_edit_button_visible_by_servicename(cls, servicename: str) -> None:
+        name = cls.return_backend_service_name(servicename)
+        assert COM.is_visible(xpaths.common_xpaths.button_field(f'{name}-edit'))
+

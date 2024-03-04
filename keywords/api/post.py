@@ -28,6 +28,95 @@ class API_POST:
         shared_config['SMB_ACL_ENTRY'] = []
 
     @classmethod
+    def create_certificate(cls, data: dict, ca_id: int) -> dict:
+        payload = {
+            'name': data['name'],
+            'create_type': 'CERTIFICATE_CREATE_INTERNAL',
+            'signedby': ca_id,
+            'key_type': data['key_type'].upper(),
+            'digest_algorithm': data['confirm_digest_algorithm'],
+            'lifetime': data['lifetime'],
+            'country': data['api_country'],
+            'state': data['state'],
+            'city': data['city'],
+            'organization': data['organization'],
+            'organizational_unit': data['organizational_unit'],
+            'email': data['email'],
+            'common': data['common_name'],
+            'san': [data['san']],
+        }
+        response = POST('/certificate/', payload)
+        assert response.status_code == 200, response.text
+        job_status = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
+        return job_status
+
+    @classmethod
+    def create_certificate_authority(cls, data: dict) -> Response:
+        """
+        This method creates a certificate authority with the given data.
+
+        :param data: A dictionary of the data to create the certificate authority.
+        :return: The API request response.
+        """
+        payload = {
+            'name': data['name'],
+            'create_type': 'CA_CREATE_INTERNAL',
+            'key_type': data['key_type'].upper(),
+            'digest_algorithm': data['confirm_digest_algorithm'],
+            'lifetime': data['lifetime'],
+            'country': data['api_country'],
+            'state': data['state'],
+            'city': data['city'],
+            'organization': data['organization'],
+            'organizational_unit': data['organizational_unit'],
+            'email': data['email'],
+            'common': data['common_name'],
+            'san': [data['san']],
+            'cert_extensions': {
+                'BasicConstraints': {
+                    'ca': True,
+                    'path_length': 0,
+                    'extension_critical': False
+                },
+                'KeyUsage': {
+                    'enabled': True,
+                    'key_cert_sign': True,
+                    'crl_sign': True,
+                    'extension_critical': True
+                }
+            }
+        }
+        response = POST('/certificateauthority/', payload)
+        return response
+
+    @classmethod
+    def create_certificate_signing_requests(cls, data: dict) -> dict:
+        """
+        This method creates a certificate signing request with the given data.
+
+        :param data: A dictionary of the data to create the certificate signing request.
+        :return: The API request response.
+        """
+        payload = {
+            'name': data['name'],
+            'create_type': 'CERTIFICATE_CREATE_CSR',
+            'key_type': data['key_type'].upper(),
+            'key_length': int(data['key_length']),
+            'digest_algorithm': data['confirm_digest_algorithm'],
+            'country': data['api_country'],
+            'state': data['state'],
+            'city': data['city'],
+            'organization': data['organization'],
+            'organizational_unit': data['organizational_unit'],
+            'email': data['email'],
+            'common': data['common_name'],
+            'san': [data['san']],
+        }
+        response = POST('/certificate/', payload)
+        job_status = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
+        return job_status
+
+    @classmethod
     def create_dataset(cls, name: str, sharetype: str = 'GENERIC') -> Response:
         """
         This method creates the given dataset.
@@ -35,6 +124,9 @@ class API_POST:
         :param name: is the name of the dataset.
         :param sharetype: is the sharetype of the dataset.
         :return: the API request response.
+
+        Example:
+            - API_POST.create_dataset('tank/test-dataset', 'GENERIC')
         """
         response = GET(f'/pool/dataset?name={name}').json()
         if not response:
@@ -145,6 +237,9 @@ class API_POST:
         :param name: is the name of the remote dataset.
         :param sharetype: is the sharetype of the dataset.
         :return: the API request response.
+
+        Example:
+            - API_POST.create_remote_dataset('tank/test-dataset', 'GENERIC')
         """
         private_config['API_IP'] = private_config['REP_DEST_IP']
         response = GET(f'/pool/dataset?name={name}').json()
@@ -154,6 +249,41 @@ class API_POST:
             response = cls.create_dataset(name, sharetype)
             private_config['API_IP'] = private_config['IP']
             assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def create_remote_encrypted_dataset(cls, dataset: str) -> Response:
+        """
+        This method creates an encrypted remote dataset.
+
+        :param dataset: The remote dataset pool and name.
+        :return: The API response.
+
+        Example:
+            - API_POST.create_remote_encrypted_dataset('tank/test-dataset')
+        """
+        private_config['API_IP'] = private_config['REP_DEST_IP']
+        response = cls.create_encrypted_dataset(dataset)
+        private_config['API_IP'] = private_config['IP']
+        return response
+
+    @classmethod
+    def create_remote_non_admin_user(cls, name: str, fullname: str, password: str, smb_auth: str = 'False') -> Response:
+        """
+        This method creates a new non-admin user.
+
+        :param name: is the name of the user.
+        :param fullname: is the fullname of the user.
+        :param password: is the password of the user.
+        :param smb_auth: does user require SMB Authentication ['True'/'False'].
+        :return: the API request response.
+
+        Example:
+            - API_POST.create_remote_non_admin_user('tank/test-dataset')
+        """
+        private_config['API_IP'] = private_config['REP_DEST_IP']
+        response = cls.create_non_admin_user(name, fullname, password, smb_auth)
+        private_config['API_IP'] = private_config['IP']
         return response
 
     @classmethod
@@ -224,6 +354,36 @@ class API_POST:
         assert result.status_code == 200, result.text
         job_status = API_Common.wait_on_job(result.json(), shared_config['LONG_WAIT'])
         return job_status['results']
+
+    @classmethod
+    def lock_dataset(cls, dataset: str) -> Response:
+        """
+        This method locks the given dataset.
+
+        :param dataset: the dataset to lock.
+        :return: the API request response dictionary.
+
+        Example:
+            - API_POST.lock_dataset('tank/my_dataset')
+        """
+
+        payload = {'id': dataset}
+        return cls.toggle_dataset_lock_by_state(payload, 'lock', 'local')
+
+    @classmethod
+    def lock_remote_dataset(cls, dataset: str) -> Response:
+        """
+        This method locks the given remote dataset.
+
+        :param dataset: the remote dataset to lock.
+        :return: the API request response dictionary.
+
+        Example:
+            - API_POST.lock_remote_dataset('tank/my_dataset')
+        """
+
+        payload = {'id': dataset}
+        return cls.toggle_dataset_lock_by_state(payload, 'lock', 'remote')
 
     @classmethod
     def restart_replication_service(cls, service: str) -> Response:
@@ -312,6 +472,19 @@ class API_POST:
         shared_config['SMB_ACL_ENTRY'] = {"ae_who_sid": "S-1-1-0", "ae_type": "ALLOWED", "ae_perm": "FULL"}
 
     @classmethod
+    def start_remote_service(cls, service: str) -> Response:
+        """
+        This method starts the specified remote service of the default NAS.
+
+        :param service: is the remote service name.
+        :return: the API request response.
+        """
+        private_config['API_IP'] = private_config['REP_DEST_IP']
+        response = cls.start_service(service)
+        private_config['API_IP'] = private_config['IP']
+        return response
+
+    @classmethod
     def start_replication_service(cls, service: str) -> Response:
         """
         This method start the specified service of the replication NAS.
@@ -350,3 +523,60 @@ class API_POST:
         :return: the API request response.
         """
         return cls.set_service_by_system_and_state(service, 'stop', 'default')
+
+    @classmethod
+    def toggle_dataset_lock_by_state(cls, payload: dict, state: str, system: str = 'local') -> Response:
+        """
+        This method toggles the lock of the given dataset to the given lock state.
+
+        :param payload: the payload to set the state of the dataset.
+        :param system: the system of the dataset is located on. ['local'/'remote']
+        :param state: the state to lock. ['lock'/'unlock']
+        :return: the API request response dictionary.
+
+        Example:
+            - API_POST.toggle_dataset_lock_by_state(payload, 'lock', 'local')
+            - API_POST.toggle_dataset_lock_by_state(payload, 'unlock', 'remote')
+        """
+
+        if system == 'remote':
+            private_config['API_IP'] = private_config['REP_DEST_IP']
+
+        response = POST(f'/pool/dataset/{state}', payload)
+        job_status = API_Common.wait_on_job(response.json(), shared_config['WAIT'])
+        assert job_status['state'] == 'SUCCESS'
+        if system == 'remote':
+            private_config['API_IP'] = private_config['IP']
+        return response
+
+    @classmethod
+    def unlock_dataset(cls, dataset: str) -> Response:
+        """
+        This method unlocks the given dataset.
+
+        :param dataset: the dataset to lock.
+        :return: the API request response dictionary.
+
+        Example:
+            - API_POST.unlock_dataset('tank/my_dataset')
+        """
+
+        unlock_options = {"datasets": [{"name": dataset, "passphrase": "encryption"}]}
+        payload = {"id": dataset, "unlock_options": unlock_options}
+        return cls.toggle_dataset_lock_by_state(payload, 'unlock', 'local')
+
+    @classmethod
+    def unlock_remote_dataset(cls, dataset: str) -> Response:
+        """
+        This method unlocks the given remote dataset.
+
+        :param dataset: the remote dataset to lock.
+        :return: the API request response dictionary.
+
+        Example:
+            - API_POST.unlock_remote_dataset('tank/my_dataset')
+        """
+
+        unlock_options = {"datasets": [{"name": dataset, "passphrase": "encryption"}]}
+        payload = {"id": dataset, "unlock_options": unlock_options}
+        return cls.toggle_dataset_lock_by_state(payload, 'unlock', 'remote')

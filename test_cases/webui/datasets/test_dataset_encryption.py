@@ -1,5 +1,4 @@
 import pytest
-from helper.data_config import get_data_list
 from keywords.api.post import API_POST
 from keywords.api.delete import API_DELETE
 from keywords.webui.common import Common

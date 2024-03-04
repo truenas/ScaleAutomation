@@ -3,6 +3,58 @@ from helper.api import GET, Response
 
 class API_GET:
     @classmethod
+    def get_system_product_name(cls) -> Response:
+        """
+        This method gets the system product name.
+
+        :return: The API request response.
+
+        Example:
+            - API_GET.get_system_product_name()
+        """
+        response = GET('/system/product_name/')
+        return response
+
+    @classmethod
+    def get_system_product_type(cls) -> Response:
+        """
+        This method gets the system product type.
+
+        :return: The API request response.
+
+        Example:
+            - API_GET.get_system_product_type()
+        """
+        response = GET('/system/product_type/')
+        return response
+
+    @classmethod
+    def get_system_version(cls) -> Response:
+        """
+        This method gets the system version.
+
+        :return: The API request response.
+
+        Example:
+            - API_GET.get_system_version()
+        """
+        response = GET('/system/version/')
+        return response
+
+    @classmethod
+    def get_system_version_short(cls) -> Response:
+        """
+        This method gets the system version short.
+
+        :return: The API request response.
+
+        Example:
+            - API_GET.get_system_version_short()
+        """
+        response = GET('/system/version_short/')
+        return response
+
+    @classmethod
     def get_pool(cls, name: str) -> Response:
         """
         This method gets the pool by given name.

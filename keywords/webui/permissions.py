@@ -1,5 +1,4 @@
 import xpaths
-from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 
 

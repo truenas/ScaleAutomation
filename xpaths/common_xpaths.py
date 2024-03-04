@@ -133,7 +133,7 @@ def button_share_actions_menu(sharetype: str) -> str:
     :param sharetype: type of the given share
     :return: xpath string for the given acton button
     """
-    return f'//ix-{sharetype}-card//ix-service-extra-actions//button'
+    return f'//ix-{sharetype.lower()}-card//ix-service-extra-actions//button'
 
 
 def card_label_and_value(card_tile: str, label: str, value: str) -> str:
@@ -145,7 +145,7 @@ def card_label_and_value(card_tile: str, label: str, value: str) -> str:
     :param value: text of the given value.
     :return: the xpath text of the given card label and value.
     """
-    return f'//mat-card[contains(text(),"{card_tile}")]//*[contains(.,"{label}") and contains(text(),"{value}")]'
+    return f'//mat-card[contains(.,"{card_tile}")]//*[contains(.,"{label}") and contains(.,"{value}")]'
 
 
 def card_title(text: str) -> str:

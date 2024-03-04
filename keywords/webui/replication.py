@@ -19,7 +19,7 @@ class Replication:
     @classmethod
     def click_run_now_replication_task_by_name(cls, name):
         """
-        This method unsets the read only destination checkbox
+        This method clicks the run now button for the given replication task
 
         :param name: the name of the given replication task
 
@@ -29,8 +29,8 @@ class Replication:
         WebUI.refresh()
         COM.click_button(f'replication-task-{COM.convert_to_tag_format(name)}-play-arrow-row-action')
         COM.assert_confirm_dialog()
-        WebUI.wait_until_visible(
-            f'//*[@data-test="button-state-replication-task-{COM.convert_to_tag_format(name)}-row-state" and contains(@class,"fn-theme-green")]', shared_config['LONG_WAIT'])
+        assert WebUI.wait_until_visible(
+            f'//*[@data-test="button-state-replication-task-{COM.convert_to_tag_format(name)}-row-state" and contains(@class,"fn-theme-green")]', shared_config['LONG_WAIT']) is True
 
     @classmethod
     def close_destination_box(cls) -> None:
@@ -55,10 +55,11 @@ class Replication:
             - Replication.delete_replication_task_by_name('myRepTask')
         """
         if cls.is_replication_task_visible(name):
-            WebUI.xpath(xpaths.common_xpaths.any_child_parent_target(
+            xpath = xpaths.common_xpaths.any_child_parent_target(
                     f'//*[contains(text(),"{name}")]',
                     'tr',
-                    f'button[contains(@data-test,"-delete")]')).click()
+                    f'button[contains(@data-test,"-delete")]')
+            COM.click_on_element(xpath)
             COM.assert_confirm_dialog()
 
     @classmethod

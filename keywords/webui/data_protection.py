@@ -11,9 +11,19 @@ class Data_Protection:
         This method clicks the Add Replication task button
 
         Example:
-            - Data_Protection.click_Add_Replication_button()
+            - Data_Protection.click_add_replication_button()
         """
         COM.click_button('replication-task-add')
+
+    @classmethod
+    def click_add_rsync_button(cls) -> None:
+        """
+        This method clicks the Add Rsync task button
+
+        Example:
+            - Data_Protection.click_add_rsync_button()
+        """
+        COM.click_button('rsync-task-add')
 
     @classmethod
     def click_snapshots_button(cls):
@@ -54,7 +64,7 @@ class Data_Protection:
                 COM.click_button('delete-selected')
                 COM.set_checkbox('confirm')
                 COM.click_button('delete')
-                # delay to allow delete to complete
+                # delay to allow 'delete' to complete
                 assert COM.is_visible(xpaths.common_xpaths.button_field('close')) is True
                 COM.click_button('close')
                 COM.assert_text_is_visible('No records have been added yet')

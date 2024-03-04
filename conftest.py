@@ -2,7 +2,7 @@ import os
 import pytest
 from helper.webui import WebUI
 from helper.global_config import private_config, shared_config
-from helper.reporting import allure_reporting, take_screenshot
+from helper.reporting import allure_reporting, take_screenshot, allure_environment
 from keywords.api.put import API_PUT
 from keywords.webui.common import Common
 
@@ -10,6 +10,7 @@ from keywords.webui.common import Common
 # Close WebUI and move Allure report to Reports folder after the test session is completed
 def pytest_sessionfinish(session, exitstatus):
     print(f"\nTotal time (in seconds) spent on hard delays using WebUI.delay(): {WebUI.total_time_waited()} seconds waited")
+    allure_environment()
     allure_reporting()
     WebUI.quit()
 

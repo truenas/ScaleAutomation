@@ -33,7 +33,6 @@ class NFS:
         """
         return COM.is_visible(xpaths.common_xpaths.any_text('Network is required'))
 
-
     @classmethod
     def assert_error_nfs_share_mapall_user_override(cls) -> bool:
         """
@@ -62,7 +61,8 @@ class NFS:
         """
         # TODO - Update with proper message when it is implemented.
         #   NAS-127220 - The Error Message For A Duplicate NFS Share Needs Clarification
-        return COM.is_visible(xpaths.common_xpaths.any_text(f'ERROR - Export conflict. This share is exported to everybody and another share exports {sharepath} for'))
+        return COM.is_visible(xpaths.common_xpaths.any_text(
+            f'ERROR - Export conflict. Another share with the same path exports {sharepath} for'))
 
     @classmethod
     def assert_error_nfs_share_path_nonexistant(cls) -> bool:
@@ -88,7 +88,6 @@ class NFS:
         This method clicks the Add Hosts button on the NFS share edit panel.
         """
         COM.click_button('add-item-hosts')
-
 
     @classmethod
     def click_add_networks_button(cls):
@@ -175,8 +174,9 @@ class NFS:
         :param field: The field to select (Network or Hosts)
         :param text: The text to enter.
         """
-        path = xpaths.common_xpaths.any_xpath(f'//*[contains(text(), "{field}")]/ancestor::ix-list//*[@data-test="input"]')
-        WebUI.wait_until_visible(path)
+        path = xpaths.common_xpaths.any_xpath(
+            f'//*[contains(text(), "{field}")]/ancestor::ix-list//*[@data-test="input"]')
+        assert WebUI.wait_until_visible(path) is True
         WebUI.xpath(path).clear()
         WebUI.xpath(path).send_keys(text)
         WebUI.xpath(path).send_keys(Keys.TAB)
@@ -218,3 +218,31 @@ class NFS:
         """
         COM.clear_input_field('maproot-user', True)
 
+    @classmethod
+    def verify_nfs_service_edit_ui(cls) -> None:
+        """
+        This method verifies the edit UI of the NFS service.
+        """
+        assert COM.is_visible(xpaths.common_xpaths.select_field('bindip')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('servers-auto')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('v-4-v-3-owner')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('v-4-krb')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('mountd-port')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('rpcstatd-port')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('rpclockd-port')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('allow-nonroot')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('userd-manage-gids')) is True
+        assert COM.is_visible(xpaths.common_xpaths.button_field('save')) is True
+
+    @classmethod
+    def verify_nfs_sessions_page_opens(cls) -> None:
+        """
+        This method verifies the NFS Sessions page is opens.
+        """
+        if COM.assert_page_header('Services'):
+            COM.click_link('nfs-sessions')
+        elif COM.assert_page_header('Sharing'):
+            COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('NFS'))
+            COM.click_button('nfs-actions-menu-sessions')
+        assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-sharing')) is True
+        assert COM.assert_page_header('NFS Sessions') is True

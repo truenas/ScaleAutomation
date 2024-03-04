@@ -44,15 +44,15 @@ class SMB:
 
         :param name: name of the given share
         """
-        WebUI.xpath(xpaths.common_xpaths.button_field(f'card-smb-share-{name.lower()}-security-row-action')).click()
-        WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit ACL', 1))
+        COM.click_button(f'card-smb-share-{name.lower()}-security-row-action')
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit ACL', 1)) is True
 
     @classmethod
     def delete_share_by_name(cls, sharetype: str, name: str, action: str) -> None:
         """
         This method deletes the given share on the Shares page
         """
-        WebUI.xpath(xpaths.common_xpaths.button_share_action_by_name(sharetype, name, action)).click()
+        COM.click_on_element(xpaths.common_xpaths.button_share_action_by_name(sharetype, name, action))
         COM.assert_confirm_dialog()
 
     @classmethod
@@ -84,19 +84,19 @@ class SMB:
         :param name: name of the account to ignore
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('ignore-list'))
-        WebUI.xpath(xpaths.common_xpaths.input_field('ignore-list')).click()
+        COM.click_on_element(f'//*[@data-test="input-ignore-list"]')
         name = COM.convert_to_tag_format('ignore-list-'+name)
-        WebUI.xpath(xpaths.common_xpaths.option_field(name)).click()
+        COM.click_on_element(f'//*[@data-test="option-{name}"]')
 
     @classmethod
     def set_share_purpose(cls, purpose: str) -> None:
         """
         This method sets the purpose for the share on the Edit Share right panel
         """
-        WebUI.wait_until_visible(xpaths.common_xpaths.select_field('purpose'))
-        WebUI.xpath(xpaths.common_xpaths.select_field('purpose')).click()
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.select_field('purpose')) is True
+        COM.click_on_element(f'//*[@data-test="select-purpose"]')
         purpose = purpose.replace(' ', '-').lower()
-        WebUI.xpath(xpaths.common_xpaths.option_field('purpose-' + purpose)).click()
+        COM.click_on_element(f'//*[@data-test="option-purpose-{purpose}"]')
 
     @classmethod
     def set_smb_acl_by_api(cls, name: str):
@@ -115,7 +115,65 @@ class SMB:
         :param name: name of the account to watch
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('watch-list'))
-        WebUI.xpath(xpaths.common_xpaths.input_field('watch-list')).click()
-        name = COM.convert_to_tag_format('watch-list-'+name)
-        WebUI.xpath(xpaths.common_xpaths.option_field(name)).click()
+        COM.click_on_element(f'//*[@data-test="input-watch-list"]')
 
+        name = COM.convert_to_tag_format('watch-list-'+name)
+        COM.click_on_element(f'//*[@data-test="option-{name}"]')
+
+    @classmethod
+    def verify_smb_audit_page_opens(cls):
+        """
+        This method verifies the Audit page is opens with SMB filter entered.
+        """
+        if COM.assert_page_header('Services'):
+            COM.click_link('cifs-logs')
+        elif COM.assert_page_header('Sharing'):
+            COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('SMB'))
+            COM.click_button('cifs-actions-menu-logs')
+        assert COM.assert_page_header('Audit') is True
+        assert COM.assert_text_is_visible('"Service" = "SMB"') is True
+
+    @classmethod
+    def verify_smb_service_advanced_edit_ui(cls):
+        """
+        This method verifies the advanced edit UI of the SMB service.
+        """
+        cls.verify_smb_service_basic_edit_ui()
+        assert COM.is_visible(xpaths.common_xpaths.select_field('unixcharset')) is True
+        assert COM.is_visible(xpaths.common_xpaths.select_field('loglevel')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('syslog')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('localmaster')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('aapl-extensions')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('multichannel')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('admin-group')) is True
+        assert COM.is_visible(xpaths.common_xpaths.select_field('guest')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('filemask')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('dirmask')) is True
+        assert COM.is_visible(xpaths.common_xpaths.select_field('bindip')) is True
+        assert COM.is_visible(xpaths.common_xpaths.button_field('save')) is True
+
+    @classmethod
+    def verify_smb_service_basic_edit_ui(cls):
+        """
+        This method verifies the basic edit UI of the SMB service.
+        """
+        assert COM.is_visible(xpaths.common_xpaths.input_field('netbiosname')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('netbiosalias')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('workgroup')) is True
+        assert COM.is_visible(xpaths.common_xpaths.input_field('description')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('enable-smb-1')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('ntlmv-1-auth')) is True
+        assert COM.is_visible(xpaths.common_xpaths.button_field('save')) is True
+
+    @classmethod
+    def verify_smb_sessions_page_opens(cls):
+        """
+        This method verifies the SMB Sessions page is opens.
+        """
+        if COM.assert_page_header('Services'):
+            COM.click_link('cifs-sessions')
+        elif COM.assert_page_header('Sharing'):
+            COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('SMB'))
+            COM.click_button('cifs-actions-menu-sessions')
+        assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-sharing')) is True
+        assert COM.assert_page_header('SMB Status') is True

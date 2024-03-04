@@ -1,7 +1,6 @@
 from helper.webui import WebUI
 import xpaths
 from keywords.webui.common import Common as COM
-from helper.global_config import private_config
 
 
 class Login_Invalid_Credentials:
@@ -22,5 +21,5 @@ class Login_Invalid_Credentials:
         if user == "":
             assert COM.is_visible(xpaths.common_xpaths.any_text('Either "username" or "uid" must be specified')) is False
         # else:
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Wrong username or password. Please try again.'))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Wrong username or password. Please try again.')) is True
         WebUI.refresh()

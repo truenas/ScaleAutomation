@@ -62,14 +62,14 @@ class Test_Active_Directory:
         # Navigate to directory services page.
         Navigation.navigate_to_directory_services()
 
-        # Click on the active directory settings button and setup the active directory.
+        # Click on the active directory settings button and set up the active directory.
         Directory_Services.click_configure_active_directory_button()
         assert Active_Directory.is_edit_active_directory_visible()
         Active_Directory.set_domain_name(ad_data['domain'])
         Active_Directory.set_domain_account_name(ad_data['username'])
         Active_Directory.set_domain_account_password(ad_data['password'])
         Active_Directory.set_enable_requires_password_or_kerberos_principal_checkbox()
-        Common.click_advanced_options_button()
+        Active_Directory.click_advanced_options_button()
         Active_Directory.set_computer_account_ou(ad_data['ca_ou'])
         Active_Directory.set_netbios_name(shared_config['HOSTNAME'])
         Active_Directory.click_save_button_and_wait_for_ad_to_finish_saving()
@@ -89,14 +89,14 @@ class Test_Active_Directory:
         # Navigate to directory services page.
         Navigation.navigate_to_directory_services()
 
-        # Click on the active directory settings button and setup the active directory.
+        # Click on the active directory settings button and set up the active directory.
         Directory_Services.click_configure_active_directory_button()
         assert Active_Directory.is_edit_active_directory_visible() is True
         Active_Directory.set_domain_name(ad_data['domain'])
         Active_Directory.set_domain_account_name(ad_data['username'])
         Active_Directory.set_domain_account_password(ad_data['password'])
         Active_Directory.set_enable_requires_password_or_kerberos_principal_checkbox()
-        Common.click_advanced_options_button()
+        Active_Directory.click_advanced_options_button()
         Active_Directory.set_computer_account_ou(ad_data['ca_ou'])
         Active_Directory.set_netbios_name(shared_config['HOSTNAME'])
         Active_Directory.click_save_button_and_wait_for_ad_to_finish_saving()

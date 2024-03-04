@@ -24,8 +24,8 @@ class Dashboard:
 
         :return: True if all cpu load graph text are visible otherwise it returns False.
         """
-        assert WebUI.wait_until_visible('//ix-view-chart-gauge')
-        assert WebUI.wait_until_visible(xpaths.dashboard.cpu_subtitle)
+        assert WebUI.wait_until_visible('//ix-view-chart-gauge') is True
+        assert WebUI.wait_until_visible(xpaths.dashboard.cpu_subtitle) is True
         results_list = [
             "Avg Usage" in WebUI.get_text(xpaths.dashboard.cpu_subtitle),
             "Thread" in WebUI.get_text(xpaths.dashboard.cpu_load_cores(1)),
@@ -275,7 +275,7 @@ class Dashboard:
 
         :return: the System Information Uptime value.
         """
-        assert WebUI.wait_until_visible(xpaths.dashboard.card_list_item('sysinfo', 4))
+        assert WebUI.wait_until_visible(xpaths.dashboard.card_list_item('sysinfo', 4)) is True
         return WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 4))
 
     @classmethod

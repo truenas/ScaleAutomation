@@ -2,8 +2,8 @@ import xpaths.common_xpaths
 from helper.global_config import shared_config
 from helper.webui import WebUI
 from helper.reporting import take_screenshot
+from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
-from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation as NAV
 import xpaths
 
@@ -23,7 +23,7 @@ class Apps:
         # Initially set testObj to right panel header
         test_obj = xpaths.common_xpaths.any_header('Install Custom App', 1)
         close_add_button = False
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath('//*[@class="search-card"]'), shared_config['WAIT'])
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath('//*[@class="search-card"]'), shared_config['WAIT']) is True
         for key in shared_config['CUSTOM_APP_UI']:
             text = shared_config['CUSTOM_APP_UI'].get(key)
             click_add_button = False
@@ -31,7 +31,7 @@ class Apps:
 
             if key in shared_config['CUSTOM_APP_UI_LEGEND_LIST']:
                 test_obj = xpaths.common_xpaths.any_xpath(f'//legend[contains(text(),"{text}")]')
-                WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[@class="section ng-star-inserted" and contains(text(),"{text}")]')).click()
+                COM.click_on_element(f'//*[@class="section ng-star-inserted" and contains(text(),"{text}")]')
             if key in shared_config['CUSTOM_APP_UI_BUTTON_LIST']:
                 test_obj = xpaths.common_xpaths.button_field(f'add-item-{text}')
                 click_add_button = True
@@ -97,15 +97,17 @@ class Apps:
             case 'Running':
                 COM.set_checkbox(COM.convert_to_tag_format(name))
                 COM.click_button('bulk-actions-menu')
+                WebUI.delay(0.1)
                 COM.click_button('stop-selected')
+                WebUI.delay(0.1)
                 assert cls.is_app_stopped(name)
             case 'Stopped':
                 pass
             case _:
-                WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(
+                assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(
                     child,
                     parent,
-                    f'*[contains(text(),{status})]'), shared_config['LONG_WAIT'])
+                    f'*[contains(text(),{status})]'), shared_config['LONG_WAIT']) is True
         if cls.get_app_status(name) != 'Running':
             COM.set_checkbox(COM.convert_to_tag_format(name))
             # wait for actions menu to refresh available actions
@@ -113,16 +115,19 @@ class Apps:
             assert cls.is_app_stopped(name)
             COM.click_button('bulk-actions-menu')
             take_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu')
+            WebUI.delay(0.1)
             if WebUI.xpath(xpaths.common_xpaths.button_field('start-selected')).get_attribute('disabled'):
                 WebUI.refresh()
                 COM.set_checkbox(COM.convert_to_tag_format(name))
                 COM.click_button('bulk-actions-menu')
                 take_screenshot(COM.convert_to_tag_format(name)+'_bulk_actions_menu_2')
+                WebUI.delay(0.1)
             COM.click_button('start-selected')
-            WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(
+            WebUI.delay(0.1)
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(
                 child,
                 parent,
-                f'*[contains(text(),"Starting")]'), shared_config['LONG_WAIT'])
+                f'*[contains(text(),"Starting")]'), shared_config['LONG_WAIT']) is True
             assert cls.is_app_deployed(name)
             assert cls.is_app_running(name)
             WebUI.refresh()
@@ -148,19 +153,23 @@ class Apps:
             case 'Stopped':
                 COM.set_checkbox(COM.convert_to_tag_format(name))
                 COM.click_button('bulk-actions-menu')
+                WebUI.delay(0.1)
                 COM.click_button('start-selected')
+                WebUI.delay(0.1)
                 assert cls.is_app_running(name)
             case 'Running':
                 pass
             case _:
-                WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(
+                assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(
                     child,
                     parent,
-                    f'*[contains(text(),{status})]'), shared_config['LONG_WAIT'])
+                    f'*[contains(text(),{status})]'), shared_config['LONG_WAIT']) is True
         if cls.get_app_status(name) != 'Stopped':
             COM.set_checkbox(COM.convert_to_tag_format(name))
             COM.click_button('bulk-actions-menu')
+            WebUI.delay(0.1)
             COM.click_button('stop-selected')
+            WebUI.delay(0.1)
             assert WebUI.wait_until_visible(xpaths.common_xpaths.any_child_parent_target(
                 f'//*[text()="{COM.convert_to_tag_format(name)}"]',
                 'ix-app-row',
@@ -179,7 +188,7 @@ class Apps:
         """
 
         COM.click_on_element(f'//ix-app-card//h3[contains(text(),"{name}")]')
-        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text('Please wait'))
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text('Please wait')) is True
 
     @classmethod
     def click_custom_app(cls) -> None:
@@ -190,6 +199,7 @@ class Apps:
             - Apps.click_custom_app()
         """
         COM.click_link('custom-app')
+        cls.handle_docker_limit_dialog()
 
     @classmethod
     def click_discover_apps(cls) -> None:
@@ -215,18 +225,20 @@ class Apps:
             COM.click_button('setup-pool')
             COM.select_option('pool', 'pool-tank')
             COM.click_button('choose')
-            WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Configuring...', 1), shared_config['LONG_WAIT'])
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Configuring...', 1), shared_config['LONG_WAIT']) is True
         if COM.is_visible(xpaths.common_xpaths.any_text('Install Another Instance')):
             cls.click_discover_apps()
             COM.set_search_field(name)
             cls.click_app(name)
-        if WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['SHORT_WAIT']) is False:
+        if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['SHORT_WAIT']):
+            print("Information dialog present. Attempting to close.")
             COM.assert_confirm_dialog()
         COM.click_button(COM.convert_to_tag_format(name) + '-install')
-        if WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['MEDIUM_WAIT']) is False:
+        if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Information', 1), shared_config['MEDIUM_WAIT']):
+            print("Information dialog present. Attempting to close.")
             COM.assert_confirm_dialog()
         cls.handle_docker_limit_dialog()
-        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['LONG_WAIT'])
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), shared_config['LONG_WAIT']) is True
 
     @classmethod
     def configure_apps_pool(cls):
@@ -241,7 +253,9 @@ class Apps:
             COM.click_button('choose-pool')
             COM.select_option('pool', 'pool-tank')
             COM.click_button('choose')
-            WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Configuring...', 1), shared_config['LONG_WAIT'])
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Configuring...', 1), shared_config['LONG_WAIT']) is True
+            assert WebUI.wait_until_visible('//*[@fonticon="mdi-check-circle"]', shared_config['LONG_WAIT']) is True
+            assert COM.is_visible(xpaths.common_xpaths.any_text('Apps Service Running')) is True
 
     @classmethod
     def delete_app(cls, name: str) -> None:
@@ -255,17 +269,20 @@ class Apps:
         """
         if COM.assert_page_header('Installed') is False:
             NAV.navigate_to_apps()
-        COM.set_checkbox(COM.convert_to_tag_format(name))
-        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('bulk-actions-menu'))
-        COM.click_button('bulk-actions-menu')
-        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('delete-selected'))
-        COM.click_button('delete-selected')
-        COM.assert_confirm_dialog()
-        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Deleting...', 1), shared_config['WAIT'])
+        if COM.is_visible(xpaths.common_xpaths.checkbox_field(COM.convert_to_tag_format(name))):
+            COM.set_checkbox(COM.convert_to_tag_format(name))
+            assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('bulk-actions-menu'), shared_config['LONG_WAIT']) is True
+            COM.click_button('bulk-actions-menu')
+            WebUI.delay(0.1)
+            assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('delete-selected'), shared_config['LONG_WAIT']) is True
+            COM.click_button('delete-selected')
+            WebUI.delay(0.1)
+            COM.assert_confirm_dialog()
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Deleting...', 1), shared_config['WAIT'])
         if COM.is_visible(xpaths.common_xpaths.button_field('bulk-actions-menu')):
             WebUI.refresh()
             COM.assert_page_header('Installed')
-        assert not cls.is_app_installed(name)
+        assert cls.is_app_installed(name) is False
 
     @classmethod
     def edit_app(cls, name: str) -> None:
@@ -306,10 +323,10 @@ class Apps:
         Example:
             - Apps.handle_docker_limit_dialog()
         """
-        if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 1), shared_config['SHORT_WAIT']):
-            COM.assert_confirm_dialog()
-            if COM.is_clickable(xpaths.common_xpaths.button_field('save')):
-                COM.click_save_button()
+        if WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 3), shared_config['SHORT_WAIT']):
+            print("Handling Docker Hub Rate Limit Warning dialog.")
+            COM.click_button('close')
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Docker Hub Rate Limit Warning', 3), shared_config['MEDIUM_WAIT'])
 
     @classmethod
     def is_app_deployed(cls, name: str) -> bool:
@@ -324,10 +341,10 @@ class Apps:
         """
         # Delay to wait for Apps section populate
         name = COM.convert_to_tag_format(name)
-        WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(
             f'//*[text()="{name}"]',
             'ix-app-row',
-            '*[contains(text(),"Deploying")]'), shared_config['EXTRA_LONG_WAIT'])
+            '*[contains(text(),"Deploying")]'), shared_config['EXTRA_LONG_WAIT']) is True
         return cls.get_app_status(name) != 'Deploying'
 
     @classmethod
@@ -345,7 +362,7 @@ class Apps:
         assert COM.assert_progress_bar_not_visible()
         if COM.is_visible(xpaths.common_xpaths.button_field("check-available-apps")):
             return False
-        return WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//ix-app-row//div[contains(text(),"{COM.convert_to_tag_format(name)}")]'), shared_config['MEDIUM_WAIT'])
+        return WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(COM.convert_to_tag_format(name)), shared_config['SHORT_WAIT'])
 
     @classmethod
     def is_app_running(cls, name: str) -> bool:
@@ -361,7 +378,7 @@ class Apps:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_child_parent_target(
             f'//*[text()="{COM.convert_to_tag_format(name)}"]',
             'ix-app-row',
-            '*[contains(text(),"Running")]'), shared_config['LONG_WAIT'])
+            '*[contains(text(),"Running")]'), shared_config['EXTRA_LONG_WAIT'])
 
     @classmethod
     def is_app_stopped(cls, name: str) -> bool:
@@ -377,7 +394,7 @@ class Apps:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_child_parent_target(
             f'//*[text()="{COM.convert_to_tag_format(name)}"]',
             'ix-app-row',
-            '*[contains(text(),"Stopped")]'), shared_config['LONG_WAIT'])
+            '*[contains(text(),"Stopped")]'), shared_config['EXTRA_LONG_WAIT'])
 
     @classmethod
     def navigate_to_app_section(cls, name: str) -> None:
@@ -389,7 +406,7 @@ class Apps:
         Example:
             - Apps.navigate_to_app_section('WG Easy')
         """
-        WebUI.xpath(xpaths.common_xpaths.any_xpath(f'//*[@class="section ng-star-inserted" and contains(text(),"{name}")]')).click()
+        COM.click_on_element(f'//*[@class="section ng-star-inserted" and contains(text(),"{name}")]')
 
     @classmethod
     def refresh_charts(cls):
@@ -398,7 +415,7 @@ class Apps:
         """
         Apps.click_discover_apps()
         COM.click_link('refresh-charts')
-        COM.assert_progress_bar_not_visible()
+        COM.assert_progress_bar_not_visible(shared_config['EXTRA_LONG_WAIT'])
         NAV.navigate_to_apps()
 
     @classmethod
@@ -430,7 +447,7 @@ class Apps:
             - Apps.set_webdav_fields('WebDAV')
         """
         name = COM.convert_to_tag_format(name)
-        DATASET.create_dataset_by_api('tank/' + name)
+        API_POST.create_dataset(f'tank/{name}')
         COM.click_button('add-item-shares')
         COM.set_input_field('name', name)
         COM.set_input_field('host-path', '/mnt/tank/' + name, True)
@@ -460,10 +477,9 @@ class Apps:
             COM.set_search_field(name)
             Apps.click_app(name)
             Apps.click_install_app(name)
+            cls.handle_docker_limit_dialog()
             Apps.set_app_values(name)
             COM.click_save_button()
-            cls.handle_docker_limit_dialog()
             assert COM.assert_page_header('Installed', shared_config['LONG_WAIT'])
         assert Apps.is_app_installed(name) is True
         return Apps.is_app_deployed(name) is True
-

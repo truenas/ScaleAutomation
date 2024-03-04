@@ -1,5 +1,4 @@
 import xpaths
-from helper.global_config import shared_config
 from helper.reporting import take_screenshot, create_timestamp
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
@@ -24,7 +23,7 @@ class Navigation:
             take_screenshot('RIGHT_PANEL_OPEN-'+create_timestamp())
             COM.close_right_panel()
         if COM.is_visible(xpaths.common_xpaths.button_field('dialog-cancel')):
-            print('@@@@@@@ DIALOG LEFT OPEN-'+create_timestamp())
+            print('@@@@@@@ DIALOG_LEFT_OPEN-'+create_timestamp())
             take_screenshot('DIALOG_LEFT_OPEN-'+create_timestamp())
             COM.cancel_confirm_dialog()
         if (COM.is_visible(xpaths.common_xpaths.any_header(header, 1)) is True) & (header != 'Dashboard'):
@@ -55,6 +54,16 @@ class Navigation:
          - Navigation.navigate_to_backup_credentials()
         """
         cls.navigate_to('credentials', 'Backup Credentials', 'backup-credentials')
+
+    @classmethod
+    def navigate_to_certificates(cls) -> None:
+        """
+        This method navigates to the Shares page
+
+        Example
+         - Navigation.navigate_to_certificates()
+        """
+        cls.navigate_to('credentials', 'Certificates', 'certificates')
 
     @classmethod
     def navigate_to_dashboard(cls) -> None:
@@ -126,7 +135,7 @@ class Navigation:
          - Navigation.navigate_to_periodic_snapshots()
         """
         cls.navigate_to_data_protection()
-        WebUI.wait_until_clickable(xpaths.common_xpaths.link_field('snapshot-task-snapshots'))
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.link_field('snapshot-task-snapshots')) is True
         COM.click_link('snapshot-task-snapshots')
         assert COM.assert_page_header('Snapshots')
 
@@ -169,5 +178,3 @@ class Navigation:
          - Navigation.navigate_to_system_settings_services()
         """
         cls.navigate_to('system-settings', 'Services', 'services')
-
-
