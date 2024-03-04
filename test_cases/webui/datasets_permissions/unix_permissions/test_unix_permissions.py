@@ -39,15 +39,16 @@ class Test_Unix_Permissions:
         This test verifies the UI on the permissions card of the dataset that has been set with Unix Permissions.
         """
         DAT.click_dataset_location(unix_perms['dataset'])
-        assert PERM.verify_dataset_owner(unix_perms['username'])
-        assert PERM.verify_dataset_group(unix_perms['username'])
-        assert PERM.verify_dataset_permissions_type('Unix Permissions')
-        assert PERM.verify_dataset_owner_permissions_name(unix_perms['username'])
-        assert PERM.verify_dataset_owner_permissions('Read | Write | Execute')
-        assert PERM.verify_dataset_group_permissions_name(unix_perms['groupname'])
-        assert PERM.verify_dataset_group_permissions('Read | Execute')
-        assert PERM.verify_dataset_other_permissions_name()
-        assert PERM.verify_dataset_other_permissions('Read | Execute')
-        assert PERM.verify_dataset_permissions_edit_button()
+        assert PERM.verify_dataset_owner(unix_perms['username']) is True
+        assert PERM.verify_dataset_group(unix_perms['username']) is True
+        assert PERM.verify_dataset_permissions_type('Unix Permissions') is True
+        assert PERM.verify_dataset_owner_permissions_name(unix_perms['username']) is True
+        assert PERM.verify_dataset_owner_permissions('Read | Write | Execute') is True
+        assert PERM.verify_dataset_group_permissions_name(unix_perms['groupname']) is True
+        assert PERM.verify_dataset_group_permissions('Read | Execute') is True
+        assert PERM.verify_dataset_other_permissions_name() is True
+        assert PERM.verify_dataset_other_permissions('Read | Execute') is True
+        assert PERM.verify_dataset_permissions_edit_button() is True
+
 
 
