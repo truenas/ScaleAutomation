@@ -14,9 +14,35 @@ class Permissions:
         return COM.get_element_property(f"//*[@name='{user_category}']/ancestor::ix-permissions-item/descendant::*[@class='{level}']", "textContent")
 
     @classmethod
+    def set_apply_group_checkbox(cls):
+        """
+        This method sets the Apply Group Checkbox.
+        """
+        COM.set_checkbox('apply-group')
+
+    @classmethod
+    def set_apply_user_checkbox(cls):
+        """
+        This method sets the Apply User Checkbox.
+        """
+        COM.set_checkbox('apply-user')
+
+    @classmethod
+    def set_dataset_group(cls, group: str) -> None:
+        """
+        This method sets the Unix Permissions group for the share on the Edit Permissions page
+
+        :param group: the name of the group.
+        """
+        COM.is_visible(xpaths.common_xpaths.input_field('group'))
+        COM.set_input_field('group', group, True)
+
+    @classmethod
     def set_dataset_owner(cls, owner: str) -> None:
         """
         This method sets the ACL Owner for the share on the Edit ACL page
+
+        :param owner: the name of the owner.
         """
         COM.is_visible(xpaths.common_xpaths.input_field('owner'))
         COM.set_input_field('owner', owner, True)
@@ -25,9 +51,35 @@ class Permissions:
     def set_dataset_owner_group(cls, group: str) -> None:
         """
         This method sets the ACL group for the share on the Edit ACL page
+
+        :param owner group: the name of the owner group.
         """
         COM.is_visible(xpaths.common_xpaths.input_field('owner-group'))
         COM.set_input_field('owner-group', group, True)
+
+    @classmethod
+    def set_dataset_user(cls, user: str) -> None:
+        """
+        This method sets the Unix Permissions user for the share on the Edit Permissions page
+
+        :param user: the name of the user.
+        """
+        COM.is_visible(xpaths.common_xpaths.input_field('user'))
+        COM.set_input_field('user', user, True)
+
+    @classmethod
+    def unset_apply_group_checkbox(cls):
+        """
+        This method unsets the Apply Group Checkbox.
+        """
+        COM.unset_checkbox('apply-group')
+
+    @classmethod
+    def unset_apply_user_checkbox(cls):
+        """
+        This method unsets the Apply User Checkbox.
+        """
+        COM.unset_checkbox('apply-user')
 
     @classmethod
     def verify_dataset_group(cls, name: str) -> bool:
@@ -122,6 +174,4 @@ class Permissions:
         :return:
         """
         return COM.assert_text_is_visible(permtype)
-
-
 
