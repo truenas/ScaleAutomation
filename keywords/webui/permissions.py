@@ -12,14 +12,15 @@ class Permissions:
         :param level: the permissions level. EX: read, write, execute.
         :return: returns the permissions text for the given user category for the given level.
         """
-        translated_level = ''
-        if level == 'user' or level == 'owner':
-            translated_level = 'person'
-        elif level == 'group' or level == 'owner group':
-            translated_level = 'people'
-        elif level == 'other':
-            translated_level = 'groups'
-        return COM.get_element_property(f"//*[@name='{user_category}']/ancestor::ix-permissions-item/descendant::*[@class='{translated_level}']", "textContent")
+        translated_category = ''
+        match user_category:
+            case 'user' | 'owner':
+                translated_category = 'person'
+            case 'group' | 'owner group':
+                translated_category = 'people'
+            case 'other':
+                translated_category = 'groups'
+        return COM.get_element_property(f"//*[@name='{translated_category}']/ancestor::ix-permissions-item/descendant::*[@class='{level}']", "textContent")
 
     @classmethod
     def set_apply_group_checkbox(cls):
@@ -92,12 +93,12 @@ class Permissions:
     @classmethod
     def verify_dataset_group(cls, name: str) -> bool:
         """
-        This method returns true if the textContent of the group element matches the given name.
+        This method returns true if the given name is visible under Group.
 
         :param name: The name of the group.
-        :return: returns true if the textContent of the element matches the given name.
+        :return: returns true if the given name is visible under Group.
         """
-        return COM.get_element_property(xpaths.common_xpaths.any_xpath(f"//*[contains(text(),'Group:')]/..//*[contains(text(),'{name}')]"), 'textContent')
+        return COM.is_visible(xpaths.common_xpaths.any_xpath(f"//*[contains(text(),'Group:')]/..//*[contains(text(),'{name}')]"))
 
     @classmethod
     def verify_dataset_group_permissions(cls, permissions: str) -> bool:
@@ -107,7 +108,7 @@ class Permissions:
         :param permissions: the expected permissions of the group.
         :return: returns true if the group permissions visible match the given permissions.
         """
-        val = cls.get_dataset_permissions_by_level('people', 'permissions')
+        val = cls.get_dataset_permissions_by_level('group', 'permissions')
         return val == permissions
 
     @classmethod
@@ -118,7 +119,7 @@ class Permissions:
         :param name: the name of the group.
         :return: returns true if the name of the group visible matches the given name.
         """
-        val = cls.get_dataset_permissions_by_level('people', 'name')
+        val = cls.get_dataset_permissions_by_level('group', 'name')
         return val == name
 
     @classmethod
@@ -129,7 +130,7 @@ class Permissions:
         :param permissions: the expected permissions of other.
         :return: returns true if the other permissions visible match the given permissions.
         """
-        val = cls.get_dataset_permissions_by_level('groups', 'permissions')
+        val = cls.get_dataset_permissions_by_level('other', 'permissions')
         return val == permissions
 
     @classmethod
@@ -139,18 +140,18 @@ class Permissions:
 
         :return: returns true if the name other is visible for the other permissions.
         """
-        val = cls.get_dataset_permissions_by_level('groups', 'name')
+        val = cls.get_dataset_permissions_by_level('other', 'name')
         return val == 'Other'
 
     @classmethod
     def verify_dataset_owner(cls, name: str) -> bool:
         """
-        This method returns true if the textContent of the owner element matches the given name.
+        This method returns true if the given name is visible under Owner.
 
         :param name: The name of the owner.
-        :return: returns true if the textContent of the element matches the given name.
+        :return: returns true if the given name is visible under Owner.
         """
-        return COM.get_element_property(xpaths.common_xpaths.any_xpath(f"//*[contains(text(),'Owner:')]/..//*[contains(text(),'{name}')]"), 'textContent')
+        return COM.is_visible(xpaths.common_xpaths.any_xpath(f"//*[contains(text(),'Owner:')]/..//*[contains(text(),'{name}')]"))
 
     @classmethod
     def verify_dataset_owner_permissions(cls, permissions: str) -> bool:
@@ -160,7 +161,7 @@ class Permissions:
         :param permissions: the expected permissions of the owner.
         :return: returns true if the owner permissions visible match the given permissions.
         """
-        val = cls.get_dataset_permissions_by_level('person', 'permissions')
+        val = cls.get_dataset_permissions_by_level('owner', 'permissions')
         return val == permissions
 
     @classmethod
@@ -171,7 +172,7 @@ class Permissions:
         :param name: the name of the owner.
         :return: returns true if the name of the owner visible matches the given name.
         """
-        val = cls.get_dataset_permissions_by_level('person', 'name')
+        val = cls.get_dataset_permissions_by_level('owner', 'name')
         return val == name
 
     @classmethod
