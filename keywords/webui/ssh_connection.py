@@ -314,3 +314,29 @@ class SSH_Connection:
         """
 
         COM.set_input_field('username', username)
+
+    @classmethod
+    def verify_ssh_service_advanced_edit_ui(cls) -> None:
+        """
+        This method verifies the advanced edit UI of the SSH service.
+        """
+        cls.verify_ssh_service_basic_edit_ui()
+        assert COM.is_visible(xpaths.common_xpaths.select_field('bindiface')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('compression')) is True
+        assert COM.is_visible(xpaths.common_xpaths.select_field('sftp-log-level')) is True
+        assert COM.is_visible(xpaths.common_xpaths.select_field('sftp-log-facility')) is True
+        assert COM.is_visible(xpaths.common_xpaths.select_field('weak-ciphers')) is True
+        assert COM.is_visible(xpaths.common_xpaths.textarea_field('options')) is True
+        assert COM.is_visible(xpaths.common_xpaths.button_field('save')) is True
+
+    @classmethod
+    def verify_ssh_service_basic_edit_ui(cls) -> None:
+        """
+        This method verifies the basic edit UI of the SSH service.
+        """
+        assert COM.is_visible(xpaths.common_xpaths.input_field('tcpport')) is True
+        assert COM.is_visible(xpaths.common_xpaths.any_xpath('//*[@data-test="input"]')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('passwordauth')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('kerberosauth')) is True
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field('tcpfwd')) is True
+        assert COM.is_visible(xpaths.common_xpaths.button_field('save')) is True
