@@ -23,14 +23,14 @@ class Permissions:
         return COM.get_element_property(f"//*[@name='{translated_category}']/ancestor::ix-permissions-item/descendant::*[@class='{level}']", "textContent")
 
     @classmethod
-    def set_apply_group_checkbox(cls):
+    def set_apply_group_checkbox(cls) -> None:
         """
         This method sets the Apply Group Checkbox.
         """
         COM.set_checkbox('apply-group')
 
     @classmethod
-    def set_apply_user_checkbox(cls):
+    def set_apply_user_checkbox(cls) -> None:
         """
         This method sets the Apply User Checkbox.
         """
@@ -77,14 +77,14 @@ class Permissions:
         COM.set_input_field('user', user, True)
 
     @classmethod
-    def unset_apply_group_checkbox(cls):
+    def unset_apply_group_checkbox(cls) -> None:
         """
         This method unsets the Apply Group Checkbox.
         """
         COM.unset_checkbox('apply-group')
 
     @classmethod
-    def unset_apply_user_checkbox(cls):
+    def unset_apply_user_checkbox(cls) -> None:
         """
         This method unsets the Apply User Checkbox.
         """
