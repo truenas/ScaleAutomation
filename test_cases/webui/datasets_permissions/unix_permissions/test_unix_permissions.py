@@ -11,42 +11,40 @@ from keywords.webui.permissions import Permissions as PERM
 from keywords.webui.navigation import Navigation as NAV
 
 
-@pytest.mark.parametrize('dat_perm', get_data_list('dataset_permissions'), scope='class')
+@pytest.mark.parametrize('unix_perms', get_data_list('dataset_permission/unix_permissions'), scope='class')
 class Test_Unix_Permissions:
     @pytest.fixture(scope='function', autouse=True)
-    def setup_test(self, dat_perm) -> None:
+    def setup_test(self, unix_perms) -> None:
         """
-        This method
+        This method creates the dataset and navigates to datasets before testing.
         """
-        API_DELETE.delete_user(dat_perm['username'])
-        API_POST.create_non_admin_user(dat_perm['username'], dat_perm['fullname'], dat_perm['password'], 'True')
-        API_POST.create_dataset(dat_perm['dataset_name'])
+        API_POST.create_dataset(unix_perms['pool']+'/'+unix_perms['dataset'])
+        API_POST.set_dataset_permissions_user_and_group(unix_perms['pool']+'/'+unix_perms['dataset'], unix_perms['username'], unix_perms['groupname'])
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_datasets()
 
     @pytest.fixture(scope='function', autouse=True)
-    def teardown_test(self, dat_perm):
+    def teardown_test(self, unix_perms):
         """
         This method clears any test users after test is run for a clean environment
         """
         yield
         # Clean up environment.
-        API_DELETE.delete_user(dat_perm['username'])
-        API_DELETE.delete_dataset(dat_perm['dataset_name'])
+        API_DELETE.delete_dataset(unix_perms['pool']+'/'+unix_perms['dataset'])
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
-    def test_verify_dataset_permissions_card_ui(self, dat_perm) -> None:
+    def test_verify_dataset_permissions_card_ui(self, unix_perms) -> None:
         """
         This test verifies the UI on the permissions card of the dataset that has been set with Unix Permissions.
         """
-        DAT.click_dataset_location(dat_perm['dataset_name'])
-        assert PERM.verify_dataset_owner(dat_perm['username'])
-        assert PERM.verify_dataset_group(dat_perm['username'])
+        DAT.click_dataset_location(unix_perms['dataset'])
+        assert PERM.verify_dataset_owner(unix_perms['username'])
+        assert PERM.verify_dataset_group(unix_perms['username'])
         assert PERM.verify_dataset_permissions_type('Unix Permissions')
-        assert PERM.verify_dataset_owner_permissions_name(dat_perm['username'])
+        assert PERM.verify_dataset_owner_permissions_name(unix_perms['username'])
         assert PERM.verify_dataset_owner_permissions('Read | Write | Execute')
-        assert PERM.verify_dataset_group_permissions_name(dat_perm['groupname'])
+        assert PERM.verify_dataset_group_permissions_name(unix_perms['groupname'])
         assert PERM.verify_dataset_group_permissions('Read | Execute')
         assert PERM.verify_dataset_other_permissions_name()
         assert PERM.verify_dataset_other_permissions('Read | Execute')

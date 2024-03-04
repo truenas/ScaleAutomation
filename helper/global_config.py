@@ -18,12 +18,12 @@ private_file = open(workdir + private, 'r')
 private_config = toml.load(private_file)
 
 
-def get_test_data_path(file_name: str) -> str:
+def get_test_data_path(file_path: str) -> str:
     """
     This method return the path of the data file compatible with POSIX and Windows
 
-    :param file_name: the name of the test data file.
+    :param file_path: the path to the test data file.
     :return: the full path of the test data file compatible with POSIX and Windows
     """
-    data_test_file = str(Path(f'/test_data/{file_name}.csv'))
+    data_test_file = str(Path(f'/test_data/{file_path}.csv'))
     return workdir + data_test_file
