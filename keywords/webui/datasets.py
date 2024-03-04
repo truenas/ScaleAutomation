@@ -215,7 +215,7 @@ class Datasets:
             - Dataset.assert_dataset_selected('root')
         """
         selected = xpaths.common_xpaths.selected_dataset()
-        WebUI.wait_until_visible(selected)
+        assert WebUI.wait_until_visible(selected) is True
         if Common.get_element_property(selected, 'innerHTML').__contains__(name) is False:
             cls.select_dataset(name)
         return Common.get_element_property(selected, 'innerHTML').__contains__(name) is True
