@@ -97,6 +97,7 @@ class SSH_Connection:
         name = COM.convert_to_tag_format(name)
         COM.click_button(f'ssh-keypair-{name}-key-edit-row-action')
         assert COM.assert_right_panel_header('SSH Keypairs')
+        assert COM.is_visible(xpaths.common_xpaths.button_field('save'))
 
     @classmethod
     def click_edit_ssh_keypairs_download_actions_button(cls) -> None:

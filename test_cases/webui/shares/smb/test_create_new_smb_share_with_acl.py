@@ -46,7 +46,7 @@ def test_create_new_smb_share_with_acl(smb_data) -> None:
 
     # Verify ACL Permissions of Dataset
     COM.assert_page_header('Datasets')
-    assert DATASET.assert_dataset_selected(smb_data['name'])
+    DATASET.select_dataset(smb_data['name'])
     assert DATASET.assert_dataset_owner(smb_data['acl_owner'])
     assert DATASET.assert_dataset_group(smb_data['acl_group'])
 
