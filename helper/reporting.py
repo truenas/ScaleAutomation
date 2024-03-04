@@ -18,6 +18,7 @@ def create_timestamp() -> str:
 
 real_workdir = workdir.replace("\\", "/").replace("C:", "/mnt/c")
 print(f'real_workdir: {real_workdir}')
+real_full_test_path = str(Path.cwd())
 full_test_path = str(Path(Path.cwd()).as_posix()).strip()
 full_test_path = full_test_path.replace("C:", "/mnt/c")
 print(f'full_test_path: {full_test_path}')
@@ -35,8 +36,9 @@ def allure_environment():
     product_type = API_GET.get_system_product_type().json()
     version = API_GET.get_system_version().json()
     version_short = API_GET.get_system_version_short().json()
-
-    with open(f'{full_test_path}/allure-results/environment.properties', 'w') as file:
+    allure_results = str(Path('/allure-results'))
+    environment_properties = str(Path('/environment.properties'))
+    with open(f'{real_full_test_path}{allure_results}{environment_properties}', 'w') as file:
         file.write(f'product_name={product_name}\n')
         file.write(f'product_type={product_type}\n')
         file.write(f'version={version}\n')
