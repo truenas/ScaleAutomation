@@ -4,7 +4,7 @@ from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
 from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation as NAV
-from keywords.webui.permissions import Permission as PERM
+from keywords.webui.permissions import Permissions as PERM
 from keywords.webui.smb import SMB
 
 
