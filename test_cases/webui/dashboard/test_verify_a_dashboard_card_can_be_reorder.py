@@ -20,6 +20,7 @@ class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
         Dashboard.move_card_a_to_card_b_position('help', Dashboard.get_dashboard_card_name_by_position(2))
         Dashboard.click_the_save_reorder_button()
         WebUI.refresh()
+        assert Dashboard.assert_dashboard_page_header_is_visible() is True
 
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self):
@@ -32,6 +33,7 @@ class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
         Dashboard.move_card_a_to_card_b_position('help', Dashboard.get_dashboard_card_name_by_position(2))
         Dashboard.click_the_save_reorder_button()
         WebUI.refresh()
+        assert Dashboard.assert_dashboard_page_header_is_visible() is True
 
     @allure.tag("Update")
     @allure.story("Move System Info to Help Position")

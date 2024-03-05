@@ -20,10 +20,11 @@ class Test_Verify_A_Dashboard_Card_Reordering_Can_be_Cancel:
         Dashboard.move_card_a_to_card_b_position('help', 'cpu')
         Dashboard.click_the_save_reorder_button()
         WebUI.refresh()
+        assert Dashboard.assert_dashboard_page_header_is_visible() is True
 
     @allure.tag("Update")
-    @allure.story("Move System Info to Help Position")
-    def on_the_dashboard_move_the_help_card_to_cpu_card_position_and_cancel(self):
+    @allure.story("Move Card Help to CPU Position and Cancel")
+    def verify_the_help_card_move_to_cpu_card_position_and_cancel(self):
         """
         This test verifies moving Cards 'System Info' and 'Help' then canceling doesn't change card positions
         """

@@ -10,10 +10,12 @@ from keywords.webui.dashboard import Dashboard
 @allure.epic("Dashboard")
 @allure.feature("Dashboard-Reorder")
 class Test_Verify_Reordering_Cards_Remain_After_Logoff:
+
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self):
         WebUI.refresh()
         assert Dashboard.assert_dashboard_page_header_is_visible() is True
+        Dashboard.set_all_cards_visible()
 
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self):

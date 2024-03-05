@@ -12,7 +12,7 @@ from keywords.webui.dashboard import Dashboard
 class Test_Verify_Dashboard_Cards_Can_Be_Disable_And_Enable:
 
     @pytest.fixture(scope='function', autouse=True)
-    def setup_class(self):
+    def setup_test(self):
         assert Dashboard.assert_dashboard_page_header_is_visible() is True
 
     @allure.tag("Update")
