@@ -15,6 +15,7 @@ class Test_Verify_A_Dashboard_Card_Reordering_Can_be_Cancel:
         yield
         # reset the change
         WebUI.refresh()
+        assert Dashboard.assert_dashboard_page_header_is_visible() is True
         Dashboard.click_the_reorder_button()
         Dashboard.move_card_a_to_card_b_position('help', 'cpu')
         Dashboard.click_the_save_reorder_button()

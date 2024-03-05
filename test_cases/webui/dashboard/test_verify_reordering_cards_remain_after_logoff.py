@@ -13,6 +13,7 @@ class Test_Verify_Reordering_Cards_Remain_After_Logoff:
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self):
         WebUI.refresh()
+        assert Dashboard.assert_dashboard_page_header_is_visible() is True
 
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self):
