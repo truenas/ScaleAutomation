@@ -11,6 +11,17 @@ from helper.webui import WebUI
 class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
 
     @pytest.fixture(scope='function', autouse=True)
+    def setup_test(self):
+        yield
+        # reset the change
+        WebUI.refresh()
+        Dashboard.click_the_reorder_button()
+        Dashboard.move_card_a_to_card_b_position('sysinfo', Dashboard.get_dashboard_card_name_by_position(1))
+        Dashboard.move_card_a_to_card_b_position('help', Dashboard.get_dashboard_card_name_by_position(2))
+        Dashboard.click_the_save_reorder_button()
+        WebUI.refresh()
+
+    @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self):
         yield
         # reset the change

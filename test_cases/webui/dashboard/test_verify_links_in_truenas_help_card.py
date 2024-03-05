@@ -16,7 +16,8 @@ class Test_Verify_Links_On_The_TrueNAS_Help_Card:
         """
         This method resets the test back to Dashboard
         """
-        assert Navigation.navigate_to_dashboard() is True
+        yield
+        Navigation.navigate_to_dashboard()
 
     @allure.tag("Read")
     @allure.story('Verify Help Card Copyright')

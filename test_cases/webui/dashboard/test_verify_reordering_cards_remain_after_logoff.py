@@ -11,11 +11,11 @@ from keywords.webui.dashboard import Dashboard
 @allure.feature("Dashboard-Reorder")
 class Test_Verify_Reordering_Cards_Remain_After_Logoff:
     @pytest.fixture(scope='function', autouse=True)
-    def setup_class(self):
+    def setup_test(self):
         WebUI.refresh()
 
     @pytest.fixture(scope='function', autouse=True)
-    def teardown_class(self):
+    def teardown_test(self):
         yield
         # reset the change
         Dashboard.click_the_reorder_button()
