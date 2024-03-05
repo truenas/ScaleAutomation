@@ -12,7 +12,6 @@ class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
 
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self):
-        yield
         # reset the change
         WebUI.refresh()
         Dashboard.click_the_reorder_button()
