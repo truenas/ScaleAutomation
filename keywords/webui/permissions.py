@@ -127,7 +127,7 @@ class Permissions:
         """
         This method returns true if the other permissions visible matches the given permissions.
 
-        :param permissions: the expected permissions of other.
+        :param permissions: the expected permissions of 'other'.
         :return: returns true if the other permissions visible match the given permissions.
         """
         val = cls.get_dataset_permissions_by_level('other', 'permissions')

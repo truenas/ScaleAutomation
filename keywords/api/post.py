@@ -134,7 +134,6 @@ class API_POST:
             assert response.status_code == 200, response.text
         return response
 
-
     @classmethod
     def create_encrypted_dataset(cls, dataset: str) -> Response:
         """
