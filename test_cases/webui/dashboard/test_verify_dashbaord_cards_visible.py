@@ -1,19 +1,25 @@
-import pytest
+import allure
 from keywords.webui.dashboard import Dashboard
 
 
-@pytest.mark.random_order(disabled=True)
+@allure.tag('Dashboard')
+@allure.epic('Dashboard')
+@allure.feature('Dashboard-Card-Visible')
 class Test_Verify_All_Dashboard_Cards_Are_Visible:
-    @staticmethod
-    def set_all_dashboard_cards_visible():
-        assert Dashboard.assert_dashboard_page_header_is_visible()
+
+    @allure.tag("Update")
+    @allure.story('Set All Cards Visible')
+    def set_all_dashboard_cards_visible(self):
+        """
+        This test verifies all Cards are visible
+        """
+        assert Dashboard.assert_dashboard_page_header_is_visible() is True
         Dashboard.set_all_cards_visible()
 
-    @staticmethod
-    def verify_all_dashboard_cards_are_visible():
-        assert Dashboard.is_system_information_card_visible()
-        assert Dashboard.is_truenas_help_card_visible()
-        assert Dashboard.is_cpu_card_visible()
-        assert Dashboard.is_memory_card_visible()
-        assert Dashboard.is_storage_card_visible()
-        assert Dashboard.is_network_card_visible()
+        # verify all dashboard cards are visible
+        assert Dashboard.is_system_information_card_visible() is True
+        assert Dashboard.is_truenas_help_card_visible() is True
+        assert Dashboard.is_cpu_card_visible() is True
+        assert Dashboard.is_memory_card_visible() is True
+        assert Dashboard.is_storage_card_visible() is True
+        assert Dashboard.is_network_card_visible() is True

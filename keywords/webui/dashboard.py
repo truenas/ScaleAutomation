@@ -100,7 +100,7 @@ class Dashboard:
         return url_exists
 
     @classmethod
-    def assert_system_information_version_clipboard_copy(cls):
+    def assert_system_information_version_clipboard_copy(cls) -> None:
         """
         This method return True or False whether the copied version match the version on the UI.
 
@@ -177,70 +177,90 @@ class Dashboard:
         return cls.assert_new_tab_url('https://www.truenas.com/newsletter/')
 
     @classmethod
-    def click_check_update_button(cls):
+    def click_check_update_button(cls) -> None:
         """
         This method click on the system information Check Updates or Updates Available button.
         """
         Common.click_button('widget-sysinfo-update')
 
     @classmethod
-    def click_the_cancel_reorder_button(cls):
+    def click_the_cancel_reorder_button(cls) -> None:
         """
         This method click on the cancel reorder button.
         """
         Common.click_button('cancel-reorder')
 
     @classmethod
-    def click_the_configure_button(cls):
+    def click_the_configure_button(cls) -> None:
         """
         This method click on the Configure button on the dashboard.
         """
         Common.click_button('configure-dashboard')
 
     @classmethod
-    def click_the_cpu_report_button(cls):
+    def click_the_cpu_report_button(cls) -> None:
         """
         This method click on CPU report button.
         """
         Common.click_link('cpu-reports')
 
     @classmethod
-    def click_the_memory_report_button(cls):
+    def click_the_memory_report_button(cls) -> None:
         """
         This method click on memory report button.
         """
         Common.click_button('memory-go-to-reports')
 
     @classmethod
-    def click_the_network_report_button(cls):
+    def click_the_network_report_button(cls) -> None:
         """
         This method click on Network report button.
         """
         Common.click_link('network-reports')
 
     @classmethod
-    def click_the_reorder_button(cls):
+    def click_the_reorder_button(cls) -> None:
         """
         This method click on the Dashboard Reorder button.
         """
         Common.click_button('start-reorder')
 
     @classmethod
-    def click_the_save_reorder_button(cls):
+    def click_the_save_reorder_button(cls) -> None:
         """
         This method click on the save reorder button.
         """
         Common.click_button('save-new-order')
 
     @classmethod
-    def click_the_storage_report_button(cls):
+    def click_the_storage_report_button(cls) -> None:
         """
         This method click on storage report button.
         """
         Common.click_link('storage-reports')
 
     @classmethod
-    def disable_card(cls, card: str):
+    def disable_all_cards(cls) -> None:
+        """
+        This method set all dashboard card to be disabled (invisible).
+        """
+        cls.click_the_configure_button()
+        assert cls.assert_dashboard_configure_panel_is_visible() is True
+        Common.unset_toggle('system-information')
+        Common.unset_toggle('help')
+        Common.unset_toggle('cpu')
+        Common.unset_toggle('memory')
+        Common.unset_toggle('backup')
+        Common.unset_toggle('storage')
+        Common.unset_toggle('pool-tank')
+        Common.unset_toggle('network')
+        Common.unset_toggle('enp-1-s-0')
+        Common.click_save_button()
+
+        assert Common.assert_right_panel_header_is_not_visible('Dashboard Configure') is True
+
+    @classmethod
+    def disable_card(cls, card: str) -> None:
         """
         This method disable the given card.
 
@@ -249,7 +269,7 @@ class Dashboard:
         cls.set_dashboard_card_by_state(card, False)
 
     @classmethod
-    def enable_card(cls, card: str):
+    def enable_card(cls, card: str) -> None:
         """
         This method enable the given card:
 
@@ -279,7 +299,7 @@ class Dashboard:
         return WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 4))
 
     @classmethod
-    def is_cpu_card_visible(cls):
+    def is_cpu_card_visible(cls) -> bool:
         """
         This method returns True if the cpu card is visible otherwise it returns False.
 
@@ -288,7 +308,7 @@ class Dashboard:
         return Common.is_card_visible('CPU')
 
     @classmethod
-    def is_memory_card_visible(cls):
+    def is_memory_card_visible(cls) -> bool:
         """
         This method returns True if the memory card is visible otherwise it returns False.
 
@@ -297,7 +317,7 @@ class Dashboard:
         return Common.is_card_visible('Memory')
 
     @classmethod
-    def is_network_card_visible(cls):
+    def is_network_card_visible(cls) -> bool:
         """
         This method returns True if the network card is visible otherwise it returns False.
 
@@ -306,7 +326,7 @@ class Dashboard:
         return Common.is_card_visible('Network')
 
     @classmethod
-    def is_storage_card_visible(cls):
+    def is_storage_card_visible(cls) -> bool:
         """
         This method returns True if the storage card is visible otherwise it returns False.
 
@@ -315,7 +335,7 @@ class Dashboard:
         return Common.is_card_visible('Storage')
 
     @classmethod
-    def is_system_information_card_visible(cls):
+    def is_system_information_card_visible(cls) -> bool:
         """
         This method returns True if the system information card is visible otherwise it returns False.
 
@@ -333,7 +353,7 @@ class Dashboard:
         return Common.is_card_visible('TrueNAS Help')
 
     @classmethod
-    def move_card_a_to_card_b_position(cls, card_a: str, card_b: str):
+    def move_card_a_to_card_b_position(cls, card_a: str, card_b: str) -> None:
         """
         This method move given card_a to the card_b position.
 
@@ -347,7 +367,7 @@ class Dashboard:
             print("card_a can't match card_b")
 
     @classmethod
-    def set_all_cards_visible(cls):
+    def set_all_cards_visible(cls) -> None:
         """
         This method set all dashboard card to be visible.
         """
@@ -367,7 +387,7 @@ class Dashboard:
         assert Common.assert_right_panel_header_is_not_visible('Dashboard Configure') is True
 
     @classmethod
-    def set_dashboard_card_by_state(cls, card: str, state: bool):
+    def set_dashboard_card_by_state(cls, card: str, state: bool) -> None:
         """
         This method set the card toggle by the given state.
 
