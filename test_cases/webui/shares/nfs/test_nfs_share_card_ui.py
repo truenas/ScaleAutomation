@@ -80,7 +80,7 @@ class Test_NFS_Share_Card_UI:
         assert COMSHARE.assert_share_path('nfs', "/mnt/tank/sharefive") is False
 
         # Verify all shares display after clicking the View All button
-        COM.click_link(f'nfs-share-view-all')
+        COM.click_link('nfs-share-view-all')
         assert COM.assert_page_header('NFS') is True
         assert COMSHARE.assert_view_all_page_share_path('nfs', "/mnt/tank/shareone") is True
         assert COMSHARE.assert_view_all_page_share_path('nfs', "/mnt/tank/sharetwo") is True
