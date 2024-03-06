@@ -1,6 +1,8 @@
 import allure
 import pytest
 from helper.data_config import get_data_list
+from keywords.api.delete import API_DELETE
+from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
 from keywords.webui.datasets import Datasets as DATASET
@@ -21,7 +23,7 @@ class Test_Create_NFS_Share:
         """
         This fixture sets the dataset for the NFS share test
         """
-        DATASET.create_dataset_by_api(nfs_data['api_path'], 'NFS')
+        API_POST.create_dataset(nfs_data['api_path'], 'NFS')
 
         # Navigate to Shares page
         NAV.navigate_to_shares()
@@ -33,8 +35,8 @@ class Test_Create_NFS_Share:
         This fixture delete the dataset and the NFS share after the test is completed.
         """
         yield
-        COMSHARE.delete_share_by_api('nfs', nfs_data['api_path'])
-        DATASET.delete_dataset_by_api(nfs_data['api_path'])
+        API_DELETE.delete_share('nfs', nfs_data['api_path'])
+        API_DELETE.delete_dataset(nfs_data['api_path'], recursive=True, force=True)
 
     @allure.tag("Create")
     @allure.story("Create New NFS Share")

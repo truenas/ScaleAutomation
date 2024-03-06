@@ -2,6 +2,7 @@ import allure
 import pytest
 
 from helper.data_config import get_data_list
+from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
@@ -23,16 +24,16 @@ class Test_NFS_Share_Card_UI:
         This fixture creates all the dataset and NFS shares for the test.
         """
         API_POST.stop_service('nfs')
-        DATASET.create_dataset_by_api("tank/shareone", 'NFS')
-        DATASET.create_dataset_by_api("tank/sharetwo", 'NFS')
-        DATASET.create_dataset_by_api("tank/sharethree", 'NFS')
-        DATASET.create_dataset_by_api("tank/sharefour", 'NFS')
-        DATASET.create_dataset_by_api("tank/sharefive", 'NFS')
-        COMSHARE.create_share_by_api('nfs', '', "tank/shareone")
-        COMSHARE.create_share_by_api('nfs', '', "tank/sharetwo")
-        COMSHARE.create_share_by_api('nfs', '', "tank/sharethree")
-        COMSHARE.create_share_by_api('nfs', '', "tank/sharefour")
-        COMSHARE.create_share_by_api('nfs', '', "tank/sharefive")
+        API_POST.create_dataset("tank/shareone", 'NFS')
+        API_POST.create_dataset("tank/sharetwo", 'NFS')
+        API_POST.create_dataset("tank/sharethree", 'NFS')
+        API_POST.create_dataset("tank/sharefour", 'NFS')
+        API_POST.create_dataset("tank/sharefive", 'NFS')
+        API_POST.create_share('nfs', '', "tank/shareone")
+        API_POST.create_share('nfs', '', "tank/sharetwo")
+        API_POST.create_share('nfs', '', "tank/sharethree")
+        API_POST.create_share('nfs', '', "tank/sharefour")
+        API_POST.create_share('nfs', '', "tank/sharefive")
 
         # Navigate to the Shares page
         NAV.navigate_to_shares()
@@ -44,16 +45,16 @@ class Test_NFS_Share_Card_UI:
         This fixture deletes all the dataset and NFS shares for the test.
         """
         yield
-        COMSHARE.delete_share_by_api('nfs', "tank/shareone")
-        COMSHARE.delete_share_by_api('nfs', "tank/sharetwo")
-        COMSHARE.delete_share_by_api('nfs', "tank/sharethree")
-        COMSHARE.delete_share_by_api('nfs', "tank/sharefour")
-        COMSHARE.delete_share_by_api('nfs', "tank/sharefive")
-        DATASET.delete_dataset_by_api("tank/shareone")
-        DATASET.delete_dataset_by_api("tank/sharetwo")
-        DATASET.delete_dataset_by_api("tank/sharethree")
-        DATASET.delete_dataset_by_api("tank/sharefour")
-        DATASET.delete_dataset_by_api("tank/sharefive")
+        API_DELETE.delete_share('nfs', "tank/shareone")
+        API_DELETE.delete_share('nfs', "tank/sharetwo")
+        API_DELETE.delete_share('nfs', "tank/sharethree")
+        API_DELETE.delete_share('nfs', "tank/sharefour")
+        API_DELETE.delete_share('nfs', "tank/sharefive")
+        API_DELETE.delete_dataset("tank/shareone", recursive=True, force=True)
+        API_DELETE.delete_dataset("tank/sharetwo", recursive=True, force=True)
+        API_DELETE.delete_dataset("tank/sharethree", recursive=True, force=True)
+        API_DELETE.delete_dataset("tank/sharefour", recursive=True, force=True)
+        API_DELETE.delete_dataset("tank/sharefive", recursive=True, force=True)
 
     @allure.tag("Read")
     @allure.story("NFS Share Card UI")
