@@ -61,7 +61,7 @@ class Test_NFS_Share_Path_UI_Errors:
         COM.click_save_button()
 
         # Assert error message displays and saving disabled
-        assert NFS.assert_error_nfs_share_path_nonexistant()
+        assert NFS.assert_error_nfs_share_path_nonexistent()
         assert COM.is_save_button_disabled()
 
         # Trigger the Path is required error

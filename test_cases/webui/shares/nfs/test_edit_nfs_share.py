@@ -177,7 +177,7 @@ class Test_Edit_NFS_Share:
         COM.click_save_button()
 
         # Assert error message displays and saving disabled
-        assert NFS.assert_error_nfs_share_path_nonexistant()
+        assert NFS.assert_error_nfs_share_path_nonexistent()
         assert COM.is_save_button_disabled()
         COM.close_right_panel()
 
