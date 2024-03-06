@@ -62,34 +62,34 @@ class Test_NFS_Share_Card_UI:
         assert COMSHARE.assert_share_card_displays('nfs')
 
         # Verify NFS Card on Sharing page UI
-        assert COMSHARE.is_share_service_stopped('nfs')
-        assert COMSHARE.start_share_service_by_actions_menu('nfs')
-        assert COMSHARE.stop_share_service_by_actions_menu('nfs')
-        assert COMSHARE.assert_share_card_add_button('nfs')
-        assert COMSHARE.assert_share_card_actions_menu_button('nfs')
-        assert COMSHARE.assert_share_card_enabled_button_by_name('nfs', "/mnt/tank/shareone")
-        assert COMSHARE.assert_share_card_button_by_name('nfs', "/mnt/tank/shareone", 'edit')
-        assert COMSHARE.assert_share_card_button_by_name('nfs', "/mnt/tank/shareone", 'delete')
-        assert COMSHARE.assert_share_card_view_all_button('nfs')
+        assert COMSHARE.is_share_service_stopped('nfs') is True
+        assert COMSHARE.start_share_service_by_actions_menu('nfs') is True
+        assert COMSHARE.stop_share_service_by_actions_menu('nfs') is True
+        assert COMSHARE.assert_share_card_add_button('nfs') is True
+        assert COMSHARE.assert_share_card_actions_menu_button('nfs') is True
+        assert COMSHARE.assert_share_card_enabled_button_by_name('nfs', "/mnt/tank/shareone") is True
+        assert COMSHARE.assert_share_card_button_by_name('nfs', "/mnt/tank/shareone", 'edit') is True
+        assert COMSHARE.assert_share_card_button_by_name('nfs', "/mnt/tank/shareone", 'delete') is True
+        assert COMSHARE.assert_share_card_view_all_button('nfs') is True
 
         # Verify only four shares display regularly
-        assert COMSHARE.assert_share_path('nfs', "/mnt/tank/shareone")
-        assert COMSHARE.assert_share_path('nfs', "/mnt/tank/sharetwo")
-        assert COMSHARE.assert_share_path('nfs', "/mnt/tank/sharethree")
-        assert COMSHARE.assert_share_path('nfs', "/mnt/tank/sharefour")
-        assert not COMSHARE.assert_share_path('nfs', "/mnt/tank/sharefive")
+        assert COMSHARE.assert_share_path('nfs', "/mnt/tank/shareone") is True
+        assert COMSHARE.assert_share_path('nfs', "/mnt/tank/sharetwo") is True
+        assert COMSHARE.assert_share_path('nfs', "/mnt/tank/sharethree") is True
+        assert COMSHARE.assert_share_path('nfs', "/mnt/tank/sharefour") is True
+        assert COMSHARE.assert_share_path('nfs', "/mnt/tank/sharefive") is False
 
         # Verify all shares display after clicking the View All button
         COM.click_link(f'nfs-share-view-all')
-        assert COM.assert_page_header('NFS')
-        assert COMSHARE.assert_view_all_page_share_path('nfs', "/mnt/tank/shareone")
-        assert COMSHARE.assert_view_all_page_share_path('nfs', "/mnt/tank/sharetwo")
-        assert COMSHARE.assert_view_all_page_share_path('nfs', "/mnt/tank/sharethree")
-        assert COMSHARE.assert_view_all_page_share_path('nfs', "/mnt/tank/sharefour")
-        assert COMSHARE.assert_view_all_page_share_path('nfs', "/mnt/tank/sharefive")
+        assert COM.assert_page_header('NFS') is True
+        assert COMSHARE.assert_view_all_page_share_path('nfs', "/mnt/tank/shareone") is True
+        assert COMSHARE.assert_view_all_page_share_path('nfs', "/mnt/tank/sharetwo") is True
+        assert COMSHARE.assert_view_all_page_share_path('nfs', "/mnt/tank/sharethree") is True
+        assert COMSHARE.assert_view_all_page_share_path('nfs', "/mnt/tank/sharefour") is True
+        assert COMSHARE.assert_view_all_page_share_path('nfs', "/mnt/tank/sharefive") is True
 
         # Verify NFS View All page UI
-        assert COMSHARE.assert_share_view_all_page_add_button('nfs')
-        assert COMSHARE.assert_share_view_all_page_enabled_button('nfs', "/mnt/tank/shareone")
-        assert COMSHARE.assert_share_view_all_page_button_by_name('nfs', "/mnt/tank/shareone", 'edit')
-        assert COMSHARE.assert_share_view_all_page_button_by_name('nfs', "/mnt/tank/shareone", 'delete')
+        assert COMSHARE.assert_share_view_all_page_add_button('nfs') is True
+        assert COMSHARE.assert_share_view_all_page_enabled_button('nfs', "/mnt/tank/shareone") is True
+        assert COMSHARE.assert_share_view_all_page_button_by_name('nfs', "/mnt/tank/shareone", 'edit') is True
+        assert COMSHARE.assert_share_view_all_page_button_by_name('nfs', "/mnt/tank/shareone", 'delete') is True

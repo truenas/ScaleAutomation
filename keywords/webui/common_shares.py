@@ -214,7 +214,7 @@ class Common_Shares:
            - Common_Shares.click_add_share_button('smb')
         """
         COM.click_button(f'{sharetype}-share-add')
-        assert COM.is_visible(xpaths.common_xpaths.any_header(f'Add {sharetype.upper()}', 3))
+        assert COM.is_visible(xpaths.common_xpaths.any_header(f'Add {sharetype.upper()}', 3)) is True
 
     @classmethod
     def click_advanced_options(cls) -> None:
@@ -224,7 +224,7 @@ class Common_Shares:
         Example:
            - Common_Shares.click_advanced_options()
         """
-        assert COM.is_visible(xpaths.common_xpaths.button_field('toggle-advanced-options'))
+        assert COM.is_visible(xpaths.common_xpaths.button_field('toggle-advanced-options')) is True
         COM.click_button('toggle-advanced-options')
 
     @classmethod

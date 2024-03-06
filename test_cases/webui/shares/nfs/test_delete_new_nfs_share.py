@@ -33,14 +33,14 @@ class Test_Delete_NFS_Share:
         DATASET.delete_dataset_by_api(nfs_data['api_path'])
 
     @allure.story('Delete NFS Share')
-    def test_delete_new_nfs_share(self, nfs_data) -> None:
+    def test_delete_new_nfs_share(self, nfs_data):
         """
         This test verifies the NFS share can be deleted.
         """
         # Delete NFS share
         NAV.navigate_to_shares()
-        assert COMSHARE.assert_share_card_displays('nfs')
-        assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path'])
+        assert COMSHARE.assert_share_card_displays('nfs') is True
+        assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path']) is True
         COMSHARE.click_delete_share('nfs', nfs_data['share_page_path'])
         COM.assert_confirm_dialog()
 
@@ -48,9 +48,9 @@ class Test_Delete_NFS_Share:
         NAV.navigate_to_datasets()
         DATASET.expand_dataset('tank')
         DATASET.select_dataset(nfs_data['dataset_name'])
-        assert not DATASET.assert_dataset_share_attached(nfs_data['dataset_name'], 'nfs')
-        assert not DATASET.assert_dataset_roles_share_icon(nfs_data['dataset_name'], 'nfs')
+        assert DATASET.assert_dataset_share_attached(nfs_data['dataset_name'], 'nfs') is False
+        assert DATASET.assert_dataset_roles_share_icon(nfs_data['dataset_name'], 'nfs') is False
 
         # Verify share deleted from Shares page
         NAV.navigate_to_shares()
-        assert not COMSHARE.is_share_visible('nfs', nfs_data['share_page_path'])
+        assert COMSHARE.is_share_visible('nfs', nfs_data['share_page_path']) is False
