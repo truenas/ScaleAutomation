@@ -26,8 +26,8 @@ class Test_NFS_Share_Path_UI_Errors:
         """
         API_POST.create_dataset(nfs_data['api_path'], 'NFS')
         API_POST.create_dataset(nfs_data['api_path_alt'], 'NFS')
-        API_POST.create_share('nfs', '', nfs_data['api_path'])
-        API_POST.create_share('nfs', '', nfs_data['api_path_alt'])
+        API_POST.create_share('nfs', '', "/mnt/"+nfs_data['api_path'])
+        API_POST.create_share('nfs', '', "/mnt/"+nfs_data['api_path_alt'])
 
         # Navigate to the Shares page
         NAV.navigate_to_shares()

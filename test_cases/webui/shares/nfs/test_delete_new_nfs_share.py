@@ -23,8 +23,8 @@ class Test_Delete_NFS_Share:
         """
         This fixture sets the dataset and the NFS share for the test.
         """
-        API_POST.create_dataset(nfs_data['dataset_name'], 'NFS')
-        API_POST.create_share('nfs', '', nfs_data['api_path'])
+        API_POST.create_dataset(nfs_data['api_path'], 'NFS')
+        API_POST.create_share('nfs', '', "/mnt/"+nfs_data['api_path'])
 
         # Navigate to the Shares page
         NAV.navigate_to_shares()

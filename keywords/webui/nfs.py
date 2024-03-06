@@ -162,6 +162,7 @@ class NFS:
             - NFS.set_mapall_group('group1')
         """
         COM.set_input_field('mapall-group', name, True)
+        WebUI.delay(0.2)
 
     @classmethod
     def set_mapall_user(cls, name: str):
@@ -174,6 +175,7 @@ class NFS:
             - NFS.set_mapall_user('user1')
         """
         COM.set_input_field('mapall-user', name, True)
+        WebUI.delay(0.2)
 
     @classmethod
     def set_maproot_group(cls, name: str):
@@ -186,6 +188,7 @@ class NFS:
             - NFS.set_maproot_group('group1')
         """
         COM.set_input_field('maproot-group', name, True)
+        WebUI.delay(0.2)
 
     @classmethod
     def set_maproot_user(cls, name: str):
@@ -198,6 +201,7 @@ class NFS:
             - NFS.set_maproot_user('user1')
         """
         COM.set_input_field('maproot-user', name, True)
+        WebUI.delay(0.2)
 
     @classmethod
     def set_network(cls, network: str):
@@ -262,6 +266,7 @@ class NFS:
             - NFS.unset_mapall_group()
         """
         COM.clear_input_field('mapall-group', True)
+        WebUI.delay(0.2)
 
     @classmethod
     def unset_mapall_user(cls):
@@ -272,6 +277,7 @@ class NFS:
             - NFS.unset_mapall_user()
         """
         COM.clear_input_field('mapall-user', True)
+        WebUI.delay(0.2)
 
     @classmethod
     def unset_maproot_group(cls):
@@ -282,6 +288,7 @@ class NFS:
             - NFS.unset_maproot_group()
         """
         COM.clear_input_field('maproot-group', True)
+        WebUI.delay(0.2)
 
     @classmethod
     def unset_maproot_user(cls):
@@ -292,6 +299,7 @@ class NFS:
             - NFS.unset_maproot_user()
         """
         COM.clear_input_field('maproot-user', True)
+        WebUI.delay(0.2)
 
     @classmethod
     def verify_nfs_service_edit_ui(cls) -> None:

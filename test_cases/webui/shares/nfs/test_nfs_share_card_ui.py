@@ -29,11 +29,11 @@ class Test_NFS_Share_Card_UI:
         API_POST.create_dataset("tank/sharethree", 'NFS')
         API_POST.create_dataset("tank/sharefour", 'NFS')
         API_POST.create_dataset("tank/sharefive", 'NFS')
-        API_POST.create_share('nfs', '', "tank/shareone")
-        API_POST.create_share('nfs', '', "tank/sharetwo")
-        API_POST.create_share('nfs', '', "tank/sharethree")
-        API_POST.create_share('nfs', '', "tank/sharefour")
-        API_POST.create_share('nfs', '', "tank/sharefive")
+        API_POST.create_share('nfs', '', "/mnt/tank/shareone")
+        API_POST.create_share('nfs', '', "/mnt/tank/sharetwo")
+        API_POST.create_share('nfs', '', "/mnt/tank/sharethree")
+        API_POST.create_share('nfs', '', "/mnt/tank/sharefour")
+        API_POST.create_share('nfs', '', "/mnt/tank/sharefive")
 
         # Navigate to the Shares page
         NAV.navigate_to_shares()

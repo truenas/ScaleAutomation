@@ -26,9 +26,11 @@ class Test_Edit_NFS_Share:
         This fixture sets the dataset and the NFS share for the test.
 
         """
+        # Ensure NFS service is started or some weird failure will occur when the test that disable it runs before.
+        API_POST.start_service('nfs')
         API_POST.create_dataset(nfs_data['api_path'], 'NFS')
         API_POST.create_dataset(nfs_data['api_path_alt'], 'NFS')
-        API_POST.create_share('nfs', '', nfs_data['api_path'])
+        API_POST.create_share('nfs', '', "/mnt/"+nfs_data['api_path'])
 
         # Navigate to the Shares page
         NAV.navigate_to_shares()
@@ -278,6 +280,6 @@ class Test_Edit_NFS_Share:
         # Verify share displayed on shares page is disabled
         NAV.navigate_to_shares()
         assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path']) is True
-        assert COMSHARE.is_share_enabled('nfs', nfs_data['share_page_path']) is True
+        assert COMSHARE.is_share_enabled('nfs', nfs_data['share_page_path']) is False
 
         # TODO: Add in CLI test component to ensure share cannot be used when disabled. TE-1415
