@@ -50,5 +50,33 @@ class Test_Unix_Permissions:
         assert PERM.verify_dataset_other_permissions('Read | Execute') is True
         assert PERM.verify_dataset_permissions_edit_button() is True
 
+    def test_edit_dataset_permissions_card_via_webui(self, unix_perms) -> None:
+        """
+        This test verifies edits the dataset via WebUI and checks that the changes display and the access level via cli is the same.
+        """
+        DAT.click_dataset_location(unix_perms['dataset'])
+        DAT.click_edit_permissions_button()
+        PERM.set_dataset_user(unix_perms['username'])
+        PERM.set_dataset_group(unix_perms['username'])
+        PERM.set_apply_user_checkbox()
+        PERM.set_apply_group_checkbox()
+        PERM.set_user_access_mode('UserPermissions')
+        PERM.set_group_access_mode('GroupPermissions')
+        PERM.set_other_access_mode('OtherPermissions')
+        COM.click_save_button_and_wait_for_progress_bar()
+        assert PERM.verify_dataset_owner(unix_perms['username']) is True
+        assert PERM.verify_dataset_group(unix_perms['username']) is True
+        assert PERM.verify_dataset_permissions_type('Unix Permissions') is True
+        assert PERM.verify_dataset_owner_permissions_name(unix_perms['username']) is True
+        assert PERM.verify_dataset_owner_permissions('UserPermissions') is True
+        assert PERM.verify_dataset_group_permissions_name(unix_perms['groupname']) is True
+        assert PERM.verify_dataset_group_permissions('GroupPermissions') is True
+        assert PERM.verify_dataset_other_permissions_name() is True
+        assert PERM.verify_dataset_other_permissions('OtherPermissions') is True
+        assert PERM.verify_dataset_permissions_edit_button() is True
+        PERM.assert_access('user', 'permissions')
+        PERM.assert_access('group', 'permissions')
+        PERM.assert_access('other', 'permissions')
+
 
 
