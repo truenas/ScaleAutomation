@@ -15,6 +15,9 @@ class Common_Shares:
 
         :param sharetype: type of the given share
         :return: True if the share card is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_card_displays('smb')
         """
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//ix-{sharetype}-card'))
 
@@ -26,6 +29,9 @@ class Common_Shares:
         :param sharetype: type of the given share
         :param name: The name(SMB)/path(NFS) of the share
         :return: True if the Enabled button on the specified share card's share row is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_card_enabled_button_by_name('smb', 'share1')
         """
         return COM.is_visible(xpaths.common_xpaths.share_enabled_slider(sharetype, name))
 
@@ -38,6 +44,9 @@ class Common_Shares:
         :param name: The name(SMB)/path(NFS) of the share
         :param button: The button type to verify
         :return: True if the specified button on the specified share card's share row is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_card_button_by_name('smb', 'share1', 'edit')
         """
         if sharetype == 'nfs':
             name = name.replace('/', '-')
@@ -52,6 +61,9 @@ class Common_Shares:
 
         :param sharetype: type of the given share
         :return: True if the Add button on the specified share card is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_card_add_button('smb')
         """
         return COM.is_visible(xpaths.common_xpaths.button_field(f'{sharetype}-share-add'))
 
@@ -62,6 +74,9 @@ class Common_Shares:
 
         :param sharetype: type of the given share
         :return: True if the Actions Menu button on the specified share card is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_card_actions_menu_button('smb')
         """
         return COM.is_visible(xpaths.common_xpaths.button_share_actions_menu(sharetype))
 
@@ -72,6 +87,9 @@ class Common_Shares:
 
         :param sharetype: type of the given share
         :return: True if the View All button on the specified share card is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_card_view_all_button('smb')
         """
         return COM.is_visible(xpaths.common_xpaths.link_field(f'{sharetype}-share-view-all'))
 
@@ -83,6 +101,9 @@ class Common_Shares:
         :param sharetype: type of the given share
         :param desc: description of the given share
         :return: True if the share description is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_description('smb', 'share1')
         """
         return COM.is_visible(xpaths.common_xpaths.share_attribute(sharetype, 'description', desc))
 
@@ -94,6 +115,9 @@ class Common_Shares:
         :param sharetype: type of the given share
         :param name: name of the given share
         :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_name('smb', 'share1')
         """
         return COM.is_visible(xpaths.common_xpaths.share_attribute(sharetype, 'name', name))
 
@@ -105,6 +129,9 @@ class Common_Shares:
         :param sharetype: type of the given share
         :param path: path of the given share
         :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_path('smb', '/mnt/share1')
         """
         return COM.is_visible(xpaths.common_xpaths.share_attribute(sharetype, 'path', path))
 
@@ -115,6 +142,9 @@ class Common_Shares:
 
         :param sharetype: type of the given share
         :return: True if the Add button on the View All page for the sharetype is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_view_all_page_add_button('smb')
         """
         return COM.is_visible(xpaths.common_xpaths.button_field(f'add-{sharetype}-share'))
 
@@ -126,6 +156,9 @@ class Common_Shares:
         :param sharetype: type of the given share
         :param name: The name(SMB)/path(NFS) of the share
         :return: True if the Enabled button on the View All page for the sharetype is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_view_all_page_enabled_button('smb', 'share1')
         """
         if sharetype == 'nfs':
             name = name.replace('/', '-')
@@ -142,6 +175,9 @@ class Common_Shares:
         :param name: The name(SMB)/path(NFS) of the share
         :param button: The button type to verify
         :return: True if the specified button on the View All page for the sharetype is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_view_all_page_button_by_name('smb', 'share1', 'edit')
         """
         if sharetype == 'nfs':
             name = name.replace('/', '-')
@@ -157,6 +193,9 @@ class Common_Shares:
         :param sharetype: type of the given share
         :param path: path of the given share
         :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_view_all_page_share_path('smb', '/mnt/share1')
         """
         if sharetype == 'nfs':
             path = path.replace('/', '-')
@@ -170,16 +209,22 @@ class Common_Shares:
         This method clicks the add share button on the Shares page for the specified sharetype
 
         :param sharetype: type of the given share
+
+        Example:
+           - Common_Shares.click_add_share_button('smb')
         """
         COM.click_button(f'{sharetype}-share-add')
-        assert COM.is_visible(xpaths.common_xpaths.any_header(f'Add {sharetype.upper()}', 3))
+        assert COM.is_visible(xpaths.common_xpaths.any_header(f'Add {sharetype.upper()}', 3)) is True
 
     @classmethod
     def click_advanced_options(cls) -> None:
         """
         This method clicks the advanced options button.
+
+        Example:
+           - Common_Shares.click_advanced_options()
         """
-        assert COM.is_visible(xpaths.common_xpaths.button_field('toggle-advanced-options'))
+        assert COM.is_visible(xpaths.common_xpaths.button_field('toggle-advanced-options')) is True
         COM.click_button('toggle-advanced-options')
 
     @classmethod
@@ -189,6 +234,9 @@ class Common_Shares:
 
         :param sharetype: type of the given share
         :param name: name of the given share
+
+        Example:
+           - Common_Shares.click_delete_share('smb', 'share1')
         """
         if sharetype == 'nfs':
             name = name.replace('/', '-')
@@ -203,6 +251,9 @@ class Common_Shares:
 
         :param sharetype: type of the given share
         :param name: name of the given share
+
+        Example:
+           - Common_Shares.click_edit_share('smb', 'share1')
         """
         if sharetype == 'nfs':
             name = name.replace('/', '-')
@@ -220,6 +271,9 @@ class Common_Shares:
         :param name: name of the given share
         :param path: path of the given share
         :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.create_share_by_api('smb', 'share1', '/mnt/share1')
         """
         return API_POST.create_share(sharetype, name, "/mnt/"+path)
 
@@ -229,6 +283,9 @@ class Common_Shares:
         This method deletes the all shares by the given sharetype.
 
         :param sharetype: type of the given share
+
+        Example:
+           - Common_Shares.delete_all_shares_by_sharetype('smb')
         """
         NAV.navigate_to_shares()
         loc = f'//*[contains(@data-test,"-delete-row-action") and starts-with(@data-test,"button-card-{sharetype}")]'
@@ -244,6 +301,9 @@ class Common_Shares:
         :param sharetype: type of the given share
         :param name: name of the given share
         :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.delete_share_by_api('smb', 'share1')
         """
         return API_DELETE.delete_share(sharetype, name)
 
@@ -253,6 +313,9 @@ class Common_Shares:
         This method handles the service dialog to start or restart a share service when a share is created or edited
 
         :param sharetype: type of the given share
+
+        Example:
+           - Common_Shares.handle_share_service_dialog('smb')
         """
         name = ''
         if sharetype == 'smb':
@@ -273,6 +336,9 @@ class Common_Shares:
         :param sharetype: type of the given share
         :param name: name of the given share
         :return: True if the share is enabled otherwise it returns False.
+
+        Example:
+           - Common_Shares.is_share_enabled('smb', 'share1')
         """
         val = COM.get_element_property(xpaths.common_xpaths.share_enabled_slider(sharetype, name), 'ariaChecked')
         val = val.capitalize()
@@ -332,6 +398,9 @@ class Common_Shares:
         :param sharetype: type of the given share
         :param name: name of the given share
         :return: True if the share is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.is_share_visible('smb', 'share1')
         """
         return COM.is_visible(xpaths.common_xpaths.data_test_field(f'text-name-card-{sharetype}-share-{name.lower()}-row-text'))
 
@@ -339,6 +408,11 @@ class Common_Shares:
     def set_share_description(cls, desc: str) -> None:
         """
         This method sets the description for the share on the Edit Share right panel
+
+        :param desc: The description of the given share
+
+        Example:
+           - Common_Shares.set_share_description('share1')
         """
         COM.is_visible(xpaths.common_xpaths.input_field('comment'))
         COM.set_input_field('comment', desc)
@@ -347,6 +421,11 @@ class Common_Shares:
     def set_share_name(cls, name: str) -> None:
         """
         This method sets the name for the share on the Edit Share right panel
+
+        :param name: The name of the given share
+
+        Example:
+           - Common_Shares.set_share_name('share1')
         """
         COM.is_visible(xpaths.common_xpaths.input_field('name'))
         COM.set_input_field('name', name)
@@ -355,6 +434,11 @@ class Common_Shares:
     def set_share_path(cls, path: str) -> None:
         """
         This method sets the path for the share on the Edit Share right panel
+
+        :param path: The path of the given share
+
+        Example:
+           - Common_Shares.set_share_path('share1')
         """
         COM.is_visible(xpaths.common_xpaths.input_field('path'))
         COM.set_input_field('path', '/mnt/'+path, True)
@@ -367,6 +451,9 @@ class Common_Shares:
 
         :param service: is the service name.
         :return: True if the service successfully changed to STARTED, otherwise returns False.
+
+        Example:
+            - Common_Shares.start_share_service_by_actions_menu('cifs')
         """
         cls.toggle_share_service_state_by_actions_menu(service, 'on')
         return cls.is_share_service_running(service)
@@ -379,6 +466,9 @@ class Common_Shares:
 
         :param service: is the service name.
         :return: True if the service successfully changed to STOPPED, otherwise returns False.
+
+        Example:
+            - Common_Shares.stop_share_service_by_actions_menu('cifs')
         """
         cls.toggle_share_service_state_by_actions_menu(service, 'off')
         return cls.is_share_service_stopped(service)
@@ -391,6 +481,9 @@ class Common_Shares:
 
         :param service: is the service name.
         :param toggle: direction in which to toggle the service.
+
+        Example:
+            - Common_Shares.toggle_share_service_state_by_actions_menu('cifs', 'on')
         """
         COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(service))
         if service == 'smb':
