@@ -27,6 +27,10 @@ class Test_NFS_Share_Path_UI_Errors:
         COMSHARE.create_share_by_api('nfs', '', nfs_data['api_path'])
         COMSHARE.create_share_by_api('nfs', '', nfs_data['api_path_alt'])
 
+        # Navigate to the Shares page
+        NAV.navigate_to_shares()
+        assert COMSHARE.assert_share_card_displays('nfs') is True
+
     @pytest.fixture(scope='function', autouse=True)
     def tear_down_test(self, nfs_data):
         """
@@ -48,9 +52,6 @@ class Test_NFS_Share_Path_UI_Errors:
          - Trigger the duplicate share error
          - Verify share still in original state when editing is cancelled
         """
-        # Navigate to the Shares page
-        NAV.navigate_to_shares()
-        assert COMSHARE.assert_share_card_displays('nfs') is True
 
         # Trigger the nonexistent path error
         assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path']) is True

@@ -174,8 +174,8 @@ class Test_Edit_NFS_Share:
         NAV.navigate_to_datasets()
         DATASET.expand_dataset('tank')
         DATASET.select_dataset(nfs_data['dataset_name'])
-        assert DATASET.assert_dataset_share_attached(nfs_data['dataset_name'], 'nfs')
-        assert DATASET.assert_dataset_roles_share_icon(nfs_data['dataset_name'], 'nfs')
+        assert DATASET.assert_dataset_share_attached(nfs_data['dataset_name'], 'nfs') is True
+        assert DATASET.assert_dataset_roles_share_icon(nfs_data['dataset_name'], 'nfs') is True
 
     @allure.tag("Update")
     @allure.story("NFS Share Edit Advanced UI Errors")

@@ -34,6 +34,10 @@ class Test_NFS_Share_Card_UI:
         COMSHARE.create_share_by_api('nfs', '', "tank/sharefour")
         COMSHARE.create_share_by_api('nfs', '', "tank/sharefive")
 
+        # Navigate to the Shares page
+        NAV.navigate_to_shares()
+        assert COMSHARE.assert_share_card_displays('nfs') is True
+
     @pytest.fixture(scope="function", autouse=True)
     def tear_down_test(self):
         """
@@ -57,9 +61,6 @@ class Test_NFS_Share_Card_UI:
         """
         This test verifies the NFS share card UI.
         """
-        # Navigate to the Shares page
-        NAV.navigate_to_shares()
-        assert COMSHARE.assert_share_card_displays('nfs')
 
         # Verify NFS Card on Sharing page UI
         assert COMSHARE.is_share_service_stopped('nfs') is True

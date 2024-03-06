@@ -7,7 +7,7 @@ from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation as NAV
 
 
-@allure.tag("NFS Shares", "Delete")
+@allure.tag("NFS Shares")
 @allure.epic("Shares")
 @allure.feature("NFS")
 @pytest.mark.parametrize('nfs_data', get_data_list('shares/nfs'))
@@ -24,6 +24,10 @@ class Test_Delete_NFS_Share:
         DATASET.create_dataset_by_api(nfs_data['api_path'], 'NFS')
         COMSHARE.create_share_by_api('nfs', '', nfs_data['api_path'])
 
+        # Navigate to the Shares page
+        NAV.navigate_to_shares()
+        assert COMSHARE.assert_share_card_displays('nfs') is True
+
     @pytest.fixture(scope='function', autouse=True)
     def tear_down_test(self, nfs_data):
         """
@@ -32,14 +36,13 @@ class Test_Delete_NFS_Share:
         yield
         DATASET.delete_dataset_by_api(nfs_data['api_path'])
 
+    @allure.tag("Delete")
     @allure.story('Delete NFS Share')
     def test_delete_new_nfs_share(self, nfs_data):
         """
         This test verifies the NFS share can be deleted.
         """
         # Delete NFS share
-        NAV.navigate_to_shares()
-        assert COMSHARE.assert_share_card_displays('nfs') is True
         assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path']) is True
         COMSHARE.click_delete_share('nfs', nfs_data['share_page_path'])
         COM.assert_confirm_dialog()
