@@ -21,6 +21,7 @@ class Test_Unix_Permissions:
         """
         API_DELETE.delete_dataset(unix_perms['full_dataset_path'])
         API_POST.create_dataset(unix_perms['full_dataset_path'])
+        API_POST.set_dataset_permissions_user_and_group(unix_perms['full_dataset_path'], unix_perms['ownername'], unix_perms['groupname'])
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_datasets()
 
@@ -39,7 +40,6 @@ class Test_Unix_Permissions:
         """
         This test verifies the UI on the permissions card of the dataset that has been set with Unix Permissions.
         """
-        API_POST.set_dataset_permissions_user_and_group(unix_perms['full_dataset_path'], unix_perms['ownername'], unix_perms['groupname'])
         DAT.click_dataset_location(unix_perms['dataset'])
         assert PERM.assert_dataset_owner(unix_perms['ownername']) is True
         assert PERM.assert_dataset_group(unix_perms['groupname']) is True
