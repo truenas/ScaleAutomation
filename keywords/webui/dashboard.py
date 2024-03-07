@@ -458,20 +458,11 @@ class Dashboard:
         This method set all dashboard card to be visible.
         """
         cls.set_original_card_position('sysinfo')
-        # assert Dashboard.assert_card_position(1, 'sysinfo') is True
         cls.set_original_card_position('help')
-        # assert Dashboard.assert_card_position(2, 'help') is True
         cls.set_original_card_position('cpu')
-        # assert Dashboard.assert_card_position(3, 'cpu') is True
         cls.set_original_card_position('memory')
-        # assert Dashboard.assert_card_position(4, 'memory') is True
         cls.set_original_card_position('backup')
-        # assert Dashboard.assert_card_position(5, 'backup') is True
         cls.set_original_card_position('storage')
-        # assert Dashboard.assert_card_position(6, 'storage') is True
         cls.set_original_card_position('pool')
-        # assert Dashboard.assert_card_position(7, 'pool') is True
         cls.set_original_card_position('network')
-        # assert Dashboard.assert_card_position(8, 'network') is True
         cls.set_original_card_position('nic')
-        # assert Dashboard.assert_card_position(9, 'nic') is True
