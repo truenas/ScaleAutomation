@@ -96,21 +96,21 @@ class Common_SSH:
         return cls.get_checksum_of_file(private_config['IP'], filename, user, password)
 
     @classmethod
-    def get_output_from_ssh(cls, command: str, ip: str, user: str) -> SSH_Command_Line:
+    def get_output_from_ssh(cls, command: str, ip: str, user: str, password: str) -> SSH_Command_Line:
         """
         This method verify that the command through succeed and return its output.
 
         :param command: is the command line to run through ssh
         :param ip: is the IP of the ssh target
         :param user: is the username of the user to ssh
+        :param password: is the password of the user to ssh
         :return: the output of the command ran through ssh.
         """
-        results = SSH_Command_Line(command, ip, user)
-        assert results.status is True, f'{results.stdout}\n{results.stderr}'
+        results = SSH_Command_Line(command, ip, user, password)
         return results
 
     @classmethod
-    def get_permission_response(cls, user: str, perm: str, value: str, cmd: str, state: str) -> bool:
+    def get_smb_share_permission_response(cls, user: str, perm: str, value: str, cmd: str, state: str) -> bool:
         """
         This method gets the response for accessing SMB share with given permissions
 
@@ -191,7 +191,7 @@ class Common_SSH:
         assert API_PUT.enable_service_at_boot('ssh').status_code == 200
 
     @classmethod
-    def verify_read_permission(cls, user: str, read: str, file: str = 'getfile') -> bool:
+    def verify_smb_share_read_permission(cls, user: str, read: str, file: str = 'getfile') -> bool:
         """
         This method verifies the Read permissions of connecting to a smb share
 
@@ -200,10 +200,10 @@ class Common_SSH:
         :param file: name of the file to execute the smb command on
         :return: returns True if the expected Read value was returned, otherwise False
         """
-        return cls.get_permission_response(user, 'READ', file, f'get {file}', read)
+        return cls.get_smb_share_permission_response(user, 'READ', file, f'get {file}', read)
 
     @classmethod
-    def verify_write_permission(cls, user: str, write: str, file: str = 'putfile') -> bool:
+    def verify_smb_share_write_permission(cls, user: str, write: str, file: str = 'putfile') -> bool:
         """
         This method verifies the Write permissions of connecting to a smb share
 
@@ -212,10 +212,10 @@ class Common_SSH:
         :param file: name of the file to execute the smb command on
         :return: returns True if the expected Write value was returned, otherwise False
         """
-        return cls.get_permission_response(user, 'WRITE', file, f'put {file}', write)
+        return cls.get_smb_share_permission_response(user, 'WRITE', file, f'put {file}', write)
 
     @classmethod
-    def verify_exec_permission(cls, user: str, execute: str, file: str = 'execfile.sh') -> bool:
+    def verify_smb_share_exec_permission(cls, user: str, execute: str, file: str = 'execfile.sh') -> bool:
         """
         This method verifies the Execute permissions of connecting to a smb share
 
@@ -224,10 +224,10 @@ class Common_SSH:
         :param file: name of the file to execute the smb command on
         :return: returns True if the expected Exec value was returned, otherwise False
         """
-        return cls.get_permission_response(user, 'EXEC', file, f'open {file}', execute)
+        return cls.get_smb_share_permission_response(user, 'EXEC', file, f'open {file}', execute)
 
     @classmethod
-    def verify_delete_permission(cls, user: str, delete: str, file: str = 'deletefile') -> bool:
+    def verify_smb_share_delete_permission(cls, user: str, delete: str, file: str = 'deletefile') -> bool:
         """
         This method verifies the Delete permissions of connecting to a smb share
 
@@ -236,4 +236,4 @@ class Common_SSH:
         :param file: name of the file to execute the smb command on
         :return: returns True if the expected Delete value was returned, otherwise False
         """
-        return not cls.get_permission_response(user, 'DELETE', file, f'rm {file}', delete)
+        return not cls.get_smb_share_permission_response(user, 'DELETE', file, f'rm {file}', delete)
