@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from keywords.webui.dashboard import Dashboard
 
@@ -7,6 +8,10 @@ from keywords.webui.dashboard import Dashboard
 @allure.epic("Dashboard")
 @allure.feature("Dashboard-System-Info")
 class Test_Verify_System_Information_Card_UI:
+
+    @pytest.fixture(scope='function', autouse=True)
+    def setup_test(self):
+        Dashboard.set_all_cards_visible()
 
     @allure.tag("Read")
     @allure.story("Verify System Info UI")

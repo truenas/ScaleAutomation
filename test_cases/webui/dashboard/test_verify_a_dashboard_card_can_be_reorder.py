@@ -2,7 +2,6 @@ import allure
 import pytest
 
 from keywords.webui.dashboard import Dashboard
-from helper.webui import WebUI
 
 
 @allure.tag("Dashboard")
@@ -13,27 +12,7 @@ class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self):
         # reset the change
-        WebUI.refresh()
-        assert Dashboard.assert_dashboard_page_header_is_visible() is True
-        Dashboard.click_the_reorder_button()
-        Dashboard.move_card_a_to_card_b_position('sysinfo', Dashboard.get_dashboard_card_name_by_position(1))
-        Dashboard.move_card_a_to_card_b_position('help', Dashboard.get_dashboard_card_name_by_position(2))
-        Dashboard.click_the_save_reorder_button()
-        WebUI.refresh()
-        assert Dashboard.assert_dashboard_page_header_is_visible() is True
-
-    @pytest.fixture(scope='function', autouse=True)
-    def teardown_test(self):
-        yield
-        # reset the change
-        WebUI.refresh()
-        assert Dashboard.assert_dashboard_page_header_is_visible() is True
-        Dashboard.click_the_reorder_button()
-        Dashboard.move_card_a_to_card_b_position('sysinfo', Dashboard.get_dashboard_card_name_by_position(1))
-        Dashboard.move_card_a_to_card_b_position('help', Dashboard.get_dashboard_card_name_by_position(2))
-        Dashboard.click_the_save_reorder_button()
-        WebUI.refresh()
-        assert Dashboard.assert_dashboard_page_header_is_visible() is True
+        Dashboard.set_all_cards_original_card_positions()
 
     @allure.tag("Update")
     @allure.story("Move System Info to Help Position")
@@ -46,6 +25,7 @@ class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
         assert Dashboard.assert_card_position(2, 'help') is True
         Dashboard.click_the_reorder_button()
         Dashboard.move_card_a_to_card_b_position('sysinfo', 'help')
+        assert Dashboard.assert_card_position(2, 'sysinfo') is True
         Dashboard.click_the_save_reorder_button()
 
         # verify the system information card position

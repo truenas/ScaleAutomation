@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from keywords.webui.dashboard import Dashboard
 from keywords.webui.reporting import Reporting
@@ -8,6 +9,10 @@ from keywords.webui.reporting import Reporting
 @allure.epic("Dashboard")
 @allure.feature("Dashboard-Reporting")
 class Test_Verify_The_Report_Button_On_The_Network_Card:
+
+    @pytest.fixture(scope='function', autouse=True)
+    def setup_test(self):
+        Dashboard.enable_card('network')
 
     @allure.tag("Read")
     @allure.story("Verify Network Cards on Reporting")

@@ -103,12 +103,16 @@ class WebUI(object):
         Example:
             - WebUI.drag_and_drop('fromXpath', 'toXpath')
         """
-        cls.wait_until_visible(from_xpath)
+        assert cls.wait_until_visible(from_xpath) is True
         source = cls.xpath(from_xpath)
-        cls.wait_until_visible(to_xpath)
+        assert cls.wait_until_visible(to_xpath) is True
         target = cls.xpath(to_xpath)
-        # ActionChains(web_driver).drag_and_drop(source, target).perform() does not work.
-        ActionChains(cls.web_driver).click_and_hold(source).move_to_element(target).release(target).perform()
+        action = ActionChains(cls.web_driver)
+        action.click_and_hold(source)
+        action.move_to_element(target)
+        action.pause(0.5)
+        action.release(target)
+        action.perform()
 
     @classmethod
     def find_xpath(cls, xpath: str) -> list[WebElement]:

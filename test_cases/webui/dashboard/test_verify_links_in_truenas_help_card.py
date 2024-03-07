@@ -12,6 +12,10 @@ from keywords.webui.navigation import Navigation
 class Test_Verify_Links_On_The_TrueNAS_Help_Card:
 
     @pytest.fixture(scope='function', autouse=True)
+    def setup_test(self):
+        Dashboard.set_all_cards_visible()
+
+    @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self):
         """
         This method resets the test back to Dashboard

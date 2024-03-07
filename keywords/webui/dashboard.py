@@ -2,6 +2,7 @@ import xpaths
 from helper.global_config import shared_config
 from helper.webui import WebUI
 from keywords.webui.common import Common
+from keywords.webui.navigation import Navigation
 
 
 class Dashboard:
@@ -224,6 +225,7 @@ class Dashboard:
         This method click on the Dashboard Reorder button.
         """
         Common.click_button('start-reorder')
+        WebUI.delay(2)
 
     @classmethod
     def click_the_save_reorder_button(cls) -> None:
@@ -231,6 +233,10 @@ class Dashboard:
         This method click on the save reorder button.
         """
         Common.click_button('save-new-order')
+        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('start-reorder'))
+        # This is to refresh the Dashboard. Less fragile than Refresh and doesn't risk getting stuck on login screen
+        Navigation.navigate_to_shares()
+        Navigation.navigate_to_dashboard()
 
     @classmethod
     def click_the_storage_report_button(cls) -> None:
@@ -275,6 +281,12 @@ class Dashboard:
 
         :param card: is the card toggle name
         """
+        if card == 'sysinfo':
+            card = 'system-information'
+        if card == 'pool':
+            card = 'pool-tank'
+        if card == 'nic':
+            card = 'enp-1-s-0'
         cls.set_dashboard_card_by_state(card, True)
 
     @classmethod
@@ -287,6 +299,22 @@ class Dashboard:
         """
         card_header = WebUI.get_text(xpaths.common_xpaths.any_xpath(f'(//mat-card)[{position}]//h3'))
         return shared_config['DASHBOARD_CARDS'][card_header]
+
+    @classmethod
+    def get_dashboard_card_position(cls, name: str) -> int:
+        """
+        This method returns the position of the given dashboard card.
+
+        :param name: name of the card.
+        :return: the position of the dashboard card
+        """
+        pos = 1
+        while pos < 10:
+            if cls.get_dashboard_card_name_by_position(pos) == name:
+                return pos
+            else:
+                pos += 1
+        return 0
 
     @classmethod
     def get_system_information_uptime(cls) -> str:
@@ -360,9 +388,18 @@ class Dashboard:
         :param card_a: name of the card to move
         :param card_b: name of the card to move card_a to
         """
+        a_pos = cls.get_dashboard_card_position(card_a)
+        b_pos = cls.get_dashboard_card_position(card_b)
+        print(f'BEFORE SWAP: {card_a} - {a_pos} {card_b} - {b_pos}')
         if card_a != card_b:
             WebUI.drag_and_drop(xpaths.dashboard.drag_card(card_a), xpaths.dashboard.drop_card(card_b))
-            WebUI.delay(0.4)
+            WebUI.delay(2)
+            print(f'AFTER SWAP: {card_a} - {cls.get_dashboard_card_position(card_a)} {card_b} - {cls.get_dashboard_card_position(card_b)}')
+            if a_pos == cls.get_dashboard_card_position(card_a):
+                print(f'RETRY SWAP: {card_a} - {a_pos} {card_b} - {b_pos}')
+                WebUI.drag_and_drop(xpaths.dashboard.drag_card(card_a), xpaths.dashboard.drop_card(card_b))
+                WebUI.delay(0.4)
+                print(f'AFTER RETRY: {card_a} - {cls.get_dashboard_card_position(card_a)} {card_b} - {cls.get_dashboard_card_position(card_b)}')
         else:
             print("card_a can't match card_b")
 
@@ -401,3 +438,40 @@ class Dashboard:
         else:
             Common.unset_toggle(card)
         Common.click_save_button_and_wait_for_progress_bar()
+
+    @classmethod
+    def set_original_card_position(cls, card) -> None:
+        """
+        This method set all dashboard card to be visible.
+        """
+        card_order = ['sysinfo', 'help', 'cpu', 'memory', 'backup', 'storage', 'pool', 'network', 'nic']
+        pos = card_order.index(card) + 1
+        cls.enable_card(card)
+        cls.click_the_reorder_button()
+        cls.move_card_a_to_card_b_position(card, Dashboard.get_dashboard_card_name_by_position(pos))
+        cls.click_the_save_reorder_button()
+        assert Dashboard.assert_card_position(pos, card) is True
+
+    @classmethod
+    def set_all_cards_original_card_positions(cls) -> None:
+        """
+        This method set all dashboard card to be visible.
+        """
+        cls.set_original_card_position('sysinfo')
+        # assert Dashboard.assert_card_position(1, 'sysinfo') is True
+        cls.set_original_card_position('help')
+        # assert Dashboard.assert_card_position(2, 'help') is True
+        cls.set_original_card_position('cpu')
+        # assert Dashboard.assert_card_position(3, 'cpu') is True
+        cls.set_original_card_position('memory')
+        # assert Dashboard.assert_card_position(4, 'memory') is True
+        cls.set_original_card_position('backup')
+        # assert Dashboard.assert_card_position(5, 'backup') is True
+        cls.set_original_card_position('storage')
+        # assert Dashboard.assert_card_position(6, 'storage') is True
+        cls.set_original_card_position('pool')
+        # assert Dashboard.assert_card_position(7, 'pool') is True
+        cls.set_original_card_position('network')
+        # assert Dashboard.assert_card_position(8, 'network') is True
+        cls.set_original_card_position('nic')
+        # assert Dashboard.assert_card_position(9, 'nic') is True

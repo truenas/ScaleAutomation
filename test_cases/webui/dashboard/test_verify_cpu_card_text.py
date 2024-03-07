@@ -1,4 +1,6 @@
 import allure
+import pytest
+
 from keywords.webui.dashboard import Dashboard
 
 
@@ -6,6 +8,10 @@ from keywords.webui.dashboard import Dashboard
 @allure.epic('Dashboard')
 @allure.feature('CPU Card')
 class Test_Verify_CPU_Card_Text:
+
+    @pytest.fixture(scope='function', autouse=True)
+    def setup_test(self):
+        Dashboard.set_all_cards_visible()
 
     @allure.tag("Read")
     @allure.story('CPU Card Text and Graph')

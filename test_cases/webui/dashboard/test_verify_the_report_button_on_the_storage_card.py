@@ -1,4 +1,6 @@
 import allure
+import pytest
+
 from keywords.webui.dashboard import Dashboard
 from keywords.webui.reporting import Reporting
 
@@ -7,6 +9,11 @@ from keywords.webui.reporting import Reporting
 @allure.epic("Dashboard")
 @allure.feature("Dashboard-Reporting")
 class Test_Verify_The_Report_Button_On_The_Storage_Card:
+
+    @pytest.fixture(scope='function', autouse=True)
+    def setup_test(self):
+        Dashboard.enable_card('storage')
+
     @allure.story("Verify Storage Cards on Reporting")
     def test_verifying_the_report_button_on_the_storage_card_works(self):
         """

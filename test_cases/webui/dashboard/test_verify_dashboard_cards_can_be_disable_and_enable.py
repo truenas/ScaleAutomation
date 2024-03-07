@@ -8,7 +8,7 @@ from keywords.webui.dashboard import Dashboard
 @allure.tag('Dashboard')
 @allure.epic('Dashboard')
 @allure.feature('Dashboard-Card-Enable/Disable')
-@pytest.mark.parametrize('card', shared_config['DASHBOARD_CARDS_TOGGLE'].keys())
+# @pytest.mark.parametrize('card', shared_config['DASHBOARD_CARDS_TOGGLE'].keys())
 class Test_Verify_Dashboard_Cards_Can_Be_Disable_And_Enable:
 
     @pytest.fixture(scope='function', autouse=True)
@@ -17,6 +17,7 @@ class Test_Verify_Dashboard_Cards_Can_Be_Disable_And_Enable:
 
     @allure.tag("Update")
     @allure.story('Disable Cards')
+    @pytest.mark.parametrize('card', shared_config['DASHBOARD_CARDS_TOGGLE'].keys())
     def verify_disable_the_card_is_not_on_dashboard(self, card):
         """
         This test verifies disabling Card, card does not display
@@ -27,6 +28,7 @@ class Test_Verify_Dashboard_Cards_Can_Be_Disable_And_Enable:
 
     @allure.tag("Update")
     @allure.story('Enable Cards')
+    @pytest.mark.parametrize('card', shared_config['DASHBOARD_CARDS_TOGGLE'].keys())
     def verify_enable_the_card_is_on_dashboard(self, card):
         """
         This test verifies enabling Card, card displays
