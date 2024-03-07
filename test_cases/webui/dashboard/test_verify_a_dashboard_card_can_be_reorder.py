@@ -12,7 +12,8 @@ class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self):
         # reset the change
-        Dashboard.set_all_cards_original_card_positions()
+        Dashboard.set_original_card_position('sysinfo')
+        Dashboard.set_original_card_position('help')
 
     @allure.tag("Update")
     @allure.story("Move System Info to Help Position")

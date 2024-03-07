@@ -12,7 +12,9 @@ class Test_Verify_Reordering_Cards_Remain_After_Logoff:
 
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self):
-        Dashboard.set_all_cards_original_card_positions()
+        Dashboard.set_original_card_position('sysinfo')
+        Dashboard.set_original_card_position('help')
+        Dashboard.set_original_card_position('cpu')
 
     @allure.tag("Update")
     @allure.story("Verify Card Reorder Remains After Re-Login")
