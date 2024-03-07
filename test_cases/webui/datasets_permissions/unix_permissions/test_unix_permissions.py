@@ -42,7 +42,7 @@ class Test_Unix_Permissions:
         API_POST.set_dataset_permissions_user_and_group(unix_perms['full_dataset_path'], unix_perms['ownername'], unix_perms['groupname'])
         DAT.click_dataset_location(unix_perms['dataset'])
         assert PERM.assert_dataset_owner(unix_perms['ownername']) is True
-        assert PERM.assert_dataset_group(unix_perms['ownername']) is True
+        assert PERM.assert_dataset_group(unix_perms['groupname']) is True
         assert PERM.verify_dataset_permissions_type('Unix Permissions') is True
         assert PERM.verify_dataset_owner_permissions_name(unix_perms['ownername']) is True
         assert PERM.verify_dataset_owner_permissions('Read | Write | Execute') is True
