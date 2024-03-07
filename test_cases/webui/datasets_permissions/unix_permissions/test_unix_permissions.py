@@ -20,7 +20,9 @@ class Test_Unix_Permissions:
         This method creates the dataset and navigates to datasets before testing.
         """
         API_DELETE.delete_dataset(unix_perms['full_dataset_path'])
+        API_POST.create_dataset('tank/test')
         API_POST.create_dataset(unix_perms['full_dataset_path'])
+        API_POST.set_dataset_permissions_user_and_group('tank/test', 'admin', 'admin')
         API_POST.set_dataset_permissions_user_and_group(unix_perms['full_dataset_path'], unix_perms['ownername'], unix_perms['groupname'])
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_datasets()
@@ -33,6 +35,7 @@ class Test_Unix_Permissions:
         yield
         # Clean up environment.
         API_DELETE.delete_dataset(unix_perms['full_dataset_path'])
+        API_DELETE.delete_dataset('tank/test')
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
