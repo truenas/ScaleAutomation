@@ -2,6 +2,7 @@ import xpaths
 from helper.global_config import shared_config
 from helper.webui import WebUI
 from keywords.webui.common import Common
+from keywords.webui.navigation import Navigation
 
 
 class Dashboard:
@@ -100,7 +101,7 @@ class Dashboard:
         return url_exists
 
     @classmethod
-    def assert_system_information_version_clipboard_copy(cls):
+    def assert_system_information_version_clipboard_copy(cls) -> None:
         """
         This method return True or False whether the copied version match the version on the UI.
 
@@ -177,70 +178,95 @@ class Dashboard:
         return cls.assert_new_tab_url('https://www.truenas.com/newsletter/')
 
     @classmethod
-    def click_check_update_button(cls):
+    def click_check_update_button(cls) -> None:
         """
         This method click on the system information Check Updates or Updates Available button.
         """
         Common.click_button('widget-sysinfo-update')
 
     @classmethod
-    def click_the_cancel_reorder_button(cls):
+    def click_the_cancel_reorder_button(cls) -> None:
         """
         This method click on the cancel reorder button.
         """
         Common.click_button('cancel-reorder')
 
     @classmethod
-    def click_the_configure_button(cls):
+    def click_the_configure_button(cls) -> None:
         """
         This method click on the Configure button on the dashboard.
         """
         Common.click_button('configure-dashboard')
 
     @classmethod
-    def click_the_cpu_report_button(cls):
+    def click_the_cpu_report_button(cls) -> None:
         """
         This method click on CPU report button.
         """
         Common.click_link('cpu-reports')
 
     @classmethod
-    def click_the_memory_report_button(cls):
+    def click_the_memory_report_button(cls) -> None:
         """
         This method click on memory report button.
         """
         Common.click_button('memory-go-to-reports')
 
     @classmethod
-    def click_the_network_report_button(cls):
+    def click_the_network_report_button(cls) -> None:
         """
         This method click on Network report button.
         """
         Common.click_link('network-reports')
 
     @classmethod
-    def click_the_reorder_button(cls):
+    def click_the_reorder_button(cls) -> None:
         """
         This method click on the Dashboard Reorder button.
         """
         Common.click_button('start-reorder')
+        WebUI.delay(2)
 
     @classmethod
-    def click_the_save_reorder_button(cls):
+    def click_the_save_reorder_button(cls) -> None:
         """
         This method click on the save reorder button.
         """
         Common.click_button('save-new-order')
+        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('start-reorder'))
+        # This is to refresh the Dashboard. Less fragile than Refresh and doesn't risk getting stuck on login screen
+        Navigation.navigate_to_shares()
+        Navigation.navigate_to_dashboard()
 
     @classmethod
-    def click_the_storage_report_button(cls):
+    def click_the_storage_report_button(cls) -> None:
         """
         This method click on storage report button.
         """
         Common.click_link('storage-reports')
 
     @classmethod
-    def disable_card(cls, card: str):
+    def disable_all_cards(cls) -> None:
+        """
+        This method set all dashboard card to be disabled (invisible).
+        """
+        cls.click_the_configure_button()
+        assert cls.assert_dashboard_configure_panel_is_visible() is True
+        Common.unset_toggle('system-information')
+        Common.unset_toggle('help')
+        Common.unset_toggle('cpu')
+        Common.unset_toggle('memory')
+        Common.unset_toggle('backup')
+        Common.unset_toggle('storage')
+        Common.unset_toggle('pool-tank')
+        Common.unset_toggle('network')
+        Common.unset_toggle('enp-1-s-0')
+        Common.click_save_button()
+
+        assert Common.assert_right_panel_header_is_not_visible('Dashboard Configure') is True
+
+    @classmethod
+    def disable_card(cls, card: str) -> None:
         """
         This method disable the given card.
 
@@ -249,12 +275,18 @@ class Dashboard:
         cls.set_dashboard_card_by_state(card, False)
 
     @classmethod
-    def enable_card(cls, card: str):
+    def enable_card(cls, card: str) -> None:
         """
         This method enable the given card:
 
         :param card: is the card toggle name
         """
+        if card == 'sysinfo':
+            card = 'system-information'
+        if card == 'pool':
+            card = 'pool-tank'
+        if card == 'nic':
+            card = 'enp-1-s-0'
         cls.set_dashboard_card_by_state(card, True)
 
     @classmethod
@@ -269,6 +301,22 @@ class Dashboard:
         return shared_config['DASHBOARD_CARDS'][card_header]
 
     @classmethod
+    def get_dashboard_card_position(cls, name: str) -> int:
+        """
+        This method returns the position of the given dashboard card.
+
+        :param name: name of the card.
+        :return: the position of the dashboard card
+        """
+        pos = 1
+        while pos < 10:
+            if cls.get_dashboard_card_name_by_position(pos) == name:
+                return pos
+            else:
+                pos += 1
+        return 0
+
+    @classmethod
     def get_system_information_uptime(cls) -> str:
         """
         This method get the System Information uptime value and returns it.
@@ -279,7 +327,7 @@ class Dashboard:
         return WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 4))
 
     @classmethod
-    def is_cpu_card_visible(cls):
+    def is_cpu_card_visible(cls) -> bool:
         """
         This method returns True if the cpu card is visible otherwise it returns False.
 
@@ -288,7 +336,7 @@ class Dashboard:
         return Common.is_card_visible('CPU')
 
     @classmethod
-    def is_memory_card_visible(cls):
+    def is_memory_card_visible(cls) -> bool:
         """
         This method returns True if the memory card is visible otherwise it returns False.
 
@@ -297,7 +345,7 @@ class Dashboard:
         return Common.is_card_visible('Memory')
 
     @classmethod
-    def is_network_card_visible(cls):
+    def is_network_card_visible(cls) -> bool:
         """
         This method returns True if the network card is visible otherwise it returns False.
 
@@ -306,7 +354,7 @@ class Dashboard:
         return Common.is_card_visible('Network')
 
     @classmethod
-    def is_storage_card_visible(cls):
+    def is_storage_card_visible(cls) -> bool:
         """
         This method returns True if the storage card is visible otherwise it returns False.
 
@@ -315,7 +363,7 @@ class Dashboard:
         return Common.is_card_visible('Storage')
 
     @classmethod
-    def is_system_information_card_visible(cls):
+    def is_system_information_card_visible(cls) -> bool:
         """
         This method returns True if the system information card is visible otherwise it returns False.
 
@@ -333,21 +381,30 @@ class Dashboard:
         return Common.is_card_visible('TrueNAS Help')
 
     @classmethod
-    def move_card_a_to_card_b_position(cls, card_a: str, card_b: str):
+    def move_card_a_to_card_b_position(cls, card_a: str, card_b: str) -> None:
         """
         This method move given card_a to the card_b position.
 
         :param card_a: name of the card to move
         :param card_b: name of the card to move card_a to
         """
+        a_pos = cls.get_dashboard_card_position(card_a)
+        b_pos = cls.get_dashboard_card_position(card_b)
+        print(f'BEFORE SWAP: {card_a} - {a_pos} {card_b} - {b_pos}')
         if card_a != card_b:
             WebUI.drag_and_drop(xpaths.dashboard.drag_card(card_a), xpaths.dashboard.drop_card(card_b))
-            WebUI.delay(0.4)
+            WebUI.delay(2)
+            print(f'AFTER SWAP: {card_a} - {cls.get_dashboard_card_position(card_a)} {card_b} - {cls.get_dashboard_card_position(card_b)}')
+            if a_pos == cls.get_dashboard_card_position(card_a):
+                print(f'RETRY SWAP: {card_a} - {a_pos} {card_b} - {b_pos}')
+                WebUI.drag_and_drop(xpaths.dashboard.drag_card(card_a), xpaths.dashboard.drop_card(card_b))
+                WebUI.delay(0.4)
+                print(f'AFTER RETRY: {card_a} - {cls.get_dashboard_card_position(card_a)} {card_b} - {cls.get_dashboard_card_position(card_b)}')
         else:
             print("card_a can't match card_b")
 
     @classmethod
-    def set_all_cards_visible(cls):
+    def set_all_cards_visible(cls) -> None:
         """
         This method set all dashboard card to be visible.
         """
@@ -367,7 +424,7 @@ class Dashboard:
         assert Common.assert_right_panel_header_is_not_visible('Dashboard Configure') is True
 
     @classmethod
-    def set_dashboard_card_by_state(cls, card: str, state: bool):
+    def set_dashboard_card_by_state(cls, card: str, state: bool) -> None:
         """
         This method set the card toggle by the given state.
 
@@ -381,3 +438,31 @@ class Dashboard:
         else:
             Common.unset_toggle(card)
         Common.click_save_button_and_wait_for_progress_bar()
+
+    @classmethod
+    def set_original_card_position(cls, card) -> None:
+        """
+        This method set all dashboard card to be visible.
+        """
+        card_order = ['sysinfo', 'help', 'cpu', 'memory', 'backup', 'storage', 'pool', 'network', 'nic']
+        pos = card_order.index(card) + 1
+        cls.enable_card(card)
+        cls.click_the_reorder_button()
+        cls.move_card_a_to_card_b_position(card, Dashboard.get_dashboard_card_name_by_position(pos))
+        cls.click_the_save_reorder_button()
+        assert Dashboard.assert_card_position(pos, card) is True
+
+    @classmethod
+    def set_all_cards_original_card_positions(cls) -> None:
+        """
+        This method set all dashboard card to be visible.
+        """
+        cls.set_original_card_position('sysinfo')
+        cls.set_original_card_position('help')
+        cls.set_original_card_position('cpu')
+        cls.set_original_card_position('memory')
+        cls.set_original_card_position('backup')
+        cls.set_original_card_position('storage')
+        cls.set_original_card_position('pool')
+        cls.set_original_card_position('network')
+        cls.set_original_card_position('nic')
