@@ -210,7 +210,7 @@ class Apps:
             - Apps.click_discover_apps()
         """
         COM.click_link('discover-apps')
-        WebUI.delay(0.5)
+        assert COM.assert_page_header('Discover') is True
 
     @classmethod
     def click_install_app(cls, name: str) -> None:
@@ -415,7 +415,7 @@ class Apps:
         This method clicks the Refresh Charts button to renew the apps catalog and returns to the apps page.
         """
         Apps.click_discover_apps()
-        COM.click_link('refresh-charts')
+        COM.click_on_element(xpaths.common_xpaths.any_xpath('(//*[@data-test="link-refresh-charts"])[2]'))
         assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text('Refreshing'), shared_config['EXTRA_LONG_WAIT']) is True
         WebUI.delay(0.5)
         assert COM.assert_progress_bar_not_visible(shared_config['EXTRA_LONG_WAIT']) is True
