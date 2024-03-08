@@ -186,7 +186,7 @@ class Apps:
         Example:
             - Apps.click_app('WG Easy')
         """
-
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//ix-app-card//h3[contains(text(),"{name}")]'), shared_config['EXTRA_LONG_WAIT']) is True
         COM.click_on_element(f'//ix-app-card//h3[contains(text(),"{name}")]')
         assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text('Please wait')) is True
 
@@ -483,9 +483,9 @@ class Apps:
             Apps.click_install_app(name)
             cls.handle_docker_limit_dialog()
             Apps.set_app_values(name)
-            COM.click_save_button()
-            assert COM.assert_page_header('Installed', shared_config['LONG_WAIT'])
+            assert COM.click_save_button_and_wait_for_progress_bar() is True
+            assert COM.assert_page_header('Installed', shared_config['EXTRA_LONG_WAIT']) is True
             assert COM.assert_progress_bar_not_visible() is True
-            cls.is_app_running(name)
+            assert cls.is_app_running(name) is True
         assert Apps.is_app_installed(name) is True
         return Apps.is_app_deployed(name) is True
