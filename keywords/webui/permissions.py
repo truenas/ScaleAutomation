@@ -296,6 +296,15 @@ class Permissions:
 
     @classmethod
     def assert_dataset_execute_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
+        """
+        This method attempts to access the given dataset with the given username and preform execute actions.
+
+        :param pool: The name of the pool the dataset is in.
+        :param dataset: The name of the dataset to be accessed.
+        :param username: The username used for authentication.
+        :param password: The password used for authentication.
+        :return: True if the dataset is accessible with execute access, False otherwise.
+        """
         file = f"{username}exec_file.sh"
         cr_dir = f"{username}exec_dir"
         command = f'cd /mnt/{pool}/test ; chmod 777 . ; touch {file} ;  echo -n "mkdir /mnt/{pool}/{dataset}/{cr_dir}" | cat > {file} ; chmod 777 {file}'
@@ -308,6 +317,15 @@ class Permissions:
 
     @classmethod
     def assert_dataset_read_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
+        """
+        This method attempts to access the given dataset with the given username and preform read actions.
+
+        :param pool: The name of the pool the dataset is in.
+        :param dataset: The name of the dataset to be accessed.
+        :param username: The username used for authentication.
+        :param password: The password used for authentication.
+        :return: True if the dataset is accessible with read access, False otherwise.
+        """
         command = f"cd /mnt/{pool}/{dataset} ; ls -al"
         value = SSH.get_output_from_ssh(command, private_config['IP'], username, password)
         if "permission denied" in value.stderr.lower():
@@ -317,6 +335,15 @@ class Permissions:
 
     @classmethod
     def assert_dataset_write_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
+        """
+        This method attempts to access the given dataset with the given username and preform write actions.
+
+        :param pool: The name of the pool the dataset is in.
+        :param dataset: The name of the dataset to be accessed.
+        :param username: The username used for authentication.
+        :param password: The password used for authentication.
+        :return: True if the dataset is accessible with write access, False otherwise.
+        """
         file = f"{username}file.txt"
         command = f"cd /mnt/{pool} ; touch {dataset}/{file}"
         SSH.get_output_from_ssh(command, private_config['IP'], username, password)
