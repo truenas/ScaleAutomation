@@ -296,7 +296,7 @@ class Common:
         Example:
             - Common.click_on_element('xpath')
         """
-        find = WebUI.wait_until_clickable(xpath, shared_config['MEDIUM_WAIT'])
+        find = WebUI.wait_until_clickable(xpath, shared_config['WAIT'])
         find.click()
 
     @classmethod
