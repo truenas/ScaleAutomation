@@ -324,13 +324,14 @@ class Permissions:
     @classmethod
     def assert_dataset_execute_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
         file = f"{username}exec_file.sh"
-        command = f'cd /mnt/{pool}/test ; chmod 777 . ; touch {file} ;  echo -n "mkdir /mnt/{pool}/{dataset}/{username}exec_dir" | cat > {file} ; chmod 777 {dataset}/{file}'
+        cr_dir = f"{username}exec_dir"
+        command = f'cd /mnt/{pool}/test ; chmod 777 . ; touch {file} ;  echo -n "mkdir /mnt/{pool}/{dataset}/{cr_dir}" | cat > {file} ; chmod 777 {file}'
         SSH.get_output_from_ssh(command, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
         command2 = f"cd /mnt/{pool}/test ; ./{file}"
         SSH.get_output_from_ssh(command2, private_config['IP'], username, password)
         command3 = f"cd /mnt/{pool} ; sudo ls -al {dataset}"
         value = SSH.get_output_from_ssh(command3, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
-        return "{username}exec_dir" in value.stdout.lower()
+        return cr_dir in value.stdout.lower()
 
     @classmethod
     def assert_dataset_read_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:

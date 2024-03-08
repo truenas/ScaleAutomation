@@ -91,6 +91,3 @@ class Test_Unix_Permissions:
         PERM.verify_dataset_access(unix_perms['pool'], unix_perms['dataset'], unix_perms['ownername'], private_config['PASSWORD'], unix_perms['user_access'])
         PERM.verify_dataset_access(unix_perms['pool'], unix_perms['dataset'], unix_perms['groupname'], private_config['PASSWORD'], unix_perms['group_access'])
         PERM.verify_dataset_access(unix_perms['pool'], unix_perms['dataset'], unix_perms['othername'], private_config['PASSWORD'], unix_perms['other_access'])
-
-
-
