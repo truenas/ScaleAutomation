@@ -415,7 +415,8 @@ class Apps:
         """
         Apps.click_discover_apps()
         COM.click_link('refresh-charts')
-        COM.assert_progress_bar_not_visible(shared_config['EXTRA_LONG_WAIT'])
+        assert COM.assert_progress_bar_not_visible(shared_config['EXTRA_LONG_WAIT']) is True
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text('Refreshing'), shared_config['EXTRA_LONG_WAIT']) is True
         NAV.navigate_to_apps()
 
     @classmethod
