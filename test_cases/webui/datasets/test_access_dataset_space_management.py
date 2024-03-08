@@ -1,3 +1,4 @@
+import allure
 import pytest
 from helper.data_config import get_data_list
 from keywords.api.post import API_POST
@@ -6,6 +7,9 @@ from keywords.webui.datasets import Datasets
 from keywords.webui.navigation import Navigation
 
 
+@allure.tag("Datasets", "Dataset Space Management")
+@allure.epic("Datasets")
+@allure.feature("Dataset Space Management")
 @pytest.mark.parametrize('data', get_data_list('datasets')[6:], scope='class')
 class Test_Access_Dataset_Space_Management:
     """
@@ -28,6 +32,8 @@ class Test_Access_Dataset_Space_Management:
         Navigation.navigate_to_datasets()
         Datasets.assert_datasets_page_header()
 
+    @allure.tag("Read")
+    @allure.story("Dataset Space Management Details")
     def test_pool_dataset_space_management_details(self, data):
         """
         This test verifies the space management card details.
@@ -47,6 +53,8 @@ class Test_Access_Dataset_Space_Management:
         assert Datasets.assert_group_quotas('Quotas set for ') is True
         assert Datasets.assert_group_quotas(' group') is True
 
+    @allure.tag("Read")
+    @allure.story("Dataset Space Management Details")
     def test_dataset_space_management_details(self, data):
         # Select the pool and the dataset
         Datasets.select_dataset(data["pool"])
@@ -63,6 +71,8 @@ class Test_Access_Dataset_Space_Management:
         assert Datasets.assert_group_quotas('Quotas set for ') is True
         assert Datasets.assert_group_quotas(' group') is True
 
+    @allure.tag("Read")
+    @allure.story("Access Dataset Managing Group Quotas")
     def test_access_dataset_managing_group_quotas(self, data):
         """
         This test verifies the group quotas page open.
@@ -75,6 +85,8 @@ class Test_Access_Dataset_Space_Management:
         Datasets.click_manage_group_quotas_link(data['pool'], data['dataset'])
         assert Datasets.is_group_quotas_page_visible()
 
+    @allure.tag("Read")
+    @allure.story("Access Dataset Managing User Quotas")
     def test_access_dataset_managing_user_quotas(self, data):
         """
         This test verifies the user quotas page open.

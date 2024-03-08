@@ -1,3 +1,4 @@
+import allure
 import pytest
 from helper.data_config import get_data_list
 from keywords.api.delete import API_DELETE
@@ -8,6 +9,9 @@ from keywords.webui.datasets import Datasets
 from keywords.webui.navigation import Navigation
 
 
+@allure.tag("Datasets", "Roles")
+@allure.epic("Datasets")
+@allure.feature("Roles")
 @pytest.mark.parametrize('role', get_data_list('datasets-roles')[:3], scope='class')
 class Test_Dataset_Roles:
     @pytest.fixture(scope='class', autouse=True)
@@ -21,6 +25,8 @@ class Test_Dataset_Roles:
         elif role['dataset'] == "ix-applications":
             assert API_PUT.set_app_pool('tank').status_code == 200
 
+    @allure.tag("Read")
+    @allure.story("Dataset Roles Information")
     def test_dataset_roles_information(self, role):
         """
         This test verifies the dataset roles information is visible.
@@ -34,6 +40,8 @@ class Test_Dataset_Roles:
         assert Common.assert_text_is_visible(role['role text']) is True
         assert Common.assert_text_is_visible(role['link text']) is True
 
+    @allure.tag("Read")
+    @allure.story("Dataset Roles Manage Links")
     def test_dataset_roles_manage_links(self, role):
         """
         This test verifies the manage role link opens the correct page.
@@ -56,4 +64,4 @@ class Test_Dataset_Roles:
             API_DELETE.delete_share('smb', 'smb_share')
             API_DELETE.delete_dataset('tank/smb_share')
         if role['dataset'] == "ix-applications":
-            API_DELETE.delete_dataset('tank/ix-applications', recursive=True)
+            API_DELETE.delete_dataset('tank/ix-applications', recursive=True, force=True)
