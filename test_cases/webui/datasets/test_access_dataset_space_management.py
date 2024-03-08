@@ -42,6 +42,7 @@ class Test_Access_Dataset_Space_Management:
         assert Datasets.assert_space_available_to_dataset_size('GiB') is True
         assert Datasets.assert_user_quotas('Quotas set for ') is True
         assert Datasets.assert_user_quotas(' user') is True
+        assert Datasets.assert_user_quotas(' user') is True
 
         assert Datasets.assert_group_quotas('Quotas set for ') is True
         assert Datasets.assert_group_quotas(' group') is True
@@ -71,7 +72,7 @@ class Test_Access_Dataset_Space_Management:
         Datasets.select_dataset(data["dataset"])
         # Verify the group quotas page for the given dataset opens.
         assert Datasets.is_space_management_card_visible()
-        Datasets.click_manage_group_quotas_link()
+        Datasets.click_manage_group_quotas_link(data['pool'], data['dataset'])
         assert Datasets.is_group_quotas_page_visible()
 
     def test_access_dataset_managing_user_quotas(self, data):
@@ -84,7 +85,7 @@ class Test_Access_Dataset_Space_Management:
 
         # Verify the user quotas page for the given dataset opens.
         assert Datasets.is_space_management_card_visible()
-        Datasets.click_manage_user_quotas_link()
+        Datasets.click_manage_user_quotas_link(data['pool'], data['dataset'])
         assert Datasets.is_user_quotas_page_visible()
 
     @pytest.fixture(scope='class', autouse=True)
