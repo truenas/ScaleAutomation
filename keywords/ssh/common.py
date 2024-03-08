@@ -161,6 +161,7 @@ class Common_SSH:
 
         :return: the SSH public key
         """
+        print(f'@@@ PATH: ', path.expanduser(f'{shared_config["KEYPATH"]}.pub'))
         return open(path.expanduser(f'{shared_config["KEYPATH"]}.pub'), 'r').read().strip()
 
     @classmethod
@@ -186,9 +187,12 @@ class Common_SSH:
         :param username: the username to set the SSH public key on the NAS
         """
         cls.create_ssh_key()
+        assert path.exists(path.expanduser(f'{shared_config["KEYPATH"]}.pub'))
+        print(cls.get_ssh_pub_key())
         assert API_PUT.set_user_ssh_public_key(username, cls.get_ssh_pub_key()).status_code == 200
         assert API_POST.start_service('ssh').status_code == 200
         assert API_PUT.enable_service_at_boot('ssh').status_code == 200
+        assert path.exists(path.expanduser(f'{shared_config["KEYPATH"]}.pub'))
 
     @classmethod
     def verify_read_permission(cls, user: str, read: str, file: str = 'getfile') -> bool:
