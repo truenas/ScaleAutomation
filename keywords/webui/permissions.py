@@ -104,24 +104,6 @@ class Permissions:
         assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('user'), 'value') is True
         COM.set_input_field('user', user, True)
 
-    # @classmethod
-    # def set_group_permissions_checkbox(cls, level: str) -> None:
-    #     """
-    #     This method sets the given level permission checkbox for the group category.
-    #
-    #     :param level: the level of permission to set. EX: read, write, execute.
-    #     """
-    #     cls.set_permissions_checkbox('group', level)
-
-    # @classmethod
-    # def set_other_permissions_checkbox(cls, level: str) -> None:
-    #     """
-    #     This method sets the given level permission checkbox for the other category.
-    #
-    #     :param level: the level of permission to set. EX: read, write, execute.
-    #     """
-    #     cls.set_permissions_checkbox('other', level)
-
     @classmethod
     def set_permissions_checkbox(cls, user_category: str, level: str) -> None:
         """
@@ -179,15 +161,6 @@ class Permissions:
         :param level: the level of permission to set. EX: Read | Write | Execute or any combination.
         """
         cls.set_permissions_checkbox_by_level('user', level)
-
-    # @classmethod
-    # def set_user_permissions_checkbox(cls, level: str) -> None:
-    #     """
-    #     This method sets the given level permission checkbox for the user category.
-    #
-    #     :param level: the level of permission to set. EX: read, write, execute.
-    #     """
-    #     cls.set_permissions_checkbox('user', level)
 
     @classmethod
     def unset_apply_group_checkbox(cls) -> None:
@@ -350,11 +323,3 @@ class Permissions:
         command2 = f"cd /mnt/{pool} ; sudo ls -al {dataset}"
         value = SSH.get_output_from_ssh(command2, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
         return file in value.stdout.lower()
-        # return validation == (file.__contains__(value.stdout.lower()))
-        # if validation is False:
-        #     if "testfile.txt" in value.stdout.lower():
-        #         print(f"testfile.txt present in directory when write access denied for user: {username}")
-        #         return False
-        # else:
-        #     assert "testfile.txt" in value.stdout.lower() is True
-        # return True
