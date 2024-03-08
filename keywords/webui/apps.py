@@ -253,8 +253,8 @@ class Apps:
             COM.click_button('choose-pool')
             COM.select_option('pool', 'pool-tank')
             COM.click_button('choose')
-            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Configuring...', 1), shared_config['LONG_WAIT']) is True
-            assert WebUI.wait_until_visible('//*[@fonticon="mdi-check-circle"]', shared_config['LONG_WAIT']) is True
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Configuring...', 1), shared_config['EXTRA_LONG_WAIT']) is True
+            assert WebUI.wait_until_visible(xpaths.apps.apps_service_running_check_icon(), shared_config['EXTRA_LONG_WAIT']) is True
             assert COM.is_visible(xpaths.common_xpaths.any_text('Apps Service Running')) is True
 
     @classmethod
