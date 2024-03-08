@@ -210,6 +210,7 @@ class Apps:
             - Apps.click_discover_apps()
         """
         COM.click_link('discover-apps')
+        WebUI.delay(0.5)
 
     @classmethod
     def click_install_app(cls, name: str) -> None:
@@ -415,8 +416,9 @@ class Apps:
         """
         Apps.click_discover_apps()
         COM.click_link('refresh-charts')
-        assert COM.assert_progress_bar_not_visible(shared_config['EXTRA_LONG_WAIT']) is True
         assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text('Refreshing'), shared_config['EXTRA_LONG_WAIT']) is True
+        WebUI.delay(0.5)
+        assert COM.assert_progress_bar_not_visible(shared_config['EXTRA_LONG_WAIT']) is True
         NAV.navigate_to_apps()
 
     @classmethod
@@ -474,6 +476,7 @@ class Apps:
             - Apps.verify_app_installed('WG Easy')
         """
         if Apps.is_app_installed(name) is False:
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Configuring', 1), shared_config['MEDIUM_WAIT']) is True
             Apps.click_discover_apps()
             COM.set_search_field(name)
             Apps.click_app(name)
