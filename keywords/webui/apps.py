@@ -211,6 +211,7 @@ class Apps:
         """
         COM.click_link('discover-apps')
         assert COM.assert_page_header('Discover') is True
+        assert COM.assert_progress_bar_not_visible() is True
 
     @classmethod
     def click_install_app(cls, name: str) -> None:
