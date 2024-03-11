@@ -243,6 +243,16 @@ class Common:
             WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.TAB)
 
     @classmethod
+    def clear_extra_windows(cls):
+        # and switch to initial tab
+        initial_tab = WebUI.window_handles()[0]
+        current_tab = WebUI.current_window_handle()
+        initial_index = WebUI.window_handles().index(initial_tab)
+        if initial_tab != current_tab:
+            WebUI.close_window()
+            WebUI.switch_to_window_index(initial_index)
+
+    @classmethod
     def click_advanced_options_button(cls):
         """
         This method clicks the Advanced Options button.
