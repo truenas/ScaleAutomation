@@ -8,8 +8,8 @@ from keywords.webui.directory_services import Directory_Services as DS
 @pytest.mark.parametrize('ldap', get_data_list('ldap_credentials'), scope='class')
 class Test_Disable_LDAP:
 
-    @staticmethod
-    def test_setup_ldap(ldap) -> None:
+    @pytest.fixture(scope='function', autouse=True)
+    def setup_test(self, ldap) -> None:
         """
         This test verifies ldap can be setup
         """
@@ -34,7 +34,7 @@ class Test_Disable_LDAP:
         assert COM.is_card_not_visible('LDAP')
         assert COM.is_visible('//*[@data-test="button-configure-ldap"]')
 
-    @pytest.fixture(scope='class', autouse=True)
+    @pytest.fixture(scope='function', autouse=True)
     def teardown_class(self) -> None:
         """
         This test removes the ldap
