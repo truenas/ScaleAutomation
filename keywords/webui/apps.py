@@ -186,9 +186,10 @@ class Apps:
         Example:
             - Apps.click_app('WG Easy')
         """
-
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//ix-app-card//h3[contains(text(),"{name}")]')) is True
         COM.click_on_element(f'//ix-app-card//h3[contains(text(),"{name}")]')
         assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text('Please wait')) is True
+        assert COM.assert_page_header(name) is True
 
     @classmethod
     def click_custom_app(cls) -> None:
@@ -210,6 +211,8 @@ class Apps:
             - Apps.click_discover_apps()
         """
         COM.click_link('discover-apps')
+        assert COM.assert_page_header('Discover') is True
+        assert COM.assert_progress_bar_not_visible() is True
 
     @classmethod
     def click_install_app(cls, name: str) -> None:
@@ -221,6 +224,7 @@ class Apps:
         Example:
             - Apps.click_install_app('WG Easy')
         """
+        assert COM.assert_page_header(name) is True
         if COM.is_visible(xpaths.common_xpaths.button_field('setup-pool')):
             COM.click_button('setup-pool')
             COM.select_option('pool', 'pool-tank')
@@ -253,8 +257,8 @@ class Apps:
             COM.click_button('choose-pool')
             COM.select_option('pool', 'pool-tank')
             COM.click_button('choose')
-            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Configuring...', 1), shared_config['LONG_WAIT']) is True
-            assert WebUI.wait_until_visible('//*[@fonticon="mdi-check-circle"]', shared_config['LONG_WAIT']) is True
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Configuring...', 1), shared_config['EXTRA_LONG_WAIT']) is True
+            assert WebUI.wait_until_visible(xpaths.apps.apps_service_running_check_icon(), shared_config['EXTRA_LONG_WAIT']) is True
             assert COM.is_visible(xpaths.common_xpaths.any_text('Apps Service Running')) is True
 
     @classmethod
@@ -414,8 +418,10 @@ class Apps:
         This method clicks the Refresh Charts button to renew the apps catalog and returns to the apps page.
         """
         Apps.click_discover_apps()
-        COM.click_link('refresh-charts')
-        COM.assert_progress_bar_not_visible(shared_config['EXTRA_LONG_WAIT'])
+        COM.click_on_element(xpaths.common_xpaths.any_xpath('(//*[@data-test="link-refresh-charts"])[2]'))
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text('Refreshing'), shared_config['EXTRA_LONG_WAIT']) is True
+        WebUI.delay(0.5)
+        assert COM.assert_progress_bar_not_visible(shared_config['EXTRA_LONG_WAIT']) is True
         NAV.navigate_to_apps()
 
     @classmethod
@@ -473,15 +479,16 @@ class Apps:
             - Apps.verify_app_installed('WG Easy')
         """
         if Apps.is_app_installed(name) is False:
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Configuring', 1), shared_config['MEDIUM_WAIT']) is True
             Apps.click_discover_apps()
             COM.set_search_field(name)
             Apps.click_app(name)
             Apps.click_install_app(name)
             cls.handle_docker_limit_dialog()
             Apps.set_app_values(name)
-            COM.click_save_button()
-            assert COM.assert_page_header('Installed', shared_config['LONG_WAIT'])
+            assert COM.click_save_button_and_wait_for_progress_bar() is True
+            assert COM.assert_page_header('Installed', shared_config['EXTRA_LONG_WAIT']) is True
             assert COM.assert_progress_bar_not_visible() is True
-            cls.is_app_running(name)
+            assert cls.is_app_running(name) is True
         assert Apps.is_app_installed(name) is True
         return Apps.is_app_deployed(name) is True
