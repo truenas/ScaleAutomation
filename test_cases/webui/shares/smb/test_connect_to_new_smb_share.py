@@ -30,10 +30,10 @@ def test_connect_to_new_smb_share(smb_data) -> None:
 
     # # Add SMB Files
     SSH.add_smb_test_files(smb_data['user'], smb_data['path'], private_config['IP'])
-    assert SSH.verify_read_permission(smb_data['user'], smb_data['read']) is True
-    assert SSH.verify_write_permission(smb_data['user'], smb_data['write']) is True
-    assert SSH.verify_exec_permission(smb_data['user'], smb_data['execute']) is True
-    assert SSH.verify_delete_permission(smb_data['user'], smb_data['delete']) is True
+    assert SSH.verify_smb_share_read_permission(smb_data['user'], smb_data['read']) is True
+    assert SSH.verify_smb_share_write_permission(smb_data['user'], smb_data['write']) is True
+    assert SSH.verify_smb_share_exec_permission(smb_data['user'], smb_data['execute']) is True
+    assert SSH.verify_smb_share_delete_permission(smb_data['user'], smb_data['delete']) is True
 
     # # Environment Teardown
     SSH.delete_smb_test_files(smb_data['user'])
