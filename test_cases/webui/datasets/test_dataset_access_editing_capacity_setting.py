@@ -1,6 +1,7 @@
 import pytest
 from helper.data_config import get_data_list
 from keywords.api.post import API_POST
+from keywords.api.put import API_PUT
 from keywords.api.delete import API_DELETE
 from keywords.webui.common import Common
 from keywords.webui.datasets import Datasets
@@ -67,11 +68,7 @@ class Test_Dataset_Access_Editing_Capacity_Setting:
         for the test class.
         """
         yield
-        Datasets.select_dataset(data["pool"])
-        assert Datasets.is_space_management_card_visible() is True
-        Datasets.click_edit_dataset_space_button()
-        assert Datasets.is_capacity_settings_right_panel_visible() is True
-        Datasets.unset_quota_for_this_dataset()
-        Datasets.unset_quota_for_this_dataset_and_all_children()
-        assert Common.click_save_button_and_wait_for_progress_bar() is True
+        # clean up quotas and reserved space for the pool dataset
+        API_PUT.set_dataset_quota(data["pool"], 0)
+        API_PUT.set_dataset_refquota(data["pool"], 0)
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["dataset"]}')

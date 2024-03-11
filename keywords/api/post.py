@@ -262,6 +262,24 @@ class API_POST:
         return response
 
     @classmethod
+    def create_read_only_admin(cls, username: str, fullname: str, password: str, smb_auth: str = 'True') -> Response:
+        readonly_administrators = API_GET.get_group_id('truenas_readonly_administrators')
+        payload = {
+            "username": username,
+            "group_create": True,
+            "groups": [readonly_administrators],
+            "home": "/mnt/tank",
+            "home_create": True,
+            "full_name": fullname,
+            "email": f"{username}@nowhere.com",
+            "password": password,
+            "shell": "/usr/bin/bash",
+            "ssh_password_enabled": True,
+            "smb": eval(smb_auth.lower().capitalize())
+        }
+        return POST('/user', payload)
+
+    @classmethod
     def create_remote_dataset(cls, name: str, sharetype: str = 'GENERIC') -> Response:
         """
         This method creates the given remote dataset.

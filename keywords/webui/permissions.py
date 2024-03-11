@@ -6,6 +6,25 @@ from keywords.ssh.common import Common_SSH as SSH
 
 
 class Permissions:
+
+    @classmethod
+    def assert_edit_acl_page_header(cls) -> bool:
+        """
+        This method returns true if the ACLs page header is visible.
+
+        :return: returns true if the ACLs page header is visible.
+        """
+        return COM.assert_page_header('Edit ACL')
+
+    @classmethod
+    def assert_edit_permissions_page_header(cls) -> bool:
+        """
+        This method returns true if the Permissions page header is visible.
+
+        :return: returns true if the Permissions page header is visible.
+        """
+        return COM.assert_page_header('Edit Permissions')
+
     @classmethod
     def assert_dataset_group(cls, name: str) -> bool:
         """
