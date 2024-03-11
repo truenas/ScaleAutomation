@@ -16,7 +16,7 @@ class Zpool_SSH:
             - Zpool_SSH.get_pool_status('test_pool')
         """
         command = f'sudo zpool status {pool_name}'
-        return Common_SSH.get_output_from_ssh(command, private_config['IP'], private_config['SSH_USERNAME'], private_config['SSH_PASSWORD'])
+        return SSH_Command_Line(command, private_config['IP'], private_config['SSH_USERNAME'])
 
     @classmethod
     def verify_pool_status_exist(cls, pool_name: str) -> bool:
