@@ -260,7 +260,7 @@ class Datasets:
         return Common.is_visible(xpaths.datasets.dataset_posix_permissions_obj('User', user))
 
     @classmethod
-    def assert_delete_dataset_button(cls):
+    def assert_delete_dataset_button(cls) -> bool:
         """
         This method returns True or False if the delete dataset button is visible.
 
@@ -286,7 +286,7 @@ class Datasets:
         return Common.assert_label_and_value_exist(label, value)
 
     @classmethod
-    def assert_details_case_sensitivity(cls, value):
+    def assert_details_case_sensitivity(cls, value) -> bool:
         """
         This method returns True or False if the case sensitivity is visible.
 
@@ -299,7 +299,7 @@ class Datasets:
         return cls.assert_details_card_field_value("Case Sensitivity:", value)
 
     @classmethod
-    def assert_details_compression_level(cls, value):
+    def assert_details_compression_level(cls, value) -> bool:
         """
         This method returns True or False if the compression level is visible.
 
@@ -312,7 +312,7 @@ class Datasets:
         return cls.assert_details_card_field_value("Compression Level:", value)
 
     @classmethod
-    def assert_details_enable_atime(cls, value):
+    def assert_details_enable_atime(cls, value) -> bool:
         """
         This method returns True or False if the 'enable atime' is visible.
 
@@ -325,7 +325,7 @@ class Datasets:
         return cls.assert_details_card_field_value("Enable Atime:", value)
 
     @classmethod
-    def assert_details_path(cls, value):
+    def assert_details_path(cls, value) -> bool:
         """
         This method returns True or False if the path is visible.
 
@@ -338,7 +338,7 @@ class Datasets:
         return cls.assert_details_card_field_value("Path:", value)
 
     @classmethod
-    def assert_details_sync(cls, value):
+    def assert_details_sync(cls, value) -> bool:
         """
         This method returns True or False if the sync is visible.
 
@@ -351,7 +351,7 @@ class Datasets:
         return cls.assert_details_card_field_value("Sync:", value)
 
     @classmethod
-    def assert_details_type(cls, value):
+    def assert_details_type(cls, value) -> bool:
         """
         This method returns True or False if the type is visible.
 
@@ -364,7 +364,7 @@ class Datasets:
         return cls.assert_details_card_field_value("Type:", value)
 
     @classmethod
-    def assert_details_zfs_deduplication(cls, value):
+    def assert_details_zfs_deduplication(cls, value) -> bool:
         """
         This method returns True or False if the zfs deduplication is visible.
 
@@ -377,7 +377,7 @@ class Datasets:
         return cls.assert_details_card_field_value("ZFS Deduplication:", value)
 
     @classmethod
-    def assert_edit_dataset_button(cls):
+    def assert_edit_dataset_button(cls) -> bool:
         """
         This method returns True or False if the edit dataset button is visible.
 
@@ -389,7 +389,7 @@ class Datasets:
         return Common.is_visible(xpaths.common_xpaths.button_field('edit-dataset'))
 
     @classmethod
-    def assert_edit_dataset_panel_header(cls):
+    def assert_edit_dataset_panel_header(cls) -> bool:
         """
         This method returns True or False if the edit dataset panel header is visible.
 
@@ -427,7 +427,7 @@ class Datasets:
         return Common.assert_label_and_value_exist('Data Written', size)
 
     @classmethod
-    def assert_reserved_for_dataset_size(cls, size):
+    def assert_reserved_for_dataset_size(cls, size) -> bool:
         """
         This method returns True or False whether the reserved for dataset size is visible.
         :param size: The reserved for dataset size.
@@ -439,7 +439,7 @@ class Datasets:
         return Common.assert_label_and_value_exist('Reserved for Dataset:', size)
 
     @classmethod
-    def assert_reserved_for_dataset_and_children_size(cls, size):
+    def assert_reserved_for_dataset_and_children_size(cls, size) -> bool:
         """
         This method returns True or False whether the reserved for dataset and children size is visible.
         :param size: The reserved for dataset and children size.
@@ -515,7 +515,7 @@ class Datasets:
         return Common.assert_label_and_value_exist('User Quotas:', text)
 
     @classmethod
-    def click_add_dataset_button(cls):
+    def click_add_dataset_button(cls) -> None:
         """
         This method clicks on the add dataset button.
 
@@ -525,7 +525,7 @@ class Datasets:
         Common.click_button('add-dataset')
 
     @classmethod
-    def click_add_zvol_button(cls):
+    def click_add_zvol_button(cls) -> None:
         """
         This method clicks on the add zvol button.
 
@@ -535,7 +535,7 @@ class Datasets:
         Common.click_button('add-zvol')
 
     @classmethod
-    def click_advanced_basic_options_button(cls):
+    def click_advanced_basic_options_button(cls) -> None:
         """
         This method clicks on the advanced basic options button.
 
@@ -545,7 +545,7 @@ class Datasets:
         Common.click_button('custom-button-advanced-options')
 
     @classmethod
-    def click_create_snapshot_button(cls):
+    def click_create_snapshot_button(cls) -> None:
         """
         This method clicks on the Create Snapshot button.
 
@@ -555,7 +555,7 @@ class Datasets:
         Common.click_button('create-snapshot')
 
     @classmethod
-    def click_dataset_location(cls, location: str):
+    def click_dataset_location(cls, location: str) -> None:
         """
         This method clicks on the Dataset Location.
 
@@ -568,7 +568,7 @@ class Datasets:
         Common.click_on_element(xpaths.datasets.link_dataset(location))
 
     @classmethod
-    def click_dataset_permission_item(cls, name: str, permissions: str):
+    def click_dataset_permission_item(cls, name: str, permissions: str) -> None:
         """
         This method clicks on the Dataset Permission Item.
 
@@ -581,7 +581,7 @@ class Datasets:
         Common.click_on_element(xpaths.datasets.dataset_permissions_item(name, permissions))
 
     @classmethod
-    def click_delete_dataset_button(cls):
+    def click_delete_dataset_button(cls) -> None:
         """
         This method clicks on the Delete Dataset button.
 
@@ -591,7 +591,7 @@ class Datasets:
         Common.click_button('delete-dataset')
 
     @classmethod
-    def click_edit_dataset_button(cls):
+    def click_edit_dataset_button(cls) -> None:
         """
         This method clicks on the Edit Dataset button.
 
@@ -601,7 +601,7 @@ class Datasets:
         Common.click_button('edit-dataset')
 
     @classmethod
-    def click_edit_dataset_space_button(cls):
+    def click_edit_dataset_space_button(cls) -> None:
         """
         This method clicks on the Edit Dataset Space button.
 
@@ -611,7 +611,7 @@ class Datasets:
         Common.click_button('edit-quotas')
 
     @classmethod
-    def click_edit_permissions_button(cls):
+    def click_edit_permissions_button(cls) -> None:
         """
         This method clicks on the Edit Permissions button.
 
@@ -621,11 +621,20 @@ class Datasets:
         Common.click_link('edit-permissions')
 
     @classmethod
-    def click_manage_group_quotas_link(cls):
-        Common.click_link('tank-space-management-manage-group-quotas')
+    def click_manage_group_quotas_link(cls, pool: str, dataset_name: str) -> None:
+        """
+        This method clicks on the Manage Group Quotas Link.
+
+        :param pool: The name of the pool.
+        :param dataset_name: The name of the dataset.
+
+        Example:
+            - Dataset.click_manage_group_quotas_link('pool-name', 'dataset-name')
+        """
+        Common.click_link(f'{pool}-{dataset_name}-manage-group-quotas')
 
     @classmethod
-    def click_manage_role_link(cls, name: str):
+    def click_manage_role_link(cls, name: str) -> None:
         """
         This method clicks on the Manage Role Link.
 
@@ -637,17 +646,20 @@ class Datasets:
         Common.click_link(name)
 
     @classmethod
-    def click_manage_user_quotas_link(cls):
+    def click_manage_user_quotas_link(cls, pool: str, dataset_name: str) -> None:
         """
         This method clicks on the Manage User Quotas Link.
 
+        :param pool: The name of the pool.
+        :param dataset_name: The name of the dataset.
+
         Example:
-            - Dataset.click_manage_user_quotas_link()
+            - Dataset.click_manage_user_quotas_link('pool-name', 'dataset_name')
         """
-        Common.click_link('tank-space-management-manage-user-quotas')
+        Common.click_link(f'{pool}-{dataset_name}-manage-user-quotas')
 
     @classmethod
-    def click_protection_manage_link(cls, link: str):
+    def click_protection_manage_link(cls, link: str) -> None:
         """
         This method clicks on the Manage Link.
 
@@ -672,7 +684,7 @@ class Datasets:
                 name = 'Rsync Tasks'
             case _:
                 name = ''
-        return Common.assert_page_header(name)
+        assert Common.assert_page_header(name)
 
     @classmethod
     def collapse_dataset(cls, name: str) -> None:
@@ -717,7 +729,7 @@ class Datasets:
         return API_POST.create_remote_dataset(name, share_type)
 
     @classmethod
-    def delete_dataset(cls, pool: str, dataset: str):
+    def delete_dataset(cls, pool: str, dataset: str) -> None:
         """
         This method deletes the given dataset.
         :param pool: The name of the pool.
@@ -1073,7 +1085,7 @@ class Datasets:
         return Common.is_card_visible('Roles')
 
     @classmethod
-    def is_user_quotas_page_visible(cls):
+    def is_user_quotas_page_visible(cls) -> bool:
         """
         This method checks if the user quotas page is visible.
 
@@ -1085,7 +1097,7 @@ class Datasets:
         return Common.assert_page_header('User Quotas')
 
     @classmethod
-    def is_group_quotas_page_visible(cls):
+    def is_group_quotas_page_visible(cls) -> bool:
         """
         This method checks if the group quotas page is visible.
 
@@ -1109,7 +1121,7 @@ class Datasets:
         return Common.is_card_visible('Dataset Space Management')
 
     @classmethod
-    def lock_dataset(cls, dataset: str):
+    def lock_dataset(cls, dataset: str) -> None:
         """
         This method locks the given dataset.
 
@@ -1160,7 +1172,7 @@ class Datasets:
         return API_POST.set_filesystem_acl(payload)
 
     @classmethod
-    def set_dataset_and_child_datasets_quota_critical_alert_at(cls, percentage: str):
+    def set_dataset_and_child_datasets_quota_critical_alert_at(cls, percentage: str) -> None:
         """
         This method sets the quota for this dataset.
 
@@ -1172,7 +1184,7 @@ class Datasets:
         Common.set_input_field('quota-critical', percentage)
 
     @classmethod
-    def set_dataset_and_child_datasets_quota_warning_alert_at(cls, percentage: str):
+    def set_dataset_and_child_datasets_quota_warning_alert_at(cls, percentage: str) -> None:
         """
         This method sets the quota for this dataset.
 
@@ -1228,7 +1240,7 @@ class Datasets:
         return payload
 
     @classmethod
-    def set_dataset_name(cls, name: str):
+    def set_dataset_name(cls, name: str) -> None:
         """
         This method sets the dataset name.
 
@@ -1255,7 +1267,7 @@ class Datasets:
         return API_POST.set_dataset_permissions_user_and_group(dataset, user, group)
 
     @classmethod
-    def set_dataset_quota_critical_alert_at(cls, percentage: str):
+    def set_dataset_quota_critical_alert_at(cls, percentage: str) -> None:
         """
         This method sets the quota critical alert at.
 
@@ -1267,7 +1279,7 @@ class Datasets:
         Common.set_input_field('refquota-critical', percentage)
 
     @classmethod
-    def set_dataset_quota_warning_alert_at(cls, percentage: str):
+    def set_dataset_quota_warning_alert_at(cls, percentage: str) -> None:
         """
         This method sets the quota warning alert at.
 
@@ -1279,7 +1291,7 @@ class Datasets:
         Common.set_input_field('refquota-warning', percentage)
 
     @classmethod
-    def set_default_dataset_and_child_datasets_quota_critical_alert_checkbox(cls):
+    def set_default_dataset_and_child_datasets_quota_critical_alert_checkbox(cls) -> None:
         """
         This method sets the quota critical alert checkbox.
 
@@ -1289,7 +1301,7 @@ class Datasets:
         Common.set_checkbox('quota-critical-inherit')
 
     @classmethod
-    def set_default_dataset_and_child_datasets_quota_warning_alert_checkbox(cls):
+    def set_default_dataset_and_child_datasets_quota_warning_alert_checkbox(cls) -> None:
         """
         This method sets the quota warning alert checkbox.
 
@@ -1299,7 +1311,7 @@ class Datasets:
         Common.set_checkbox('quota-warning-inherit')
 
     @classmethod
-    def set_default_dataset_quota_critical_alert_checkbox(cls):
+    def set_default_dataset_quota_critical_alert_checkbox(cls) -> None:
         """
         This method sets the quota critical alert checkbox.
 
@@ -1309,7 +1321,7 @@ class Datasets:
         Common.set_checkbox('refquota-critical-inherit')
 
     @classmethod
-    def set_default_dataset_quota_warning_alert_checkbox(cls):
+    def set_default_dataset_quota_warning_alert_checkbox(cls) -> None:
         """
         This method sets the quota warning alert checkbox.
 
@@ -1319,7 +1331,7 @@ class Datasets:
         Common.set_checkbox('refquota-warning-inherit')
 
     @classmethod
-    def set_quota_for_this_dataset(cls, size: str):
+    def set_quota_for_this_dataset(cls, size: str) -> None:
         """
         This method sets the quota for this dataset.
 
@@ -1331,7 +1343,7 @@ class Datasets:
         Common.set_input_field('refquota', size)
 
     @classmethod
-    def set_quota_for_this_dataset_and_all_children(cls, size: str):
+    def set_quota_for_this_dataset_and_all_children(cls, size: str) -> None:
         """
         This method sets the quota for this dataset and all children.
 
@@ -1343,7 +1355,7 @@ class Datasets:
         Common.set_input_field('quota', size)
 
     @classmethod
-    def set_reserved_space_for_this_dataset(cls, size: str):
+    def set_reserved_space_for_this_dataset(cls, size: str) -> None:
         """
         This method sets the reserved space for this dataset.
 
@@ -1355,7 +1367,7 @@ class Datasets:
         Common.set_input_field('refreservation', size)
 
     @classmethod
-    def set_reserved_space_for_this_dataset_and_all_children(cls, size: str):
+    def set_reserved_space_for_this_dataset_and_all_children(cls, size: str) -> None:
         """
         This method sets the reserved space for this dataset and all children.
 
@@ -1367,7 +1379,7 @@ class Datasets:
         Common.set_input_field('reservation', size)
 
     @classmethod
-    def unlock_dataset(cls, dataset: str, passphrase: str):
+    def unlock_dataset(cls, dataset: str, passphrase: str) -> None:
         """
         This method unlocks the given dataset.
 
@@ -1387,7 +1399,7 @@ class Datasets:
         Common.click_button('close')
 
     @classmethod
-    def unset_default_dataset_and_child_datasets_quota_critical_alert_checkbox(cls):
+    def unset_default_dataset_and_child_datasets_quota_critical_alert_checkbox(cls) -> None:
         """
         This method unsets the quota critical alert checkbox.
 
@@ -1397,7 +1409,7 @@ class Datasets:
         Common.unset_checkbox('quota-critical-inherit')
 
     @classmethod
-    def unset_default_dataset_and_child_datasets_quota_warning_alert_checkbox(cls):
+    def unset_default_dataset_and_child_datasets_quota_warning_alert_checkbox(cls) -> None:
         """
         This method unsets the quota warning alert checkbox.
 
@@ -1407,7 +1419,7 @@ class Datasets:
         Common.unset_checkbox('quota-warning-inherit')
 
     @classmethod
-    def unset_default_dataset_quota_critical_alert_checkbox(cls):
+    def unset_default_dataset_quota_critical_alert_checkbox(cls) -> None:
         """
         This method unsets the quota critical alert checkbox.
 
@@ -1417,7 +1429,7 @@ class Datasets:
         Common.unset_checkbox('refquota-critical-inherit')
 
     @classmethod
-    def unset_default_dataset_quota_warning_alert_checkbox(cls):
+    def unset_default_dataset_quota_warning_alert_checkbox(cls) -> None:
         """
         This method unsets the quota warning alert checkbox.
 
@@ -1427,7 +1439,7 @@ class Datasets:
         Common.unset_checkbox('refquota-warning-inherit')
 
     @classmethod
-    def unset_quota_for_this_dataset(cls):
+    def unset_quota_for_this_dataset(cls) -> None:
         """
         This method unsets the quota for this dataset.
 
@@ -1437,7 +1449,7 @@ class Datasets:
         Common.click_on_element(xpaths.common_xpaths.input_delete_button('refquota'))
 
     @classmethod
-    def unset_quota_for_this_dataset_and_all_children(cls):
+    def unset_quota_for_this_dataset_and_all_children(cls) -> None:
         """
         This method unsets the quota for this dataset and all children.
 
