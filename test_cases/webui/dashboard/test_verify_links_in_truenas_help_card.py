@@ -21,6 +21,7 @@ class Test_Verify_Links_On_The_TrueNAS_Help_Card:
         This method resets the test back to Dashboard
         """
         yield
+        Common.clear_extra_windows()
         Navigation.navigate_to_dashboard()
 
     @allure.tag("Read")
