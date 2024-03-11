@@ -1,5 +1,8 @@
 import xpaths
+from helper.global_config import private_config
+from helper.webui import WebUI
 from keywords.webui.common import Common as COM
+from keywords.ssh.common import Common_SSH as SSH
 
 
 class Permissions:
@@ -21,6 +24,28 @@ class Permissions:
         :return: returns true if the Permissions page header is visible.
         """
         return COM.assert_page_header('Edit Permissions')
+
+    @classmethod
+    def assert_dataset_group(cls, name: str) -> bool:
+        """
+        This method returns true if the given name matches the name of the group. Otherwise, it returns false.
+
+        :param name: The name of the owner.
+        :return: returns true if the given name is visible under Owner.
+        """
+        val = COM.get_element_property(xpaths.datasets.selected_dataset_group(), 'textContent')
+        return val.lower().__contains__(name.lower())
+
+    @classmethod
+    def assert_dataset_owner(cls, name: str) -> bool:
+        """
+        This method returns true if the given name matches the name of the Owner. Otherwise, it returns false.
+
+        :param name: The name of the owner.
+        :return: returns true if the given name is visible under Owner.
+        """
+        val = COM.get_element_property(xpaths.datasets.selected_dataset_owner(), 'textContent')
+        return val.lower().__contains__(name.lower())
 
     @classmethod
     def get_dataset_permissions_by_level(cls, user_category: str, level: str) -> str:
@@ -63,6 +88,7 @@ class Permissions:
         :param group: the name of the group.
         """
         COM.is_visible(xpaths.common_xpaths.input_field('group'))
+        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('group'), 'value') is True
         COM.set_input_field('group', group, True)
 
     @classmethod
@@ -73,6 +99,7 @@ class Permissions:
         :param owner: the name of the owner.
         """
         COM.is_visible(xpaths.common_xpaths.input_field('owner'))
+        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('owner'), 'value') is True
         COM.set_input_field('owner', owner, True)
 
     @classmethod
@@ -93,7 +120,66 @@ class Permissions:
         :param user: the name of the user.
         """
         COM.is_visible(xpaths.common_xpaths.input_field('user'))
+        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('user'), 'value') is True
         COM.set_input_field('user', user, True)
+
+    @classmethod
+    def set_permissions_checkbox(cls, user_category: str, level: str) -> None:
+        """
+        This method sets the given level permission checkbox for the given user category.
+
+        :param user_category: the user type to set the permission for. EX: user, group, other.
+        :param level: the level of permission to set. EX: read, write, execute.
+        """
+        COM.set_checkbox(f'{user_category}-{level}')
+
+    @classmethod
+    def set_permissions_checkbox_by_level(cls, user_category: str, level: str) -> None:
+        """
+        This method sets the permissions for the given user category if the given level specifies it. Otherwise, it unsets that level.
+
+        :param user_category: the user type to set the permission for. EX: user, group, other.
+        :param level: the level of permission to set. EX: Read | Write | Execute or any combination.
+        """
+        if level.lower().__contains__("read"):
+            cls.set_permissions_checkbox(user_category, "read")
+        else:
+            cls.unset_permissions_checkbox(user_category, "read")
+        if level.lower().__contains__("write"):
+            cls.set_permissions_checkbox(user_category, "write")
+        else:
+            cls.unset_permissions_checkbox(user_category, "write")
+        if level.lower().__contains__("execute"):
+            cls.set_permissions_checkbox(user_category, "execute")
+        else:
+            cls.unset_permissions_checkbox(user_category, "execute")
+
+    @classmethod
+    def set_group_access(cls, level: str) -> None:
+        """
+        This method sets the group access to the given level.
+
+        :param level: the level of permission to set. EX: Read | Write | Execute or any combination.
+        """
+        cls.set_permissions_checkbox_by_level('group', level)
+
+    @classmethod
+    def set_other_access(cls, level: str) -> None:
+        """
+        This method sets the other access to the given level.
+
+        :param level: the level of permission to set. EX: Read | Write | Execute or any combination.
+        """
+        cls.set_permissions_checkbox_by_level('other', level)
+
+    @classmethod
+    def set_user_access(cls, level: str) -> None:
+        """
+        This method sets the user access to the given level.
+
+        :param level: the level of permission to set. EX: Read | Write | Execute or any combination.
+        """
+        cls.set_permissions_checkbox_by_level('user', level)
 
     @classmethod
     def unset_apply_group_checkbox(cls) -> None:
@@ -110,14 +196,14 @@ class Permissions:
         COM.unset_checkbox('apply-user')
 
     @classmethod
-    def verify_dataset_group(cls, name: str) -> bool:
+    def unset_permissions_checkbox(cls, user_category: str, level: str) -> None:
         """
-        This method returns true if the given name is visible under Group.
+        This method unsets the given level permission checkbox for the given user category.
 
-        :param name: The name of the group.
-        :return: returns true if the given name is visible under Group.
+        :param user_category: the user type to unset the permission for. EX: user, group, other.
+        :param level: the level of permission to unset. EX: read, write, execute.
         """
-        return COM.is_visible(xpaths.common_xpaths.any_xpath(f"//*[contains(text(),'Group:')]/..//*[contains(text(),'{name}')]"))
+        COM.unset_checkbox(f'{user_category}-{level}')
 
     @classmethod
     def verify_dataset_group_permissions(cls, permissions: str) -> bool:
@@ -163,16 +249,6 @@ class Permissions:
         return val == 'Other'
 
     @classmethod
-    def verify_dataset_owner(cls, name: str) -> bool:
-        """
-        This method returns true if the given name is visible under Owner.
-
-        :param name: The name of the owner.
-        :return: returns true if the given name is visible under Owner.
-        """
-        return COM.is_visible(xpaths.common_xpaths.any_xpath(f"//*[contains(text(),'Owner:')]/..//*[contains(text(),'{name}')]"))
-
-    @classmethod
     def verify_dataset_owner_permissions(cls, permissions: str) -> bool:
         """
         This method returns true if the owner permissions visible matches the given permissions.
@@ -213,3 +289,83 @@ class Permissions:
         """
         return COM.assert_text_is_visible(permissions_type)
 
+    @classmethod
+    def verify_dataset_access(cls, pool: str, dataset: str, username: str, password: str, level: str) -> None:
+        """
+        This method verifies the dataset access for the given username at the specified access level.
+
+        :param pool: The name of the pool the dataset is in.
+        :param dataset: The name of the dataset to be accessed.
+        :param username: The username used for authentication.
+        :param password: The password used for authentication.
+        :param level: The access level to be verified (EX: "read", "write", "execute").
+        """
+        if level.lower().__contains__("read"):
+            assert cls.assert_dataset_read_access(pool, dataset, username, password) is True
+        else:
+            assert cls.assert_dataset_read_access(pool, dataset, username, password) is False
+        if level.lower().__contains__("write"):
+            assert cls.assert_dataset_write_access(pool, dataset, username, password) is True
+        else:
+            assert cls.assert_dataset_write_access(pool, dataset, username, password) is False
+        if level.lower().__contains__("execute"):
+            assert cls.assert_dataset_execute_access(pool, dataset, username, password) is True
+        else:
+            assert cls.assert_dataset_execute_access(pool, dataset, username, password) is False
+
+    @classmethod
+    def assert_dataset_execute_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
+        """
+        This method attempts to access the given dataset with the given username and preform execute actions.
+
+        :param pool: The name of the pool the dataset is in.
+        :param dataset: The name of the dataset to be accessed.
+        :param username: The username used for authentication.
+        :param password: The password used for authentication.
+        :return: True if the dataset is accessible with execute access, False otherwise.
+        """
+        file = f"{username}exec_file.sh"
+        cr_dir = f"{username}exec_dir"
+        command = f'cd /mnt/{pool}/test ; chmod 777 . ; touch {file} ;  echo -n "mkdir /mnt/{pool}/{dataset}/{cr_dir}" | cat > {file} ; chmod 777 {file}'
+        SSH.get_output_from_ssh(command, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        command2 = f"cd /mnt/{pool}/test ; ./{file}"
+        SSH.get_output_from_ssh(command2, private_config['IP'], username, password)
+        command3 = f"cd /mnt/{pool} ; sudo ls -al {dataset}"
+        value = SSH.get_output_from_ssh(command3, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        return cr_dir in value.stdout.lower()
+
+    @classmethod
+    def assert_dataset_read_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
+        """
+        This method attempts to access the given dataset with the given username and preform read actions.
+
+        :param pool: The name of the pool the dataset is in.
+        :param dataset: The name of the dataset to be accessed.
+        :param username: The username used for authentication.
+        :param password: The password used for authentication.
+        :return: True if the dataset is accessible with read access, False otherwise.
+        """
+        command = f"cd /mnt/{pool}/{dataset} ; ls -al"
+        value = SSH.get_output_from_ssh(command, private_config['IP'], username, password)
+        if "permission denied" in value.stderr.lower():
+            print("Permission denied while running command.")
+            return False
+        return True
+
+    @classmethod
+    def assert_dataset_write_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
+        """
+        This method attempts to access the given dataset with the given username and preform write actions.
+
+        :param pool: The name of the pool the dataset is in.
+        :param dataset: The name of the dataset to be accessed.
+        :param username: The username used for authentication.
+        :param password: The password used for authentication.
+        :return: True if the dataset is accessible with write access, False otherwise.
+        """
+        file = f"{username}file.txt"
+        command = f"cd /mnt/{pool} ; touch {dataset}/{file}"
+        SSH.get_output_from_ssh(command, private_config['IP'], username, password)
+        command2 = f"cd /mnt/{pool} ; sudo ls -al {dataset}"
+        value = SSH.get_output_from_ssh(command2, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        return file in value.stdout.lower()

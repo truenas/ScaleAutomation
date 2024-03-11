@@ -848,6 +848,7 @@ class Common:
             - Common.set_checkbox('myCheckbox')
         """
         cls.set_checkbox_by_state(name, True)
+        WebUI.delay(0.1)
 
     @classmethod
     def set_checkbox_by_row(cls, name: str, row: int) -> None:
@@ -860,6 +861,7 @@ class Common:
             - Common.set_checkbox_by_row('enabled', 1)
         """
         cls.set_checkbox_by_row_and_state(name, row, True)
+        WebUI.delay(0.1)
 
     @classmethod
     def set_checkbox_by_row_and_state(cls, name: str, row: int, state: bool) -> None:

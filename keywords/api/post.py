@@ -230,6 +230,38 @@ class API_POST:
         return response
 
     @classmethod
+    def create_non_admin_user_existing_group(cls, name: str, fullname: str, password: str, group: str, smb_auth: str = 'False') -> Response:
+        """
+        This method creates a new non-admin user that is a member of the given group.
+
+        :param name: is the name of the user.
+        :param fullname: is the fullname of the user.
+        :param password: is the password of the user.
+        :param group: is the group name to add the new user to.
+        :param smb_auth: does user require SMB Authentication ['True'/'False'].
+        :return: the API request response.
+        """
+        group_id = API_Common.get_group_id(group)
+        response = GET(f'/user?username={name}').json()
+        if not response:
+            payload = {
+                "username": name,
+                "group_create": False,
+                "group": group_id,
+                "home": "/mnt/tank",
+                "home_create": True,
+                "full_name": fullname,
+                "email": f"{name}@nowhere.com",
+                "password": password,
+                "shell": "/usr/bin/bash",
+                "ssh_password_enabled": True,
+                "smb": eval(smb_auth.lower().capitalize())
+            }
+            response = POST(f'/user', payload)
+            assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
     def create_read_only_admin(cls, username: str, fullname: str, password: str, smb_auth: str = 'True') -> Response:
         readonly_administrators = API_GET.get_group_id('truenas_readonly_administrators')
         payload = {
