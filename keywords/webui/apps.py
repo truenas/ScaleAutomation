@@ -186,9 +186,10 @@ class Apps:
         Example:
             - Apps.click_app('WG Easy')
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//ix-app-card//h3[contains(text(),"{name}")]'), shared_config['EXTRA_LONG_WAIT']) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//ix-app-card//h3[contains(text(),"{name}")]')) is True
         COM.click_on_element(f'//ix-app-card//h3[contains(text(),"{name}")]')
         assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_text('Please wait')) is True
+        assert COM.assert_page_header(name) is True
 
     @classmethod
     def click_custom_app(cls) -> None:
@@ -223,6 +224,7 @@ class Apps:
         Example:
             - Apps.click_install_app('WG Easy')
         """
+        assert COM.assert_page_header(name) is True
         if COM.is_visible(xpaths.common_xpaths.button_field('setup-pool')):
             COM.click_button('setup-pool')
             COM.select_option('pool', 'pool-tank')

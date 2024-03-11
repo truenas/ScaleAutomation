@@ -960,6 +960,7 @@ class Common:
         assert WebUI.wait_until_visible(field) is True
         WebUI.xpath(field).clear()
         WebUI.xpath(field).send_keys(text)
+        WebUI.delay(0.5)
 
     @classmethod
     def set_textarea_field(cls, name: str, value: str, tab: bool = False) -> None:
