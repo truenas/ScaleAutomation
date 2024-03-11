@@ -133,9 +133,9 @@ class Common_SSH:
             command = 'ls -al ~'
             ip = private_config['SMB_ACL_IP']
         response = SSH_Command_Line(command, ip, user, 'testing')
-        print(f'{perm} RESPONSE: {response.status}')
-        print(f'{perm} SUCCESS RESPONSE: {response.stdout}')
-        print(f'{perm} ERROR RESPONSE: {response.stderr}')
+        # print(f'{perm} RESPONSE: {response.status}')
+        # print(f'{perm} SUCCESS RESPONSE: {response.stdout}')
+        # print(f'{perm} ERROR RESPONSE: {response.stderr}')
         if "NT_STATUS_ACCESS_DENIED" in response.stdout:
             return bool(state) is False
         return (value in response.stdout) == bool(state)
