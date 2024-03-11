@@ -34,8 +34,8 @@ class Test_Disable_LDAP:
         assert COM.is_card_not_visible('LDAP')
         assert COM.is_visible('//*[@data-test="button-configure-ldap"]')
 
-    @classmethod
-    def teardown_class(cls) -> None:
+    @pytest.fixture(scope='class', autouse=True)
+    def teardown_class(self) -> None:
         """
         This test removes the ldap
         """

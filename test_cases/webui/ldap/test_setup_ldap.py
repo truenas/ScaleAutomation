@@ -34,8 +34,8 @@ class Test_Setup_LDAP:
         assert COM.get_label_value('Base DN:') == ldap['basedn']
         assert COM.get_label_value('Bind DN:') == ldap['binddn']
 
-    @classmethod
-    def teardown_class(cls) -> None:
+    @pytest.fixture(scope='class', autouse=True)
+    def teardown_class(self) -> None:
         """
         This test removes the ldap
         """
