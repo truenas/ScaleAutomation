@@ -81,9 +81,9 @@ class Test_Access_Dataset_Space_Management:
         Datasets.select_dataset(data["pool"])
         Datasets.select_dataset(data["dataset"])
         # Verify the group quotas page for the given dataset opens.
-        assert Datasets.is_space_management_card_visible()
+        assert Datasets.is_space_management_card_visible() is True
         Datasets.click_manage_group_quotas_link(data['pool'], data['dataset'])
-        assert Datasets.is_group_quotas_page_visible()
+        assert Datasets.is_group_quotas_page_visible() is True
 
     @allure.tag("Read")
     @allure.story("Access Dataset Managing User Quotas")
@@ -96,9 +96,9 @@ class Test_Access_Dataset_Space_Management:
         Datasets.select_dataset(data["dataset"])
 
         # Verify the user quotas page for the given dataset opens.
-        assert Datasets.is_space_management_card_visible()
+        assert Datasets.is_space_management_card_visible() is True
         Datasets.click_manage_user_quotas_link(data['pool'], data['dataset'])
-        assert Datasets.is_user_quotas_page_visible()
+        assert Datasets.is_user_quotas_page_visible() is True
 
     @pytest.fixture(scope='class', autouse=True)
     def tear_down_class(self, data):

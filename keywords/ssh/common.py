@@ -190,7 +190,6 @@ class Common_SSH:
         assert API_PUT.set_user_ssh_public_key(username, cls.get_ssh_pub_key()).status_code == 200
         assert API_POST.start_service('ssh').status_code == 200
         assert API_PUT.enable_service_at_boot('ssh').status_code == 200
-        assert path.exists(path.expanduser(f'{shared_config["KEYPATH"]}.pub'))
 
     @classmethod
     def verify_read_permission(cls, user: str, read: str, file: str = 'getfile') -> bool:

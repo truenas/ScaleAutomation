@@ -659,7 +659,7 @@ class Datasets:
         Common.click_link(f'{pool}-{dataset_name}-manage-user-quotas')
 
     @classmethod
-    def click_protection_manage_link(cls, link: str) -> bool:
+    def click_protection_manage_link(cls, link: str) -> None:
         """
         This method clicks on the Manage Link.
 
@@ -684,7 +684,7 @@ class Datasets:
                 name = 'Rsync Tasks'
             case _:
                 name = ''
-        return Common.assert_page_header(name)
+        assert Common.assert_page_header(name)
 
     @classmethod
     def collapse_dataset(cls, name: str) -> None:
