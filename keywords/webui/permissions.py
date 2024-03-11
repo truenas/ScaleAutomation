@@ -3,6 +3,25 @@ from keywords.webui.common import Common as COM
 
 
 class Permissions:
+
+    @classmethod
+    def assert_edit_acl_page_header(cls) -> bool:
+        """
+        This method returns true if the ACLs page header is visible.
+
+        :return: returns true if the ACLs page header is visible.
+        """
+        return COM.assert_page_header('Edit ACL')
+
+    @classmethod
+    def assert_edit_permissions_page_header(cls) -> bool:
+        """
+        This method returns true if the Permissions page header is visible.
+
+        :return: returns true if the Permissions page header is visible.
+        """
+        return COM.assert_page_header('Edit Permissions')
+
     @classmethod
     def get_dataset_permissions_by_level(cls, user_category: str, level: str) -> str:
         """
