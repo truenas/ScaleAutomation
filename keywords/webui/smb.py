@@ -1,4 +1,6 @@
 import xpaths
+from helper.cli import SSH_Command_Line
+from helper.global_config import private_config
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.api.post import API_POST
@@ -16,6 +18,26 @@ class SMB:
         :param perm_type: is the permission type to be assigned: [ALLOWED/DENIED]
         """
         API_POST.add_smb_acl_entry(who, userid, permission, perm_type)
+
+    @classmethod
+    def assert_guest_access(cls, share: str, user: str = private_config['SSH_USERNAME'], password: str = private_config['SSH_PASSWORD']) -> bool:
+        """
+        This returns True if the share can be accessed by a guest user, otherwise it returns False.
+
+        :param share: is the name of the share to access
+        :param user: is the name of the system SMB user
+        :param password: is the password of the SMB user
+
+        :return: True if the share ignore list contains the given name otherwise it returns False.
+
+        Example:
+        - SMB.assert_guest_access()
+        """
+        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'pwd; ls\'', private_config['SMB_ACL_IP'], user, password)
+        print(f'GUEST RESPONSE: {response.status}')
+        print(f'GUEST SUCCESS RESPONSE: {response.stdout}')
+        print(f'GUEST ERROR RESPONSE: {response.stderr}')
+        return response.stdout.__contains__(share)
 
     @classmethod
     def assert_share_ignore_list(cls, name: str) -> bool:
