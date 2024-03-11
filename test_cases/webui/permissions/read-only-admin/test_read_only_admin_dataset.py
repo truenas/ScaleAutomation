@@ -21,7 +21,7 @@ class Test_Read_Only_Admin_Dataset:
     @pytest.fixture(autouse=True, scope='class')
     def setup_test(self, data):
         """
-        Thi
+        This setup fixture create the dataset and read-only admin for all test cases.
         """
         API_POST.create_read_only_admin(data['username'], data['fullname'], data['password'])
         API_POST.create_dataset(f'{data["pool"]}/{data["acl_parent_dataset"]}', 'SMB')
@@ -34,6 +34,9 @@ class Test_Read_Only_Admin_Dataset:
 
     @pytest.fixture(autouse=True, scope='class')
     def tear_down_test(self, data):
+        """
+        This teardown fixture delete the dataset and read-only admin for all test cases.
+        """
         yield
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["acl_parent_dataset"]}', recursive=True, force=True)
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["generic_parent_dataset"]}', recursive=True, force=True)
