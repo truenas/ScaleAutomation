@@ -236,9 +236,6 @@ class Dashboard:
         """
         Common.click_button('save-new-order')
         WebUI.wait_until_visible(xpaths.common_xpaths.button_field('start-reorder'))
-        # This is to refresh the Dashboard. Less fragile than Refresh and doesn't risk getting stuck on login screen
-        Navigation.navigate_to_shares()
-        Navigation.navigate_to_dashboard()
 
     @classmethod
     def click_the_storage_report_button(cls) -> None:
