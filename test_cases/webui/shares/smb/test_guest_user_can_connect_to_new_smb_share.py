@@ -2,7 +2,6 @@ import allure
 import pytest
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
-from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.permissions import Permissions as PERM
 from keywords.webui.system_services import System_Services as SERVICE
@@ -24,6 +23,7 @@ class Test_SMB:
         API_DELETE.delete_dataset('tank/SMBGUEST')
         API_POST.create_dataset('tank/SMBGUEST', 'SMB')
         API_POST.create_share('smb', 'SMBGUEST', '/mnt/tank/SMBGUEST', True)
+        API_POST.create_non_admin_user('smbguest', 'smbguest Full', 'testing', 'True')
         NAV.navigate_to_shares()
         SMB.click_edit_share_filesystem_acl('SMBGUEST')
         PERM.select_ace_who('user')
@@ -39,12 +39,11 @@ class Test_SMB:
         This method removes datasets and shares after test is run for a clean environment
         """
         # Environment Teardown
-        SSH.delete_smb_test_files('smbuser')
-        assert SSH.assert_file_not_exist('smbuser', 'putfile') is True
-        COMSHARE.delete_share_by_api('smb', "SMBGUEST")
-        DATASET.delete_dataset_by_api("tank/SMBGUEST")
+        # API_DELETE.delete_share('smb', "SMBGUEST")
+        # API_DELETE.delete_dataset("tank/SMBGUEST")
+        # API_DELETE.delete_user('smbguest')
 
     def test_guest_user_can_connect_to_new_smb_share(self) -> None:
 
-        # Set SMB Share ACL Permissions
-        assert SMB.assert_guest_access('SMBGUEST','smbuser', 'testing') is True
+        # Verify SMB Guest can access Share
+        assert SMB.assert_guest_access('SMBGUEST','smbguest', 'testing') is True

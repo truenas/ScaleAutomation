@@ -113,6 +113,7 @@ class Permissions:
             - Permissions.click_save_acl_button()
         """
         COM.click_button('save-acl')
+        COM.assert_dialog_not_visible('Updating ACL')
 
     @classmethod
     def get_dataset_permissions_by_level(cls, user_category: str, level: str) -> str:
@@ -175,6 +176,13 @@ class Permissions:
         This method sets the Apply Group Checkbox.
         """
         COM.set_checkbox('apply-group')
+
+    @classmethod
+    def set_apply_owner_checkbox(cls) -> None:
+        """
+        This method sets the Apply Owner Checkbox.
+        """
+        COM.set_checkbox('apply-owner')
 
     @classmethod
     def set_apply_user_checkbox(cls) -> None:
@@ -290,6 +298,13 @@ class Permissions:
         This method unsets the Apply Group Checkbox.
         """
         COM.unset_checkbox('apply-group')
+
+    @classmethod
+    def unset_apply_owner_checkbox(cls) -> None:
+        """
+        This method sets the Apply Owner Checkbox.
+        """
+        COM.unset_checkbox('apply-owner')
 
     @classmethod
     def unset_apply_user_checkbox(cls) -> None:

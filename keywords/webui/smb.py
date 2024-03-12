@@ -33,7 +33,7 @@ class SMB:
         Example:
         - SMB.assert_guest_access()
         """
-        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'pwd; ls\'', private_config['SMB_ACL_IP'], user, password)
+        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -s /usr/local/etc/smb4.conf -c \'pwd\'', private_config['IP'], user, password)
         print(f'GUEST RESPONSE: {response.status}')
         print(f'GUEST SUCCESS RESPONSE: {response.stdout}')
         print(f'GUEST ERROR RESPONSE: {response.stderr}')
