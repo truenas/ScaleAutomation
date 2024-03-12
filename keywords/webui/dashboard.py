@@ -80,8 +80,6 @@ class Dashboard:
         :param link: is the url link to click on.
         :return: True if the new tab opened to the right link, otherwise it returns False.
         """
-        # let the browser load the new tab
-        WebUI.delay(1)
         initial_tab = WebUI.current_window_handle()
         if link == "https://www.truenas.com/community/":
             Common.click_on_element(xpaths.dashboard.truenas_help_card_link("https://www.ixsystems.com/community/"))
@@ -94,6 +92,8 @@ class Dashboard:
 
         WebUI.switch_to_window_index(next_tab)
 
+        # Let the browser load the new tab
+        WebUI.delay(1)
         url_exists = True if WebUI.current_url() == link else False
 
         WebUI.close_window()
