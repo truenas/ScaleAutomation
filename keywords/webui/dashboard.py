@@ -41,7 +41,8 @@ class Dashboard:
 
         :return: True if the cpu load graph ui is visible otherwise it returns False.
         """
-        return Common.is_visible(xpaths.dashboard.cpu_cores_chart)
+        # Wait until the cpu cores chart is visible
+        return WebUI.wait_until_visible(xpaths.dashboard.cpu_cores_chart)
 
     @classmethod
     def assert_cpu_card_load_text(cls, index: int, text) -> bool:
