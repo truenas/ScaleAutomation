@@ -34,9 +34,6 @@ class SMB:
         - SMB.assert_guest_access()
         """
         response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -s /usr/local/etc/smb4.conf -c \'pwd\'', private_config['IP'], user, password)
-        print(f'GUEST RESPONSE: {response.status}')
-        print(f'GUEST SUCCESS RESPONSE: {response.stdout}')
-        print(f'GUEST ERROR RESPONSE: {response.stderr}')
         return response.stdout.__contains__(share)
 
     @classmethod
