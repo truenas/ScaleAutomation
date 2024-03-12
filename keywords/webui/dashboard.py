@@ -25,7 +25,7 @@ class Dashboard:
 
         :return: True if all cpu load graph text are visible otherwise it returns False.
         """
-        assert WebUI.wait_until_visible('//ix-view-chart-gauge') is True
+        assert WebUI.wait_until_visible('//ix-view-chart-gauge', shared_config['LONG_WAIT']) is True
         assert WebUI.wait_until_visible(xpaths.dashboard.cpu_subtitle) is True
         results_list = [
             "Avg Usage" in WebUI.get_text(xpaths.dashboard.cpu_subtitle),
