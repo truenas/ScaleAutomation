@@ -46,4 +46,6 @@ class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
 
         # Verify the card position remains after refreshing the page.
         WebUI.refresh()
+        assert Dashboard.assert_dashboard_page_header_is_visible() is True
+        assert Dashboard.is_system_information_card_visible() is True
         assert Dashboard.assert_card_position(2, 'sysinfo') is True
