@@ -5,7 +5,7 @@ from helper.global_config import shared_config
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -21,9 +21,9 @@ def browser() -> WebDriver:
         Example:
             - WebUI.browser()
     """
-    dc = DesiredCapabilities.CHROME
-    dc['goog:loggingPrefs'] = {'browser': 'ALL'}
-    driver = webdriver.Chrome(desired_capabilities=dc)
+    chrome_options = Options()
+    chrome_options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
+    driver = webdriver.Chrome(options=chrome_options)
     driver.set_window_size(1920, 1080)
     driver.implicitly_wait(shared_config['IMPLICITLY_WAIT'])
     return driver
