@@ -296,6 +296,7 @@ class Dashboard:
         :param position: in the number of the position of the card.
         :return: the name dashboard card by name
         """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'(//mat-card)[{position}]//h3')) is True
         card_header = WebUI.get_text(xpaths.common_xpaths.any_xpath(f'(//mat-card)[{position}]//h3'))
         return shared_config['DASHBOARD_CARDS'][card_header]
 
@@ -391,6 +392,9 @@ class Dashboard:
         b_pos = cls.get_dashboard_card_position(card_b)
         print(f'BEFORE SWAP: {card_a} - {a_pos} {card_b} - {b_pos}')
         if card_a != card_b:
+            # Ensure the drag xpath and drop xpath are visible before moving the card
+            WebUI.wait_until_visible(xpaths.dashboard.drag_card(card_a))
+            WebUI.wait_until_visible(xpaths.dashboard.drop_card(card_b))
             WebUI.drag_and_drop(xpaths.dashboard.drag_card(card_a), xpaths.dashboard.drop_card(card_b))
             WebUI.delay(2)
             print(f'AFTER SWAP: {card_a} - {cls.get_dashboard_card_position(card_a)} {card_b} - {cls.get_dashboard_card_position(card_b)}')
