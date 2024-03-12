@@ -33,17 +33,20 @@ class Test_SMB:
         SERVICE.start_service_by_api('cifs')
         SERVICE.start_service_by_api('ssh')
 
+    @allure.tag("Read")
+    @allure.story("Verify SMB Guest can access Share")
+    def test_guest_user_can_connect_to_new_smb_share(self) -> None:
+
+        # Verify SMB Guest can access Share
+        assert SMB.assert_guest_access('SMBGUEST','smbguest', 'testing') is True
+
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self) -> None:
         """
         This method removes datasets and shares after test is run for a clean environment
         """
         # Environment Teardown
-        # API_DELETE.delete_share('smb', "SMBGUEST")
-        # API_DELETE.delete_dataset("tank/SMBGUEST")
-        # API_DELETE.delete_user('smbguest')
-
-    def test_guest_user_can_connect_to_new_smb_share(self) -> None:
-
-        # Verify SMB Guest can access Share
-        assert SMB.assert_guest_access('SMBGUEST','smbguest', 'testing') is True
+        yield
+        API_DELETE.delete_share('smb', "SMBGUEST")
+        API_DELETE.delete_dataset("tank/SMBGUEST")
+        API_DELETE.delete_user('smbguest')
