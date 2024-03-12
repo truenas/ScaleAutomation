@@ -5,6 +5,7 @@ from helper.global_config import shared_config
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,7 +21,9 @@ def browser() -> WebDriver:
         Example:
             - WebUI.browser()
     """
-    driver = webdriver.Chrome()
+    dc = DesiredCapabilities.CHROME
+    dc['goog:loggingPrefs'] = {'browser': 'ALL'}
+    driver = webdriver.Chrome(desired_capabilities=dc)
     driver.set_window_size(1920, 1080)
     driver.implicitly_wait(shared_config['IMPLICITLY_WAIT'])
     return driver
@@ -152,6 +155,18 @@ class WebUI(object):
             - WebUI.get_attribute('xpath', 'attribute')
         """
         return cls.xpath(xpath).get_attribute(attribute)
+
+    @classmethod
+    def get_console_log(cls) -> any:
+        """
+        This method get the console log and returns it.
+
+        :return: return the console log.
+
+        Example:
+            - WebUI.get_console_log()
+        """
+        return cls.web_driver.get_log('browser')
 
     @classmethod
     def get_clipboard_text(cls) -> any:

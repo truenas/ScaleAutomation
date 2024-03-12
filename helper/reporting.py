@@ -62,6 +62,18 @@ def allure_reporting():
     print(f'Report generated. Folder name: | {timestamp_test_name} |')
 
 
+def attach_browser_console_logs():
+    """
+    This method attaches the browser console logs to the allure report.
+
+    Example:
+        - allure_attach_browser_console_logs()
+    """
+    console_logs = '\n'.join(map(str, WebUI.get_console_log()))
+    print(console_logs)
+    allure.attach(console_logs, name='browser_console.log', attachment_type="text/plain", extension="attach")
+
+
 def take_screenshot(name):
     """
     This method takes a screenshot of the webui and saves it in the reports folder.

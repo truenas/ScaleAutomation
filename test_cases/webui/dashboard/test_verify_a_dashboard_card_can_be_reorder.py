@@ -20,6 +20,7 @@ class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
 
     @allure.tag("Update")
     @allure.story("Move System Info to Help Position")
+    @allure.issue("NAS-127796", name="NAS-127796")
     def verify_the_system_information_card_move_to_truenas_help_card_position(self):
         """
         This test verifies moving Cards 'System Info' and 'Help' positions is saved
@@ -46,4 +47,3 @@ class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
         # Verify the card position remains after refreshing the page.
         WebUI.refresh()
         assert Dashboard.assert_card_position(2, 'sysinfo') is True
-
