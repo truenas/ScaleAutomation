@@ -20,7 +20,7 @@ class SMB:
         API_POST.add_smb_acl_entry(who, userid, permission, perm_type)
 
     @classmethod
-    def assert_guest_access(cls, share: str, user: str = private_config['SSH_USERNAME'], password: str = private_config['SSH_PASSWORD']) -> bool:
+    def assert_guest_access(cls, share: str, user: str = private_config['SMB_USERNAME'], password: str = private_config['SMB_PASSWORD']) -> bool:
         """
         This returns True if the share can be accessed by a guest user, otherwise it returns False.
 
@@ -33,8 +33,43 @@ class SMB:
         Example:
         - SMB.assert_guest_access()
         """
-        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -s /usr/local/etc/smb4.conf -c \'pwd\'', private_config['IP'], user, password)
+        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'pwd\'', private_config['SMB_ACL_IP'], user, password)
         return response.stdout.__contains__(share)
+
+    @classmethod
+    def assert_guest_delete_file(cls, file, share):
+        """
+        This returns True if the given file is deleted, otherwise it returns False.
+
+        :param file: is the name of the file to delete
+        :param share: is the name of the share to access
+
+        :return: True if the given file is deleted, otherwise it returns False.
+
+        Example:
+        - SMB.assert_guest_put_file('myFile')
+        """
+        SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'rm {file}\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        return not response.stdout.__contains__(file)
+
+    @classmethod
+    def assert_guest_put_file(cls, file, share):
+        """
+        This returns True if the given file is put, otherwise it returns False.
+
+        :param file: is the name of the file to put
+        :param share: is the name of the share to access
+
+        :return: True if the given file is put, otherwise it returns False.
+
+        Example:
+        - SMB.assert_guest_put_file('myFile')
+        """
+        SSH_Command_Line(f'cd smbdirectory; touch {file}; chmod 777 putfile', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        SSH_Command_Line(f'cd smbdirectory; smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'put {file}\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        response = SSH_Command_Line(f'cd smbdirectory; smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        return response.stdout.__contains__(file)
 
     @classmethod
     def assert_share_ignore_list(cls, name: str) -> bool:
