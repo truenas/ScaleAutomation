@@ -70,7 +70,6 @@ def attach_browser_console_logs():
         - allure_attach_browser_console_logs()
     """
     console_logs = '\n'.join(map(str, WebUI.get_console_log()))
-    print(console_logs)
     allure.attach(console_logs, name='browser_console.log', attachment_type="text/plain", extension="attach")
 
 
