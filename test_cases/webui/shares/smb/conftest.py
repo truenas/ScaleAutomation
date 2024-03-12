@@ -1,13 +1,15 @@
 import pytest
-from keywords.webui.common import Common
+
+from keywords.api.delete import API_DELETE
+from keywords.api.post import API_POST
 
 
 @pytest.fixture(scope='class', autouse=True)
 def setup_class():
-    Common.create_non_admin_user_by_api('smbuser', 'smbuser Full', 'testing', 'True')
+    API_POST.create_non_admin_user('smbuser', 'smbuser Full', 'testing', 'True')
 
 
 @pytest.fixture(scope='class', autouse=True)
 def teardown_class():
     yield
-    Common.delete_user_by_api('smbuser')
+    API_DELETE.delete_user('smbuser')
