@@ -1022,7 +1022,11 @@ class Common:
             toggle.click()
         # in headless sometime the assert fails a .1 delay stop the failing.
         WebUI.delay(0.5)
-        toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
+        try:
+            toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
+        except NoSuchElementException:
+            WebUI.delay(5)
+            toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
         i = 0
         while eval(toggle.get_attribute('ariaChecked').title()) != state and i > shared_config['WAIT']:
             i += 1
