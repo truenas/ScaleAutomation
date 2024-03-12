@@ -967,7 +967,7 @@ class Common:
         """
         field = xpaths.common_xpaths.search_field()
         # TODO: Get this fixed (create Ticket)
-        if cls.assert_page_header('Discover', shared_config['MEDIUM_WAIT']):
+        if cls.is_visible(xpaths.common_xpaths.any_header('Discover', 1)):
             field = '//*[@data-test="input"]'
         assert WebUI.wait_until_visible(field) is True
         WebUI.xpath(field).clear()
