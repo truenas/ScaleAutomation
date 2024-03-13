@@ -22,6 +22,7 @@ def browser() -> WebDriver:
             - WebUI.browser()
     """
     chrome_options = Options()
+    chrome_options.add_experimental_option("detach", True)
     chrome_options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
     driver = webdriver.Chrome(options=chrome_options)
     driver.set_window_size(1920, 1080)

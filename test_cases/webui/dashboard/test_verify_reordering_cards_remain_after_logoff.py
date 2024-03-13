@@ -1,6 +1,7 @@
 import allure
 import pytest
 from helper.global_config import private_config
+from helper.webui import WebUI
 from keywords.webui.common import Common
 from keywords.webui.dashboard import Dashboard
 
@@ -11,7 +12,11 @@ from keywords.webui.dashboard import Dashboard
 class Test_Verify_Reordering_Cards_Remain_After_Logoff:
 
     @pytest.fixture(scope='function', autouse=True)
-    def setup_test(self):
+    def tear_down_test(self):
+        """
+        This fixture resets the Dashboard cards back to original positions
+        """
+        yield
         Dashboard.set_original_card_position('sysinfo')
         Dashboard.set_original_card_position('help')
         Dashboard.set_original_card_position('cpu')
@@ -27,6 +32,10 @@ class Test_Verify_Reordering_Cards_Remain_After_Logoff:
         assert Dashboard.assert_card_position(3, 'sysinfo') is True
         assert Dashboard.assert_card_position(2, 'cpu') is True
         Dashboard.click_the_save_reorder_button()
+
+        # After saving verify the system the sysinfo card to cpu card position
+        assert Dashboard.assert_card_position(3, 'sysinfo') is True
+        assert Dashboard.assert_card_position(2, 'cpu') is True
 
         # logoff and login
         Common.logoff_truenas()

@@ -1,6 +1,6 @@
 import allure
 import pytest
-
+from helper.webui import WebUI
 from keywords.webui.dashboard import Dashboard
 
 
@@ -10,7 +10,11 @@ from keywords.webui.dashboard import Dashboard
 class Test_Verify_A_Dashboard_Card_Reordering_Can_be_Cancel:
 
     @pytest.fixture(scope='function', autouse=True)
-    def setup_test(self):
+    def tear_down_test(self):
+        """
+        This fixture resets the Dashboard cards back to original positions
+        """
+        yield
         Dashboard.set_original_card_position('sysinfo')
         Dashboard.set_original_card_position('help')
         Dashboard.set_original_card_position('cpu')
@@ -25,6 +29,8 @@ class Test_Verify_A_Dashboard_Card_Reordering_Can_be_Cancel:
         assert Dashboard.assert_card_position(2, 'help') is True
         assert Dashboard.assert_card_position(3, 'cpu') is True
         Dashboard.click_the_reorder_button()
+        assert Dashboard.assert_card_position(2, 'help') is True
+        assert Dashboard.assert_card_position(3, 'cpu') is True
         Dashboard.move_card_a_to_card_b_position('help', 'cpu')
         assert Dashboard.assert_card_position(3, 'help') is True
         assert Dashboard.assert_card_position(2, 'cpu') is True

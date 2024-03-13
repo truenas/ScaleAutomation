@@ -13,7 +13,9 @@ class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
 
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self):
-        # reset the change after the test is completed
+        """
+        This fixture resets the Dashboard cards back to original positions
+        """
         yield
         Dashboard.set_original_card_position('sysinfo')
         Dashboard.set_original_card_position('help')
