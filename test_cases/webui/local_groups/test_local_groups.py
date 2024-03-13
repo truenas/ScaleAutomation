@@ -121,9 +121,7 @@ class Test_Local_Groups:
         """
         This test verifies built in groups display
         """
-        # TODO: Fix - NAS-127356
-        # COM.set_100_items_per_page()
-        LG.select_group_items_per_page('100')
+        COM.set_100_items_per_page()
         LG.set_show_builtin_groups_toggle()
 
         assert LG.is_group_visible(built_in['group-name']) is True
