@@ -1019,7 +1019,7 @@ class Common:
         WebUI.scroll_to_element(xpaths.common_xpaths.toggle_field(name))
         toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
         if eval(toggle.get_attribute('ariaChecked').title()) != state:
-            cls.click_on_element(xpaths.common_xpaths.toggle_field(name))
+            toggle.click()
             assert cls.assert_progress_spinner_not_visible() is True
         # in headless sometime the assert fails a .1 delay stop the failing.
         WebUI.delay(0.5)
