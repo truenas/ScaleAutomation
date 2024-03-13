@@ -80,7 +80,7 @@ class Test_SMB_AD_User:
         COM.click_on_element('//*[contains(text(),"domain users")]/ancestor::ix-permissions-item/following-sibling::*/ix-icon')
         COM.click_on_element('//*[contains(text(),"domain admins")]/ancestor::ix-permissions-item/following-sibling::*/ix-icon')
         PERM.select_ace_who('user')
-        PERM.select_ace_user(f'AD03\\{ad_data['username'].lower()}')
+        PERM.select_ace_user(f'AD03\\{ad_data["username"].lower()}')
         PERM.set_ace_permissions('READ')
         PERM.click_save_acl_button()
         assert SMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is False
