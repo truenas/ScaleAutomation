@@ -1019,14 +1019,15 @@ class Common:
         WebUI.scroll_to_element(xpaths.common_xpaths.toggle_field(name))
         toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
         if eval(toggle.get_attribute('ariaChecked').title()) != state:
-            toggle.click()
+            cls.click_on_element(xpaths.common_xpaths.toggle_field(name))
+            assert cls.assert_progress_spinner_not_visible() is True
         # in headless sometime the assert fails a .1 delay stop the failing.
         WebUI.delay(0.5)
-        try:
-            toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
-        except NoSuchElementException:
-            WebUI.delay(5)
-            toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
+        # try:
+        #     toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
+        # except NoSuchElementException:
+        #     WebUI.delay(5)
+        #     toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
         i = 0
         while eval(toggle.get_attribute('ariaChecked').title()) != state and i > shared_config['WAIT']:
             i += 1
