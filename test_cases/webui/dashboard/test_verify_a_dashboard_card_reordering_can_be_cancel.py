@@ -9,12 +9,12 @@ from keywords.webui.dashboard import Dashboard
 @allure.feature("Dashboard-Reorder")
 class Test_Verify_A_Dashboard_Card_Reordering_Can_be_Cancel:
 
-    @pytest.fixture(scope='function', autouse=True)
-    def setup_test(self):
-        """
-        This fixture refresh the dashboard page.
-        """
-        WebUI.refresh()
+    # @pytest.fixture(scope='function', autouse=True)
+    # def setup_test(self):
+    #     """
+    #     This fixture refresh the dashboard page.
+    #     """
+    #     WebUI.refresh()
 
     @pytest.fixture(scope='function', autouse=True)
     def tear_down_test(self):
