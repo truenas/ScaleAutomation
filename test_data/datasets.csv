@@ -4,5 +4,5 @@ tank,receive
 tank,new-dataset
 tank,SMBSHARE
 tank,AdvancedSMBOptions
-tank,dataset_protection
-tank,space_management
+tank,dataset-protection
+tank,space-management

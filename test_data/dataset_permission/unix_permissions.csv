@@ -1,2 +1,3 @@
-pool,dataset,username,groupname
-tank,unix_perms_test,admin,admin
+pool,dataset,full_dataset_path,ownername,groupname,othername,user_access,group_access,other_access
+tank,unix_perms_test,tank/unix_perms_test,unix_test_owner,unix_test_groupuser,unix_test_otheruser,Read | Write | Execute,Read | Write | Execute,Read | Write | Execute
+tank,unix_perms_test,tank/unix_perms_test,unix_test_owner,unix_test_groupuser,unix_test_otheruser,Read | Write | Execute,None,None

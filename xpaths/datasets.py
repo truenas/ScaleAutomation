@@ -81,3 +81,22 @@ def selected_dataset_name(name: str) -> str:
     :return: xpath string for given dataset.
     """
     return f'//*[contains(@class,"own-name") and contains(text(),"{name}")]'
+
+
+def selected_dataset_group() -> str:
+    """
+    This function returns the xpath text of the given  dataset's group.
+
+    :return: xpath string for given dataset.
+    """
+    return f'//*[contains(text(),"Group:")]//ancestor::div/*[@class="value ng-star-inserted"]'
+
+
+def selected_dataset_owner() -> str:
+    """
+    This function returns the xpath text of the given dataset's owner.
+
+    :return: xpath string for given dataset.
+    """
+    return f'//*[contains(text(),"Owner:")]//ancestor::div/*[@class="value ng-star-inserted"]'
+

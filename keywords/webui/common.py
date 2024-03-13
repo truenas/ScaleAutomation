@@ -306,7 +306,7 @@ class Common:
         Example:
             - Common.click_on_element('xpath')
         """
-        find = WebUI.wait_until_clickable(xpath, shared_config['MEDIUM_WAIT'])
+        find = WebUI.wait_until_clickable(xpath, shared_config['WAIT'])
         find.click()
 
     @classmethod
@@ -848,6 +848,7 @@ class Common:
             - Common.set_checkbox('myCheckbox')
         """
         cls.set_checkbox_by_state(name, True)
+        WebUI.delay(0.1)
 
     @classmethod
     def set_checkbox_by_row(cls, name: str, row: int) -> None:
@@ -860,6 +861,7 @@ class Common:
             - Common.set_checkbox_by_row('enabled', 1)
         """
         cls.set_checkbox_by_row_and_state(name, row, True)
+        WebUI.delay(0.1)
 
     @classmethod
     def set_checkbox_by_row_and_state(cls, name: str, row: int, state: bool) -> None:
@@ -913,8 +915,10 @@ class Common:
         # assert WebUI.wait_until_clickable(xpaths.common_xpaths.input_field(name)) is True
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).clear()
         WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(value)
+        WebUI.delay(0.1)
         if tab:
             WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.TAB)
+            WebUI.delay(0.1)
         if pill:
             assert WebUI.get_attribute(xpaths.common_xpaths.any_pill(name, value), 'textContent').strip() == value
         else:
@@ -963,11 +967,12 @@ class Common:
         """
         field = xpaths.common_xpaths.search_field()
         # TODO: Get this fixed (create Ticket)
-        if cls.assert_page_header('Discover', shared_config['MEDIUM_WAIT']):
+        if cls.is_visible(xpaths.common_xpaths.any_header('Discover', 1)):
             field = '//*[@data-test="input"]'
         assert WebUI.wait_until_visible(field) is True
         WebUI.xpath(field).clear()
         WebUI.xpath(field).send_keys(text)
+        WebUI.delay(0.5)
 
     @classmethod
     def set_textarea_field(cls, name: str, value: str, tab: bool = False) -> None:

@@ -302,6 +302,26 @@ class WebUI(object):
         return wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
 
     @classmethod
+    def wait_until_field_populates(cls, xpath: str, prop: str, timeout: int = shared_config['WAIT']) -> bool:
+        """
+        This method return True if the input field is populated before timeout otherwise it returns False.
+
+        :param xpath: is the xpath of the field.
+        :param prop: is the property of the field to check.
+        :param timeout: is optional and is the number of seconds to wait before timeout.
+        :return: True if the input field is populated before timeout otherwise it returns False.
+        """
+        val = cls.xpath(xpath).get_property(prop)
+        i = 0
+        while val == '':
+            WebUI.delay(2)
+            val = cls.xpath(xpath).get_property(prop)
+            i += 2
+            if i > timeout:
+                return False
+        return True
+
+    @classmethod
     def wait_until_not_visible(cls, xpath: str, timeout: int = shared_config['WAIT']) -> bool:
         """
         This method return True if the xpath element is not visible before timeout otherwise it returns False.

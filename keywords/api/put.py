@@ -140,6 +140,66 @@ class API_PUT:
         return PUT('/kubernetes/', {'pool': pool, 'servicelb': True})
 
     @classmethod
+    def set_dataset_quota(cls, dataset_name: str, quota: int) -> Response:
+        """
+        This method set the quota for the specified dataset.
+        :param dataset_name: The name of the dataset.
+        :param quota: The quota value.
+        :return: The API request response.
+
+        Example:
+            - API_PUT.set_dataset_refquota('test-dataset', 0)
+        """
+        response = PUT(f'/pool/dataset/id/{dataset_name.replace("/", "%2F")}', {'quota': quota})
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def set_dataset_refquota(cls, dataset_name: str, refquota: int) -> Response:
+        """
+        This method set the refquota for the specified dataset.
+        :param dataset_name: The name of the dataset.
+        :param refquota: The refquota value.
+        :return: The API request response.
+
+        Example:
+            - API_PUT.set_dataset_refquota('test-dataset', 0)
+        """
+        response = PUT(f'/pool/dataset/id/{dataset_name.replace("/", "%2F")}', {'refquota': refquota})
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def set_dataset_refreservation(cls, dataset_name: str, refreservation: int) -> Response:
+        """
+        This method set the refreservation for the specified dataset.
+        :param dataset_name: The name of the dataset.
+        :param refreservation: The refreservation value.
+        :return: The API request response.
+
+        Example:
+            - API_PUT.set_dataset_refreservation('test-dataset', 0)
+        """
+        response = PUT(f'/pool/dataset/id/{dataset_name.replace("/", "%2F")}', {'refreservation': refreservation})
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def set_dataset_reservation(cls, dataset_name: str, reservation: int) -> Response:
+        """
+        This method set the reservation for the specified dataset.
+        :param dataset_name: The name of the dataset.
+        :param reservation: The reservation value.
+        :return: The API request response.
+
+        Example:
+            - API_PUT.set_dataset_reservation('test-dataset', 0)
+        """
+        response = PUT(f'/pool/dataset/id/{dataset_name.replace("/", "%2F")}', {'reservation': reservation})
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
     def set_hostname(cls) -> Response:
         """
         This method set the hostname for the specified pool.
