@@ -114,16 +114,13 @@ class Test_Local_Groups:
         LG.delete_group_by_api(groups['alt-group-name'], groups['group-privileges'])
 
     @allure.tag("Read")
-    @allure.issue("NAS-127356", name="NAS-127356")
     @allure.story("Verify Built in Local Groups")
     @pytest.mark.parametrize('built_in', get_data_list('builtin_groups'), scope='function')
     def test_built_in_group(self, built_in) -> None:
         """
         This test verifies built in groups display
         """
-        # TODO: Fix - NAS-127356
-        # COM.set_100_items_per_page()
-        LG.select_group_items_per_page('100')
+        COM.set_100_items_per_page()
         LG.set_show_builtin_groups_toggle()
 
         assert LG.is_group_visible(built_in['group-name']) is True
