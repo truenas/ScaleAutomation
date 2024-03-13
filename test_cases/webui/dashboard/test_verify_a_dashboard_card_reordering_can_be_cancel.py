@@ -15,6 +15,9 @@ class Test_Verify_A_Dashboard_Card_Reordering_Can_be_Cancel:
         This fixture resets the Dashboard cards back to original positions
         """
         yield
+        # refresh in case the test failed
+        WebUI.refresh()
+        assert Dashboard.assert_dashboard_page_header_is_visible() is True
         Dashboard.set_original_card_position('sysinfo')
         Dashboard.set_original_card_position('help')
         Dashboard.set_original_card_position('cpu')

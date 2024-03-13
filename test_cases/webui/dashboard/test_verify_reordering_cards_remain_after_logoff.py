@@ -1,7 +1,6 @@
 import allure
 import pytest
 from helper.global_config import private_config
-from helper.webui import WebUI
 from keywords.webui.common import Common
 from keywords.webui.dashboard import Dashboard
 

@@ -109,10 +109,10 @@ class WebUI(object):
         """
         assert cls.wait_until_visible(from_xpath) is True
         source = cls.xpath(from_xpath)
-        assert cls.wait_until_visible(to_xpath) is True
         target = cls.xpath(to_xpath)
         action = ActionChains(cls.web_driver)
         action.click_and_hold(source)
+        assert cls.wait_until_visible(to_xpath) is True
         action.move_to_element(target)
         action.pause(0.5)
         action.release(target)

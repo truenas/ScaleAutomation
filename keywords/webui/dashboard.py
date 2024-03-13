@@ -228,7 +228,7 @@ class Dashboard:
         This method click on the Dashboard Reorder button.
         """
         Common.click_button('start-reorder')
-        WebUI.delay(2)
+        #WebUI.delay(2)
 
     @classmethod
     def click_the_save_reorder_button(cls) -> None:
@@ -394,8 +394,8 @@ class Dashboard:
         print(f'BEFORE SWAP: {card_a} - {a_pos} {card_b} - {b_pos}')
         if card_a != card_b:
             # Ensure the drag xpath and drop xpath are visible before moving the card
-            WebUI.wait_until_visible(xpaths.dashboard.drag_card(card_a))
-            WebUI.wait_until_visible(xpaths.dashboard.drop_card(card_b))
+            assert WebUI.wait_until_visible(xpaths.dashboard.drag_card(card_a)) is True
+            assert WebUI.wait_until_visible(xpaths.dashboard.drop_card(card_b)) is True
             WebUI.drag_and_drop(xpaths.dashboard.drag_card(card_a), xpaths.dashboard.drop_card(card_b))
             WebUI.delay(2)
             print(f'AFTER SWAP: {card_a} - {cls.get_dashboard_card_position(card_a)} {card_b} - {cls.get_dashboard_card_position(card_b)}')
