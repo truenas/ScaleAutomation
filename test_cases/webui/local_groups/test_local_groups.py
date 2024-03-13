@@ -114,7 +114,6 @@ class Test_Local_Groups:
         LG.delete_group_by_api(groups['alt-group-name'], groups['group-privileges'])
 
     @allure.tag("Read")
-    @allure.issue("NAS-127356", name="NAS-127356")
     @allure.story("Verify Built in Local Groups")
     @pytest.mark.parametrize('built_in', get_data_list('builtin_groups'), scope='function')
     def test_built_in_group(self, built_in) -> None:
