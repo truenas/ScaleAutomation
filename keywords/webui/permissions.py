@@ -8,6 +8,63 @@ from keywords.ssh.common import Common_SSH as SSH
 class Permissions:
 
     @classmethod
+    def assert_dataset_execute_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
+        """
+        This method attempts to access the given dataset with the given username and preform execute actions.
+
+        :param pool: The name of the pool the dataset is in.
+        :param dataset: The name of the dataset to be accessed.
+        :param username: The username used for authentication.
+        :param password: The password used for authentication.
+        :return: True if the dataset is accessible with execute access, False otherwise.
+        """
+        file = f"{username}exec_file.sh"
+        cr_dir = f"{username}exec_dir"
+        command = f'cd /mnt/{pool}/test ; chmod 777 . ; touch {file} ;  echo -n "mkdir /mnt/{pool}/{dataset}/{cr_dir}" | cat > {file} ; chmod 777 {file}'
+        SSH.get_output_from_ssh(command, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        command2 = f"cd /mnt/{pool}/test ; ./{file}"
+        SSH.get_output_from_ssh(command2, private_config['IP'], username, password)
+        command3 = f"cd /mnt/{pool} ; sudo ls -al {dataset}"
+        value = SSH.get_output_from_ssh(command3, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        return cr_dir in value.stdout.lower()
+
+    @classmethod
+    def assert_dataset_read_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
+        """
+        This method attempts to access the given dataset with the given username and preform read actions.
+
+        :param pool: The name of the pool the dataset is in.
+        :param dataset: The name of the dataset to be accessed.
+        :param username: The username used for authentication.
+        :param password: The password used for authentication.
+        :return: True if the dataset is accessible with read access, False otherwise.
+        """
+        command = f"cd /mnt/{pool}/{dataset} ; ls -al"
+        value = SSH.get_output_from_ssh(command, private_config['IP'], username, password)
+        if "permission denied" in value.stderr.lower():
+            print("Permission denied while running command.")
+            return False
+        return True
+
+    @classmethod
+    def assert_dataset_write_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
+        """
+        This method attempts to access the given dataset with the given username and preform write actions.
+
+        :param pool: The name of the pool the dataset is in.
+        :param dataset: The name of the dataset to be accessed.
+        :param username: The username used for authentication.
+        :param password: The password used for authentication.
+        :return: True if the dataset is accessible with write access, False otherwise.
+        """
+        file = f"{username}file.txt"
+        command = f"cd /mnt/{pool} ; touch {dataset}/{file}"
+        SSH.get_output_from_ssh(command, private_config['IP'], username, password)
+        command2 = f"cd /mnt/{pool} ; sudo ls -al {dataset}"
+        value = SSH.get_output_from_ssh(command2, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        return file in value.stdout.lower()
+
+    @classmethod
     def assert_edit_acl_page_header(cls) -> bool:
         """
         This method returns true if the ACLs page header is visible.
@@ -48,6 +105,17 @@ class Permissions:
         return val.lower().__contains__(name.lower())
 
     @classmethod
+    def click_save_acl_button(cls):
+        """
+        This method clicks the save access control list button.
+
+        Example:
+            - Permissions.click_save_acl_button()
+        """
+        COM.click_button('save-acl')
+        COM.assert_dialog_not_visible('Updating ACL')
+
+    @classmethod
     def get_dataset_permissions_by_level(cls, user_category: str, level: str) -> str:
         """
         This method returns the permissions text for the given user category for the given level.
@@ -67,11 +135,54 @@ class Permissions:
         return COM.get_element_property(f"//*[@name='{translated_category}']/ancestor::ix-permissions-item/descendant::*[@class='{level}']", "textContent")
 
     @classmethod
+    def select_ace_who(cls, who: str) -> None:
+        """
+        This method sets the Apply Group Checkbox.
+
+        :param who: the type to set dataset Access Control Entry who.
+
+        Example:
+        - Permissions.select_ace_who('user')
+        """
+        COM.select_option('tag', f'tag-{COM.convert_to_tag_format(who)}')
+
+    @classmethod
+    def select_ace_user(cls, user: str) -> None:
+        """
+        This method sets the access control entry user
+
+        :param user: the name of the user.
+
+        Example:
+        - Permissions.select_ace_user('user')
+        """
+        COM.set_input_field('user', user, True)
+
+    @classmethod
+    def set_ace_permissions(cls, perm: str) -> None:
+        """
+        This method sets the Access Control Entry permissions.
+
+        :param perm: the type to set dataset Access Control Entry permissions. [READ/MODIFY/TRAVERSE/FULL CONTROL]
+
+        Example:
+        - Permissions.set_ace_permissions('MODIFY')
+        """
+        COM.select_option('basic-permission', f'basic-permission-{COM.convert_to_tag_format(perm)}')
+
+    @classmethod
     def set_apply_group_checkbox(cls) -> None:
         """
         This method sets the Apply Group Checkbox.
         """
         COM.set_checkbox('apply-group')
+
+    @classmethod
+    def set_apply_owner_checkbox(cls) -> None:
+        """
+        This method sets the Apply Owner Checkbox.
+        """
+        COM.set_checkbox('apply-owner')
 
     @classmethod
     def set_apply_user_checkbox(cls) -> None:
@@ -187,6 +298,13 @@ class Permissions:
         This method unsets the Apply Group Checkbox.
         """
         COM.unset_checkbox('apply-group')
+
+    @classmethod
+    def unset_apply_owner_checkbox(cls) -> None:
+        """
+        This method sets the Apply Owner Checkbox.
+        """
+        COM.unset_checkbox('apply-owner')
 
     @classmethod
     def unset_apply_user_checkbox(cls) -> None:
@@ -312,60 +430,3 @@ class Permissions:
             assert cls.assert_dataset_execute_access(pool, dataset, username, password) is True
         else:
             assert cls.assert_dataset_execute_access(pool, dataset, username, password) is False
-
-    @classmethod
-    def assert_dataset_execute_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
-        """
-        This method attempts to access the given dataset with the given username and preform execute actions.
-
-        :param pool: The name of the pool the dataset is in.
-        :param dataset: The name of the dataset to be accessed.
-        :param username: The username used for authentication.
-        :param password: The password used for authentication.
-        :return: True if the dataset is accessible with execute access, False otherwise.
-        """
-        file = f"{username}exec_file.sh"
-        cr_dir = f"{username}exec_dir"
-        command = f'cd /mnt/{pool}/test ; chmod 777 . ; touch {file} ;  echo -n "mkdir /mnt/{pool}/{dataset}/{cr_dir}" | cat > {file} ; chmod 777 {file}'
-        SSH.get_output_from_ssh(command, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
-        command2 = f"cd /mnt/{pool}/test ; ./{file}"
-        SSH.get_output_from_ssh(command2, private_config['IP'], username, password)
-        command3 = f"cd /mnt/{pool} ; sudo ls -al {dataset}"
-        value = SSH.get_output_from_ssh(command3, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
-        return cr_dir in value.stdout.lower()
-
-    @classmethod
-    def assert_dataset_read_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
-        """
-        This method attempts to access the given dataset with the given username and preform read actions.
-
-        :param pool: The name of the pool the dataset is in.
-        :param dataset: The name of the dataset to be accessed.
-        :param username: The username used for authentication.
-        :param password: The password used for authentication.
-        :return: True if the dataset is accessible with read access, False otherwise.
-        """
-        command = f"cd /mnt/{pool}/{dataset} ; ls -al"
-        value = SSH.get_output_from_ssh(command, private_config['IP'], username, password)
-        if "permission denied" in value.stderr.lower():
-            print("Permission denied while running command.")
-            return False
-        return True
-
-    @classmethod
-    def assert_dataset_write_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
-        """
-        This method attempts to access the given dataset with the given username and preform write actions.
-
-        :param pool: The name of the pool the dataset is in.
-        :param dataset: The name of the dataset to be accessed.
-        :param username: The username used for authentication.
-        :param password: The password used for authentication.
-        :return: True if the dataset is accessible with write access, False otherwise.
-        """
-        file = f"{username}file.txt"
-        command = f"cd /mnt/{pool} ; touch {dataset}/{file}"
-        SSH.get_output_from_ssh(command, private_config['IP'], username, password)
-        command2 = f"cd /mnt/{pool} ; sudo ls -al {dataset}"
-        value = SSH.get_output_from_ssh(command2, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
-        return file in value.stdout.lower()

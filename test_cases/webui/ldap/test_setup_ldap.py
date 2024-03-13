@@ -23,19 +23,15 @@ class Test_Setup_LDAP:
         COM.click_save_button()
         assert DS.assert_directory_services_page_header()
 
-    @staticmethod
-    def verify_ldap_values(ldap) -> None:
-        """
-        This test verifies the setup values of ldap
-        """
+        # verify the values of ldap
         assert DS.assert_ldap_card()
         assert COM.get_label_value('Status:') == 'HEALTHY'
         assert COM.get_label_value('Hostname:') == ldap['domain']
         assert COM.get_label_value('Base DN:') == ldap['basedn']
         assert COM.get_label_value('Bind DN:') == ldap['binddn']
 
-    @classmethod
-    def teardown_class(cls) -> None:
+    @pytest.fixture(scope='class', autouse=True)
+    def teardown_class(self) -> None:
         """
         This test removes the ldap
         """
