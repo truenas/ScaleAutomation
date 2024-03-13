@@ -33,11 +33,12 @@ class SMB:
         Example:
         - SMB.assert_guest_access()
         """
-        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'pwd\'', private_config['SMB_ACL_IP'], user, password)
-        return response.stdout.__contains__(share)
+        # response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'pwd\'', private_config['SMB_ACL_IP'], user, password)
+        # return response.stdout.__contains__(share)
+        return cls.assert_user_can_access(share, user, password)
 
     @classmethod
-    def assert_guest_delete_file(cls, file, share):
+    def assert_guest_delete_file(cls, file: str, share: str) -> bool:
         """
         This returns True if the given file is deleted, otherwise it returns False.
 
@@ -47,14 +48,15 @@ class SMB:
         :return: True if the given file is deleted, otherwise it returns False.
 
         Example:
-        - SMB.assert_guest_put_file('myFile')
+        - SMB.assert_guest_delete_file('myFile', 'myShare')
         """
-        SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'rm {file}\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
-        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
-        return not response.stdout.__contains__(file)
+        # SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'rm {file}\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        # response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        # return not response.stdout.__contains__(file)
+        return cls.assert_user_can_delete_file(file, share, 'nonexistent', 'nopassword')
 
     @classmethod
-    def assert_guest_put_file(cls, file, share):
+    def assert_guest_put_file(cls, file: str, share: str) -> bool:
         """
         This returns True if the given file is put, otherwise it returns False.
 
@@ -64,12 +66,13 @@ class SMB:
         :return: True if the given file is put, otherwise it returns False.
 
         Example:
-        - SMB.assert_guest_put_file('myFile')
+        - SMB.assert_guest_put_file('myFile', 'myShare')
         """
-        SSH_Command_Line(f'cd smbdirectory; touch {file}; chmod 777 putfile', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
-        SSH_Command_Line(f'cd smbdirectory; smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'put {file}\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
-        response = SSH_Command_Line(f'cd smbdirectory; smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
-        return response.stdout.__contains__(file)
+        # SSH_Command_Line(f'cd smbdirectory; touch {file}; chmod 777 {file}', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        # SSH_Command_Line(f'cd smbdirectory; smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'put {file}\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        # response = SSH_Command_Line(f'cd smbdirectory; smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        # return response.stdout.__contains__(file)
+        return cls.assert_user_can_put_file(file, share, 'nonexistent', 'nopassword')
 
     @classmethod
     def assert_share_ignore_list(cls, name: str) -> bool:
@@ -90,6 +93,71 @@ class SMB:
         :return: True if the share watch list contains the given name otherwise it returns False.
         """
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@formcontrolname="watch_list"]//*[contains(text(),"{name}")]'))
+
+    @classmethod
+    def assert_user_can_access(cls, share: str, user: str, password: str) -> bool:
+        """
+        This returns True if the share can be accessed by the given user, otherwise it returns False.
+
+        :param share: is the name of the share to access
+        :param user: is the name of the system SMB user
+        :param password: is the password of the SMB user
+
+        :return: True if the share can be accessed by the given user, otherwise it returns False.
+
+        Example:
+        - SMB.assert_guest_access()
+        """
+        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -W AD03 -U {user}%{password} -c \'pwd\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        return response.stdout.__contains__(share)
+
+    @classmethod
+    def assert_user_can_delete_file(cls, file: str, share: str, user: str, password: str, ad: bool = False) -> bool:
+        """
+        This returns True if the given file is deleted, otherwise it returns False.
+
+        :param file: is the name of the file to delete
+        :param share: is the name of the share to access
+        :param user: is the name of the system SMB user
+        :param password: is the password of the SMB user
+        :param ad: whether the user is an AD user
+
+        :return: True if the given file is deleted, otherwise it returns False.
+
+        Example:
+        - SMB.assert_user_can_delete_file('myFile', 'myShare')
+        """
+        use_ad = ""
+        if ad is True:
+            use_ad = "-W AD03 "
+        SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} {use_ad}-U {user}%{password} -c \'rm {file}\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} {use_ad}-U {user}%{password} -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        return not response.stdout.__contains__(file)
+
+    @classmethod
+    def assert_user_can_put_file(cls, file: str, share: str, user: str, password: str, ad: bool = False) -> bool:
+        """
+        This returns True if the given file is put, otherwise it returns False.
+
+        :param file: is the name of the file to put
+        :param share: is the name of the share to access
+        :param user: is the name of the system SMB user
+        :param password: is the password of the SMB user
+        :param ad: whether the user is an AD user
+
+        :return: True if the given file is put, otherwise it returns False.
+
+        Example:
+        - SMB.assert_user_can_put_file('myFile', 'myShare', 'user', 'password')
+        - SMB.assert_user_can_put_file('myFile', 'myShare', 'user', 'password', True)
+        """
+        use_ad = ""
+        if ad is True:
+            use_ad = "-W AD03 "
+        SSH_Command_Line(f'cd smbdirectory; touch {file}; chmod 777 {file}', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        SSH_Command_Line(f'cd smbdirectory; smbclient //{private_config["IP"]}/{share} {use_ad}-U {user}%{password} -c \'put {file}\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        response = SSH_Command_Line(f'cd smbdirectory; smbclient //{private_config["IP"]}/{share} {use_ad}-U {user}%{password} -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        return response.stdout.__contains__(file)
 
     @classmethod
     def click_edit_share_filesystem_acl(cls, name: str) -> None:
@@ -149,7 +217,8 @@ class SMB:
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.select_field('purpose')) is True
         COM.click_on_element(f'//*[@data-test="select-purpose"]')
-        purpose = purpose.replace(' ', '-').lower()
+        # purpose = purpose.replace(' ', '-').lower()
+        purpose = COM.convert_to_tag_format(purpose)
         COM.click_on_element(f'//*[@data-test="option-purpose-{purpose}"]')
 
     @classmethod
