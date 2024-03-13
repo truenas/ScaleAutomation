@@ -9,25 +9,15 @@ from keywords.webui.dashboard import Dashboard
 @allure.feature("Dashboard-Reorder")
 class Test_Verify_A_Dashboard_Card_Reordering_Can_be_Cancel:
 
-    # @pytest.fixture(scope='function', autouse=True)
-    # def setup_test(self):
-    #     """
-    #     This fixture refresh the dashboard page.
-    #     """
-    #     WebUI.refresh()
-
     @pytest.fixture(scope='function', autouse=True)
-    def tear_down_test(self):
+    def setup_test(self):
         """
         This fixture resets the Dashboard cards back to original positions
         """
-        yield
-        # refresh in case the test failed
-        WebUI.refresh()
-        assert Dashboard.assert_dashboard_page_header_is_visible() is True
         Dashboard.set_original_card_position('sysinfo')
         Dashboard.set_original_card_position('help')
         Dashboard.set_original_card_position('cpu')
+        WebUI.refresh()
 
     @allure.tag("Update")
     @allure.story("Move Card Help to CPU Position and Cancel")
