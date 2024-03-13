@@ -33,8 +33,6 @@ class SMB:
         Example:
         - SMB.assert_guest_access()
         """
-        # response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'pwd\'', private_config['SMB_ACL_IP'], user, password)
-        # return response.stdout.__contains__(share)
         return cls.assert_user_can_access(share, user, password)
 
     @classmethod
@@ -50,9 +48,6 @@ class SMB:
         Example:
         - SMB.assert_guest_delete_file('myFile', 'myShare')
         """
-        # SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'rm {file}\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
-        # response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
-        # return not response.stdout.__contains__(file)
         return cls.assert_user_can_delete_file(file, share, 'nonexistent', 'nopassword')
 
     @classmethod
@@ -68,10 +63,6 @@ class SMB:
         Example:
         - SMB.assert_guest_put_file('myFile', 'myShare')
         """
-        # SSH_Command_Line(f'cd smbdirectory; touch {file}; chmod 777 {file}', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
-        # SSH_Command_Line(f'cd smbdirectory; smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'put {file}\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
-        # response = SSH_Command_Line(f'cd smbdirectory; smbclient //{private_config["IP"]}/{share} -U nonexistent%nopassword -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
-        # return response.stdout.__contains__(file)
         return cls.assert_user_can_put_file(file, share, 'nonexistent', 'nopassword')
 
     @classmethod
