@@ -32,8 +32,9 @@ def drag_card(field: str) -> str:
     :param field: is the url text of the link on the TrueNAS help card
     :return: the xpath text of the TrueNAS help card link
     """
-    return f'//ix-widget-{field}//span[@class="cdk-drag-handle"]'
+    # return f'//ix-widget-{field}//span[@class="cdk-drag-handle"]'
     # return f'//ix-widget-{field}//span[@class="grip ng-star-inserted"]'
+    return f'//ix-widget-{field}//div[@class="drag-handle"]'
 
 
 def drop_card(field: str) -> str:

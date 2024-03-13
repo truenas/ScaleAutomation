@@ -41,7 +41,7 @@ class Test_Verify_A_Dashboard_Card_Reordering_Can_be_Cancel:
         Dashboard.click_the_reorder_button()
         assert Dashboard.assert_card_position(2, 'help') is True
         assert Dashboard.assert_card_position(3, 'cpu') is True
-        Dashboard.move_card_a_to_card_b_position('help', 'cpu')
+        Dashboard.move_card_a_to_card_b_position('cpu', 'help')
         assert Dashboard.assert_card_position(3, 'help') is True
         assert Dashboard.assert_card_position(2, 'cpu') is True
         Dashboard.click_the_cancel_reorder_button()
