@@ -399,11 +399,6 @@ class Dashboard:
             WebUI.drag_and_drop(xpaths.dashboard.drag_card(card_a), xpaths.dashboard.drop_card(card_b))
             WebUI.delay(2)
             print(f'AFTER SWAP: {card_a} - {cls.get_dashboard_card_position(card_a)} {card_b} - {cls.get_dashboard_card_position(card_b)}')
-            if a_pos == cls.get_dashboard_card_position(card_a):
-                print(f'RETRY SWAP: {card_a} - {a_pos} {card_b} - {b_pos}')
-                WebUI.drag_and_drop(xpaths.dashboard.drag_card(card_a), xpaths.dashboard.drop_card(card_b))
-                WebUI.delay(0.4)
-                print(f'AFTER RETRY: {card_a} - {cls.get_dashboard_card_position(card_a)} {card_b} - {cls.get_dashboard_card_position(card_b)}')
         else:
             print("card_a can't match card_b")
 
