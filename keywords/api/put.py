@@ -309,7 +309,7 @@ class API_PUT:
         result = PUT('/activedirectory/', payload)
         assert result.status_code == 200, result.text
         job_result = API_Common.wait_on_job(result.json()['job_id'], shared_config['LONG_WAIT'])
-        assert job_result['state'] == 'SUCCESS', job_result['results']
+        assert job_result['state'] == 'SUCCESS', job_result['results'] is True
         return job_result['results']
 
     @classmethod
