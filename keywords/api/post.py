@@ -407,7 +407,7 @@ class API_POST:
         result = POST('/activedirectory/leave', {'username': username, 'password': password})
         assert result.status_code == 200, result.text
         job_status = API_Common.wait_on_job(result.json(), shared_config['LONG_WAIT'])
-        assert job_status['state'] == 'SUCCESS', job_status['results']
+        assert job_status['state'] == 'SUCCESS', job_status['results'] is True
         return job_status['results']
 
     @classmethod
