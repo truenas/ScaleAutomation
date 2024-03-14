@@ -1022,7 +1022,8 @@ class Common:
             toggle.click()
             assert cls.assert_progress_spinner_not_visible() is True
         # in headless sometime the assert fails a .1 delay stop the failing.
-        WebUI.delay(0.5)
+        WebUI.delay(1)
+        toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
         # try:
         #     toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
         # except NoSuchElementException:
