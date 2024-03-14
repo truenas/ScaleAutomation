@@ -18,7 +18,7 @@ from keywords.webui.smb import SMB
 @pytest.mark.parametrize('ad_data', get_data_list('ad_credentials'), scope='class')
 class Test_SMB_AD_User:
 
-    @pytest.fixture(scope='function', autouse=True)
+    @pytest.fixture(scope='class', autouse=True)
     def setup_test(self, ad_data) -> None:
         """
         This method sets up each test to start with datasets and shares to execute SMB Guest functionality
@@ -26,7 +26,6 @@ class Test_SMB_AD_User:
         # Environment setup
         NAV.navigate_to_directory_services()
         DS.remove_ldap()
-        API_POST.leave_active_directory(ad_data['username'], ad_data['password'])
         API_DELETE.delete_share('smb', 'SMBADUSER')
         API_DELETE.delete_dataset('tank/SMBADUSER')
         API_PUT.set_nameservers(ad_data['nameserver'])
@@ -35,16 +34,15 @@ class Test_SMB_AD_User:
         API_POST.create_share('smb', 'SMBADUSER', '/mnt/tank/SMBADUSER')
         API_POST.start_service('cifs')
 
-    @pytest.fixture(scope='function', autouse=True)
+    @pytest.fixture(scope='class', autouse=True)
     def teardown_test(self, ad_data) -> None:
         """
         This method removes datasets and shares after test is run for a clean environment
         """
         # Environment Teardown
         yield
-        NAV.navigate_to_directory_services()
-        DS.remove_ldap()
-        API_POST.leave_active_directory(ad_data['username'], ad_data['password'])
+        results = API_POST.leave_active_directory(ad_data['username'], ad_data['password'])
+        assert results['state'] == 'SUCCESS', results['results']
         API_DELETE.delete_share('smb', "SMBADUSER")
         API_DELETE.delete_dataset("tank/SMBADUSER")
 
@@ -75,6 +73,7 @@ class Test_SMB_AD_User:
     def test_ad_user_denied_edit_file_with_read_permissions(self, ad_data) -> None:
 
         # Verify SMB Guest denied edit file with read permissions
+        SMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True)
         NAV.navigate_to_shares()
         SMB.click_edit_share_filesystem_acl('SMBADUSER')
         COM.click_on_element('//*[contains(text(),"domain users")]/ancestor::ix-permissions-item/following-sibling::*/ix-icon')
