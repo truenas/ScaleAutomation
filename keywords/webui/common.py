@@ -1020,9 +1020,14 @@ class Common:
         toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
         if eval(toggle.get_attribute('ariaChecked').title()) != state:
             toggle.click()
-        # in headless sometime the assert fails a .1 delay stop the failing.
-        WebUI.delay(0.5)
+            assert cls.assert_progress_spinner_not_visible() is True
+        WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(name))
         toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
+        i = 0
+        while eval(toggle.get_attribute('ariaChecked').title()) != state and i > shared_config['WAIT']:
+            i += 1
+            WebUI.delay(1)
+            toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
         assert eval(toggle.get_attribute('ariaChecked').title()) is state
 
     @classmethod

@@ -48,6 +48,7 @@ class API_POST:
         response = POST('/certificate/', payload)
         assert response.status_code == 200, response.text
         job_status = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
+        assert job_status['state'] == 'SUCCESS', job_status['results'] is True
         return job_status
 
     @classmethod
@@ -114,6 +115,7 @@ class API_POST:
         }
         response = POST('/certificate/', payload)
         job_status = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
+        assert job_status['state'] == 'SUCCESS', job_status['results'] is True
         return job_status
 
     @classmethod
@@ -378,6 +380,7 @@ class API_POST:
         response = POST(f'/pool/id/{pool_id}/export/', payload)
         assert response.status_code == 200, response.text
         job_status = API_Common.wait_on_job(response.json(), shared_config['EXTRA_LONG_WAIT'])
+        assert job_status['state'] == 'SUCCESS', job_status['results'] is True
         return job_status
 
     @classmethod
@@ -404,7 +407,7 @@ class API_POST:
         result = POST('/activedirectory/leave', {'username': username, 'password': password})
         assert result.status_code == 200, result.text
         job_status = API_Common.wait_on_job(result.json(), shared_config['LONG_WAIT'])
-        assert job_status['state'] == 'SUCCESS', job_status['results']
+        assert job_status['state'] == 'SUCCESS', job_status['results'] is True
         return job_status['results']
 
     @classmethod
@@ -596,7 +599,7 @@ class API_POST:
 
         response = POST(f'/pool/dataset/{state}', payload)
         job_status = API_Common.wait_on_job(response.json(), shared_config['WAIT'])
-        assert job_status['state'] == 'SUCCESS'
+        assert job_status['state'] == 'SUCCESS', job_status['results'] is True
         if system == 'remote':
             private_config['API_IP'] = private_config['IP']
         return response
