@@ -228,7 +228,7 @@ class Dashboard:
         This method click on the Dashboard Reorder button.
         """
         Common.click_button('start-reorder')
-        #WebUI.delay(2)
+        WebUI.delay(1)
 
     @classmethod
     def click_the_save_reorder_button(cls) -> None:

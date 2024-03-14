@@ -1,6 +1,4 @@
 import pytest
-from helper.webui import WebUI
-from keywords.webui.dashboard import Dashboard
 from keywords.webui.navigation import Navigation
 
 
