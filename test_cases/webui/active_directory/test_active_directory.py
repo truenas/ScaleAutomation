@@ -36,7 +36,7 @@ class Test_Active_Directory:
         """
         API_PUT.set_nameservers(ad_data['nameserver'], ad_data['nameserver2'])
 
-    def test_leaving_active_directory(self, ad_data, setup_active_directory_with_api):
+    def test_leaving_active_directory(self, ad_data, setup_active_directory_with_api, tear_down_class):
         """
         This test case test leaving active directory.
         """
@@ -55,7 +55,7 @@ class Test_Active_Directory:
         # Verify that the active directory card is not visible after leaving the active directory
         assert Directory_Services.assert_active_directory_card_not_visible() is True
 
-    def test_setup_active_directory(self, ad_data, setup_dns_for_active_directory):
+    def test_setup_active_directory(self, ad_data, setup_dns_for_active_directory, tear_down_class):
         """
         This test case test setup active directory.
         """
@@ -105,11 +105,16 @@ class Test_Active_Directory:
         assert Active_Directory.assert_nameserver_failed_to_resolve_srv_record_message(ad_data['nameserver2']) is True
         Common.close_right_panel()
 
-    @pytest.fixture(scope='function', autouse=True)
-    def tear_down_class(self, ad_data):
+    @pytest.fixture(scope='function')
+    def tear_down_class(self, request, ad_data):
         """
         This fixture tears down the active directory for all tests.
         """
         yield
-        API_POST.leave_active_directory(ad_data['username'], ad_data['password'])
-        API_PUT.set_nameservers(ad_data['nameserver1'], ad_data['nameserver2'])
+        print(request.node.name)
+        if 'setup_active_directory' in request.node.name:
+            API_POST.leave_active_directory(ad_data['username'], ad_data['password'])
+            API_PUT.set_nameservers(ad_data['nameserver1'], ad_data['nameserver2'])
+        elif request.node.report.failed and 'leave_active_directory' in request.node.name:
+            API_POST.leave_active_directory(ad_data['username'], ad_data['password'])
+            API_PUT.set_nameservers(ad_data['nameserver1'], ad_data['nameserver2'])
