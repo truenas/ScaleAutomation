@@ -111,7 +111,6 @@ class Test_Active_Directory:
         This fixture tears down the active directory for all tests.
         """
         yield
-        print(request.node.name)
         if 'setup_active_directory' in request.node.name:
             API_POST.leave_active_directory(ad_data['username'], ad_data['password'])
             API_PUT.set_nameservers(ad_data['nameserver1'], ad_data['nameserver2'])
