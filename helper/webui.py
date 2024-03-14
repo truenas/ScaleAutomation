@@ -5,6 +5,7 @@ from helper.global_config import shared_config
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,7 +21,10 @@ def browser() -> WebDriver:
         Example:
             - WebUI.browser()
     """
-    driver = webdriver.Chrome()
+    chrome_options = Options()
+    chrome_options.add_experimental_option("detach", True)
+    chrome_options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
+    driver = webdriver.Chrome(options=chrome_options)
     driver.set_window_size(1920, 1080)
     driver.implicitly_wait(shared_config['IMPLICITLY_WAIT'])
     return driver
@@ -105,10 +109,10 @@ class WebUI(object):
         """
         assert cls.wait_until_visible(from_xpath) is True
         source = cls.xpath(from_xpath)
-        assert cls.wait_until_visible(to_xpath) is True
         target = cls.xpath(to_xpath)
         action = ActionChains(cls.web_driver)
         action.click_and_hold(source)
+        assert cls.wait_until_visible(to_xpath) is True
         action.move_to_element(target)
         action.pause(0.5)
         action.release(target)
@@ -152,6 +156,18 @@ class WebUI(object):
             - WebUI.get_attribute('xpath', 'attribute')
         """
         return cls.xpath(xpath).get_attribute(attribute)
+
+    @classmethod
+    def get_console_log(cls) -> any:
+        """
+        This method get the console log and returns it.
+
+        :return: return the console log.
+
+        Example:
+            - WebUI.get_console_log()
+        """
+        return cls.web_driver.get_log('browser')
 
     @classmethod
     def get_clipboard_text(cls) -> any:
