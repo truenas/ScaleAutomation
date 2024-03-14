@@ -96,10 +96,13 @@ class API_Common:
         while True:
             job_results = GET(f'/core/get_jobs/?id={job_id}')
             job_state = job_results.json()[0]['state']
-            if job_state in ('RUNNING', 'WAITING'):
-                time.sleep(5)
-            elif job_state in ('SUCCESS', 'FAILED'):
-                return {'state': job_state, 'results': job_results.json()[0]}
+            match job_state:
+                case 'RUNNING' | 'WAITING':
+                    time.sleep(5)
+                case 'SUCCESS' | 'FAILED' | 'ABORTED':
+                    assert job_state == 'SUCCESS' is True
+                    return {'state': job_state, 'results': job_results.json()[0]}
             if timeout >= max_timeout:
-                return {'state': 'TIMEOUT', 'results': job_results.json()[0]}
+                print(f'JOB {job_id} TIMEOUT EXCEEDED. JOB STATE: {job_state}')
+                assert False
             timeout += 5
