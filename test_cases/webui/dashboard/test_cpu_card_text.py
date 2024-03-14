@@ -25,6 +25,7 @@ class Test_Verify_CPU_Card_Text:
         assert Dashboard.assert_cpu_card_load_text(1, "Cores") is True
         assert Dashboard.assert_cpu_card_load_text(2, "Highest Usage") is True
         assert Dashboard.assert_cpu_card_load_text(3, "Hottest") is True
+
         # Verify CPU load graph
         assert Dashboard.assert_cpu_card_load_graph_text() is True
         assert Dashboard.assert_cpu_card_load_graph_ui() is True

@@ -25,7 +25,7 @@ class Dashboard:
 
         :return: True if all cpu load graph text are visible otherwise it returns False.
         """
-        assert WebUI.wait_until_visible('//ix-view-chart-gauge') is True
+        assert WebUI.wait_until_visible('//ix-view-chart-gauge', shared_config['LONG_WAIT']) is True
         assert WebUI.wait_until_visible(xpaths.dashboard.cpu_subtitle) is True
         results_list = [
             "Avg Usage" in WebUI.get_text(xpaths.dashboard.cpu_subtitle),
@@ -41,7 +41,8 @@ class Dashboard:
 
         :return: True if the cpu load graph ui is visible otherwise it returns False.
         """
-        return Common.is_visible(xpaths.dashboard.cpu_cores_chart)
+        # Wait until the cpu cores chart is visible
+        return WebUI.wait_until_visible(xpaths.dashboard.cpu_cores_chart)
 
     @classmethod
     def assert_cpu_card_load_text(cls, index: int, text) -> bool:
@@ -80,8 +81,6 @@ class Dashboard:
         :param link: is the url link to click on.
         :return: True if the new tab opened to the right link, otherwise it returns False.
         """
-        # let the browser load the new tab
-        WebUI.delay(1)
         initial_tab = WebUI.current_window_handle()
         if link == "https://www.truenas.com/community/":
             Common.click_on_element(xpaths.dashboard.truenas_help_card_link("https://www.ixsystems.com/community/"))
@@ -94,6 +93,8 @@ class Dashboard:
 
         WebUI.switch_to_window_index(next_tab)
 
+        # Let the browser load the new tab
+        WebUI.delay(1)
         url_exists = True if WebUI.current_url() == link else False
 
         WebUI.close_window()
@@ -227,7 +228,7 @@ class Dashboard:
         This method click on the Dashboard Reorder button.
         """
         Common.click_button('start-reorder')
-        WebUI.delay(2)
+        WebUI.delay(1)
 
     @classmethod
     def click_the_save_reorder_button(cls) -> None:
@@ -236,9 +237,6 @@ class Dashboard:
         """
         Common.click_button('save-new-order')
         WebUI.wait_until_visible(xpaths.common_xpaths.button_field('start-reorder'))
-        # This is to refresh the Dashboard. Less fragile than Refresh and doesn't risk getting stuck on login screen
-        Navigation.navigate_to_shares()
-        Navigation.navigate_to_dashboard()
 
     @classmethod
     def click_the_storage_report_button(cls) -> None:
@@ -299,6 +297,7 @@ class Dashboard:
         :param position: in the number of the position of the card.
         :return: the name dashboard card by name
         """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'(//mat-card)[{position}]//h3')) is True
         card_header = WebUI.get_text(xpaths.common_xpaths.any_xpath(f'(//mat-card)[{position}]//h3'))
         return shared_config['DASHBOARD_CARDS'][card_header]
 
@@ -394,14 +393,12 @@ class Dashboard:
         b_pos = cls.get_dashboard_card_position(card_b)
         print(f'BEFORE SWAP: {card_a} - {a_pos} {card_b} - {b_pos}')
         if card_a != card_b:
+            # Ensure the drag xpath and drop xpath are visible before moving the card
+            assert WebUI.wait_until_visible(xpaths.dashboard.drag_card(card_a)) is True
+            assert WebUI.wait_until_visible(xpaths.dashboard.drop_card(card_b)) is True
             WebUI.drag_and_drop(xpaths.dashboard.drag_card(card_a), xpaths.dashboard.drop_card(card_b))
             WebUI.delay(2)
             print(f'AFTER SWAP: {card_a} - {cls.get_dashboard_card_position(card_a)} {card_b} - {cls.get_dashboard_card_position(card_b)}')
-            if a_pos == cls.get_dashboard_card_position(card_a):
-                print(f'RETRY SWAP: {card_a} - {a_pos} {card_b} - {b_pos}')
-                WebUI.drag_and_drop(xpaths.dashboard.drag_card(card_a), xpaths.dashboard.drop_card(card_b))
-                WebUI.delay(0.4)
-                print(f'AFTER RETRY: {card_a} - {cls.get_dashboard_card_position(card_a)} {card_b} - {cls.get_dashboard_card_position(card_b)}')
         else:
             print("card_a can't match card_b")
 

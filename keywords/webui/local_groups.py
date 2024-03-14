@@ -634,17 +634,3 @@ class Local_Groups:
          - Local_Groups.unset_show_builtin_groups_toggle()
         """
         COM.unset_toggle('show-built-in-groups')
-
-    @classmethod
-    # TODO: remove this when https://ixsystems.atlassian.net/browse/NAS-127356 is fixed and update all usages to select_option.
-    def select_group_items_per_page(cls, option: str) -> None:
-        """
-        This method selects the given option text from the given select field.
-
-        :param option: The name of the option to select. [10/20/50/100]
-
-        Example:
-            - Local_Groups.select_group_items_per_page('20')
-        """
-        COM.click_on_element('//mat-select')
-        COM.click_on_element(f'//mat-option[contains(.,"{option}")]')
