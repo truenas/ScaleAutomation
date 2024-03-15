@@ -20,7 +20,7 @@ class SMB:
         API_POST.add_smb_acl_entry(who, userid, permission, perm_type)
 
     @classmethod
-    def assert_guest_access(cls, share: str, user: str = private_config['SMB_USERNAME'], password: str = private_config['SMB_PASSWORD']) -> bool:
+    def assert_guest_access(cls, share: str, user: str = 'nonexistent', password: str = 'nopassword') -> bool:
         """
         This returns True if the share can be accessed by a guest user, otherwise it returns False.
 
