@@ -20,10 +20,10 @@ class Test_Local_Groups:
         """
         This method sets up each test to start with builtin groups not shown
         """
+        API_DELETE.delete_group(groups['alt-group-name'], groups['group-privileges'])
+        API_DELETE.delete_group(groups['group-name'], groups['group-privileges'])
         NAV.navigate_to_local_groups()
         LG.unset_show_builtin_groups_toggle()
-        API_DELETE.delete_group(groups['group-name'], groups['group-privileges'])
-        API_DELETE.delete_group(groups['alt-group-name'], groups['group-privileges'])
 
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self, groups):
@@ -120,9 +120,9 @@ class Test_Local_Groups:
         """
         This test verifies built in groups display
         """
-        COM.set_100_items_per_page()
+        # COM.set_100_items_per_page()
         LG.set_show_builtin_groups_toggle()
-
+        COM.set_search_field(built_in['group-name'])
         assert LG.is_group_visible(built_in['group-name']) is True
         assert LG.get_group_list_gid(built_in['group-name']) == built_in['gid']
         assert LG.get_group_list_builtin(built_in['group-name']) == built_in['Builtin']
