@@ -51,8 +51,8 @@ class SSH_Command_Line:
         # print("@@@ COMMAND: " + f'{sshpass}ssh {ssh_option} {username}@{ip} "{command}"')
         self.process = Local_Command_Line(f'{sshpass}ssh {ssh_option} {username}@{ip} "{command}"')
         self.stdout = self.process.stdout
-        # print("@@@ STDOUT: " + self.stdout)
         self.stderr = self.process.stderr
-        # print("@@@ STDERR: " + self.stderr)
         self.status = self.process.status
+        # print("@@@ STDOUT: " + self.stdout)
+        # print("@@@ STDERR: " + self.stderr)
         # print("@@@ STATUS: " + str(self.status))

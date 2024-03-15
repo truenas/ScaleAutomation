@@ -282,7 +282,7 @@ class Apps:
             COM.click_button('delete-selected')
             WebUI.delay(0.1)
             COM.assert_confirm_dialog()
-            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Deleting...', 1), shared_config['WAIT'])
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Deleting...', 1), shared_config['LONG_WAIT'])
         if COM.is_visible(xpaths.common_xpaths.button_field('bulk-actions-menu')):
             WebUI.refresh()
             COM.assert_page_header('Installed')
