@@ -120,9 +120,9 @@ class Test_Local_Groups:
         """
         This test verifies built in groups display
         """
-        # COM.set_100_items_per_page()
+        COM.set_100_items_per_page()
         LG.set_show_builtin_groups_toggle()
-        COM.set_search_field(built_in['group-name'])
+        # COM.set_search_field(built_in['group-name'])
         assert LG.is_group_visible(built_in['group-name']) is True
         assert LG.get_group_list_gid(built_in['group-name']) == built_in['gid']
         assert LG.get_group_list_builtin(built_in['group-name']) == built_in['Builtin']
