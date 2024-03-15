@@ -454,7 +454,7 @@ class Local_Groups:
             NAV.navigate_to_local_groups()
         if not COM.assert_page_header('Groups'):
             NAV.navigate_to_local_groups()
-        return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
+        return WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
 
     @classmethod
     def is_user_in_group_list(cls, username: str) -> bool:

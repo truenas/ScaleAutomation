@@ -20,10 +20,10 @@ class Test_Local_Groups:
         """
         This method sets up each test to start with builtin groups not shown
         """
+        API_DELETE.delete_group(groups['alt-group-name'], groups['group-privileges'])
+        API_DELETE.delete_group(groups['group-name'], groups['group-privileges'])
         NAV.navigate_to_local_groups()
         LG.unset_show_builtin_groups_toggle()
-        API_DELETE.delete_group(groups['group-name'], groups['group-privileges'])
-        API_DELETE.delete_group(groups['alt-group-name'], groups['group-privileges'])
 
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self, groups):
@@ -52,7 +52,7 @@ class Test_Local_Groups:
         LG.click_add_to_list_button()
         assert LG.is_user_in_group_list(groups['username']) is True
         assert LG.is_user_in_users_list(groups['username']) is False
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
         LG.expand_group_by_name(groups['group-name'])
         LG.click_group_members_button(groups['group-name'])
         assert LG.is_user_in_group_list(groups['username']) is True
@@ -81,7 +81,7 @@ class Test_Local_Groups:
         assert LG.assert_sudo_commands_no_password_is_disabled() is False
         LG.set_samba_authentication()
         LG.set_allow_duplicate_gids()
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
         assert LG.is_group_visible(groups['group-name']) is True
 
     @allure.tag("Create")
@@ -95,7 +95,7 @@ class Test_Local_Groups:
             LG.click_add_group_button()
             LG.set_group_gid(groups['dup-gid'])
             LG.set_group_name(groups['group-name'])
-            COM.click_save_button()
+            COM.click_save_button_and_wait_for_progress_bar()
             assert LG.is_group_visible(groups['group-name']) is True
             assert LG.assert_group_gid(groups['group-name'], groups['dup-gid']) is True
 
@@ -103,13 +103,13 @@ class Test_Local_Groups:
         LG.set_allow_duplicate_gids()
         LG.set_group_gid(groups['dup-gid'])
         LG.set_group_name(groups['alt-group-name'])
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
         assert LG.is_group_visible(groups['alt-group-name']) is True
         assert LG.assert_group_gid(groups['alt-group-name'], groups['dup-gid']) is True
         LG.expand_group_by_name(groups['alt-group-name'])
         LG.click_group_edit_button_by_name(groups['alt-group-name'])
         assert LG.assert_gid_field_is_disabled() is True
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
         LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
         LG.delete_group_by_api(groups['alt-group-name'], groups['group-privileges'])
 
@@ -122,7 +122,7 @@ class Test_Local_Groups:
         """
         COM.set_100_items_per_page()
         LG.set_show_builtin_groups_toggle()
-
+        # COM.set_search_field(built_in['group-name'])
         assert LG.is_group_visible(built_in['group-name']) is True
         assert LG.get_group_list_gid(built_in['group-name']) == built_in['gid']
         assert LG.get_group_list_builtin(built_in['group-name']) == built_in['Builtin']
@@ -148,7 +148,7 @@ class Test_Local_Groups:
             LG.click_add_to_list_button()
             assert LG.is_user_in_group_list(groups['username']) is True
             assert LG.is_user_in_users_list(groups['username']) is False
-            COM.click_save_button()
+            COM.click_save_button_and_wait_for_progress_bar()
             assert LG.is_group_visible(groups['group-name']) is True
 
         LG.expand_group_by_name(groups['group-name'])
@@ -157,7 +157,7 @@ class Test_Local_Groups:
         LG.click_remove_from_list_button()
         assert LG.is_user_in_group_list(groups['username']) is False
         assert LG.is_user_in_users_list(groups['username']) is True
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
         LG.expand_group_by_name(groups['group-name'])
         LG.click_group_members_button(groups['group-name'])
         assert LG.is_user_in_group_list(groups['username']) is False
@@ -198,7 +198,7 @@ class Test_Local_Groups:
         LG.delete_group_allowed_sudo_command_no_password(groups['sudo-commands-2'])
 
         LG.unset_samba_authentication()
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
         assert LG.is_group_visible(groups['group-name']) is False
         assert LG.is_group_visible(groups['alt-group-name']) is True
         LG.expand_group_by_name(groups['alt-group-name'])
@@ -211,7 +211,7 @@ class Test_Local_Groups:
         LG.set_group_allow_all_sudo_commands_no_password_checkbox()
         assert LG.assert_group_allowed_sudo_commands_no_password_is_disabled() is True
         LG.set_samba_authentication()
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
         assert LG.is_group_visible(groups['group-name']) is True
         assert LG.is_group_visible(groups['alt-group-name']) is False
         LG.expand_group_by_name(groups['group-name'])
@@ -222,11 +222,11 @@ class Test_Local_Groups:
         LG.add_group_allowed_sudo_command(groups['sudo-commands-2'])
         LG.add_group_allowed_sudo_command_no_password(groups['sudo-commands-1'])
         LG.add_group_allowed_sudo_command_no_password(groups['sudo-commands-2'])
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
         assert LG.is_group_visible(groups['group-name']) is True
         LG.expand_group_by_name(groups['group-name'])
         LG.click_group_edit_button_by_name(groups['group-name'])
         LG.delete_all_group_allowed_sudo_commands()
         LG.delete_all_group_allowed_sudo_commands_no_password()
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
         assert LG.is_group_visible(groups['group-name']) is True
