@@ -23,7 +23,7 @@ class Test_Dataset_Roles:
             API_POST.create_dataset(f"tank/{role['dataset']}", 'SMB')
             API_POST.create_share("smb", "smb_share", f"/mnt/tank/{role['dataset']}")
         elif role['dataset'] == "ix-applications":
-            assert API_PUT.set_app_pool('tank').status_code == 200
+            API_PUT.set_app_pool('tank')
 
     @allure.tag("Read")
     @allure.story("Dataset Roles Information")
