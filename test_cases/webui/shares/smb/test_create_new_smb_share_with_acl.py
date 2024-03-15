@@ -42,7 +42,7 @@ def test_create_new_smb_share_with_acl(smb_data) -> None:
     PERM.set_dataset_owner_group(smb_data['acl_group'])
     COM.set_checkbox('apply-owner')
     COM.set_checkbox('apply-group')
-    COM.click_button('save-acl')
+    PERM.click_save_acl_button()
 
     # Verify ACL Permissions of Dataset
     COM.assert_page_header('Datasets')

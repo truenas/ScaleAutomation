@@ -1,5 +1,5 @@
 import xpaths
-from helper.global_config import private_config
+from helper.global_config import private_config, shared_config
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.ssh.common import Common_SSH as SSH
@@ -113,7 +113,8 @@ class Permissions:
             - Permissions.click_save_acl_button()
         """
         COM.click_button('save-acl')
-        COM.assert_dialog_not_visible('Updating ACL')
+        assert COM.assert_dialog_visible('Updating ACL', shared_config['WAIT']) is True
+        assert COM.assert_dialog_not_visible('Updating ACL', shared_config['LONG_WAIT']) is True
 
     @classmethod
     def get_dataset_permissions_by_level(cls, user_category: str, level: str) -> str:

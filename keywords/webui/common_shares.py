@@ -326,7 +326,8 @@ class Common_Shares:
             name = 'restart-service'
         if name != '':
             COM.click_button(name)
-        WebUI.delay(2)
+        # WebUI.delay(2)
+        assert COM.assert_progress_bar_not_visible() is True
 
     @classmethod
     def is_share_enabled(cls, sharetype: str, name: str) -> bool:

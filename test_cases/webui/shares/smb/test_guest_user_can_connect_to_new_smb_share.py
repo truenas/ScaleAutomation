@@ -11,7 +11,7 @@ from keywords.webui.smb import SMB
 @allure.tag("SMB", "Guest")
 @allure.epic("Shares")
 @allure.feature("SMB-Guest")
-class Test_SMB:
+class Test_SMB_Guest_User:
 
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self) -> None:
