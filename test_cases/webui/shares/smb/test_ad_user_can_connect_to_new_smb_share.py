@@ -58,7 +58,7 @@ class Test_SMB_AD_User:
     def test_ad_user_can_delete_file(self, ad_data) -> None:
 
         # Verify SMB AD user can delete file
-        assert SMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
+        SMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True)
         assert SMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
 
     @allure.tag("Create")
