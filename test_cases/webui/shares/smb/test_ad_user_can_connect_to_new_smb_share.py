@@ -73,7 +73,7 @@ class Test_SMB_AD_User:
     def test_ad_user_denied_edit_file_with_read_permissions(self, ad_data) -> None:
 
         # Verify SMB Guest denied edit file with read permissions
-        SMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True)
+        assert SMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
         NAV.navigate_to_shares()
         SMB.click_edit_share_filesystem_acl('SMBADUSER')
         COM.click_on_element('//*[contains(text(),"domain users")]/ancestor::ix-permissions-item/following-sibling::*/ix-icon')
