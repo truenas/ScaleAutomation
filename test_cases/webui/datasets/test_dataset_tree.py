@@ -22,7 +22,7 @@ class Test_Dataset_Tree:
     def setup_tree_role_test(self):
         API_POST.create_dataset('tank/smb_share', 'SMB')
         API_POST.create_share('smb', 'smb_share', '/mnt/tank/smb_share')
-        assert API_PUT.set_app_pool('tank').status_code == 200
+        API_PUT.set_app_pool('tank')
 
     def test_dataset_tree_expandable(self, setup_test_class, tear_down_class):
         """
@@ -87,4 +87,4 @@ class Test_Dataset_Tree:
         yield
         API_DELETE.delete_share('smb', 'smb_share')
         API_DELETE.delete_dataset('tank/smb_share')
-        API_DELETE.delete_dataset('tank/ix-applications', recursive=True)
+        API_DELETE.delete_dataset('tank/ix-applications', recursive=True, force=True)

@@ -128,7 +128,7 @@ class API_PUT:
         return cls.update_active_directory(payload)
 
     @classmethod
-    def set_app_pool(cls, pool: str) -> Response:
+    def set_app_pool(cls, pool: str) -> dict:
         """
         This method set the app pool with the kubernetes API call.
         :param pool: The name of the pool.
@@ -137,7 +137,11 @@ class API_PUT:
         Example:
             - API_PUT.set_app_pool('tank')
         """
-        return PUT('/kubernetes/', {'pool': pool, 'servicelb': True})
+        response = PUT('/kubernetes/', {'pool': pool, 'servicelb': True})
+        assert response.status_code == 200, response.text
+        job_result = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
+        assert job_result['state'] == 'SUCCESS', str(job_result)
+        return job_result
 
     @classmethod
     def set_dataset_quota(cls, dataset_name: str, quota: int) -> Response:
