@@ -71,6 +71,35 @@ class Datasets:
         return Common.assert_label_and_value_exist('Children', size)
 
     @classmethod
+    def assert_click_protection_manage_link_works(cls, link: str) -> bool:
+        """
+        This method clicks on the Manage Link and returns True if the page header is visible.
+
+        :param link: The name of the link.
+        :return: True if the page header is visible, otherwise it returns False.
+
+        Example:
+            - Dataset.click_protection_manage_link('manage-snapshots')
+            - Dataset.click_protection_manage_link('Manage Snapshots')
+        """
+        link = link.lower().replace(' ', '-')
+        Common.click_link(link)
+        match link:
+            case "manage-snapshots":
+                name = 'Snapshots:'
+            case "manage-snapshot-tasks":
+                name = 'Periodic Snapshot Tasks'
+            case "manage-replication-tasks":
+                name = 'Replication Tasks'
+            case "manage-cloudsync-tasks":
+                name = 'Cloud Sync Tasks'
+            case "manage-rsync-tasks":
+                name = 'Rsync Tasks'
+            case _:
+                name = ''
+        return Common.assert_page_header(name)
+
+    @classmethod
     def assert_dataset_group(cls, name: str) -> bool:
         """
         This method return True if the given dataset group is set otherwise it returns False.
@@ -657,34 +686,6 @@ class Datasets:
             - Dataset.click_manage_user_quotas_link('pool-name', 'dataset_name')
         """
         Common.click_link(f'{pool}-{dataset_name}-manage-user-quotas')
-
-    @classmethod
-    def click_protection_manage_link(cls, link: str) -> None:
-        """
-        This method clicks on the Manage Link.
-
-        :param link: The name of the link.
-
-        Example:
-            - Dataset.click_protection_manage_link('manage-snapshots')
-            - Dataset.click_protection_manage_link('Manage Snapshots')
-        """
-        link = link.lower().replace(' ', '-')
-        Common.click_link(link)
-        match link:
-            case "manage-snapshots":
-                name = 'Snapshots:'
-            case "manage-snapshot-tasks":
-                name = 'Periodic Snapshot Tasks'
-            case "manage-replication-tasks":
-                name = 'Replication Tasks'
-            case "manage-cloudsync-tasks":
-                name = 'Cloud Sync Tasks'
-            case "manage-rsync-tasks":
-                name = 'Rsync Tasks'
-            case _:
-                name = ''
-        assert Common.assert_page_header(name)
 
     @classmethod
     def collapse_dataset(cls, name: str) -> None:
