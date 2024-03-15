@@ -31,7 +31,7 @@ class Test_Dataset_Data_Protection:
         Datasets.select_dataset(data["dataset"])
 
         # Click on data protection link and verify that the page of the link opens.
-        assert Datasets.click_protection_manage_link(link) is True
+        assert Datasets.assert_click_protection_manage_link_works(link) is True
 
     def test_dataset_data_protection_navigate_add_snapshot(self, data):
         """
