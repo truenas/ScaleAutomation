@@ -969,10 +969,10 @@ class Common:
         # TODO: Get this fixed (create Ticket)
         if cls.is_visible(xpaths.common_xpaths.any_header('Discover', 1)):
             field = '//*[@data-test="input"]'
-        assert WebUI.wait_until_clickable(field) is True
+        assert WebUI.wait_until_visible(field) is True
         WebUI.xpath(field).clear()
         WebUI.xpath(field).send_keys(text)
-        WebUI.delay(0.5)
+        WebUI.delay(1)
 
     @classmethod
     def set_textarea_field(cls, name: str, value: str, tab: bool = False) -> None:
