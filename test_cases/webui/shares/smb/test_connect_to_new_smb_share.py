@@ -48,7 +48,6 @@ class Test_SMB_Connect_To_Share:
 
     @allure.tag("Update")
     @allure.story("Verify SMB user can connect to Share")
-    # @allure.issue('NAS-127869', 'NAS-127869')
     def test_connect_to_new_smb_share(self, smb_data) -> None:
         # Set SMB Share ACL Permissions
         API_POST.add_smb_acl_entry(smb_data['who'], smb_data['id'], smb_data['perm'], smb_data['permtype'])
@@ -64,7 +63,6 @@ class Test_SMB_Connect_To_Share:
 
     @allure.tag("Update")
     @allure.story("Verify SMB user can connect to Home Dir Share")
-    # @allure.issue('NAS-127869', 'NAS-127869')
     def test_connect_to_home_directory_smb_share(self, smb_data) -> None:
         # Set user Home Directory
         NAV.navigate_to_local_users()
