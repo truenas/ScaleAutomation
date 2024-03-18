@@ -65,14 +65,26 @@ class Directory_Services:
     @classmethod
     def assert_ldap_card(cls) -> bool:
         """
-        This method returns True if the Directory Services page is displayed, otherwise False
+        This method returns True if the LDAP card is displayed, otherwise False
 
-        :return: is the name of the service to start
+        :return: True if the LDAP card is displayed, otherwise False
 
         Example:
-            - Directory_Services.assert_ldap_card()
+            - Directory_Services.assert_ldap_edit_panel()
         """
-        return COM.is_visible(xpaths.common_xpaths.any_header('LDAP', 3))
+        return COM.is_card_visible('LDAP')
+
+    @classmethod
+    def assert_ldap_edit_panel(cls) -> bool:
+        """
+        This method returns True if the LDAP edit panel is displayed, otherwise False
+
+        :return: True if the LDAP edit panel is displayed, otherwise False
+
+        Example:
+            - Directory_Services.assert_ldap_edit_panel()
+        """
+        return COM.assert_right_panel_header('LDAP')
 
     @classmethod
     def assert_service_status(cls, status: str) -> bool:
@@ -136,6 +148,18 @@ class Directory_Services:
         COM.click_button('dialog-confirm')
 
     @classmethod
+    def is_ldap_configure_button_visible(cls) -> bool:
+        """
+        This method returns True if the configure ldap button is visible, otherwise False.
+
+        :return: True if the configure ldap button is visible, otherwise False
+
+        Example:
+            - Directory_Services.is_ldap_configure_button_visible()
+        """
+        return COM.is_visible('//*[@data-test="button-configure-ldap"]')
+
+    @classmethod
     def remove_ldap(cls) -> None:
         """
         This method removes the existing ldap configuration
@@ -155,5 +179,5 @@ class Directory_Services:
             COM.clear_input_field('bindpw')
             COM.unset_checkbox('enable')
             COM.click_save_button()
-            assert COM.is_card_not_visible('LDAP')
-            assert COM.is_visible('//*[@data-test="button-configure-ldap"]')
+            assert COM.is_card_not_visible('LDAP') is True
+            assert cls.is_ldap_configure_button_visible() is True
