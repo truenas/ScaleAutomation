@@ -3,7 +3,6 @@ import pytest
 from helper.data_config import get_data_list
 from keywords.webui.common import Common as COM
 from keywords.webui.directory_services import Directory_Services as DS
-from keywords.webui.navigation import Navigation as NAV
 
 
 @pytest.mark.parametrize('ldap', get_data_list('ldap_credentials'), scope='class')
@@ -36,7 +35,6 @@ class Test_Disable_LDAP:
         """
         This test verifies the ldap is disabled
         """
-        # NAV.navigate_to_directory_services()
         DS.click_ldap_settings_button()
         COM.unset_checkbox('enable')
         COM.click_save_button()

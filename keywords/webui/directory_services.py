@@ -70,7 +70,7 @@ class Directory_Services:
         :return: True if the LDAP card is displayed, otherwise False
 
         Example:
-            - Directory_Services.assert_ldap_edit_panel()
+            - Directory_Services.assert_ldap_card()
         """
         return COM.is_card_visible('LDAP')
 
