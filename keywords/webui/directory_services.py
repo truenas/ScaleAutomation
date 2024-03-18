@@ -125,8 +125,7 @@ class Directory_Services:
         """
         if cls.assert_ldap_card() is True:
             cls.remove_ldap()
-        else:
-            COM.click_button('configure-ldap')
+        COM.click_button('configure-ldap')
 
     @classmethod
     def click_ldap_settings_button(cls) -> None:
