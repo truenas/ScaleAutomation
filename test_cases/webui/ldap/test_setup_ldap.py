@@ -36,4 +36,5 @@ class Test_Setup_LDAP:
         This test removes the ldap
         """
         # reset the change
+        yield
         DS.remove_ldap()
