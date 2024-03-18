@@ -41,6 +41,12 @@ class Test_Unix_Permissions:
         # Clean up environment.
         API_DELETE.delete_dataset(unix_perms['full_dataset_path'])
         API_DELETE.delete_dataset('tank/test')
+        if unix_perms['ownername'] != 'admin':
+            API_DELETE.delete_user(unix_perms['ownername'])
+        if unix_perms['groupname'] != 'admin':
+            API_DELETE.delete_user(unix_perms['groupname'])
+        if unix_perms['othername'] != 'admin':
+            API_DELETE.delete_user(unix_perms['othername'])
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
