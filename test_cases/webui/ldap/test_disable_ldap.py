@@ -15,14 +15,21 @@ class Test_Disable_LDAP:
         This test verifies ldap can be setup
         """
         DS.click_configure_ldap_button()
-        assert DS.assert_ldap_card() is True
+        assert DS.assert_ldap_edit_panel() is True
         COM.set_input_field('hostname', ldap['domain'])
         COM.set_input_field('basedn', ldap['basedn'])
         COM.set_input_field('binddn', ldap['binddn'])
         COM.set_input_field('bindpw', ldap['bindpassword'])
         COM.set_checkbox('enable')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
+        assert COM.assert_dialog_not_visible('Setting up LDAP') is True
         assert DS.assert_directory_services_page_header() is True
+        # verify the values of ldap
+        assert DS.assert_ldap_card() is True
+        assert COM.get_label_value('Status:') == 'HEALTHY'
+        assert COM.get_label_value('Hostname:') == ldap['domain']
+        assert COM.get_label_value('Base DN:') == ldap['basedn']
+        assert COM.get_label_value('Bind DN:') == ldap['binddn']
 
     @staticmethod
     def verify_ldap_disabled() -> None:

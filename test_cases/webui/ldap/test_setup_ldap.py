@@ -25,10 +25,10 @@ class Test_Setup_LDAP:
         assert DS.assert_directory_services_page_header() is True
         # verify the values of ldap
         assert DS.assert_ldap_card() is True
-        assert COM.get_label_value('Status:') == 'HEALTHY' is True
-        assert COM.get_label_value('Hostname:') == ldap['domain'] is True
-        assert COM.get_label_value('Base DN:') == ldap['basedn'] is True
-        assert COM.get_label_value('Bind DN:') == ldap['binddn'] is True
+        assert COM.get_label_value('Status:') == 'HEALTHY'
+        assert COM.get_label_value('Hostname:') == ldap['domain']
+        assert COM.get_label_value('Base DN:') == ldap['basedn']
+        assert COM.get_label_value('Bind DN:') == ldap['binddn']
 
     @pytest.fixture(scope='class', autouse=True)
     def teardown_class(self) -> None:

@@ -123,7 +123,10 @@ class Directory_Services:
         Example:
             - Directory_Services.click_configure_ldap_button()
         """
-        COM.click_button('configure-ldap')
+        if cls.assert_ldap_card() is True:
+            cls.remove_ldap()
+        else:
+            COM.click_button('configure-ldap')
 
     @classmethod
     def click_ldap_settings_button(cls) -> None:
