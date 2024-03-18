@@ -19,6 +19,7 @@ class Test_Unix_Permissions:
         """
         This method creates the dataset and navigates to datasets before testing.
         """
+        API_POST.start_service('ssh')
         API_DELETE.delete_dataset(unix_perms['full_dataset_path'])
         API_POST.create_dataset('tank/test')
         API_POST.create_dataset(unix_perms['full_dataset_path'])
@@ -63,7 +64,6 @@ class Test_Unix_Permissions:
         """
         This test edits the dataset via WebUI and checks that the changes display and the access level via cli is the same.
         """
-        API_POST.start_service('ssh')
         if unix_perms['othername'] != 'admin':
             API_POST.create_non_admin_user(unix_perms['othername'], 'Unix Test Other user', private_config['PASSWORD'])
         API_PUT.enable_user_ssh_password(private_config['USERNAME'])
