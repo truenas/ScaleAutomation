@@ -19,9 +19,14 @@ class Test_Unix_Permissions:
         """
         This method creates the dataset and navigates to datasets before testing.
         """
+        API_POST.start_service('ssh')
         API_DELETE.delete_dataset(unix_perms['full_dataset_path'])
         API_POST.create_dataset('tank/test')
         API_POST.create_dataset(unix_perms['full_dataset_path'])
+        if unix_perms['ownername'] != 'admin':
+            API_POST.create_non_admin_user(unix_perms['ownername'], 'Unix Test Owner', private_config['PASSWORD'])
+        if unix_perms['groupname'] != 'admin':
+            API_POST.create_non_admin_user(unix_perms['groupname'], 'Unix Test Group user', private_config['PASSWORD'])
         API_POST.set_dataset_permissions_user_and_group('tank/test', 'admin', 'admin')
         API_POST.set_dataset_permissions_user_and_group(unix_perms['full_dataset_path'], unix_perms['ownername'], unix_perms['groupname'])
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
@@ -36,6 +41,12 @@ class Test_Unix_Permissions:
         # Clean up environment.
         API_DELETE.delete_dataset(unix_perms['full_dataset_path'])
         API_DELETE.delete_dataset('tank/test')
+        if unix_perms['ownername'] != 'admin':
+            API_DELETE.delete_user(unix_perms['ownername'])
+        if unix_perms['groupname'] != 'admin':
+            API_DELETE.delete_user(unix_perms['groupname'])
+        if unix_perms['othername'] != 'admin':
+            API_DELETE.delete_user(unix_perms['othername'])
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
@@ -59,11 +70,6 @@ class Test_Unix_Permissions:
         """
         This test edits the dataset via WebUI and checks that the changes display and the access level via cli is the same.
         """
-        API_POST.start_service('ssh')
-        if unix_perms['ownername'] != 'admin':
-            API_POST.create_non_admin_user(unix_perms['ownername'], 'Unix Test Owner', private_config['PASSWORD'])
-        if unix_perms['groupname'] != 'admin':
-            API_POST.create_non_admin_user(unix_perms['groupname'], 'Unix Test Group user', private_config['PASSWORD'])
         if unix_perms['othername'] != 'admin':
             API_POST.create_non_admin_user(unix_perms['othername'], 'Unix Test Other user', private_config['PASSWORD'])
         API_PUT.enable_user_ssh_password(private_config['USERNAME'])
