@@ -10,6 +10,7 @@ from keywords.webui.common import Common as COM
 from keywords.webui.datasets import Datasets as DAT
 from keywords.webui.permissions import Permissions as PERM
 from keywords.webui.navigation import Navigation as NAV
+from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 
 
 @pytest.mark.parametrize('unix_perms', get_data_list('dataset_permission/unix_permissions'), scope='class')
@@ -105,7 +106,7 @@ class Test_Unix_Permissions:
         """
         # Set and verify initial permissions
         self.test_edit_dataset_permissions_card(unix_perms)
-        PERM.clean_dataset_contents(unix_perms['pool'], unix_perms['dataset'])
+        PERM_SSH.clean_dataset_contents(unix_perms['pool'], unix_perms['dataset'])
         # Change permissions and verify access is removed
         DAT.click_dataset_location(unix_perms['dataset'])
         DAT.click_edit_permissions_button()
