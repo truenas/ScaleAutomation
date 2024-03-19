@@ -1,6 +1,10 @@
 from pathlib import Path
 
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import (
+    NoSuchElementException,
+    TimeoutException,
+    ElementClickInterceptedException
+)
 from selenium.webdriver.common.keys import Keys
 
 from helper.reporting import take_screenshot
@@ -14,6 +18,43 @@ import xpaths
 
 
 class Common:
+
+    @classmethod
+    def assert_checkbox_is_locked_and_not_clickable(cls, name: str) -> bool:
+        """
+        This method asserts that the given checkbox is locked and not clickable
+
+        :param name: name of the checkbox
+        :return: True if the checkbox is locked and not clickable otherwise it returns False
+
+        Example:
+            - Common.assert_checkbox_is_locked_and_not_clickable('myCheckbox')
+        """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(name)) is True
+        try:
+            cls.set_checkbox(name)
+        except ElementClickInterceptedException:
+            return True
+        return False
+
+    @classmethod
+    def assert_button_is_locked_and_not_clickable(cls, name: str) -> bool:
+        """
+        This method asserts that the given button is locked and not clickable
+
+        :param name: name of the button
+        :return: True if the button is locked and not clickable otherwise it returns False
+
+        Example:
+            - Common.assert_button_is_locked_and_not_clickable('delete')
+        """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field_locked(name)) is True
+        try:
+            cls.click_button(name)
+        except ElementClickInterceptedException:
+            return True
+        return False
+
     @classmethod
     def assert_confirm_dialog(cls) -> None:
         """
@@ -170,6 +211,18 @@ class Common:
             - Common.assert_right_panel_header_is_not_visible('Header text')
         """
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(header_text, 3))
+
+    @classmethod
+    def assert_save_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method returns True or False if the save button is locked and not clickable.
+
+        :return: True if the save button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Dataset.assert_save_button_is_locked_and_not_clickable()
+        """
+        return Common.assert_button_is_locked_and_not_clickable('save')
 
     @classmethod
     def assert_step_header_is_open(cls, step_header: str) -> bool:

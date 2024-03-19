@@ -105,6 +105,42 @@ class Permissions:
         return val.lower().__contains__(name.lower())
 
     @classmethod
+    def assert_save_acl_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method returns true if the save access control list button is locked and not clickable.
+
+        :return: returns true if the save access control list button is locked and not clickable.
+        """
+        return COM.assert_button_is_locked_and_not_clickable('save-acl')
+
+    @classmethod
+    def assert_save_as_preset_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method returns true if the save as preset button is locked and not clickable.
+
+        :return: returns true if the save as preset button is locked and not clickable.
+        """
+        return COM.assert_button_is_locked_and_not_clickable('save-as-preset')
+
+    @classmethod
+    def assert_set_acl_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method returns true if the set access control list button is locked and not clickable.
+
+        :return: returns true if the set access control list button is locked and not clickable.
+        """
+        return COM.assert_button_is_locked_and_not_clickable('set-acl')
+
+    @classmethod
+    def assert_strip_acl_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method returns true if the strip access control list button is locked and not clickable.
+
+        :return: returns true if the strip access control list button is locked and not clickable.
+        """
+        return COM.assert_button_is_locked_and_not_clickable('strip-acl')
+
+    @classmethod
     def click_save_acl_button(cls):
         """
         This method clicks the save access control list button.

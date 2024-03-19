@@ -1,2 +1,2 @@
-username,fullname,password,pool,acl_parent_dataset,acl_child_dataset,generic_parent_dataset,generic_child_dataset
-read_only,Read Only,testing,tank,smb-parent,smb-child,generic-parent,generic-child
+username,fullname,password,pool,acl_parent_dataset,acl_child_dataset,generic_parent_dataset,generic_child_dataset,snapshot_name
+read_only,Read Only,testing,tank,smb-parent,smb-child,generic-parent,generic-child,test-snapshot
