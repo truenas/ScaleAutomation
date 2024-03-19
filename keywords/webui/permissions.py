@@ -18,15 +18,22 @@ class Permissions:
         :param password: The password used for authentication.
         :return: True if the dataset is accessible with execute access, False otherwise.
         """
-        file = f"{username}exec_file.sh"
-        cr_dir = f"{username}exec_dir"
-        command = f'cd /mnt/{pool}/test ; chmod 777 . ; touch {file} ;  echo -n "mkdir /mnt/{pool}/{dataset}/{cr_dir}" | cat > {file} ; chmod 777 {file}'
-        SSH.get_output_from_ssh(command, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
-        command2 = f"cd /mnt/{pool}/test ; ./{file}"
-        SSH.get_output_from_ssh(command2, private_config['IP'], username, password)
-        command3 = f"cd /mnt/{pool} ; sudo ls -al {dataset}"
-        value = SSH.get_output_from_ssh(command3, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
-        return cr_dir in value.stdout.lower()
+        # leaving commented for when we need to test file execution permissions.
+        # file = f"{username}exec_file.sh"
+        # cr_dir = f"{username}exec_dir"
+        # command = f'cd /mnt/{pool}/test ; chmod 777 . ; touch {file} ;  echo -n "mkdir /mnt/{pool}/{dataset}/{cr_dir}" | cat > {file} ; chmod 777 {file}'
+        # SSH.get_output_from_ssh(command, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        # command2 = f"cd /mnt/{pool}/test ; ./{file}"
+        # SSH.get_output_from_ssh(command2, private_config['IP'], username, password)
+        # command3 = f"cd /mnt/{pool} ; sudo ls -al {dataset}"
+        # value = SSH.get_output_from_ssh(command3, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        # return cr_dir in value.stdout.lower()
+        command = f"cd /mnt/{pool}/{dataset}"
+        value = SSH.get_output_from_ssh(command, private_config['IP'], username, password)
+        if "permission denied" in value.stderr.lower():
+            print("Permission denied while running command.")
+            return False
+        return True
 
     @classmethod
     def assert_dataset_read_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
@@ -39,7 +46,7 @@ class Permissions:
         :param password: The password used for authentication.
         :return: True if the dataset is accessible with read access, False otherwise.
         """
-        command = f"cd /mnt/{pool}/{dataset} ; ls -al"
+        command = f"cd /mnt/{pool} ; ls {dataset}"
         value = SSH.get_output_from_ssh(command, private_config['IP'], username, password)
         if "permission denied" in value.stderr.lower():
             print("Permission denied while running command.")
@@ -103,6 +110,28 @@ class Permissions:
         """
         val = COM.get_element_property(xpaths.datasets.selected_dataset_owner(), 'textContent')
         return val.lower().__contains__(name.lower())
+
+    @classmethod
+    def clean_dataset_contents(cls, pool: str, dataset: str) -> None:
+        """
+        This method removes the files from the given dataset. Due to possible lack of permissions, this method must delete
+        the files by name instead of by * as this will not work even with sudo and sudo -s.
+
+        :param pool: The name of the pool the dataset is in.
+        :param dataset: The name of the dataset to be cleaned.
+
+        Example:
+            - Permissions.clean_dataset_contents('tank', 'test-dataset')
+        """
+        command = f"sudo rm -rf /mnt/{pool}/{dataset}/unix_test_ownerfile.txt"
+        value = SSH.get_output_from_ssh(command, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        command2 = f"sudo rm -rf /mnt/{pool}/{dataset}/unix_test_groupuserfile.txt"
+        value2 = SSH.get_output_from_ssh(command2, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        command3 = f"sudo rm -rf /mnt/{pool}/{dataset}/unix_test_otheruserfile.txt"
+        value3 = SSH.get_output_from_ssh(command3, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        command4 = f"cd /mnt/{pool} ; sudo ls -al {dataset}"
+        SSH.get_output_from_ssh(command4, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        assert value.status is True and value2.status is True and value3.status is True
 
     @classmethod
     def click_save_acl_button(cls):
