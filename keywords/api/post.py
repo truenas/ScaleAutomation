@@ -359,6 +359,34 @@ class API_POST:
         return response
 
     @classmethod
+    def create_snapshot(cls, dataset: str, name: str, recursive: bool = False, suspend_vms: bool = False,
+                        vmware_sync: bool = False) -> Response:
+        """
+        This method creates the given snapshot.
+
+        :param dataset: is the name of the dataset.
+        :param name: is the name of the snapshot.
+        :param recursive: Optional - True if should the snapshot be recursive else False.
+        :param suspend_vms: Optional - True if should the snapshot suspend vms else False.
+        :param vmware_sync: Optional - True if should the snapshot sync vmware else False.
+
+        :return: the API request response.
+
+        Example:
+            - API_POST.create_snapshot('tank/test-dataset', 'test-snapshot')
+        """
+        payload = {
+            "dataset": dataset,
+            "name": name,
+            "recursive": recursive,
+            "suspend_vms": suspend_vms,
+            "vmware_sync": vmware_sync
+        }
+        response = POST('/zfs/snapshot/', payload)
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
     def export_pool(cls, name: str, destroy: bool = False) -> dict:
         """
         This method exports the given pool.

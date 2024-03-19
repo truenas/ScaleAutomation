@@ -21,6 +21,28 @@ class Datasets:
         return WebUI.wait_until_visible(xpaths.common_xpaths.button_field('add-dataset'))
 
     @classmethod
+    def assert_add_dataset_button_is_locked_and_not_clickable(cls):
+        """
+        This method returns True or False whether the add dataset button is locked and not clickable.
+        :return: True if the add dataset button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Dataset.assert_add_dataset_button_is_locked_and_not_clickable()
+        """
+        return Common.assert_button_is_locked_and_not_clickable('add-dataset')
+
+    @classmethod
+    def assert_add_quota_button_is_locked_and_not_clickable(cls):
+        """
+        This method returns True or False whether the add quota button is locked and not clickable.
+        :return: True if the add quota button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Dataset.assert_add_quota_button_is_locked_and_not_clickable()
+        """
+        return Common.assert_button_is_locked_and_not_clickable('add-quota')
+
+    @classmethod
     def assert_add_zvol_button(cls) -> bool:
         """
         This method return True or False whether the add zvol button is visible.
@@ -30,6 +52,17 @@ class Datasets:
             - Dataset.assert_add_zvol_button()
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.button_field('add-zvol'))
+
+    @classmethod
+    def assert_add_zvol_button_is_locked_and_not_clickable(cls):
+        """
+        This method returns True or False whether the add zvol button is locked and not clickable.
+        :return: True if the add zvol button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Dataset.assert_add_zvol_button_is_locked_and_not_clickable()
+        """
+        return Common.assert_button_is_locked_and_not_clickable('add-zvol')
 
     @classmethod
     def assert_applied_dataset_quota_size(cls, size) -> bool:
@@ -56,6 +89,28 @@ class Datasets:
             - Dataset.assert_applied_inherited_quotas_size('96 KiB')
         """
         return Common.assert_label_and_value_exist('Inherited Quotas:', size)
+
+    @classmethod
+    def assert_create_snapshot_button_is_locked_and_not_clickable(cls):
+        """
+        This method returns True or False whether the create snapshot button is locked and not clickable.
+        :return: True if the create snapshot button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Dataset.assert_create_snapshot_button_is_locked_and_not_clickable()
+        """
+        return Common.assert_button_is_locked_and_not_clickable('create-snapshot')
+
+    @classmethod
+    def assert_delete_dataset_button_is_locked_and_not_clickable(cls):
+        """
+        This method returns True or False whether the delete dataset button is locked and not clickable.
+        :return: True if the delete dataset button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Dataset.assert_delete_dataset_button_is_locked_and_not_clickable()
+        """
+        return Common.assert_button_is_locked_and_not_clickable('delete-dataset')
 
     @classmethod
     def assert_children_size(cls, size: str) -> bool:
@@ -98,6 +153,18 @@ class Datasets:
             case _:
                 name = ''
         return Common.assert_page_header(name)
+
+    @classmethod
+    def assert_data_protection_card_visible(cls) -> bool:
+        """
+        This method returns True or False whether the data protection card is visible.
+
+        :return: True if the data protection card is visible, otherwise it returns False.
+
+        Example:
+            - Dataset.assert_data_protection_card_visible()
+        """
+        return Common.is_card_visible('Data Protection')
 
     @classmethod
     def assert_dataset_group(cls, name: str) -> bool:
@@ -571,7 +638,7 @@ class Datasets:
         Example:
             - Dataset.click_advanced_basic_options_button()
         """
-        Common.click_button('custom-button-advanced-options')
+        Common.click_button('toggle-advanced')
 
     @classmethod
     def click_create_snapshot_button(cls) -> None:
@@ -673,6 +740,16 @@ class Datasets:
             - Dataset.click_manage_role_link('manage-vm')
         """
         Common.click_link(name)
+
+    @classmethod
+    def click_manage_snapshots_link(cls) -> None:
+        """
+        This method clicks on the Manage Snapshots Link.
+
+        Example:
+            - Dataset.click_manage_snapshots_link()
+        """
+        Common.click_link('manage-snapshots')
 
     @classmethod
     def click_manage_user_quotas_link(cls, pool: str, dataset_name: str) -> None:
@@ -1239,6 +1316,18 @@ class Datasets:
             }
         ]
         return payload
+
+    @classmethod
+    def set_dataset_comments(cls, comments: str) -> None:
+        """
+        This method sets the dataset comments.
+
+        :param comments: The comments of the dataset.
+
+        Example:
+            - Dataset.set_dataset_comments('test')
+        """
+        Common.set_input_field('comments', comments)
 
     @classmethod
     def set_dataset_name(cls, name: str) -> None:

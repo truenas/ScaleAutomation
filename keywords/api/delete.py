@@ -138,6 +138,26 @@ class API_DELETE:
         return response
 
     @classmethod
+    def delete_snapshot(cls, snapshot_id: str, defer: bool = False, recursive: bool = False) -> Response:
+        """
+        This method deletes the given snapshot.
+
+        :param snapshot_id: is id of the snapshot.
+        :param defer: is True to defer delete.
+        :param recursive: is True to delete recursively.
+        :return: the API request response.
+
+        Example:
+            - API_DELETE.delete_snapshot('snapshot_id')
+            - API_DELETE.delete_snapshot('snapshot_id', defer=True)
+            - API_DELETE.delete_snapshot('snapshot_id', recursive=True)
+        """
+        payload = {'defer': defer, 'recursive': recursive}
+        response = DELETE(f'/zfs/snapshot/id/{snapshot_id.replace("/", "%2F")}', payload)
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
     def delete_ssh_keypairs(cls, name: str) -> Response:
         """
         This method deletes the given ssh keypairs.
