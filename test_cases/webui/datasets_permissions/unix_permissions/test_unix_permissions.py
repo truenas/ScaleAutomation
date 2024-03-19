@@ -10,6 +10,7 @@ from keywords.webui.common import Common as COM
 from keywords.webui.datasets import Datasets as DAT
 from keywords.webui.permissions import Permissions as PERM
 from keywords.webui.navigation import Navigation as NAV
+from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 
 
 @pytest.mark.parametrize('unix_perms', get_data_list('dataset_permission/unix_permissions'), scope='class')
@@ -97,3 +98,36 @@ class Test_Unix_Permissions:
         PERM.verify_dataset_access(unix_perms['pool'], unix_perms['dataset'], unix_perms['ownername'], private_config['PASSWORD'], unix_perms['user_access'])
         PERM.verify_dataset_access(unix_perms['pool'], unix_perms['dataset'], unix_perms['groupname'], private_config['PASSWORD'], unix_perms['group_access'])
         PERM.verify_dataset_access(unix_perms['pool'], unix_perms['dataset'], unix_perms['othername'], private_config['PASSWORD'], unix_perms['other_access'])
+
+    def test_verify_removed_access(self, unix_perms) -> None:
+        """
+        This test edits the dataset via WebUI and checks that the changes display and the access level via cli is the same.
+        Then it removes the access and checks that the access is removed.
+        """
+        # Set and verify initial permissions
+        self.test_edit_dataset_permissions_card(unix_perms)
+        PERM_SSH.clean_dataset_contents(unix_perms['pool'], unix_perms['dataset'])
+        # Change permissions and verify access is removed
+        DAT.click_dataset_location(unix_perms['dataset'])
+        DAT.click_edit_permissions_button()
+        PERM.set_dataset_user(unix_perms['ownername'])
+        PERM.set_dataset_group(unix_perms['groupname'])
+        PERM.set_apply_user_checkbox()
+        PERM.set_apply_group_checkbox()
+        PERM.set_user_access(unix_perms['changed_user_access'])
+        PERM.set_group_access(unix_perms['changed_group_access'])
+        PERM.set_other_access(unix_perms['changed_other_access'])
+        COM.click_save_button_and_wait_for_progress_bar()
+        assert PERM.assert_dataset_owner(unix_perms['ownername']) is True
+        assert PERM.assert_dataset_group(unix_perms['groupname']) is True
+        assert PERM.verify_dataset_permissions_type('Unix Permissions') is True
+        assert PERM.verify_dataset_owner_permissions_name(unix_perms['ownername']) is True
+        assert PERM.verify_dataset_owner_permissions(unix_perms['changed_user_access']) is True
+        assert PERM.verify_dataset_group_permissions_name(unix_perms['groupname']) is True
+        assert PERM.verify_dataset_group_permissions(unix_perms['changed_group_access']) is True
+        assert PERM.verify_dataset_other_permissions_name() is True
+        assert PERM.verify_dataset_other_permissions(unix_perms['changed_other_access']) is True
+        assert PERM.verify_dataset_permissions_edit_button() is True
+        PERM.verify_dataset_access(unix_perms['pool'], unix_perms['dataset'], unix_perms['ownername'], private_config['PASSWORD'], unix_perms['changed_user_access'])
+        PERM.verify_dataset_access(unix_perms['pool'], unix_perms['dataset'], unix_perms['groupname'], private_config['PASSWORD'], unix_perms['changed_group_access'])
+        PERM.verify_dataset_access(unix_perms['pool'], unix_perms['dataset'], unix_perms['othername'], private_config['PASSWORD'], unix_perms['changed_other_access'])
