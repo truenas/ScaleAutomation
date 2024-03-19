@@ -92,7 +92,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Datasets.assert_delete_dataset_button() is True
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Can View Space Management Information")
+    @allure.story("Read Only Admin Can View Dataset Space Management Information")
     def test_read_only_admin_can_view_space_management_information(self, data):
         """
         This test verifies the read-only admin is able to view space management information.
@@ -111,7 +111,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Datasets.assert_group_quotas(' group') is True
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Can Access Quotas For Users And Group")
+    @allure.story("Read Only Admin Can Access Dataset Quotas For Users And Group")
     def test_read_only_admin_can_access_quota_for_users_and_group(self, data):
         """
         This test verifies the read-only admin is able to access Quotas for users and group.
@@ -130,7 +130,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Datasets.is_user_quotas_page_visible()
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Can Access ACL Permissions")
+    @allure.story("Read Only Admin Can Access Dataset ACL Permissions")
     def test_read_only_admin_can_access_acl_permissions(self, data):
         """
         This test verifies the read-only admin is able to access ACL permissions.
@@ -146,7 +146,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Permissions.assert_edit_acl_page_header()
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Can Access Unix Permissions")
+    @allure.story("Read Only Admin Can Dataset Access Unix Permissions")
     def test_read_only_admin_can_access_unix_permissions(self, data):
         """
         This test verifies the read-only admin is able to access Unix permissions.
@@ -222,7 +222,7 @@ class Test_Read_Only_Admin_Dataset:
         Common.close_right_panel()
 
     @allure.tag("Update")
-    @allure.story("Read Only Admin Is Not Able To Modify Space Management Capacity Settings")
+    @allure.story("Read Only Admin Is Not Able To Modify Dataset Space Management Capacity Settings")
     def test_read_only_admin_is_notable_to_modify_space_management_capacity_settings(self, data):
         """
         This test verifies the read-only admin is not able to modify space management capacity settings.
@@ -239,7 +239,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Common.assert_save_button_is_locked_and_not_clickable() is True
 
     @allure.tag("Update")
-    @allure.story("Read Only Admin Is Not Able To Modify Groups And Users Quotas")
+    @allure.story("Read Only Admin Is Not Able To Modify Dataset Groups And Users Quotas")
     def test_read_only_admin_is_not_able_to_modify_groups_and_users_quotas(self, data):
         """
         This test verifies the read-only admin is not able to modify groups and users quotas.
@@ -302,7 +302,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Common.assert_save_button_is_locked_and_not_clickable() is True
 
     @allure.tag("Update")
-    @allure.story("Read Only Admin Is Not Able To Create Snapshots")
+    @allure.story("Read Only Admin Is Not Able To Create Dataset Snapshots")
     def test_read_only_admin_is_not_able_to_create_snapshots(self, data):
         """
         This test verifies the read-only admin is not able to create snapshots.
@@ -316,7 +316,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Datasets.assert_create_snapshot_button_is_locked_and_not_clickable() is True
 
     @allure.tag("Update")
-    @allure.story("Read Only Admin Is Not Able To Delete Clone Rollback And Hold A Snapshot")
+    @allure.story("Read Only Admin Is Not Able To Delete Clone Rollback And Hold A Dataset Snapshot")
     def test_read_only_admin_is_not_able_to_delete_clone_rollback_and_hold_a_snapshot(self, data):
         """
         This test verifies the read-only admin is not able to delete snapshots.
