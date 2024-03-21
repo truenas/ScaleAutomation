@@ -436,7 +436,7 @@ class Dashboard:
             Common.set_toggle(card)
         else:
             Common.unset_toggle(card)
-        Common.click_save_button_and_wait_for_progress_bar()
+        Common.click_save_button_and_wait_for_right_panel()
 
     @classmethod
     def set_original_card_position(cls, card) -> None:
