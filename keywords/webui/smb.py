@@ -20,6 +20,52 @@ class SMB:
         API_POST.add_smb_acl_entry(who, userid, permission, perm_type)
 
     @classmethod
+    def assert_directory_exists(cls, directory: str, share: str, user: str, password: str, ad: bool = False) -> bool:
+        """
+        This returns True if the given directory exists, otherwise it returns False.
+
+        :param directory: is the name of the directory to validate
+        :param share: is the name of the share to access
+        :param user: is the name of the system SMB user
+        :param password: is the password of the SMB user
+        :param ad: whether the user is an AD user
+
+        :return: True if the given file is deleted, otherwise it returns False.
+
+        Example:
+        - SMB.assert_directory_exists('myDir', 'myShare', 'user', 'password')
+        - SMB.assert_directory_exists('myDir', 'myShare', 'user', 'password', True)
+        """
+        use_ad = ""
+        if ad is True:
+            use_ad = "-W AD03 "
+        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} {use_ad}-U {user}%{password} -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        return response.stdout.__contains__(directory)
+
+    @classmethod
+    def assert_file_exists(cls, file: str, share: str, user: str, password: str, ad: bool = False) -> bool:
+        """
+        This returns True if the given file exists, otherwise it returns False.
+
+        :param file: is the name of the file to validate
+        :param share: is the name of the share to access
+        :param user: is the name of the system SMB user
+        :param password: is the password of the SMB user
+        :param ad: whether the user is an AD user
+
+        :return: True if the given file is deleted, otherwise it returns False.
+
+        Example:
+        - SMB.assert_file_exists('myFile', 'myShare', 'user', 'password')
+        - SMB.assert_file_exists('myFile', 'myShare', 'user', 'password', True)
+        """
+        use_ad = ""
+        if ad is True:
+            use_ad = "-W AD03 "
+        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} {use_ad}-U {user}%{password} -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        return response.stdout.__contains__(file)
+
+    @classmethod
     def assert_guest_access(cls, share: str, user: str = 'nonexistent', password: str = 'nopassword') -> bool:
         """
         This returns True if the share can be accessed by a guest user, otherwise it returns False.
@@ -103,6 +149,30 @@ class SMB:
         return response.stdout.__contains__(share)
 
     @classmethod
+    def assert_user_can_delete_directory(cls, directory: str, share: str, user: str, password: str, ad: bool = False) -> bool:
+        """
+        This returns True if the given directory is deleted, otherwise it returns False.
+
+        :param directory: is the name of the directory to delete
+        :param share: is the name of the share to access
+        :param user: is the name of the system SMB user
+        :param password: is the password of the SMB user
+        :param ad: whether the user is an AD user
+
+        :return: True if the given file is deleted, otherwise it returns False.
+
+        Example:
+        - SMB.assert_user_can_delete_directory('myDir', 'myShare', 'user', 'password')
+        - SMB.assert_user_can_delete_directory('myDir', 'myShare', 'user', 'password', True)
+        """
+        use_ad = ""
+        if ad is True:
+            use_ad = "-W AD03 "
+        SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} {use_ad}-U {user}%{password} -c \'rmdir {directory}\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} {use_ad}-U {user}%{password} -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        return not response.stdout.__contains__(directory)
+
+    @classmethod
     def assert_user_can_delete_file(cls, file: str, share: str, user: str, password: str, ad: bool = False) -> bool:
         """
         This returns True if the given file is deleted, otherwise it returns False.
@@ -116,14 +186,39 @@ class SMB:
         :return: True if the given file is deleted, otherwise it returns False.
 
         Example:
-        - SMB.assert_user_can_delete_file('myFile', 'myShare')
-        """
+        - SMB.assert_user_can_delete_file('myFile', 'myShare', 'user', 'password')
+        - SMB.assert_user_can_delete_file('myFile', 'myShare', 'user', 'password', True)
+         """
         use_ad = ""
         if ad is True:
             use_ad = "-W AD03 "
         SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} {use_ad}-U {user}%{password} -c \'rm {file}\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
         response = SSH_Command_Line(f'smbclient //{private_config["IP"]}/{share} {use_ad}-U {user}%{password} -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
         return not response.stdout.__contains__(file)
+
+    @classmethod
+    def assert_user_can_put_directory(cls, directory: str, share: str, user: str, password: str, ad: bool = False) -> bool:
+        """
+        This returns True if the given directory is put, otherwise it returns False.
+
+        :param directory: is the name of the directory to put
+        :param share: is the name of the share to access
+        :param user: is the name of the system SMB user
+        :param password: is the password of the SMB user
+        :param ad: whether the user is an AD user
+
+        :return: True if the given file is put, otherwise it returns False.
+
+        Example:
+        - SMB.assert_user_can_put_directory('myDir', 'myShare', 'user', 'password')
+        - SMB.assert_user_can_put_directory('myDir', 'myShare', 'user', 'password', True)
+        """
+        use_ad = ""
+        if ad is True:
+            use_ad = "-W AD03 "
+        SSH_Command_Line(f'cd smbdirectory; smbclient //{private_config["IP"]}/{share} {use_ad}-U {user}%{password} -c \'mkdir {directory}\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        response = SSH_Command_Line(f'cd smbdirectory; smbclient //{private_config["IP"]}/{share} {use_ad}-U {user}%{password} -c \'ls\'', private_config['SMB_ACL_IP'], private_config['SMB_USERNAME'], private_config['SMB_PASSWORD'])
+        return response.stdout.__contains__(directory)
 
     @classmethod
     def assert_user_can_put_file(cls, file: str, share: str, user: str, password: str, ad: bool = False) -> bool:
