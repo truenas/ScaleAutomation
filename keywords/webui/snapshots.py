@@ -94,6 +94,39 @@ class Snapshots:
         return Common.assert_page_header('Snapshots')
 
     @classmethod
+    def click_add_snapshot_button(cls) -> None:
+        """
+        This method clicks the Add snapshot button
+
+        Example:
+            - Data_Protection.click_add_snapshot_button()
+        """
+        Common.click_button('add-snapshot')
+        assert Common.assert_right_panel_header('Add Snapshot') is True
+        assert Common.assert_progress_bar_not_visible() is True
+
+    @classmethod
+    def click_rollback_button(cls) -> None:
+        """
+        This method clicks the Rollback Snapshot button
+
+        Example:
+            - Snapshots.click_rollback_button()
+        """
+        return Common.click_on_element('//*[starts-with(@data-test,"button-rollback")]')
+
+    @classmethod
+    def confirm_rollback_snapshot_dialog(cls) -> None:
+        """
+        This method confirms the Rollback Snapshot dialog
+
+        Example:
+            - Snapshots.confirm_rollback_snapshot_dialog()
+        """
+        Common.set_checkbox('force')
+        Common.click_button('rollback')
+
+    @classmethod
     def expand_snapshot_by_name(cls, snapshot_name: str) -> None:
         """
         This method expands the given snapshot
@@ -104,3 +137,15 @@ class Snapshots:
             - Snapshots.expand_snapshot('test-snapshot')
         """
         Common.click_on_element(xpaths.common_xpaths.any_text(snapshot_name))
+
+    @classmethod
+    def select_snapshot_dataset(cls, path: str):
+        """
+        This method selects the Snapshot dataset
+
+        :param path: is the path of the dataset to snapshot
+
+        Example:
+            - Snapshots.select_snapshot_dataset('pool/dataset/path')
+        """
+        Common.select_option('dataset', f'dataset-{Common.convert_to_tag_format(path)}')
