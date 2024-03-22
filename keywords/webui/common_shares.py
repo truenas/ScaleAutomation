@@ -8,18 +8,69 @@ from helper.api import Response
 
 
 class Common_Shares:
+
     @classmethod
-    def assert_share_card_displays(cls, sharetype: str) -> bool:
+    def assert_iscsi_configure_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method returns True if the configure button is locked and not clickable otherwise it returns False.
+
+        :return: True if the configure button is locked and not clickable otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_configure_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('iscsi-share-configure')
+
+    @classmethod
+    def assert_iscsi_delete_button_is_locked_and_not_clickable(cls, target_name: str) -> bool:
+        """
+        This method returns True if the delete button is locked and not clickable otherwise it returns False.
+
+        :param target_name: The name of the iSCSI target Example: target1 is target-1
+        :return: True if the delete button is locked and not clickable otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_iscsi_delete_button_is_locked_and_not_clickable('target-1')
+        """
+        return COM.assert_button_is_locked_and_not_clickable(f'card-iscsi-target-{target_name}-delete-row-action')
+
+    @classmethod
+    def assert_iscsi_target_is_visible(cls, target_name: str) -> bool:
+        """
+        This method returns True if the iSCSI target is visible otherwise it returns False.
+
+        :param target_name: The name of the iSCSI target Example: target1 is target-1
+        :return: True if the iSCSI target is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_iscsi_target_is_visible('target-1')
+        """
+        return WebUI.wait_until_visible(xpaths.sharing.iscsi_target_name(target_name))
+
+    @classmethod
+    def assert_iscsi_wizard_button_is_locked_and_not_clickable(cls):
+        """
+        This method returns True if the iSCSI wizard button is locked and not clickable otherwise it returns False.
+
+        :return: True if the iSCSI wizard button is locked and not clickable otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_iscsi_wizard_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('iscsi-share-wizard')
+
+    @classmethod
+    def assert_share_card_displays(cls, share_type: str) -> bool:
         """
         This method returns True if the share card is visible otherwise it returns False.
 
-        :param sharetype: type of the given share
+        :param share_type: type of the given share
         :return: True if the share card is visible otherwise it returns False.
 
         Example:
            - Common_Shares.assert_share_card_displays('smb')
         """
-        return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//ix-{sharetype}-card'))
+        return WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//ix-{share_type}-card'))
 
     @classmethod
     def assert_share_card_enabled_button_by_name(cls, sharetype: str, name: str) -> bool:
@@ -243,6 +294,18 @@ class Common_Shares:
         path = f'card-{sharetype}-share-{name.lower()}-delete-row-action'
         path = path.replace('--', '-')
         COM.click_button(path)
+
+    @classmethod
+    def click_edit_iscsi_target(cls, target_name: str) -> None:
+        """
+        This method clicks the edit button of the iSCSI target
+
+        :param target_name: The name of the iSCSI target. Example: target1 is target-1
+
+        Example:
+           - Common_Shares.click_edit_iscsi_target('target-1')
+        """
+        COM.click_button(f'card-iscsi-target-{target_name}-edit-row-action')
 
     @classmethod
     def click_edit_share(cls, sharetype: str, name: str) -> None:

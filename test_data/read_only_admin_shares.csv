@@ -1,0 +1,2 @@
+username,fullname,password,pool_name,iscsi_name,iscsi_name_xpath,lunid,smb_name,target_alias,nfs_name
+roa,Read Only Admin,testing,tank,iscsi-test1,iscsi-test-1,1,smb-test1,iSCSI Test1,nfs-test1
