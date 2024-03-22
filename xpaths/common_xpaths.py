@@ -6,6 +6,8 @@ progress_bar = '//mat-progress-bar'
 """This variable returns the default progress bar xpath text"""
 progress_spinner = '//mat-spinner'
 """This variable returns the default spinner xpath text"""
+readonly_badge = '//ix-readonly-badge'
+"""This variable returns the readonly badge xpath text"""
 
 
 def any_child_parent_target(child: str, parent: str, target: str) -> str:
@@ -407,7 +409,6 @@ def share_attribute(sharetype: str, attribute: str, desc: str) -> str:
         if attribute == 'description':
             index = 2
     return f'//ix-{sharetype}-card//*[@data-test="row"]/td[{index}]/descendant::*[contains(text(),"{desc}")]'
-
 
 def share_enabled_slider(sharetype: str, name: str) -> str:
     """
