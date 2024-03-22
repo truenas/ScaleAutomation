@@ -389,13 +389,13 @@ class API_POST:
     @classmethod
     def delete_all_dataset_snapshots(cls, dataset: str) -> dict:
         """
-        This method creates an encrypted dataset.
+        This method delete all snapshots from given dataset.
 
-        :param dataset: The dataset pool and name.
-        :return: The API response.
+        :param dataset: The dataset snapshots ar to be deleted from.
+        :return: The dictionary response from the job.
 
         Example:
-            - API_POST.create_encrypted_dataset('tank/test-dataset')
+            - API_POST.delete_all_dataset_snapshots('tank/test-dataset')
         """
         payload = {"name": dataset}
         response = POST('/pool/dataset/destroy_snapshots', payload)

@@ -30,7 +30,7 @@ class SMB:
         :param password: is the password of the SMB user
         :param ad: whether the user is an AD user
 
-        :return: True if the given file is deleted, otherwise it returns False.
+        :return: True if the given directory exists, otherwise it returns False.
 
         Example:
         - SMB.assert_directory_exists('myDir', 'myShare', 'user', 'password')
@@ -53,7 +53,7 @@ class SMB:
         :param password: is the password of the SMB user
         :param ad: whether the user is an AD user
 
-        :return: True if the given file is deleted, otherwise it returns False.
+        :return: True if the given file exists, otherwise it returns False.
 
         Example:
         - SMB.assert_file_exists('myFile', 'myShare', 'user', 'password')
@@ -159,7 +159,7 @@ class SMB:
         :param password: is the password of the SMB user
         :param ad: whether the user is an AD user
 
-        :return: True if the given file is deleted, otherwise it returns False.
+        :return: True if the given directory is deleted, otherwise it returns False.
 
         Example:
         - SMB.assert_user_can_delete_directory('myDir', 'myShare', 'user', 'password')
@@ -207,7 +207,7 @@ class SMB:
         :param password: is the password of the SMB user
         :param ad: whether the user is an AD user
 
-        :return: True if the given file is put, otherwise it returns False.
+        :return: True if the given directory is put, otherwise it returns False.
 
         Example:
         - SMB.assert_user_can_put_directory('myDir', 'myShare', 'user', 'password')
