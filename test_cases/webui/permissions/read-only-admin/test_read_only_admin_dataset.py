@@ -45,9 +45,11 @@ class Test_Read_Only_Admin_Dataset:
         API_DELETE.delete_snapshot(f'{data["pool"]}/{data["acl_parent_dataset"]}@{data["snapshot_name"]}', recursive=True)
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["acl_parent_dataset"]}', recursive=True, force=True)
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["generic_parent_dataset"]}', recursive=True, force=True)
-        API_DELETE.delete_user(data['username'])
+
         Common.logoff_truenas()
         Common.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
+
+        API_DELETE.delete_user(data['username'])
 
     @allure.tag("Read")
     @allure.story("Read Only Admin Can See The Dataset")
@@ -162,7 +164,7 @@ class Test_Read_Only_Admin_Dataset:
         Datasets.click_edit_permissions_button()
         assert Permissions.assert_edit_permissions_page_header()
 
-    @allure.tag("Update")
+    @allure.tag("Create", "Delete")
     @allure.story("Read Only Admin Is Not Able To Add And Delete Dataset")
     def test_read_only_admin_is_not_able_to_add_and_delete_dataset(self, data):
         """
@@ -183,7 +185,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Datasets.assert_selected_dataset_name(data["acl_parent_dataset"]) is True
         assert Datasets.assert_add_dataset_button_is_locked_and_not_clickable() is True
 
-    @allure.tag("Update")
+    @allure.tag("Create")
     @allure.story("Read Only Admin Is Not Able To Add A Zvol")
     def test_read_only_admin_is_not_able_to_add_a_zvol(self, data):
         """
@@ -212,6 +214,7 @@ class Test_Read_Only_Admin_Dataset:
 
         # Ensure you can't save before editing
         assert Datasets.assert_edit_dataset_panel_header() is True
+        assert Common.assert_header_readonly_badge() is True
         assert Common.assert_save_button_is_locked_and_not_clickable() is True
 
         # Ensure you can't save after editing
@@ -236,6 +239,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Datasets.assert_selected_dataset_name(data["acl_parent_dataset"]) is True
         Datasets.click_edit_dataset_space_button()
         assert Datasets.is_capacity_settings_right_panel_visible() is True
+        assert Common.assert_header_readonly_badge() is True
         assert Common.assert_save_button_is_locked_and_not_clickable() is True
 
     @allure.tag("Update")

@@ -3,6 +3,19 @@ from keywords.webui.common import Common as COM
 
 
 class iSCSI:
+
+    @classmethod
+    def assert_edit_iscsi_target_panel_header(cls) -> bool:
+        """
+        This method asserts the header of the Edit iSCSI Target panel.
+
+        :return: True if the header of the Edit iSCSI Target panel is displayed, otherwise it returns False.
+
+        Example:
+            - iSCSI.assert_edit_iscsi_target_panel_header()
+        """
+        return COM.assert_right_panel_header('Edit ISCSI Target')
+
     @classmethod
     def verify_iscsi_sharing_configuration_page_opens(cls) -> None:
         """
@@ -10,6 +23,10 @@ class iSCSI:
         """
         assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-sharing')) is True
         assert COM.assert_page_header('iSCSI') is True
+
+    @classmethod
+    def set_target_alias_input(cls, text: str) -> None:
+        COM.set_input_field('alias', text)
 
     @classmethod
     def verify_iscsi_configuration_tabs(cls) -> None:

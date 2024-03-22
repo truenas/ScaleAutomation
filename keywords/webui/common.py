@@ -3,7 +3,8 @@ from pathlib import Path
 from selenium.common.exceptions import (
     NoSuchElementException,
     TimeoutException,
-    ElementClickInterceptedException
+    ElementClickInterceptedException,
+    StaleElementReferenceException
 )
 from selenium.webdriver.common.keys import Keys
 
@@ -50,8 +51,9 @@ class Common:
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field_locked(name)) is True
         try:
-            cls.click_button(name)
-        except ElementClickInterceptedException:
+            # At this point the button is visible a Timeout or ElementClickIntercepted exception will be thrown.
+            cls.click_button(name, 1)
+        except (ElementClickInterceptedException, TimeoutException):
             return True
         return False
 
@@ -187,6 +189,10 @@ class Common:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header_text, 1), timeout)
 
     @classmethod
+    def assert_header_readonly_badge(cls) -> bool:
+        return WebUI.wait_until_visible(xpaths.common_xpaths.readonly_badge)
+
+    @classmethod
     def assert_right_panel_header(cls, header_text) -> bool:
         """
         This method return True if the right panel header text is visible before timeout otherwise it returns False.
@@ -316,16 +322,17 @@ class Common:
         Common.click_button('toggle-advanced-options')
 
     @classmethod
-    def click_button(cls, name: str) -> None:
+    def click_button(cls, name: str, timeout: int = shared_config['WAIT']) -> None:
         """
         This method clicks the given button.
 
         :param name: is the name of the button to click.
+        :param timeout: optional - is the timeout in seconds.
 
         Example:
             - Common.click_button('myButton')
         """
-        cls.click_on_element(xpaths.common_xpaths.button_field(name))
+        cls.click_on_element(xpaths.common_xpaths.button_field(name), timeout)
 
     @classmethod
     def click_cancel_button(cls) -> None:
@@ -350,16 +357,19 @@ class Common:
         cls.click_on_element(xpaths.common_xpaths.link_field(name))
 
     @classmethod
-    def click_on_element(cls, xpath: str) -> None:
+    def click_on_element(cls, xpath: str, timeout: int = shared_config['WAIT']) -> None:
         """
         This method wait and click on the given xpath element.
 
         :param xpath: is the xpath text to click on.
+        :param timeout: optional - is the timeout in seconds.
 
         Example:
             - Common.click_on_element('xpath')
+            - Common.click_on_element('xpath', 5)
+            - Common.click_on_element('xpath', shared_config['MEDIUM_WAIT'])
         """
-        find = WebUI.wait_until_clickable(xpath, shared_config['WAIT'])
+        find = WebUI.wait_until_clickable(xpath, timeout)
         find.click()
 
     @classmethod
@@ -707,13 +717,13 @@ class Common:
             - Common.is_visible('myXpath')
         """
         obj = None
+        result = False
         try:
             obj = WebUI.xpath(xpath)
-        except NoSuchElementException:
-            print("NoSuchElementException occurred trying to find object: " + xpath)
-            if obj is None:
-                return False
-        return obj.is_displayed()
+            result = obj.is_displayed()
+        except (NoSuchElementException, StaleElementReferenceException):
+            return False
+        return result
 
     @classmethod
     def login_to_truenas(cls, user: str, password: str) -> None:
