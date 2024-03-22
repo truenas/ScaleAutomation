@@ -48,7 +48,7 @@ class API_POST:
         response = POST('/certificate/', payload)
         assert response.status_code == 200, response.text
         job_status = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
-        assert job_status['state'] == 'SUCCESS', job_status['results'] is True
+        assert job_status['state'] == 'SUCCESS', job_status['results']
         return job_status
 
     @classmethod
@@ -115,7 +115,7 @@ class API_POST:
         }
         response = POST('/certificate/', payload)
         job_status = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
-        assert job_status['state'] == 'SUCCESS', job_status['results'] is True
+        assert job_status['state'] == 'SUCCESS', job_status['results']
         return job_status
 
     @classmethod
@@ -387,6 +387,24 @@ class API_POST:
         return response
 
     @classmethod
+    def delete_all_dataset_snapshots(cls, dataset: str) -> dict:
+        """
+        This method creates an encrypted dataset.
+
+        :param dataset: The dataset pool and name.
+        :return: The API response.
+
+        Example:
+            - API_POST.create_encrypted_dataset('tank/test-dataset')
+        """
+        payload = {"name": dataset}
+        response = POST('/pool/dataset/destroy_snapshots', payload)
+        assert response.status_code == 200, response.text
+        job_status = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
+        assert job_status['state'] == 'SUCCESS', job_status['results']
+        return job_status
+
+    @classmethod
     def export_pool(cls, name: str, destroy: bool = False) -> dict:
         """
         This method exports the given pool.
@@ -408,7 +426,7 @@ class API_POST:
         response = POST(f'/pool/id/{pool_id}/export/', payload)
         assert response.status_code == 200, response.text
         job_status = API_Common.wait_on_job(response.json(), shared_config['EXTRA_LONG_WAIT'])
-        assert job_status['state'] == 'SUCCESS', job_status['results'] is True
+        assert job_status['state'] == 'SUCCESS', job_status['results']
         return job_status
 
     @classmethod
@@ -435,7 +453,7 @@ class API_POST:
         result = POST('/activedirectory/leave', {'username': username, 'password': password})
         assert result.status_code == 200, result.text
         job_status = API_Common.wait_on_job(result.json(), shared_config['LONG_WAIT'])
-        assert job_status['state'] == 'SUCCESS', job_status['results'] is True
+        assert job_status['state'] == 'SUCCESS', job_status['results']
         return job_status['results']
 
     @classmethod
@@ -627,7 +645,7 @@ class API_POST:
 
         response = POST(f'/pool/dataset/{state}', payload)
         job_status = API_Common.wait_on_job(response.json(), shared_config['WAIT'])
-        assert job_status['state'] == 'SUCCESS', job_status['results'] is True
+        assert job_status['state'] == 'SUCCESS', job_status['results']
         if system == 'remote':
             private_config['API_IP'] = private_config['IP']
         return response
