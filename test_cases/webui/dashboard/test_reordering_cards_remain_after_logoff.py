@@ -9,6 +9,14 @@ from keywords.webui.dashboard import Dashboard
 @allure.epic("Dashboard")
 @allure.feature("Dashboard-Reorder")
 class Test_Verify_Reordering_Cards_Remain_After_Logoff:
+    @pytest.fixture(scope='function', autouse=True)
+    def setup_test(self):
+        """
+        This fixture resets the Dashboard cards back to original positions.
+        """
+        Dashboard.set_original_card_position('sysinfo')
+        Dashboard.set_original_card_position('help')
+        Dashboard.set_original_card_position('cpu')
 
     @pytest.fixture(scope='function', autouse=True)
     def tear_down_test(self):
