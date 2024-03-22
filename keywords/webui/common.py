@@ -420,6 +420,18 @@ class Common:
         return cls.assert_progress_bar_not_visible()
 
     @classmethod
+    def click_save_button_and_wait_for_right_panel(cls) -> bool:
+        """
+        This method clicks the save button and waits for the right panel to disappear
+
+        Example:
+            - Common.click_save_button_and_wait_for_right_panel()
+        """
+        cls.click_save_button()
+        assert cls.assert_progress_bar_not_visible() is True
+        return WebUI.wait_until_not_visible(xpaths.common_xpaths.close_right_panel())
+
+    @classmethod
     def close_right_panel(cls):
         """
         This method clicks the close right panel button
