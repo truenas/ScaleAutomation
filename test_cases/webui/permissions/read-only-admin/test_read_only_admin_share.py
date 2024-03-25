@@ -58,6 +58,8 @@ class Test_Read_Only_Admin_Share:
         assert Common_Shares.assert_share_card_displays('iscsi') is True
         assert Common_Shares.assert_iscsi_target_is_visible(data['iscsi_name_xpath']) is True
 
+    @allure.tag("Update", 'iSCSI')
+    @allure.story("Read Only Admin Is Not Able To Enable Or Disable The iSCSI Service")
     def test_read_only_is_not_able_enable_or_disable_iscsi_service(self, data):
         """
         This test verifies the read-only admin is not able to enable or disable the NFS service.
@@ -115,6 +117,8 @@ class Test_Read_Only_Admin_Share:
         # Verify the read-only admin is not able to delete an iSCSI share
         assert Common_Shares.assert_iscsi_delete_button_is_locked_and_not_clickable(data['iscsi_name_xpath']) is True
 
+    @allure.tag("Read", 'NFS')
+    @allure.story("Read Only Admin Is Able To View Pre-Configured NFS Shares")
     def test_read_only_admin_is_able_to_view_pre_configured_nfs_shares(self, data):
         """
         This test verifies the read-only admin can view pre-configured NFS shares.
@@ -127,6 +131,8 @@ class Test_Read_Only_Admin_Share:
         assert Common_Shares.assert_share_name('nfs', data['nfs_name']) is True
         assert Common_Shares.assert_share_description('nfs', data['nfs_description']) is True
 
+    @allure.tag("Update", 'NFS')
+    @allure.story("Read Only Admin Is Not Able To Enable Or Disable The NFS Service")
     def test_read_only_is_not_able_enable_or_disable_nfs_service(self, data):
         """
         This test verifies the read-only admin is not able to enable or disable the NFS service.
@@ -143,6 +149,3 @@ class Test_Read_Only_Admin_Share:
         assert Common_Shares.assert_share_card_displays('nfs') is True
         assert Common_Shares.assert_enable_share_service_is_locked_and_not_clickable('nfs') is True
         assert Common_Shares.is_share_service_stopped('nfs') is True
-
-
-
