@@ -1,6 +1,7 @@
 import pytest
 
 from helper.data_config import get_data_list
+from keywords.api.post import API_POST
 from keywords.webui.data_protection import Data_Protection as DP
 from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation
@@ -23,8 +24,8 @@ def setup_class(rep):
     This method creates all ssh connections needed for replication
     """
     # Setup Datasets.
-    DATASET.create_dataset_by_api(rep['source'])
-    DATASET.create_dataset_by_api(rep['destination'])
+    API_POST.create_dataset(rep['source'])
+    API_POST.create_dataset(rep['destination'])
     DATASET.create_remote_dataset_by_api(rep['source'])
     DATASET.create_remote_dataset_by_api(rep['destination'])
 

@@ -1,5 +1,7 @@
 import pytest
 from helper.data_config import get_data_list
+from keywords.api.delete import API_DELETE
+from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
 from keywords.webui.datasets import Datasets as DATASET
@@ -10,13 +12,13 @@ from keywords.webui.smb import SMB
 @pytest.mark.parametrize('smb_data', get_data_list('shares/smb'))
 def test_edit_smb_share(smb_data) -> None:
     # Environment setup
-    COMSHARE.delete_share_by_api('smb', smb_data['name'])
-    COMSHARE.delete_share_by_api('smb', smb_data['name_alt'])
+    API_DELETE.delete_share('smb', smb_data['name'])
+    API_DELETE.delete_share('smb', smb_data['name_alt'])
     DATASET.delete_dataset_by_api(smb_data['path'])
     DATASET.delete_dataset_by_api(smb_data['path_alt'])
-    DATASET.create_dataset_by_api(smb_data['path'], 'SMB')
-    DATASET.create_dataset_by_api(smb_data['path_alt'], 'SMB')
-    COMSHARE.create_share_by_api('smb', smb_data['name'], smb_data['path'])
+    API_POST.create_dataset(smb_data['path'], 'SMB')
+    API_POST.create_dataset(smb_data['path_alt'], 'SMB')
+    API_POST.create_share('smb', smb_data['name'], "/mnt/"+smb_data['path'])
 
     NAV.navigate_to_shares()
     assert COMSHARE.assert_share_card_displays('smb')
@@ -47,8 +49,8 @@ def test_edit_smb_share(smb_data) -> None:
     assert not COMSHARE.is_share_enabled('smb', smb_data['name_alt'])
 
     # Environment Teardown
-    COMSHARE.delete_share_by_api('smb', smb_data['name'])
+    API_DELETE.delete_share('smb', smb_data['name'])
     DATASET.delete_dataset_by_api(smb_data['path'])
-    COMSHARE.delete_share_by_api('smb', smb_data['name_alt'])
+    API_DELETE.delete_share('smb', smb_data['name_alt'])
     DATASET.delete_dataset_by_api(smb_data['path_alt'])
     NAV.navigate_to_dashboard()
