@@ -33,6 +33,19 @@ class Permissions_SSH:
         return True
 
     @classmethod
+    def assert_dataset_has_posix_acl(cls, dataset: str, output: str) -> bool:
+        """
+
+        :param dataset:
+        :param output:
+        :return:
+        """
+        value = SSH.get_output_from_ssh(f'ls -l /mnt/tank | grep {dataset}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        if output in value.stdout.lower():
+            return True
+        return False
+
+    @classmethod
     def assert_dataset_read_access(cls, pool: str, dataset: str, username: str, password: str) -> bool:
         """
         This method attempts to access the given dataset with the given username and preform read actions.
@@ -94,3 +107,15 @@ class Permissions_SSH:
         SSH.get_output_from_ssh(command4, private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
         assert value.status is True and value2.status is True and value3.status is True
 
+    @classmethod
+    def verify_getfacl_contains_preset_permissions(cls, dataset_path: str, permissions: str) -> bool:
+        """
+
+        :param dataset_path:
+        :param permissions:
+        :return:
+        """
+        value = SSH.get_output_from_ssh(f'getfacl {dataset_path}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        if permissions in value.stdout.lower():
+            return True
+        return False

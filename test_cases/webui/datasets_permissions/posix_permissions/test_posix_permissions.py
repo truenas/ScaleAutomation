@@ -9,6 +9,7 @@ from keywords.webui.common import Common as COM
 from keywords.webui.datasets import Datasets as DAT
 from keywords.webui.permissions import Permissions as PERM
 from keywords.webui.navigation import Navigation as NAV
+from keywords.ssh.common import Common_SSH as COM_SSH
 from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 
 
@@ -81,6 +82,8 @@ class Test_POSIX_Permissions:
         """
         This test verifies that the dataset that has been set with POSIX Preset Permissions has the changes reflected via CLI.
         """
+        API_PUT.enable_user_ssh_password(private_config['USERNAME'])
+        API_PUT.enable_user_all_sudo_commands_no_password(private_config['USERNAME'])
         DAT.click_dataset_location(posix_acl_preset['dataset'])
         DAT.click_edit_permissions_button()
         PERM.click_set_acl_button()
@@ -95,4 +98,21 @@ class Test_POSIX_Permissions:
         assert PERM.assert_dataset_owner('root') is True
         assert PERM.assert_dataset_group('root') is True
         assert PERM.verify_dataset_permissions_type('POSIX Permissions') is True
-
+        # Verify the dataset is set with POSIX ACL
+        assert PERM_SSH.assert_dataset_has_posix_acl(posix_acl_preset['dataset'], posix_acl_preset['ls_output']) is True
+        # Verify the ACL presets on the dataset are properly created on the system
+        # getfacl removes the leading '/' from absolute path names
+        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['file_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['owner_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['group_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['user_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['group2_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['other_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['default_user_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['default_group_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['default_other_cli']) is True
+        if posix_acl_preset['preset_name'].__contains__('posix-admin'):
+            assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['mask_cli']) is True
+            assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['default_mask_cli']) is True
+            assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['group_builtin_administrators_cli']) is True
+            assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['default_group_builtin_administrators_cli']) is True
