@@ -1,5 +1,6 @@
 import pytest
 from helper.data_config import get_data_list
+from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
