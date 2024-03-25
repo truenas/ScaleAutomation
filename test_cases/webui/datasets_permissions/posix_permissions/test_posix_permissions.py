@@ -101,7 +101,7 @@ class Test_POSIX_Permissions:
         # Verify the dataset is set with POSIX ACL
         assert PERM_SSH.assert_dataset_has_posix_acl(posix_acl_preset['dataset'], posix_acl_preset['ls_output']) is True
         # Verify the ACL presets on the dataset are properly created on the system
-        # getfacl removes the leading '/' from absolute path names
+        # expected stderr: getfacl removes the leading '/' from absolute path names
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['file_cli']) is True
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['owner_cli']) is True
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['group_cli']) is True
