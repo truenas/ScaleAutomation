@@ -5,6 +5,7 @@ from helper.global_config import shared_config
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -237,6 +238,27 @@ class WebUI(object):
         """
         cls.web_driver.refresh()
         cls.delay(1)
+
+    @classmethod
+    def send_key(cls, key: str) -> None:
+        """
+        This method sends the key to the current window.
+
+        :param key: is the key to send.
+
+        Example:
+            - WebUI.send_key('escape')
+        """
+        match key.lower():
+            case 'enter' | 'return':
+                key_code = Keys.ENTER
+            case 'esc' | 'escape':
+                key_code = Keys.ESCAPE
+            case 'tab':
+                key_code = Keys.TAB
+            case _:
+                key_code = Keys.ESCAPE
+        ActionChains(cls.web_driver).send_keys(key_code).perform()
 
     @classmethod
     def scroll_to_bottom_of_page(cls) -> None:

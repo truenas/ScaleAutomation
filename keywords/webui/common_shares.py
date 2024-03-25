@@ -10,6 +10,22 @@ from helper.api import Response
 class Common_Shares:
 
     @classmethod
+    def assert_disable_share_service_is_locked_and_not_clickable(cls, share_type: str) -> bool:
+        COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(share_type))
+        share_type = 'iscsitarget' if share_type == 'iscsi' else share_type
+        result = COM.assert_button_is_locked_and_not_clickable(f'{share_type}-actions-menu-turn-off-service')
+        WebUI.send_key('esc')
+        return result
+
+    @classmethod
+    def assert_enable_share_service_is_locked_and_not_clickable(cls, share_type: str) -> bool:
+        COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(share_type))
+        share_type = 'iscsitarget' if share_type == 'iscsi' else share_type
+        result = COM.assert_button_is_locked_and_not_clickable(f'{share_type}-actions-menu-turn-on-service')
+        WebUI.send_key('esc')
+        return result
+
+    @classmethod
     def assert_iscsi_configure_button_is_locked_and_not_clickable(cls) -> bool:
         """
         This method returns True if the configure button is locked and not clickable otherwise it returns False.
@@ -275,7 +291,6 @@ class Common_Shares:
         Example:
            - Common_Shares.click_advanced_options()
         """
-        assert COM.is_visible(xpaths.common_xpaths.button_field('toggle-advanced-options')) is True
         COM.click_button('toggle-advanced-options')
 
     @classmethod
@@ -431,7 +446,8 @@ class Common_Shares:
     @classmethod
     def is_share_service_running(cls, xpath: str) -> bool:
         """
-        This method return True if the service status button on the shares page displays RUNNING, otherwise it returns False.
+        This method Verifies that the service status button on the shares page displays RUNNING, and that the API is
+        also status is RUNNING.
 
         :param xpath: is the service xpath.
         :return: True if the service is running, otherwise it returns False.
@@ -444,7 +460,8 @@ class Common_Shares:
     @classmethod
     def is_share_service_stopped(cls, xpath: str) -> bool:
         """
-        This method return True if the service status button on the shares page displays STOPPED, otherwise it returns False.
+        This method verifies that the service status button on the shares page displays STOPPED, and that the API is
+        also status is STOPPED.
 
         :param xpath: is the service xpath.
         :return: True if the service is STOPPED, otherwise it returns False.

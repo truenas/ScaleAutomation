@@ -1,2 +1,2 @@
-username,fullname,password,pool_name,iscsi_name,iscsi_name_xpath,lunid,smb_name,target_alias,nfs_name
-roa,Read Only Admin,testing,tank,iscsi-test1,iscsi-test-1,1,smb-test1,iSCSI Test1,nfs-test1
+username,fullname,password,pool_name,iscsi_name,iscsi_name_xpath,lunid,target_alias,smb_name,smb_description,nfs_name,nfs_description
+roa,Read Only Admin,testing,tank,iscsi-test1,iscsi-test-1,1,iSCSI Test1,smb-test1,Testing read-only admin SMB share,nfs-test1,Testing read-only admin NFS share

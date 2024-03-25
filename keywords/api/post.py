@@ -339,22 +339,34 @@ class API_POST:
         return response
 
     @classmethod
-    def create_share(cls, sharetype: str, name: str, path: str, guest: bool = False) -> Response:
+    def create_share(cls, sharetype: str, name: str, path: str, guest: bool = False, comment: str = '') -> Response:
         """
         This method creates the given share.
 
         :param sharetype: is the sharetype of the share.
         :param name: is the name of the share.
         :param path: is the path of the share.
-        :param guest: whether to allow guests to access the share.
+        :param guest: optional - whether to allow guests to access the share.
+        :param comment: optional - the comment/description of the share.
         :return: the API request response.
+
+        Example:
+            - API_POST.create_share('smb', 'tank', '/mnt/tank/test-dataset', guest=True)
+            - API_POST.create_share('smb', 'tank', '/mnt/tank/test-dataset')
+            - API_POST.create_share('nfs', 'tank', '/mnt/tank/test-dataset')
         """
         response = GET(f'/sharing/{sharetype}?name={name}').json()
         if not response:
             if sharetype == 'smb':
-                response = POST(f'/sharing/{sharetype}', {"name": name, "path": path, "guestok": guest})
+                payload = {
+                    "name": name,
+                    "path": path,
+                    "guestok": guest,
+                    "comment": comment
+                }
+                response = POST(f'/sharing/{sharetype}', payload)
             if sharetype == 'nfs':
-                response = POST(f'/sharing/{sharetype}/', {"path": path})
+                response = POST(f'/sharing/{sharetype}/', {"path": path, "comment": comment})
             assert response.status_code == 200, response.text
         return response
 
