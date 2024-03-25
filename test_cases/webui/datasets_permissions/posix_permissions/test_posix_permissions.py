@@ -95,4 +95,4 @@ class Test_POSIX_Permissions:
         assert PERM.assert_dataset_owner('root') is True
         assert PERM.assert_dataset_group('root') is True
         assert PERM.verify_dataset_permissions_type('POSIX Permissions') is True
-        
+
