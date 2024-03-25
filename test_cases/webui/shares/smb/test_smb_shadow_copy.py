@@ -8,7 +8,7 @@ from keywords.webui.data_protection import Data_Protection as DP
 from keywords.webui.local_users import Local_Users as LU
 from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.snapshots import Snapshots as SNAP
-from keywords.webui.smb import SMB
+from keywords.ssh.smb import SSH_SMB as SSHSMB
 
 
 @allure.tag("SMB", "Shadow Copy")
@@ -53,8 +53,8 @@ class Test_SMB_Shadow_Copy:
     def test_smb_user_can_shadow_copy(self) -> None:
 
         # setup test file and directory
-        assert SMB.assert_user_can_put_file('keepme.txt', 'SMBSHADOW', 'smbshadow', 'testing') is True
-        assert SMB.assert_user_can_put_directory('Documents', 'SMBSHADOW', 'smbshadow', 'testing') is True
+        assert SSHSMB.assert_user_can_put_file('keepme.txt', 'SMBSHADOW', 'smbshadow', 'testing') is True
+        assert SSHSMB.assert_user_can_put_directory('Documents', 'SMBSHADOW', 'smbshadow', 'testing') is True
 
         # Create Snapshot
         NAV.navigate_to_data_protection()
@@ -64,12 +64,12 @@ class Test_SMB_Shadow_Copy:
         COM.click_save_button()
 
         # Delete File and Directory
-        assert SMB.assert_user_can_delete_file('keepme.txt', 'SMBSHADOW', 'smbshadow', 'testing') is True
-        assert SMB.assert_user_can_delete_directory('Documents', 'SMBSHADOW', 'smbshadow', 'testing') is True
+        assert SSHSMB.assert_user_can_delete_file('keepme.txt', 'SMBSHADOW', 'smbshadow', 'testing') is True
+        assert SSHSMB.assert_user_can_delete_directory('Documents', 'SMBSHADOW', 'smbshadow', 'testing') is True
 
         # Verify File and Directory do not exist
-        assert SMB.assert_file_exists('keepme.txt', 'SMBSHADOW', 'smbshadow', 'testing') is False
-        assert SMB.assert_directory_exists('Documents', 'SMBSHADOW', 'smbshadow', 'testing') is False
+        assert SSHSMB.assert_file_exists('keepme.txt', 'SMBSHADOW', 'smbshadow', 'testing') is False
+        assert SSHSMB.assert_directory_exists('Documents', 'SMBSHADOW', 'smbshadow', 'testing') is False
 
         # Restore Snapshot - Shadow Copy
         SNAP.expand_snapshot_by_name('tank/SMBSHADOW')
@@ -78,5 +78,5 @@ class Test_SMB_Shadow_Copy:
         COM.click_button('close')
 
         # Verify File and Directory exist (restored)
-        assert SMB.assert_file_exists('keepme.txt', 'SMBSHADOW', 'smbshadow', 'testing') is True
-        assert SMB.assert_directory_exists('Documents', 'SMBSHADOW', 'smbshadow', 'testing') is True
+        assert SSHSMB.assert_file_exists('keepme.txt', 'SMBSHADOW', 'smbshadow', 'testing') is True
+        assert SSHSMB.assert_directory_exists('Documents', 'SMBSHADOW', 'smbshadow', 'testing') is True
