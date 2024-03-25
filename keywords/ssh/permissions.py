@@ -33,15 +33,19 @@ class Permissions_SSH:
         return True
 
     @classmethod
-    def assert_dataset_has_posix_acl(cls, dataset: str, output: str) -> bool:
+    def assert_dataset_has_posix_acl(cls, dataset: str, permissions: str) -> bool:
         """
+        This method returns True if the given dataset has the given POSIX ACL, otherwise it returns False.
 
-        :param dataset:
-        :param output:
-        :return:
+        :param dataset: The name of the dataset to be accessed.
+        :param permissions: The permissions to verify.
+        :return: True if the given dataset has the given POSIX ACL, otherwise it returns False.
+
+        Example:
+            - Permissions.assert_dataset_has_posix_acl('test-dataset', 'rwxrwx---+')
         """
         value = SSH.get_output_from_ssh(f'ls -l /mnt/tank | grep {dataset}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
-        if output in value.stdout.lower():
+        if permissions in value.stdout.lower():
             return True
         return False
 
@@ -110,10 +114,14 @@ class Permissions_SSH:
     @classmethod
     def verify_getfacl_contains_preset_permissions(cls, dataset_path: str, permissions: str) -> bool:
         """
+        This method returns True if the given dataset has the given permissions using getfacl, otherwise it returns False.
 
-        :param dataset_path:
-        :param permissions:
-        :return:
+        :param dataset_path: The path of the dataset
+        :param permissions: The permissions to verify.
+        :return: True if the given dataset has the given permissions using getfacl, otherwise it returns False.
+
+        Example:
+            - Permissions.verify_getfacl_contains_preset_permissions('/mnt/tank/test-dataset', 'user::rwx')
         """
         value = SSH.get_output_from_ssh(f'getfacl {dataset_path}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
         if permissions in value.stdout.lower():

@@ -73,9 +73,9 @@ class Test_POSIX_Permissions:
             assert PERM.verify_dataset_mask_permissions(posix_acl_preset['mask_perm']) is True
             assert PERM.verify_dataset_mask_default_permissions_name() is True
             assert PERM.verify_dataset_mask_default_permissions(posix_acl_preset['mask_default_perm']) is True
-            assert PERM.verify_dataset_builtin_admin_group_permissions_name(posix_acl_preset['gba']) is True
+            assert PERM.verify_dataset_builtin_admin_group_permissions_name() is True
             assert PERM.verify_dataset_builtin_admin_group_permissions(posix_acl_preset['gba_default_perm']) is True
-            assert PERM.verify_dataset_builtin_admin_group_default_permissions_name(posix_acl_preset['gba_default']) is True
+            assert PERM.verify_dataset_builtin_admin_group_default_permissions_name() is True
             assert PERM.verify_dataset_builtin_admin_group_default_permissions(posix_acl_preset['gba_default_perm']) is True
 
     def test_verify_posix_preset_permissions_via_SSH(self, posix_acl_preset) -> None:
