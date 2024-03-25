@@ -8,17 +8,6 @@ from keywords.webui.common import Common as COM
 
 
 class SMB:
-    @classmethod
-    def add_smb_acl_entry_by_api(cls, who: str, userid: int, permission: str, perm_type: str):
-        """
-        This method sets the values for an SMB_ACL_ENTRY
-
-        :param who: is the type of user to have acl permissions: [USER/GROUP/BOTH]
-        :param userid: is the id of the user/group used in the 'who' parameter as an integer
-        :param permission: is the permission to be assigned: [FULL/CHANGE/READ]
-        :param perm_type: is the permission type to be assigned: [ALLOWED/DENIED]
-        """
-        API_POST.add_smb_acl_entry(who, userid, permission, perm_type)
 
     @classmethod
     def assert_guest_access(cls, share: str, user: str = 'nonexistent', password: str = 'nopassword') -> bool:
@@ -164,15 +153,6 @@ class SMB:
         # purpose = purpose.replace(' ', '-').lower()
         purpose = COM.convert_to_tag_format(purpose)
         COM.click_on_element(f'//*[@data-test="option-purpose-{purpose}"]')
-
-    @classmethod
-    def set_smb_acl_by_api(cls, name: str):
-        """
-        This method sets the values for an SMB_ACL_ENTRY
-
-        :param name: is the name of the smb share to have acl permissions set
-        """
-        API_POST.set_smb_acl(name)
 
     @classmethod
     def set_watch_list(cls, name: str) -> None:

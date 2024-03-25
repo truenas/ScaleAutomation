@@ -341,21 +341,6 @@ class Common_Shares:
         assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit {sharetype.upper()}', 3)) is True
 
     @classmethod
-    def create_share_by_api(cls, sharetype: str, name: str, path: str) -> Response:
-        """
-        This method creates the given share by the share type.
-
-        :param sharetype: type of the given share
-        :param name: name of the given share
-        :param path: path of the given share
-        :return: True if the share name is visible otherwise it returns False.
-
-        Example:
-           - Common_Shares.create_share_by_api('smb', 'share1', '/mnt/share1')
-        """
-        return API_POST.create_share(sharetype, name, "/mnt/"+path)
-
-    @classmethod
     def delete_all_shares_by_sharetype(cls, sharetype: str):
         """
         This method deletes the all shares by the given sharetype.
@@ -370,20 +355,6 @@ class Common_Shares:
         while COM.is_visible(loc):
             COM.click_on_element(loc)
             COM.assert_confirm_dialog()
-
-    @classmethod
-    def delete_share_by_api(cls, sharetype: str, name: str) -> Response:
-        """
-        This method deletes the given share by the share type.
-
-        :param sharetype: type of the given share
-        :param name: name of the given share
-        :return: True if the share name is visible otherwise it returns False.
-
-        Example:
-           - Common_Shares.delete_share_by_api('smb', 'share1')
-        """
-        return API_DELETE.delete_share(sharetype, name)
 
     @classmethod
     def handle_share_service_dialog(cls, sharetype: str):
