@@ -109,7 +109,17 @@ class Permissions:
         return COM.assert_button_is_locked_and_not_clickable('strip-acl')
 
     @classmethod
-    def click_save_acl_button(cls):
+    def click_add_item_button(cls) -> None:
+        """
+        This method clicks the add item button on the Edit ACL page.
+
+        Example:
+            - Permissions.click_add_item_button()
+        """
+        COM.click_button('add-acl-item')
+
+    @classmethod
+    def click_save_acl_button(cls) -> None:
         """
         This method clicks the save access control list button.
 
@@ -121,7 +131,7 @@ class Permissions:
         assert COM.assert_dialog_not_visible('Updating ACL', shared_config['LONG_WAIT']) is True
 
     @classmethod
-    def click_set_acl_button(cls):
+    def click_set_acl_button(cls) -> None:
         """
         This method clicks the Set ACL button.
 
@@ -129,6 +139,16 @@ class Permissions:
             - Permissions.click_set_acl_button()
         """
         COM.click_button('set-acl')
+
+    @classmethod
+    def click_use_preset_button(cls) -> None:
+        """
+        This method clicks the Use Preset button on the Edit ACL page.
+
+        Example:
+            - Permissions.click_use_preset_button()
+        """
+        COM.click_button('use-preset')
 
     @classmethod
     def get_dataset_permissions_by_level(cls, user_category: str, level: str, index: int) -> str:
@@ -161,6 +181,7 @@ class Permissions:
         - Permissions.select_ace_who('user')
         """
         COM.select_option('tag', f'tag-{COM.convert_to_tag_format(who)}')
+        WebUI.delay(0.5)
 
     @classmethod
     def select_ace_user(cls, user: str) -> None:
@@ -175,6 +196,13 @@ class Permissions:
         COM.set_input_field('user', user, True)
 
     @classmethod
+    def set_ace_execute_checkbox(cls) -> None:
+        """
+        This method sets the execute checkbox for the ACL entry.
+        """
+        COM.click_on_element(xpaths.datasets.dataset_ace_permission_checkbox('Execute'))
+
+    @classmethod
     def set_ace_permissions(cls, perm: str) -> None:
         """
         This method sets the Access Control Entry permissions.
@@ -185,6 +213,20 @@ class Permissions:
         - Permissions.set_ace_permissions('MODIFY')
         """
         COM.select_option('basic-permission', f'basic-permission-{COM.convert_to_tag_format(perm)}')
+
+    @classmethod
+    def set_ace_read_checkbox(cls) -> None:
+        """
+        This method sets the read checkbox for the ACL entry.
+        """
+        COM.click_on_element(xpaths.datasets.dataset_ace_permission_checkbox('Read'))
+
+    @classmethod
+    def set_ace_write_checkbox(cls) -> None:
+        """
+        This method sets the write checkbox for the ACL entry.
+        """
+        COM.click_on_element(xpaths.datasets.dataset_ace_permission_checkbox('Write'))
 
     @classmethod
     def set_apply_group_checkbox(cls) -> None:
@@ -603,3 +645,5 @@ class Permissions:
             assert PERM_SSH.assert_dataset_execute_access(pool, dataset, username, password) is True
         else:
             assert PERM_SSH.assert_dataset_execute_access(pool, dataset, username, password) is False
+
+

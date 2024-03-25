@@ -9,6 +9,16 @@ def dataset_encryption_text(dataset_name: str) -> str:
     return f'//ix-dataset-node[contains(.,"{dataset_name}")]//ix-dataset-encryption-cell/div/div'
 
 
+def dataset_ace_permission_checkbox(level: str) -> str:
+    """
+    This function returns the xpath text of the given dataset ace permission checkbox.
+
+    :param level: The level of the permission.
+    :return: The xpath text of the given dataset encryption text.
+    """
+    return f'//ix-edit-posix-ace//*[contains(text(), "{level}")]//ancestor::mat-checkbox'
+
+
 def dataset_permissions_item(name: str, permissions: str) -> str:
     """
     This function returns the xpath text of the given dataset permission item.
