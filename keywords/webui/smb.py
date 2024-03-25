@@ -2,7 +2,6 @@ import xpaths
 from helper.cli import SSH_Command_Line
 from helper.global_config import private_config
 from helper.webui import WebUI
-from keywords.api.post import API_POST
 from keywords.ssh.smb import SSH_SMB as SSHSMB
 from keywords.webui.common import Common as COM
 
