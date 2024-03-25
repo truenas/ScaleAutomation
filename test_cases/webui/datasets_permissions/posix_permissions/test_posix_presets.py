@@ -14,7 +14,7 @@ from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 
 
 @pytest.mark.parametrize('posix_acl_preset', get_data_list('dataset_permission/posix_acl_preset'), scope='class')
-class Test_POSIX_Permissions:
+class Test_POSIX_Presets:
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self, posix_acl_preset) -> None:
         """
@@ -115,3 +115,4 @@ class Test_POSIX_Permissions:
             assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['default_mask_cli']) is True
             assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['group_builtin_administrators_cli']) is True
             assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['default_group_builtin_administrators_cli']) is True
+
