@@ -26,8 +26,8 @@ def setup_class(rep):
     # Setup Datasets.
     API_POST.create_dataset(rep['source'])
     API_POST.create_dataset(rep['destination'])
-    DATASET.create_remote_dataset_by_api(rep['source'])
-    DATASET.create_remote_dataset_by_api(rep['destination'])
+    API_POST.create_remote_dataset(rep['source'])
+    API_POST.create_remote_dataset(rep['destination'])
 
     # Setup SSH connections.
     Navigation.navigate_to_backup_credentials()
