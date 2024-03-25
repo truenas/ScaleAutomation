@@ -792,21 +792,6 @@ class Datasets:
         return API_POST.create_dataset(name, share_type)
 
     @classmethod
-    def create_remote_dataset_by_api(cls, name: str, share_type: str = 'GENERIC') -> Response:
-        """
-        This method creates the given remote dataset.
-
-        :param name: name of the given remote dataset
-        :param share_type: type of the given dataset
-        :return: True if the share name is visible otherwise it returns False.
-
-        Example:
-            - Dataset.create_remote_dataset_by_api('test-dataset')
-            - Dataset.create_remote_dataset_by_api('test-dataset', 'SMB')
-        """
-        return API_POST.create_remote_dataset(name, share_type)
-
-    @classmethod
     def delete_dataset(cls, pool: str, dataset: str) -> None:
         """
         This method deletes the given dataset.
