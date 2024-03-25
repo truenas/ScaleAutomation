@@ -777,36 +777,6 @@ class Datasets:
         cls.expand_dataset_by_state(name, False)
 
     @classmethod
-    def create_dataset_by_api(cls, name: str, share_type: str = 'GENERIC') -> Response:
-        """
-        This method create the given dataset.
-
-        :param name: name of the given dataset
-        :param share_type: type of the given dataset
-        :return: True if the share name is visible otherwise it returns False.
-
-        Example:
-            - Dataset.create_dataset_by_api('test-dataset')
-            - Dataset.create_dataset_by_api('test-dataset', 'SMB')
-        """
-        return API_POST.create_dataset(name, share_type)
-
-    @classmethod
-    def create_remote_dataset_by_api(cls, name: str, share_type: str = 'GENERIC') -> Response:
-        """
-        This method creates the given remote dataset.
-
-        :param name: name of the given remote dataset
-        :param share_type: type of the given dataset
-        :return: True if the share name is visible otherwise it returns False.
-
-        Example:
-            - Dataset.create_remote_dataset_by_api('test-dataset')
-            - Dataset.create_remote_dataset_by_api('test-dataset', 'SMB')
-        """
-        return API_POST.create_remote_dataset(name, share_type)
-
-    @classmethod
     def delete_dataset(cls, pool: str, dataset: str) -> None:
         """
         This method deletes the given dataset.
@@ -825,19 +795,6 @@ class Datasets:
             Common.set_checkbox('confirm')
             Common.click_on_element(xpaths.common_xpaths.button_field_by_row('delete-dataset', 2))
             WebUI.delay(1)
-
-    @classmethod
-    def delete_dataset_by_api(cls, name: str) -> Response:
-        """
-        This method deletes the given dataset.
-
-        :param name: name of the given share
-        :return: True if the share name is visible otherwise it returns False.
-
-        Example:
-            - Dataset.delete_dataset_by_api('test-dataset')
-        """
-        return API_DELETE.delete_dataset(name)
 
     @classmethod
     def expand_dataset(cls, name: str) -> None:
