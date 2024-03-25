@@ -32,6 +32,7 @@ class Permissions:
         :param name: The name of the owner.
         :return: returns true if the given name is visible under Owner.
         """
+        WebUI.wait_until_visible(xpaths.datasets.selected_dataset_group())
         val = COM.get_element_property(xpaths.datasets.selected_dataset_group(), 'textContent')
         return val.lower().__contains__(name.lower())
 
@@ -43,6 +44,7 @@ class Permissions:
         :param name: The name of the owner.
         :return: returns true if the given name is visible under Owner.
         """
+        WebUI.wait_until_visible(xpaths.datasets.selected_dataset_owner())
         val = COM.get_element_property(xpaths.datasets.selected_dataset_owner(), 'textContent')
         return val.lower().__contains__(name.lower())
 
