@@ -14,8 +14,8 @@ def test_edit_smb_share(smb_data) -> None:
     # Environment setup
     API_DELETE.delete_share('smb', smb_data['name'])
     API_DELETE.delete_share('smb', smb_data['name_alt'])
-    DATASET.delete_dataset_by_api(smb_data['path'])
-    DATASET.delete_dataset_by_api(smb_data['path_alt'])
+    API_DELETE.delete_dataset(smb_data['path'])
+    API_DELETE.delete_dataset(smb_data['path_alt'])
     API_POST.create_dataset(smb_data['path'], 'SMB')
     API_POST.create_dataset(smb_data['path_alt'], 'SMB')
     API_POST.create_share('smb', smb_data['name'], "/mnt/"+smb_data['path'])
@@ -50,7 +50,7 @@ def test_edit_smb_share(smb_data) -> None:
 
     # Environment Teardown
     API_DELETE.delete_share('smb', smb_data['name'])
-    DATASET.delete_dataset_by_api(smb_data['path'])
+    API_DELETE.delete_dataset(smb_data['path'])
     API_DELETE.delete_share('smb', smb_data['name_alt'])
-    DATASET.delete_dataset_by_api(smb_data['path_alt'])
+    API_DELETE.delete_dataset(smb_data['path_alt'])
     NAV.navigate_to_dashboard()
