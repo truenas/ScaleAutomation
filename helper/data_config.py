@@ -9,7 +9,7 @@ def get_data_list(file_path: str) -> list:
     :param file_path: the path to the file to use in test_data
     :return: the list of dictionary from the CSV file.
     """
-    file = open(get_test_data_path(file_path), 'r')
+    file = open(get_test_data_path(file_path), 'r', encoding='utf-8')
     reader = csv.DictReader(file)
     return list(reader)
 
