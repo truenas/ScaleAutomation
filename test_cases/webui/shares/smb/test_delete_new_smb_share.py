@@ -12,7 +12,7 @@ from keywords.webui.navigation import Navigation as NAV
 def test_delete_new_smb_share(smb_data) -> None:
     # Environment setup
     API_DELETE.delete_share('smb', smb_data['name'])
-    DATASET.delete_dataset_by_api(smb_data['path'])
+    API_DELETE.delete_dataset(smb_data['path'])
     API_POST.create_dataset(smb_data['path'], 'SMB')
     API_POST.create_share('smb', smb_data['name'], "/mnt/"+smb_data['path'])
 
@@ -26,5 +26,5 @@ def test_delete_new_smb_share(smb_data) -> None:
     assert not COMSHARE.is_share_visible('smb', smb_data['name'])
 
     # Environment Teardown
-    DATASET.delete_dataset_by_api(smb_data['path'])
+    API_DELETE.delete_dataset(smb_data['path'])
     NAV.navigate_to_dashboard()

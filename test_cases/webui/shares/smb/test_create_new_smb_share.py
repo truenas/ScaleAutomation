@@ -13,7 +13,7 @@ from keywords.webui.smb import SMB
 def test_create_new_smb_share(smb_data) -> None:
     # Environment setup
     API_DELETE.delete_share('smb', smb_data['name'])
-    DATASET.delete_dataset_by_api(smb_data['path'])
+    API_DELETE.delete_dataset(smb_data['path'])
     API_POST.create_dataset(smb_data['path'], 'SMB')
 
     NAV.navigate_to_shares()
@@ -45,5 +45,5 @@ def test_create_new_smb_share(smb_data) -> None:
 
     # Environment Teardown
     API_DELETE.delete_share('smb', smb_data['name'])
-    DATASET.delete_dataset_by_api(smb_data['path'])
+    API_DELETE.delete_dataset(smb_data['path'])
     NAV.navigate_to_dashboard()

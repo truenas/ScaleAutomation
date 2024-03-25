@@ -14,7 +14,7 @@ from keywords.webui.smb import SMB
 def test_edit_smb_share_acl(smb_data) -> None:
     # Environment setup
     API_DELETE.delete_share('smb', smb_data['name'])
-    DATASET.delete_dataset_by_api(smb_data['path'])
+    API_DELETE.delete_dataset(smb_data['path'])
     # note creating 'generic' dataset will cause smb share creation to prompt for acl configuration
     API_POST.create_dataset(smb_data['path'])
     API_POST.create_share('smb', smb_data['name'], "/mnt/"+smb_data['path'])
@@ -41,5 +41,5 @@ def test_edit_smb_share_acl(smb_data) -> None:
 
     # Environment Teardown
     API_DELETE.delete_share('smb', smb_data['name'])
-    DATASET.delete_dataset_by_api(smb_data['path'])
+    API_DELETE.delete_dataset(smb_data['path'])
     NAV.navigate_to_dashboard()
