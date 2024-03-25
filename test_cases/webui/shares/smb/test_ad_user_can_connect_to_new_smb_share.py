@@ -9,6 +9,7 @@ from keywords.webui.common import Common as COM
 from keywords.webui.directory_services import Directory_Services as DS
 from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.permissions import Permissions as PERM
+from keywords.ssh.smb import SSH_SMB as SSHSMB
 from keywords.webui.smb import SMB
 
 
@@ -58,22 +59,22 @@ class Test_SMB_AD_User:
     def test_ad_user_can_delete_file(self, ad_data) -> None:
 
         # Verify SMB AD user can delete file
-        SMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True)
-        assert SMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
+        SSHSMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True)
+        assert SSHSMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
 
     @allure.tag("Create")
     @allure.story("Verify SMB AD user can edit file")
     def test_ad_user_can_edit_file(self, ad_data) -> None:
 
         # Verify SMB Guest can edit file
-        assert SMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
+        assert SSHSMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
 
     @allure.tag("Read")
     @allure.story("Verify SMB AD user denied edit file with read permissions")
     def test_ad_user_denied_edit_file_with_read_permissions(self, ad_data) -> None:
 
         # Verify SMB Guest denied edit file with read permissions
-        assert SMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
+        assert SSHSMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
         NAV.navigate_to_shares()
         SMB.click_edit_share_filesystem_acl('SMBADUSER')
         COM.click_on_element('//*[contains(text(),"domain users")]/ancestor::ix-permissions-item/following-sibling::*/ix-icon')
@@ -82,4 +83,4 @@ class Test_SMB_AD_User:
         PERM.select_ace_user(f'AD03\\{ad_data["username"].lower()}')
         PERM.set_ace_permissions('READ')
         PERM.click_save_acl_button()
-        assert SMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is False
+        assert SSHSMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is False
