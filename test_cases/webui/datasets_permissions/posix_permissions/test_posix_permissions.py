@@ -77,9 +77,9 @@ class Test_POSIX_Permissions:
             assert PERM.verify_dataset_builtin_admin_group_default_permissions_name(posix_acl_preset['gba_default']) is True
             assert PERM.verify_dataset_builtin_admin_group_default_permissions(posix_acl_preset['gba_default_perm']) is True
 
-    def test_verify_posix_preset_permissions_via_API(self, posix_acl_preset) -> None:
+    def test_verify_posix_preset_permissions_via_SSH(self, posix_acl_preset) -> None:
         """
-        This test verifies the UI on the permissions card of the dataset that has been set with POSIX Preset Permissions.
+        This test verifies that the dataset that has been set with POSIX Preset Permissions has the changes reflected via CLI.
         """
         DAT.click_dataset_location(posix_acl_preset['dataset'])
         DAT.click_edit_permissions_button()
