@@ -50,7 +50,7 @@ class Test_SMB_ACL_UI:
         This test verifies the SMB Card UI
         """
         # Verify SMB ACL Elements
-        assert COM.assert_right_panel_header(f'Share ACL for {smb_data['name']}') is True
+        assert COM.assert_right_panel_header(f'Share ACL for {smb_data["name"]}') is True
         assert COM.is_visible(xpaths.common_xpaths.close_right_panel()) is True
         assert COM.assert_text_is_visible('The SMB share ACL defines access rights for users of this SMB share up to, but not beyond, the access granted by filesystem ACLs.')
         assert COM.assert_text_is_visible('ACL Entries') is True
@@ -85,4 +85,3 @@ class Test_SMB_ACL_UI:
         assert SMB.assert_smb_acl_ad_who_user_dropdown_values() is True
 
         # Verify the who-group dropdown values
-
