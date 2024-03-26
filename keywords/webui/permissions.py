@@ -3,6 +3,8 @@ from helper.global_config import private_config, shared_config
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
+from keywords.webui.datasets import Datasets as DAT
+from keywords.webui.navigation import Navigation as NAV
 
 
 class Permissions:
@@ -149,6 +151,27 @@ class Permissions:
             - Permissions.click_use_preset_button()
         """
         COM.click_button('use-preset')
+
+    @classmethod
+    def delete_custom_preset(cls, dataset: str, name: str) -> None:
+        """
+        This method navigates to the given dataset and uses it to delete the given custom preset.
+.
+        :param dataset: The name of the dataset to use.
+        :param name: The name of the preset to delete.
+        :return: True if the preset was deleted successfully, False otherwise.
+
+        Example:
+            - Permissions.delete_custom_preset('test-dataset', 'test-preset')
+        """
+        NAV.navigate_to_datasets()
+        DAT.click_dataset_location(dataset)
+        DAT.click_edit_permissions_button()
+        COM.click_button('save-as-preset')
+        WebUI.wait_until_clickable(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
+        COM.click_on_element(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
+        assert WebUI.wait_until_not_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)) is True
+        COM.click_cancel_button()
 
     @classmethod
     def get_dataset_permissions_item_name_by_level(cls, user_category: str, name: str) -> str:

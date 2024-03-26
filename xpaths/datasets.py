@@ -19,6 +19,17 @@ def dataset_ace_permission_checkbox(level: str) -> str:
     return f'//ix-edit-posix-ace//*[contains(text(), "{level}")]//ancestor::mat-checkbox'
 
 
+def dataset_permission_custom_preset_delete_button(name: str) -> str:
+    """
+    This function returns the xpath text of the given custom preset delete button.
+
+    :param name: The name of the preset.
+    :return: the xpath text of the given custom preset delete button.
+    """
+    return f'//*[contains(text(), "{name}")]/parent::*//*[@name="cancel"]'
+
+
+
 def dataset_permissions_item(name: str, permissions: str) -> str:
     """
     This function returns the xpath text of the given dataset permission item.

@@ -2,6 +2,7 @@ import pytest
 
 from helper.data_config import get_data_list
 from helper.global_config import private_config
+from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.api.put import API_PUT
@@ -33,6 +34,7 @@ class Test_POSIX_Presets:
         """
         yield
         # Clean up environment.
+        PERM.delete_custom_preset(posix_acl_custom['dataset'], posix_acl_custom['custom_name'])
         API_DELETE.delete_dataset(posix_acl_custom['api_path'])
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
@@ -54,7 +56,8 @@ class Test_POSIX_Presets:
         PERM.set_apply_group_checkbox()
         PERM.click_add_item_button()
         PERM.select_ace_who(posix_acl_custom['who_tag'])
-        PERM.set_ace_read_checkbox()
+        # COM.set_checkbox('permissions-read')
+        COM.click_on_element('//*[@data-test="checkbox-permissions-read"]')
         COM.click_button('save-as-preset')
         COM.assert_dialog_visible('Save As Preset')
         COM.set_input_field('preset-name', posix_acl_custom['custom_name'])
@@ -69,9 +72,9 @@ class Test_POSIX_Presets:
         assert PERM.assert_dataset_group(posix_acl_custom['new_owner_group']) is True
         assert PERM.verify_dataset_permissions_type('POSIX Permissions') is True
         assert PERM.verify_dataset_owner_permissions_name(posix_acl_custom['user_obj']) is True
-        assert PERM.verify_dataset_owner_permissions(posix_acl_custom['user_obj_perm']) is True
+        assert PERM.verify_dataset_owner_permissions(posix_acl_custom['user_obj_perm'], posix_acl_custom['new_owner']) is True
         assert PERM.verify_dataset_group_permissions_name(posix_acl_custom['group_obj']) is True
-        assert PERM.verify_dataset_group_permissions(posix_acl_custom['group_obj_perm']) is True
+        assert PERM.verify_dataset_group_permissions(posix_acl_custom['group_obj_perm'], posix_acl_custom['new_owner_group']) is True
         assert PERM.verify_dataset_other_permissions_name() is True
         assert PERM.verify_dataset_other_permissions(posix_acl_custom['other_perm']) is True
         assert PERM.verify_dataset_permissions_edit_button() is True
