@@ -80,6 +80,7 @@ class Test_SMB_ACL_UI:
         This test verifies the SMB Share ACL dropdown UI
         """
         # Verify the ad who-user dropdown values
+        API_PUT.set_nameservers(ad_data['nameserver'])
         API_PUT.join_active_directory(ad_data['username'], ad_data['password'], ad_data['domain'])
         COM.select_option('ae-who', 'ae-who-user')
         assert SMB.assert_smb_acl_ad_who_user_dropdown_values() is True
