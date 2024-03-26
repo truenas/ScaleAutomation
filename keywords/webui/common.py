@@ -21,24 +21,6 @@ import xpaths
 class Common:
 
     @classmethod
-    def assert_checkbox_is_locked_and_not_clickable(cls, name: str) -> bool:
-        """
-        This method asserts that the given checkbox is locked and not clickable
-
-        :param name: name of the checkbox
-        :return: True if the checkbox is locked and not clickable otherwise it returns False
-
-        Example:
-            - Common.assert_checkbox_is_locked_and_not_clickable('myCheckbox')
-        """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(name)) is True
-        try:
-            cls.set_checkbox(name)
-        except ElementClickInterceptedException:
-            return True
-        return False
-
-    @classmethod
     def assert_button_is_locked_and_not_clickable(cls, name: str) -> bool:
         """
         This method asserts that the given button is locked and not clickable
@@ -53,6 +35,24 @@ class Common:
         try:
             # At this point the button is visible a Timeout or ElementClickIntercepted exception will be thrown.
             cls.click_button(name, 1)
+        except (ElementClickInterceptedException, TimeoutException):
+            return True
+        return False
+
+    @classmethod
+    def assert_checkbox_is_locked_and_not_clickable(cls, name: str) -> bool:
+        """
+        This method asserts that the given checkbox is locked and not clickable
+
+        :param name: name of the checkbox
+        :return: True if the checkbox is locked and not clickable otherwise it returns False
+
+        Example:
+            - Common.assert_checkbox_is_locked_and_not_clickable('myCheckbox')
+        """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(name)) is True
+        try:
+            cls.set_checkbox(name)
         except (ElementClickInterceptedException, TimeoutException):
             return True
         return False
@@ -113,6 +113,18 @@ class Common:
             - Common.assert_dialog_not_visible('Create Pool', shared_config['MEDIUM_WAIT'])
         """
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(dialog_title, 1), wait)
+
+    @classmethod
+    def assert_header_readonly_badge(cls) -> bool:
+        """
+        This method verifies the readonly badge on the header exists.
+
+        :return: True if the readonly badge exists otherwise it returns False.
+
+        Example:
+            - Common.assert_header_readonly_badge()
+        """
+        return WebUI.wait_until_visible(xpaths.common_xpaths.readonly_badge)
 
     @classmethod
     def assert_label_and_value_exist(cls, label: str, value: str) -> bool:
@@ -189,10 +201,6 @@ class Common:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header_text, 1), timeout)
 
     @classmethod
-    def assert_header_readonly_badge(cls) -> bool:
-        return WebUI.wait_until_visible(xpaths.common_xpaths.readonly_badge)
-
-    @classmethod
     def assert_right_panel_header(cls, header_text) -> bool:
         """
         This method return True if the right panel header text is visible before timeout otherwise it returns False.
@@ -256,6 +264,23 @@ class Common:
             - Common.assert_text_is_visible('any Text')
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_text(text))
+
+    @classmethod
+    def assert_toggle_is_locked_and_not_clickable(cls, name) -> bool:
+        """
+        This method returns True or False if the toggle is locked and not clickable.
+
+        :return: True if the toggle is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Common.test_toggle_is_locked_and_not_clickable()
+        """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field_locked(name)) is True
+        try:
+            cls.click_on_element(xpaths.common_xpaths.toggle_field(name))
+        except (ElementClickInterceptedException, TimeoutException):
+            return True
+        return False
 
     @classmethod
     def assert_tree_is_expanded(cls, name: str) -> bool:

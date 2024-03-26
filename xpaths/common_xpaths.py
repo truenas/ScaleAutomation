@@ -453,6 +453,16 @@ def toggle_field(field: str) -> str:
     return f'//*[@data-test="toggle-{field}"]//button'
 
 
+def toggle_field_locked(field: str) -> str:
+    """
+    This function sets the text for the given toggle field
+
+    :param field: name of the given toggle field
+    :return: xpath string for given toggle field
+    """
+    return f'//*[@data-test="toggle-{field}"]/..//ix-icon[@name="lock"]'
+
+
 def tree_node_field(field: str) -> str:
     """
     This function sets the text for the given tree node name
