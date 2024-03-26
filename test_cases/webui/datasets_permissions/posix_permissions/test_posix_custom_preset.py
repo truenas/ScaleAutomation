@@ -55,8 +55,8 @@ class Test_POSIX_Presets:
         PERM.set_apply_group_checkbox()
         PERM.click_add_item_button()
         PERM.select_ace_who(posix_acl_custom['who_tag'])
-        # COM.set_checkbox('permissions-read')
-        COM.click_on_element('//*[@data-test="checkbox-permissions-read"]')
+        COM.set_checkbox('permissions-read')
+        # Expected failure ^: https://ixsystems.atlassian.net/browse/NAS-128038
         COM.click_button('save-as-preset')
         COM.assert_dialog_visible('Save As Preset')
         COM.set_input_field('preset-name', posix_acl_custom['custom_name'])
