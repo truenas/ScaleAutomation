@@ -1,3 +1,4 @@
+import allure
 import pytest
 
 from helper.data_config import get_data_list
@@ -35,6 +36,7 @@ class Test_POSIX_Custom_Preset:
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
+    @allure.issue("NAS-128038", name="NAS-128038")
     def test_verify_posix_preset_permissions(self, posix_acl_custom) -> None:
         """
         This test verifies the ability to create and use a custom POSIX ACL preset.
