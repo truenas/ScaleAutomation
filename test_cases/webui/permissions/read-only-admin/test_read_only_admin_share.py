@@ -30,12 +30,12 @@ class Test_Read_Only_Admin_Share:
 
     @pytest.fixture(scope='class', autouse=True)
     def setup_test(self, data):
-        # API_POST.create_read_only_admin(data['username'], data['fullname'], data['password'])
-        # API_ISCSI.create_iscsi_share(data['iscsi_name'], data['pool_name'], int(data['lunid']))
+        API_POST.create_read_only_admin(data['username'], data['fullname'], data['password'])
+        API_ISCSI.create_iscsi_share(data['iscsi_name'], data['pool_name'], int(data['lunid']))
         API_POST.start_service('iscsitarget')
-        # API_POST.create_dataset(f'{data["pool_name"]}/{data["nfs_name"]}', 'NFS')
-        # API_POST.create_share('nfs', data['nfs_name'], data['nfs_path'],
-        #                       comment=data['nfs_description'])
+        API_POST.create_dataset(f'{data["pool_name"]}/{data["nfs_name"]}', 'NFS')
+        API_POST.create_share('nfs', data['nfs_name'], data['nfs_path'],
+                              comment=data['nfs_description'])
         API_POST.start_service('nfs')
 
         Common.logoff_truenas()
@@ -58,8 +58,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin can view pre-configured iSCSI shares on the iSCSI card.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         # Verify the read-only admin can view pre-configured iSCSI shares
         assert Common_Shares.assert_share_card_displays('iscsi') is True
@@ -71,8 +69,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin is not able to enable or disable the NFS service on the iSCSI card.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         # Verify the read-only admin is not able to disable the NFS service
         assert Common_Shares.assert_share_card_displays('iscsi') is True
@@ -91,8 +87,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin is not able to create and modify an iSCSI share on the iSCSI card.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         assert Common_Shares.assert_share_card_displays('iscsi') is True
 
@@ -106,8 +100,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin is not able to modify an iSCSI share on the iSCSI card.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         assert Common_Shares.assert_share_card_displays('iscsi') is True
         # Verify the read-only admin is not able to modify an iSCSI share
@@ -126,8 +118,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin is not able to delete an iSCSI share on the iSCSI card.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         assert Common_Shares.assert_share_card_displays('iscsi') is True
 
@@ -140,8 +130,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin can view pre-configured NFS shares on the NFS card.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         # Verify the read-only admin can view pre-configured iSCSI shares
         assert Common_Shares.assert_share_card_displays('nfs') is True
@@ -154,8 +142,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin is not able to enable or disable the NFS service on the NFS card.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         # Verify the read-only admin is not able to enable or disable the NFS service
         assert Common_Shares.assert_share_card_displays('nfs') is True
@@ -173,8 +159,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin is not able to create an NFS share on the NFS card.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         # Verify the read-only admin is not able to create an iSCSI share
         assert Common_Shares.assert_share_card_displays('nfs') is True
@@ -186,8 +170,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin is not able to modify an NFS share on the NFS card.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         # Verify the read-only admin is not able to modify an iSCSI share
         assert Common_Shares.assert_share_card_displays('nfs') is True
@@ -206,8 +188,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin is not able to disable and enable an NFS share on the NFS card.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         # Verify the read-only admin is not able to disable and enable an NFS share
         assert Common_Shares.assert_share_card_displays('nfs') is True
@@ -219,8 +199,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin is not able to delete an NFS share on the NFS card.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         # Verify the read-only admin is not able to delete an NFS share
         assert Common_Shares.assert_share_card_displays('nfs') is True
@@ -232,8 +210,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin is not able to create an NFS share on the Sharing NFS page.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         # Verify the read-only admin is not able to create an NFS share on the Sharing NFS page
         assert Common_Shares.assert_share_card_displays('nfs') is True
@@ -247,8 +223,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin is not able to modify an NFS share on the Sharing NFS page.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         # Verify the read-only admin is not able to modify an NFS share on the Sharing NFS page
         assert Common_Shares.assert_share_card_displays('nfs') is True
@@ -269,8 +243,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin is not able to delete an NFS share on the Sharing NFS page.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         # Verify the read-only admin is not able to delete an NFS share on the Sharing NFS page
         assert Common_Shares.assert_share_card_displays('nfs') is True
@@ -284,8 +256,6 @@ class Test_Read_Only_Admin_Share:
         """
         This test verifies the read-only admin is not able to disable and enable an NFS share on the Sharing NFS page.
         """
-        # Navigate to the Sharing page
-        Navigation.navigate_to_shares()
 
         # Verify the read-only admin is not able to disable and enable an NFS share on the Sharing NFS page
         assert Common_Shares.assert_share_card_displays('nfs') is True
