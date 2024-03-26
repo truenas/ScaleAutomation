@@ -89,9 +89,9 @@ class Test_Unix_Permissions:
         assert PERM.assert_dataset_group(unix_perms['groupname']) is True
         assert PERM.verify_dataset_permissions_type('Unix Permissions') is True
         assert PERM.verify_dataset_owner_permissions_name(unix_perms['ownername']) is True
-        assert PERM.verify_dataset_owner_permissions(unix_perms['user_access']) is True
+        assert PERM.verify_dataset_owner_permissions(unix_perms['user_access'], unix_perms['ownername']) is True
         assert PERM.verify_dataset_group_permissions_name(unix_perms['groupname']) is True
-        assert PERM.verify_dataset_group_permissions(unix_perms['group_access']) is True
+        assert PERM.verify_dataset_group_permissions(unix_perms['group_access'], unix_perms['groupname']) is True
         assert PERM.verify_dataset_other_permissions_name() is True
         assert PERM.verify_dataset_other_permissions(unix_perms['other_access']) is True
         assert PERM.verify_dataset_permissions_edit_button() is True
@@ -122,9 +122,9 @@ class Test_Unix_Permissions:
         assert PERM.assert_dataset_group(unix_perms['groupname']) is True
         assert PERM.verify_dataset_permissions_type('Unix Permissions') is True
         assert PERM.verify_dataset_owner_permissions_name(unix_perms['ownername']) is True
-        assert PERM.verify_dataset_owner_permissions(unix_perms['changed_user_access']) is True
+        assert PERM.verify_dataset_owner_permissions(unix_perms['changed_user_access'], unix_perms['ownername']) is True
         assert PERM.verify_dataset_group_permissions_name(unix_perms['groupname']) is True
-        assert PERM.verify_dataset_group_permissions(unix_perms['changed_group_access']) is True
+        assert PERM.verify_dataset_group_permissions(unix_perms['changed_group_access'], unix_perms['groupname']) is True
         assert PERM.verify_dataset_other_permissions_name() is True
         assert PERM.verify_dataset_other_permissions(unix_perms['changed_other_access']) is True
         assert PERM.verify_dataset_permissions_edit_button() is True
