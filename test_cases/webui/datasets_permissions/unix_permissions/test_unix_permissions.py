@@ -60,9 +60,9 @@ class Test_Unix_Permissions:
         assert PERM.assert_dataset_group(unix_perms['groupname']) is True
         assert PERM.verify_dataset_permissions_type('Unix Permissions') is True
         assert PERM.verify_dataset_owner_permissions_name(unix_perms['ownername']) is True
-        assert PERM.verify_dataset_owner_permissions('Read | Write | Execute') is True
+        assert PERM.verify_dataset_owner_permissions('Read | Write | Execute', unix_perms['ownername']) is True
         assert PERM.verify_dataset_group_permissions_name(unix_perms['groupname']) is True
-        assert PERM.verify_dataset_group_permissions('Read | Execute') is True
+        assert PERM.verify_dataset_group_permissions('Read | Execute', unix_perms['groupname']) is True
         assert PERM.verify_dataset_other_permissions_name() is True
         assert PERM.verify_dataset_other_permissions('Read | Execute') is True
         assert PERM.verify_dataset_permissions_edit_button() is True
