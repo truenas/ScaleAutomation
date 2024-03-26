@@ -70,8 +70,8 @@ class Test_NFS_Share_Card_UI:
         assert COMSHARE.assert_share_card_add_button('nfs') is True
         assert COMSHARE.assert_share_card_actions_menu_button('nfs') is True
         assert COMSHARE.assert_share_card_enabled_button_by_name('nfs', "/mnt/tank/shareone") is True
-        assert COMSHARE.assert_share_card_button_by_name('nfs', "/mnt/tank/shareone", 'edit') is True
-        assert COMSHARE.assert_share_card_button_by_name('nfs', "/mnt/tank/shareone", 'delete') is True
+        assert COMSHARE.assert_share_card_action_button_by_name('nfs', "/mnt/tank/shareone", 'edit') is True
+        assert COMSHARE.assert_share_card_action_button_by_name('nfs', "/mnt/tank/shareone", 'delete') is True
         assert COMSHARE.assert_share_card_view_all_button('nfs') is True
 
         # Verify only four shares display regularly
