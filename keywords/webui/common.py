@@ -21,22 +21,18 @@ import xpaths
 class Common:
 
     @classmethod
-    def assert_checkbox_is_locked_and_not_clickable(cls, name: str) -> bool:
+    def assert_add_item_button(cls, name: str) -> bool:
         """
-        This method asserts that the given checkbox is locked and not clickable
+        This method returns True if the given add item button is visible, otherwise returns False.
 
-        :param name: name of the checkbox
-        :return: True if the checkbox is locked and not clickable otherwise it returns False
+        :param name: name of the add item button
+        :return: True if the given add item button is visible, otherwise returns False.
 
         Example:
-            - Common.assert_checkbox_is_locked_and_not_clickable('myCheckbox')
+            - Common.assert_add_item_button('add entry')
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(name)) is True
-        try:
-            cls.set_checkbox(name)
-        except ElementClickInterceptedException:
-            return True
-        return False
+        name = cls.convert_to_tag_format(name)
+        return cls.is_visible(xpaths.common_xpaths.button_field(f'add-item-{name}'))
 
     @classmethod
     def assert_button_is_locked_and_not_clickable(cls, name: str) -> bool:
@@ -54,6 +50,24 @@ class Common:
             # At this point the button is visible a Timeout or ElementClickIntercepted exception will be thrown.
             cls.click_button(name, 1)
         except (ElementClickInterceptedException, TimeoutException):
+            return True
+        return False
+
+    @classmethod
+    def assert_checkbox_is_locked_and_not_clickable(cls, name: str) -> bool:
+        """
+        This method asserts that the given checkbox is locked and not clickable
+
+        :param name: name of the checkbox
+        :return: True if the checkbox is locked and not clickable otherwise it returns False
+
+        Example:
+            - Common.assert_checkbox_is_locked_and_not_clickable('myCheckbox')
+        """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(name)) is True
+        try:
+            cls.set_checkbox(name)
+        except ElementClickInterceptedException:
             return True
         return False
 
@@ -115,6 +129,10 @@ class Common:
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(dialog_title, 1), wait)
 
     @classmethod
+    def assert_header_readonly_badge(cls) -> bool:
+        return WebUI.wait_until_visible(xpaths.common_xpaths.readonly_badge)
+
+    @classmethod
     def assert_label_and_value_exist(cls, label: str, value: str) -> bool:
         """
         This method returns True or False weather the given label and value is visible.
@@ -128,6 +146,22 @@ class Common:
         """
         return WebUI.wait_until_visible(xpaths.xpaths.common_xpaths.label_and_value(label, value),
                                         shared_config['SHORT_WAIT'])
+
+    @classmethod
+    def assert_page_header(cls, header_text: str, timeout: int = shared_config['WAIT']) -> bool:
+        """
+        This method return True if the page header text is visible before timeout otherwise it returns False.
+
+        :param header_text: is the text of the page to assert.
+        :param timeout: is optional and is the number of second to wait before timeout, it is defaulted to
+        shared_config['WAIT'].
+        :return: True if the page header text is visible before timeout otherwise it returns False.
+
+        Example:
+            - Common.assert_page_header('Header Title')
+            - Common.assert_page_header('Header Title', shared_config['SHORT_WAIT'])
+        """
+        return WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header_text, 1), timeout)
 
     @classmethod
     def assert_please_wait_not_visible(cls, wait: int = shared_config['LONG_WAIT']) -> bool:
@@ -173,24 +207,17 @@ class Common:
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.progress_spinner, wait)
 
     @classmethod
-    def assert_page_header(cls, header_text: str, timeout: int = shared_config['WAIT']) -> bool:
+    def assert_removed_item_button_by_row(cls, row: int = 1) -> bool:
         """
-        This method return True if the page header text is visible before timeout otherwise it returns False.
+        This method returns True if the remove item button is visible, otherwise returns False.
 
-        :param header_text: is the text of the page to assert.
-        :param timeout: is optional and is the number of second to wait before timeout, it is defaulted to
-        shared_config['WAIT'].
-        :return: True if the page header text is visible before timeout otherwise it returns False.
+        :param row: is the index of the remove item button.
+        :return: True if the remove item button is visible, otherwise returns False.
 
         Example:
-            - Common.assert_page_header('Header Title')
-            - Common.assert_page_header('Header Title', shared_config['SHORT_WAIT'])
+            - Common.assert_removed_item_button()
         """
-        return WebUI.wait_until_visible(xpaths.common_xpaths.any_header(header_text, 1), timeout)
-
-    @classmethod
-    def assert_header_readonly_badge(cls) -> bool:
-        return WebUI.wait_until_visible(xpaths.common_xpaths.readonly_badge)
+        return cls.is_visible(xpaths.common_xpaths.any_xpath(f'(//*[@data-test="button-remove-from-list"])[{row}]'))
 
     @classmethod
     def assert_right_panel_header(cls, header_text) -> bool:
