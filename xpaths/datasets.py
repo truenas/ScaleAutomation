@@ -29,7 +29,6 @@ def dataset_permission_custom_preset_delete_button(name: str) -> str:
     return f'//*[contains(text(), "{name}")]/parent::*//*[@name="cancel"]'
 
 
-
 def dataset_permissions_item(name: str, permissions: str) -> str:
     """
     This function returns the xpath text of the given dataset permission item.
