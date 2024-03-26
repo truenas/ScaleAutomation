@@ -238,7 +238,6 @@ class Permissions:
         """
         COM.set_input_field('user', user, True)
 
-
     @classmethod
     def set_ace_permissions(cls, perm: str) -> None:
         """

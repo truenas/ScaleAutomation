@@ -12,7 +12,7 @@ from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 
 
 @pytest.mark.parametrize('posix_acl_custom', get_data_list('dataset_permission/posix_acl_custom'), scope='class')
-class Test_POSIX_Presets:
+class Test_POSIX_Custom_Preset:
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self, posix_acl_custom) -> None:
         """
@@ -35,9 +35,9 @@ class Test_POSIX_Presets:
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
-    def test_verify_posix_preset_permissions_via_UI(self, posix_acl_custom) -> None:
+    def test_verify_posix_preset_permissions(self, posix_acl_custom) -> None:
         """
-        This test verifies the UI on the permissions card of the dataset that has been set with POSIX Preset Permissions.
+        This test verifies the ability to create and use a custom POSIX ACL preset.
         """
         DAT.click_dataset_location(posix_acl_custom['dataset'])
         DAT.click_edit_permissions_button()
