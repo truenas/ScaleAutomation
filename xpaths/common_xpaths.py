@@ -386,29 +386,54 @@ def share_attached(name: str, sharetype: str) -> str:
         return xpath+f'NFS")]'
 
 
-def share_attribute(sharetype: str, attribute: str, desc: str) -> str:
+def card_share_attribute(share_type: str, attribute: str, desc: str) -> str:
     """
     This function sets the text for the given share name
 
-    :param sharetype: type of the given share
+    :param share_type: type of the given share
     :param attribute: attribute of the given share [name/path/description]
     :param desc: description of the given share
     :return: xpath string for given share name
     """
     index = 1
-    if sharetype == "smb":
+    if share_type == "smb":
         if attribute == 'name':
             index = 1
         if attribute == 'path':
             index = 2
         if attribute == 'description':
             index = 3
-    if sharetype == 'nfs':
+    if share_type == 'nfs':
         if attribute == 'path':
             index = 1
         if attribute == 'description':
             index = 2
-    return f'//ix-{sharetype}-card//*[@data-test="row"]/td[{index}]/descendant::*[contains(text(),"{desc}")]'
+    return f'//ix-{share_type}-card//*[@data-test="row"]/td[{index}]/descendant::*[contains(text(),"{desc}")]'
+
+
+def page_share_attribute(share_type: str, attribute: str, desc: str) -> str:
+    """
+    This function sets the text for the given share name.
+
+    :param share_type: type of the given share
+    :param attribute: attribute of the given share [name/path/description]
+    :param desc: description of the given share
+    :return: xpath string for given share name
+    """
+    index = 1
+    if share_type == "smb":
+        if attribute == 'name':
+            index = 1
+        if attribute == 'path':
+            index = 2
+        if attribute == 'description':
+            index = 3
+    if share_type == 'nfs':
+        if attribute == 'path':
+            index = 1
+        if attribute == 'description':
+            index = 2
+    return f'//*[@data-test="row"]/td[{index}]/descendant::*[contains(text(),"{desc}")]'
 
 
 def share_enabled_slider(sharetype: str, name: str) -> str:

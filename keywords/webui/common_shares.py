@@ -284,7 +284,7 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_share_description('smb', 'share1')
         """
-        return COM.is_visible(xpaths.common_xpaths.share_attribute(share_type, 'description', desc))
+        return COM.is_visible(xpaths.common_xpaths.card_share_attribute(share_type, 'description', desc))
 
     @classmethod
     def assert_share_name(cls, share_type: str, name: str) -> bool:
@@ -298,7 +298,7 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_share_name('smb', 'share1')
         """
-        return COM.is_visible(xpaths.common_xpaths.share_attribute(share_type, 'name', name))
+        return COM.is_visible(xpaths.common_xpaths.card_share_attribute(share_type, 'name', name))
 
     @classmethod
     def assert_share_path(cls, share_type: str, path: str) -> bool:
@@ -312,7 +312,7 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_share_path('smb', '/mnt/share1')
         """
-        return COM.is_visible(xpaths.common_xpaths.share_attribute(share_type, 'path', path))
+        return COM.is_visible(xpaths.common_xpaths.card_share_attribute(share_type, 'path', path))
 
     @classmethod
     def assert_share_service_in_expected_state(cls, xpath: str, expected_text: str, expected_state: bool) -> bool:

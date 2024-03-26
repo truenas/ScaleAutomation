@@ -19,30 +19,6 @@ class NFS:
         return COM.assert_button_is_locked_and_not_clickable('add-nfs-share')
 
     @classmethod
-    def assert_share_delete_button_is_locked_and_not_clickable_on_nfs_page(cls, share_xpath: str) -> bool:
-        """
-        This method verifies that the delete button is locked and not clickable on the Sharing NFS page.
-
-        :return: True if delete NFS share button is locked and not clickable, otherwise it returns False.
-
-        Example:
-            - NFS.assert_nfs_delete_button_is_locked_and_not_clickable()
-        """
-        return COM.assert_button_is_locked_and_not_clickable(f'nfs-share-{share_xpath}-delete-row-action')
-
-    @classmethod
-    def assert_share_enabled_toggle_is_locked_and_not_clickable_on_nfs_page(cls, share_xpath: str) -> bool:
-        """
-        This method verifies that the enabled button is locked and not clickable on the Sharing NFS page.
-
-        :return: True if enabled NFS share button is locked and not clickable, otherwise it returns False.
-
-        Example:
-            - NFS.assert_nfs_enabled_button_is_locked_and_not_clickable()
-        """
-        return COM.assert_toggle_is_locked_and_not_clickable(f'enabled-nfs-share-{share_xpath}-row-toggle')
-
-    @classmethod
     def assert_error_nfs_share_authorized_hosts_required(cls) -> bool:
         """
         This method returns True if 'Authorized Hosts and IP addresses is required' error message is visible,
@@ -156,6 +132,56 @@ class NFS:
             - NFS.assert_edit_nfs_panel_header()
         """
         return COM.assert_right_panel_header('Edit NFS Share')
+
+    @classmethod
+    def assert_share_delete_button_is_locked_and_not_clickable_on_nfs_page(cls, share_xpath: str) -> bool:
+        """
+        This method verifies that the delete button is locked and not clickable on the Sharing NFS page.
+
+        :return: True if delete NFS share button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - NFS.assert_nfs_delete_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable(f'nfs-share-{share_xpath}-delete-row-action')
+
+    @classmethod
+    def assert_share_description(cls, desc: str) -> bool:
+        """
+        This method verifies that the share description is visible on the Sharing NFS page.
+
+        :param desc: description of the given share
+        :return: True if the share description is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_description('smb', 'share1')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('nfs', 'description', desc))
+
+    @classmethod
+    def assert_share_enabled_toggle_is_locked_and_not_clickable_on_nfs_page(cls, share_xpath: str) -> bool:
+        """
+        This method verifies that the enabled button is locked and not clickable on the Sharing NFS page.
+
+        :return: True if enabled NFS share button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - NFS.assert_nfs_enabled_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_toggle_is_locked_and_not_clickable(f'enabled-nfs-share-{share_xpath}-row-toggle')
+
+    @classmethod
+    def assert_share_path(cls, path: str) -> bool:
+        """
+        This method verifies that the path for the share row of the given share on the Sharing NFS page.
+
+        :param path: path of the given share
+        :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_path('smb', '/mnt/share1')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('nfs', 'path', path))
 
     @classmethod
     def assert_sharing_nfs_page_header(cls) -> bool:

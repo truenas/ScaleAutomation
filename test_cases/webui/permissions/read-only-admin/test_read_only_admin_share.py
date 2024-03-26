@@ -204,6 +204,18 @@ class Test_Read_Only_Admin_Share:
         assert Common_Shares.assert_share_card_displays('nfs') is True
         assert Common_Shares.assert_card_share_delete_button_is_locked_and_not_clickable('nfs', data['nfs_xpath']) is True
 
+    def test_read_only_admin_is_able_to_view_pre_configured_nfs_shares_on_the_sharing_nfs_page(self, data):
+        """
+        This test verifies the read-only admin is able to view pre-configured NFS shares on the Sharing NFS page.
+        """
+
+        # Verify the read-only admin is able to view pre-configured NFS shares on the Sharing NFS page
+        assert Common_Shares.assert_share_card_displays('nfs') is True
+        Common_Shares.click_share_card_header_link('nfs')
+        assert NFS.assert_sharing_nfs_page_header() is True
+        assert NFS.assert_share_path(data['nfs_path']) is True
+        assert NFS.assert_share_description(data['nfs_description']) is True
+
     @allure.tag('Create', 'NFS')
     @allure.story("Read Only Admin Is Not Able To Create An NFS Share On The Sharing NFS Page")
     def test_read_only_admin_is_not_able_to_create_an_nfs_shares_on_the_sharing_nfs_page(self, data):
