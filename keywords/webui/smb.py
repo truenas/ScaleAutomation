@@ -98,7 +98,6 @@ class SMB:
         """
         This method returns True if the permission dropdown values exist, otherwise returns False.
 
-        :param who: is the name of the who.
         :return: True if the permission dropdown values exist, otherwise returns False.
 
         Example:
@@ -129,7 +128,6 @@ class SMB:
         """
         This method returns True if the type dropdown values exist, otherwise returns False.
 
-        :param who: is the name of the who.
         :return: True if the type dropdown values exist, otherwise returns False.
 
         Example:
@@ -176,7 +174,6 @@ class SMB:
         """
         This method returns True if the AD who user dropdown values exist, otherwise returns False.
 
-        :param who: is the name of the who.
         :return: True if the AD who user dropdown values exist, otherwise returns False.
 
         Example:
