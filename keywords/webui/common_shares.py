@@ -2,9 +2,7 @@ import xpaths
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
-from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
-from helper.api import Response
 
 
 class Common_Shares:
@@ -76,6 +74,51 @@ class Common_Shares:
         return COM.assert_button_is_locked_and_not_clickable('iscsi-share-wizard')
 
     @classmethod
+    def assert_share_card_action_button_by_name(cls, sharetype: str, name: str, button: str) -> bool:
+        """
+        This method returns True if the specified button on the specified share card's share row is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :param name: The name(SMB)/path(NFS) of the share
+        :param button: The button type to verify
+        :return: True if the specified button on the specified share card's share row is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_card_action_button_by_name('smb', 'share1', 'edit')
+        """
+        if sharetype == 'nfs':
+            name = name.replace('/', '-')
+        path = f'card-{sharetype}-share-{name.lower()}-{button}-row-action'
+        path = path.replace('--', '-')
+        return COM.is_visible(xpaths.common_xpaths.button_field(path))
+
+    @classmethod
+    def assert_share_card_actions_menu_button(cls, sharetype: str) -> bool:
+        """
+        This method returns True if the Actions Menu button on the specified share card is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :return: True if the Actions Menu button on the specified share card is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_card_actions_menu_button('smb')
+        """
+        return COM.is_visible(xpaths.common_xpaths.button_share_actions_menu(sharetype))
+
+    @classmethod
+    def assert_share_card_add_button(cls, sharetype: str) -> bool:
+        """
+        This method returns True if the Add button on the specified share card is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :return: True if the Add button on the specified share card is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_card_add_button('smb')
+        """
+        return COM.is_visible(xpaths.common_xpaths.button_field(f'{sharetype}-share-add'))
+
+    @classmethod
     def assert_share_card_displays(cls, share_type: str) -> bool:
         """
         This method returns True if the share card is visible otherwise it returns False.
@@ -103,49 +146,52 @@ class Common_Shares:
         return COM.is_visible(xpaths.common_xpaths.share_enabled_slider(sharetype, name))
 
     @classmethod
-    def assert_share_card_button_by_name(cls, sharetype: str, name: str, button: str) -> bool:
+    def assert_share_card_status(cls, sharetype: str) -> bool:
         """
-        This method returns True if the specified button on the specified share card's share row is visible otherwise it returns False.
+        This method returns True if the Status button on the specified share card is visible otherwise it returns False.
 
-        :param sharetype: type of the given share
-        :param name: The name(SMB)/path(NFS) of the share
-        :param button: The button type to verify
-        :return: True if the specified button on the specified share card's share row is visible otherwise it returns False.
+        :param sharetype: type of the given share [smb/nfs/iscsi]
+        :return: True if the Status button on the specified share card is visible otherwise it returns False.
 
         Example:
-           - Common_Shares.assert_share_card_button_by_name('smb', 'share1', 'edit')
+           - Common_Shares.assert_share_card_status('smb')
         """
-        if sharetype == 'nfs':
-            name = name.replace('/', '-')
-        path = f'card-{sharetype}-share-{name.lower()}-{button}-row-action'
-        path = path.replace('--', '-')
-        return COM.is_visible(xpaths.common_xpaths.button_field(path))
+        share = 'nfs'
+        match sharetype:
+            case 'smb':
+                share = 'cifs'
+            case 'iscsi':
+                share = 'iscsitarget'
+        return COM.is_visible(xpaths.common_xpaths.button_field(f'service-status-{share}'))
 
     @classmethod
-    def assert_share_card_add_button(cls, sharetype: str) -> bool:
+    def assert_share_card_table_header(cls, sharetype: str) -> bool:
         """
-        This method returns True if the Add button on the specified share card is visible otherwise it returns False.
+        This method returns True if the table header values on the specified share card are visible otherwise it returns False.
 
-        :param sharetype: type of the given share
-        :return: True if the Add button on the specified share card is visible otherwise it returns False.
+        :param sharetype: type of the given share [smb/nfs/iscsi]
+        :return: True if the table header values on the specified share card are visible otherwise it returns False.
 
         Example:
-           - Common_Shares.assert_share_card_add_button('smb')
+           - Common_Shares.assert_share_card_table_header('smb')
         """
-        return COM.is_visible(xpaths.common_xpaths.button_field(f'{sharetype}-share-add'))
-
-    @classmethod
-    def assert_share_card_actions_menu_button(cls, sharetype: str) -> bool:
-        """
-        This method returns True if the Actions Menu button on the specified share card is visible otherwise it returns False.
-
-        :param sharetype: type of the given share
-        :return: True if the Actions Menu button on the specified share card is visible otherwise it returns False.
-
-        Example:
-           - Common_Shares.assert_share_card_actions_menu_button('smb')
-        """
-        return COM.is_visible(xpaths.common_xpaths.button_share_actions_menu(sharetype))
+        xpath = f'//ix-{sharetype}-card//*[@data-test="row-header"]'
+        match sharetype:
+            case 'smb':
+                assert COM.get_element_property(xpath, 'innerText').__contains__('Name') is True
+                assert COM.get_element_property(xpath, 'innerText').__contains__('Path') is True
+                assert COM.get_element_property(xpath, 'innerText').__contains__('Description') is True
+                assert COM.get_element_property(xpath, 'innerText').__contains__('Enabled') is True
+            case 'nfs':
+                assert COM.get_element_property(xpath, 'innerText').__contains__('Path') is True
+                assert COM.get_element_property(xpath, 'innerText').__contains__('Description') is True
+                assert COM.get_element_property(xpath, 'innerText').__contains__('Enabled') is True
+            case 'iscsi':
+                assert COM.get_element_property(xpath, 'innerText').__contains__('Target Name') is True
+                assert COM.get_element_property(xpath, 'innerText').__contains__('Target Alias') is True
+            case _:
+                return False
+        return True
 
     @classmethod
     def assert_share_card_view_all_button(cls, sharetype: str) -> bool:
@@ -216,24 +262,6 @@ class Common_Shares:
         return COM.is_visible(xpaths.common_xpaths.button_field(f'add-{sharetype}-share'))
 
     @classmethod
-    def assert_share_view_all_page_enabled_button(cls, sharetype: str, name: str) -> bool:
-        """
-        This method returns True if the Enabled button on the View All page for the sharetype is visible otherwise it returns False.
-
-        :param sharetype: type of the given share
-        :param name: The name(SMB)/path(NFS) of the share
-        :return: True if the Enabled button on the View All page for the sharetype is visible otherwise it returns False.
-
-        Example:
-           - Common_Shares.assert_share_view_all_page_enabled_button('smb', 'share1')
-        """
-        if sharetype == 'nfs':
-            name = name.replace('/', '-')
-        loc = xpaths.common_xpaths.any_xpath(f'//*[@data-test="toggle-enabled-{sharetype}-share-{name}-row-toggle"]')
-        loc = loc.replace('--', '-')
-        return COM.is_visible(loc)
-
-    @classmethod
     def assert_share_view_all_page_button_by_name(cls, sharetype: str, name: str, button: str) -> bool:
         """
         This method returns True if the specified button on the View All page for the sharetype is visible otherwise it returns False.
@@ -249,6 +277,24 @@ class Common_Shares:
         if sharetype == 'nfs':
             name = name.replace('/', '-')
         loc = xpaths.common_xpaths.button_field(f'{sharetype}-share-{name}-{button}-row-action')
+        loc = loc.replace('--', '-')
+        return COM.is_visible(loc)
+
+    @classmethod
+    def assert_share_view_all_page_enabled_button(cls, sharetype: str, name: str) -> bool:
+        """
+        This method returns True if the Enabled button on the View All page for the sharetype is visible otherwise it returns False.
+
+        :param sharetype: type of the given share
+        :param name: The name(SMB)/path(NFS) of the share
+        :return: True if the Enabled button on the View All page for the sharetype is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_view_all_page_enabled_button('smb', 'share1')
+        """
+        if sharetype == 'nfs':
+            name = name.replace('/', '-')
+        loc = xpaths.common_xpaths.any_xpath(f'//*[@data-test="toggle-enabled-{sharetype}-share-{name}-row-toggle"]')
         loc = loc.replace('--', '-')
         return COM.is_visible(loc)
 

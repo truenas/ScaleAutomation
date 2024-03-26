@@ -410,6 +410,7 @@ def share_attribute(sharetype: str, attribute: str, desc: str) -> str:
             index = 2
     return f'//ix-{sharetype}-card//*[@data-test="row"]/td[{index}]/descendant::*[contains(text(),"{desc}")]'
 
+
 def share_enabled_slider(sharetype: str, name: str) -> str:
     """
     This function sets the text for the given share name
