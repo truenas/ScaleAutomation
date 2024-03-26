@@ -131,6 +131,8 @@ class Permissions:
         COM.click_button('save-acl')
         assert COM.assert_dialog_visible('Updating ACL', shared_config['WAIT']) is True
         assert COM.assert_dialog_not_visible('Updating ACL', shared_config['LONG_WAIT']) is True
+        assert COM.assert_page_header('Datasets') is True
+        assert COM.assert_progress_bar_not_visible() is True
 
     @classmethod
     def click_set_acl_button(cls) -> None:
