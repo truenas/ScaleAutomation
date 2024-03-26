@@ -14,7 +14,7 @@ from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 
 
 @pytest.mark.parametrize('posix_acl_preset', get_data_list('dataset_permission/posix_acl_preset'), scope='class')
-class Test_POSIX_Permissions:
+class Test_POSIX_Presets:
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self, posix_acl_preset) -> None:
         """
@@ -56,16 +56,16 @@ class Test_POSIX_Permissions:
         assert PERM.assert_dataset_group('root') is True
         assert PERM.verify_dataset_permissions_type('POSIX Permissions') is True
         assert PERM.verify_dataset_owner_permissions_name(posix_acl_preset['user_obj']) is True
-        assert PERM.verify_dataset_owner_permissions(posix_acl_preset['user_obj_perm']) is True
+        assert PERM.verify_dataset_owner_permissions(posix_acl_preset['user_obj_perm'], 'root') is True
         assert PERM.verify_dataset_group_permissions_name(posix_acl_preset['group_obj']) is True
-        assert PERM.verify_dataset_group_permissions(posix_acl_preset['group_obj_perm']) is True
+        assert PERM.verify_dataset_group_permissions(posix_acl_preset['group_obj_perm'], 'root') is True
         assert PERM.verify_dataset_other_permissions_name() is True
         assert PERM.verify_dataset_other_permissions(posix_acl_preset['other_perm']) is True
         assert PERM.verify_dataset_permissions_edit_button() is True
         assert PERM.verify_dataset_owner_default_permissions_name(posix_acl_preset['user_obj_default']) is True
-        assert PERM.verify_dataset_owner_default_permissions(posix_acl_preset['user_obj_default_perm']) is True
+        assert PERM.verify_dataset_owner_default_permissions(posix_acl_preset['user_obj_default_perm'], 'root') is True
         assert PERM.verify_dataset_group_default_permissions_name(posix_acl_preset['group_obj_default']) is True
-        assert PERM.verify_dataset_group_default_permissions(posix_acl_preset['group_obj_default_perm']) is True
+        assert PERM.verify_dataset_group_default_permissions(posix_acl_preset['group_obj_default_perm'], 'root') is True
         assert PERM.verify_dataset_other_default_permissions_name() is True
         assert PERM.verify_dataset_other_default_permissions(posix_acl_preset['other_default_perm']) is True
         if posix_acl_preset['preset_name'].__contains__('posix-admin'):
@@ -115,3 +115,4 @@ class Test_POSIX_Permissions:
             assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['default_mask_cli']) is True
             assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['group_builtin_administrators_cli']) is True
             assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['default_group_builtin_administrators_cli']) is True
+
