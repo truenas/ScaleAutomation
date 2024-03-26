@@ -34,7 +34,6 @@ class Test_POSIX_Presets:
         """
         yield
         # Clean up environment.
-        PERM.delete_custom_preset(posix_acl_custom['dataset'], posix_acl_custom['custom_name'])
         API_DELETE.delete_dataset(posix_acl_custom['api_path'])
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
