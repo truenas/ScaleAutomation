@@ -7,6 +7,18 @@ from keywords.webui.common import Common as COM
 class NFS:
 
     @classmethod
+    def assert_add_button_is_locked_and_not_clickable_on_nfs_page(cls):
+        """
+        This method verifies that the add button is locked and not clickable on the Sharing NFS page.
+
+        :return: True if add NFS share button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - NFS.assert_add_nfs_share_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('add-nfs-share')
+
+    @classmethod
     def assert_error_nfs_share_authorized_hosts_required(cls) -> bool:
         """
         This method returns True if 'Authorized Hosts and IP addresses is required' error message is visible,
@@ -110,7 +122,81 @@ class NFS:
         return COM.is_visible(xpaths.common_xpaths.any_text('Path is required'))
 
     @classmethod
-    def click_add_hosts_button(cls):
+    def assert_edit_nfs_panel_header(cls) -> bool:
+        """
+        This method returns True if the NFS share edit panel header is visible, otherwise it returns False.
+
+        :return: True if the NFS share edit panel header is visible, otherwise it returns False.
+
+        Example:
+            - NFS.assert_edit_nfs_panel_header()
+        """
+        return COM.assert_right_panel_header('Edit NFS Share')
+
+    @classmethod
+    def assert_share_delete_button_is_locked_and_not_clickable_on_nfs_page(cls, share_xpath: str) -> bool:
+        """
+        This method verifies that the delete button is locked and not clickable on the Sharing NFS page.
+
+        :return: True if delete NFS share button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - NFS.assert_nfs_delete_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable(f'nfs-share-{share_xpath}-delete-row-action')
+
+    @classmethod
+    def assert_share_description(cls, desc: str) -> bool:
+        """
+        This method verifies that the share description is visible on the Sharing NFS page.
+
+        :param desc: description of the given share
+        :return: True if the share description is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_description('smb', 'share1')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('nfs', 'description', desc))
+
+    @classmethod
+    def assert_share_enabled_toggle_is_locked_and_not_clickable_on_nfs_page(cls, share_xpath: str) -> bool:
+        """
+        This method verifies that the enabled button is locked and not clickable on the Sharing NFS page.
+
+        :return: True if enabled NFS share button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - NFS.assert_nfs_enabled_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_toggle_is_locked_and_not_clickable(f'enabled-nfs-share-{share_xpath}-row-toggle')
+
+    @classmethod
+    def assert_share_path(cls, path: str) -> bool:
+        """
+        This method verifies that the path for the share row of the given share on the Sharing NFS page.
+
+        :param path: path of the given share
+        :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_path('smb', '/mnt/share1')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('nfs', 'path', path))
+
+    @classmethod
+    def assert_sharing_nfs_page_header(cls) -> bool:
+        """
+        This method verifies that the sharing NFS page header is visible.
+
+        :return: True if the NFS page header is visible, otherwise it returns False.
+
+        Example:
+            - NFS.assert_sharing_nfs_page_header()
+        """
+        return COM.assert_page_header('NFS')
+
+    @classmethod
+    def click_add_hosts_button(cls) -> None:
         """
         This method clicks the Add Hosts button on the NFS share edit panel.
 
@@ -120,7 +206,7 @@ class NFS:
         COM.click_button('add-item-hosts')
 
     @classmethod
-    def click_add_networks_button(cls):
+    def click_add_networks_button(cls) -> None:
         """
         This method clicks the Add Networks button on the NFS share edit panel.
 
@@ -130,7 +216,19 @@ class NFS:
         COM.click_button('add-item-networks')
 
     @classmethod
-    def click_remove_from_list_button(cls):
+    def click_nfs_share_edit_button(cls, share_xpath: str) -> None:
+        """
+        This method clicks the Edit button on the sharing NFS page.
+
+        :param share_xpath: The xpath of the share
+
+        Example:
+            - NFS.click_nfs_share_edit_button('share1')
+        """
+        COM.click_button(f'nfs-share-{share_xpath}-edit-row-action')
+
+    @classmethod
+    def click_remove_from_list_button(cls) -> None:
         """
         This method clicks the Remove From List button on the Network section of the NFS share edit panel.
 
@@ -140,7 +238,7 @@ class NFS:
         COM.click_button('remove-from-list')
 
     @classmethod
-    def set_host_and_ip(cls, text: str):
+    def set_host_and_ip(cls, text: str) -> None:
         """
         This method sets the Authorized Hosts and IP addresses field on the Hosts section of the NFS share edit panel.
 
@@ -152,7 +250,7 @@ class NFS:
         cls.set_nfs_network_and_host_inputs('Hosts', text)
 
     @classmethod
-    def set_mapall_group(cls, name: str):
+    def set_mapall_group(cls, name: str) -> None:
         """
         This method sets the Mapall Group field on the NFS share edit panel.
 
@@ -165,7 +263,7 @@ class NFS:
         WebUI.delay(0.2)
 
     @classmethod
-    def set_mapall_user(cls, name: str):
+    def set_mapall_user(cls, name: str) -> None:
         """
         This method sets the Mapall User field on the NFS share edit panel.
 
@@ -178,7 +276,7 @@ class NFS:
         WebUI.delay(0.2)
 
     @classmethod
-    def set_maproot_group(cls, name: str):
+    def set_maproot_group(cls, name: str) -> None:
         """
         This method sets the Maproot Group field on the NFS share edit panel.
 
@@ -191,7 +289,7 @@ class NFS:
         WebUI.delay(0.2)
 
     @classmethod
-    def set_maproot_user(cls, name: str):
+    def set_maproot_user(cls, name: str) -> None:
         """
         This method sets the Maproot User field on the NFS share edit panel.
 
@@ -204,7 +302,7 @@ class NFS:
         WebUI.delay(0.2)
 
     @classmethod
-    def set_network(cls, network: str):
+    def set_network(cls, network: str) -> None:
         """
         This method sets the Network input on the Network section of the NFS share edit panel.
 
@@ -216,7 +314,7 @@ class NFS:
         cls.set_nfs_network_and_host_inputs('Network', network)
 
     @classmethod
-    def set_network_mask(cls, netmask: str):
+    def set_network_mask(cls, netmask: str) -> None:
         """
         This method selects the specified netmask on the Network section of the NFS share edit panel.
 
@@ -228,7 +326,7 @@ class NFS:
         COM.select_option('netmasks', f'netmask-{netmask}')
 
     @classmethod
-    def set_nfs_network_and_host_inputs(cls, field: str, text: str):
+    def set_nfs_network_and_host_inputs(cls, field: str, text: str) -> None:
         """
         This method selects the specified netmask on the Network section of the NFS share edit panel.
 
@@ -246,7 +344,7 @@ class NFS:
         WebUI.xpath(path).send_keys(Keys.TAB)
 
     @classmethod
-    def set_security_type(cls, security_type: str):
+    def set_security_type(cls, security_type: str) -> None:
         """
         This method selects the security type of the share on the NFS share edit panel.
 
@@ -258,7 +356,7 @@ class NFS:
         COM.select_option('security', f'security-{security_type}')
 
     @classmethod
-    def unset_mapall_group(cls):
+    def unset_mapall_group(cls) -> None:
         """
         This method unsets the Mapall Group field on the NFS share edit panel.
 
@@ -269,7 +367,7 @@ class NFS:
         WebUI.delay(0.2)
 
     @classmethod
-    def unset_mapall_user(cls):
+    def unset_mapall_user(cls) -> None:
         """
         This method unsets the Mapall User field on the NFS share edit panel.
 
@@ -280,7 +378,7 @@ class NFS:
         WebUI.delay(0.2)
 
     @classmethod
-    def unset_maproot_group(cls):
+    def unset_maproot_group(cls) -> None:
         """
         This method unsets the Maproot Group field on the NFS share edit panel.
 
@@ -291,7 +389,7 @@ class NFS:
         WebUI.delay(0.2)
 
     @classmethod
-    def unset_maproot_user(cls):
+    def unset_maproot_user(cls) -> None:
         """
         This method unsets the Maproot User field on the NFS share edit panel.
 

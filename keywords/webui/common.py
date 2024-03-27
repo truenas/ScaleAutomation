@@ -130,6 +130,14 @@ class Common:
 
     @classmethod
     def assert_header_readonly_badge(cls) -> bool:
+        """
+        This method verifies the readonly badge on the header exists.
+
+        :return: True if the readonly badge exists otherwise it returns False.
+
+        Example:
+            - Common.assert_header_readonly_badge()
+        """
         return WebUI.wait_until_visible(xpaths.common_xpaths.readonly_badge)
 
     @classmethod
@@ -283,6 +291,23 @@ class Common:
             - Common.assert_text_is_visible('any Text')
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_text(text))
+
+    @classmethod
+    def assert_toggle_is_locked_and_not_clickable(cls, name) -> bool:
+        """
+        This method returns True or False if the toggle is locked and not clickable.
+
+        :return: True if the toggle is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Common.test_toggle_is_locked_and_not_clickable()
+        """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field_locked(name)) is True
+        try:
+            cls.click_on_element(xpaths.common_xpaths.toggle_field(name))
+        except (ElementClickInterceptedException, TimeoutException):
+            return True
+        return False
 
     @classmethod
     def assert_tree_is_expanded(cls, name: str) -> bool:
