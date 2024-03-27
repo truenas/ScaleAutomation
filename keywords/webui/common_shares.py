@@ -156,7 +156,7 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_iscsi_target_is_visible('target-1')
         """
-        return WebUI.wait_until_visible(xpaths.sharing.iscsi_target_name(target_name))
+        return WebUI.wait_until_visible(xpaths.sharing.iscsi_card_target_name(target_name))
 
     @classmethod
     def assert_share_card_action_button_by_name(cls, share_type: str, name: str, button: str) -> bool:
