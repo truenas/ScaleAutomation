@@ -56,6 +56,22 @@ class Test_SMB_AD_User:
         assert SMB.assert_user_can_access('SMBADUSER', ad_data['username'], ad_data['password']) is True
 
     @allure.tag("Delete")
+    @allure.story("Verify SMB AD user can access after reboot")
+    def test_ad_user_can_access_after_reboot(self, ad_data) -> None:
+
+        # Verify SMB AD user can access after reboot
+        assert SSHSMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
+        assert SSHSMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
+        assert SSHSMB.assert_user_can_put_directory('Documents', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
+        assert SSHSMB.assert_user_can_delete_directory('Documents', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
+        COM.reboot_system()
+        COM.set_login_form(private_config['USERNAME'], private_config['PASSWORD'])
+        assert SSHSMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
+        assert SSHSMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
+        assert SSHSMB.assert_user_can_put_directory('Documents', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
+        assert SSHSMB.assert_user_can_delete_directory('Documents', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
+
+    @allure.tag("Delete")
     @allure.story("Verify SMB AD user can delete file")
     def test_ad_user_can_delete_file(self, ad_data) -> None:
 
@@ -85,19 +101,3 @@ class Test_SMB_AD_User:
         PERM.set_ace_permissions('READ')
         PERM.click_save_acl_button()
         assert SSHSMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is False
-
-    @allure.tag("Delete")
-    @allure.story("Verify SMB AD user can access after reboot")
-    def test_ad_user_can_access_after_reboot(self, ad_data) -> None:
-
-        # Verify SMB AD user can access after reboot
-        assert SSHSMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
-        assert SSHSMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
-        assert SSHSMB.assert_user_can_put_directory('Documents', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
-        assert SSHSMB.assert_user_can_delete_directory('Documents', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
-        COM.reboot_system()
-        COM.set_login_form(private_config['USERNAME'], private_config['PASSWORD'])
-        assert SSHSMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
-        assert SSHSMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
-        assert SSHSMB.assert_user_can_put_directory('Documents', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
-        assert SSHSMB.assert_user_can_delete_directory('Documents', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
