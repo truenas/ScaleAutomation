@@ -12,17 +12,20 @@ from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.smb import SMB
 
 
-@pytest.mark.parametrize('smb_data', get_data_list('shares/smb'))
 @allure.tag("SMB", "UI")
 @allure.epic("Shares")
 @allure.feature("SMB-ACL-UI")
+@pytest.mark.parametrize('smb_data', get_data_list('shares/smb'), scope='class')
+@pytest.mark.parametrize('ad_data', get_data_list('ad_credentials'), scope='class')
 class Test_SMB_ACL_UI:
-    @pytest.fixture(scope='function', autouse=True)
-    def setup_test(self, smb_data) -> None:
+    @pytest.fixture(autouse=True, scope='class')
+    def setup_test(self, smb_data, ad_data) -> None:
         """
         This method sets up each test to start with datasets and shares to execute SMB Shadow Copy functionality
         """
         # Environment setup
+        API_PUT.set_nameservers(ad_data['nameserver'])
+        API_PUT.join_active_directory(ad_data['username'], ad_data['password'], ad_data['domain'])
         API_DELETE.delete_share('smb', smb_data['name'])
         API_DELETE.delete_dataset(smb_data['path'])
         API_POST.create_dataset(smb_data['path'], 'SMB')
@@ -31,8 +34,7 @@ class Test_SMB_ACL_UI:
         assert COMSHARE.assert_share_card_displays('smb')
         SMB.click_edit_share_acl(smb_data['name'])
 
-    @pytest.fixture(scope='function', autouse=True)
-    @pytest.mark.parametrize('ad_data', get_data_list('ad_credentials'), scope='class')
+    @pytest.fixture(autouse=True, scope='class')
     def teardown_test(self, smb_data, ad_data) -> None:
         """
         This method removes datasets and shares after test is run for a clean environment
@@ -74,15 +76,20 @@ class Test_SMB_ACL_UI:
 
     @allure.tag("Read")
     @allure.story("Verify SMB ACL AD Who User Dropdown UI")
-    @pytest.mark.parametrize('ad_data', get_data_list('ad_credentials'), scope='class')
-    def test_smb_share_acl_ad_who_user_dropdown_ui(self, ad_data) -> None:
+    def test_smb_share_acl_ad_who_user_dropdown_ui(self) -> None:
         """
-        This test verifies the SMB Share ACL dropdown UI
+        This test verifies the SMB Share ACL AD Who User dropdown UI
         """
         # Verify the ad who-user dropdown values
-        API_PUT.set_nameservers(ad_data['nameserver'])
-        API_PUT.join_active_directory(ad_data['username'], ad_data['password'], ad_data['domain'])
         COM.select_option('ae-who', 'ae-who-user')
         assert SMB.assert_smb_acl_ad_who_user_dropdown_values() is True
 
+    @allure.tag("Read")
+    @allure.story("Verify SMB ACL AD Who Group Dropdown UI")
+    def test_smb_share_acl_ad_who_group_dropdown_ui(self) -> None:
+        """
+        This test verifies the SMB Share ACL AD Who Group dropdown UI
+        """
         # Verify the who-group dropdown values
+        COM.select_option('ae-who', 'ae-who-group')
+        assert SMB.assert_smb_acl_ad_who_group_dropdown_values() is True
