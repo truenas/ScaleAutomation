@@ -45,6 +45,8 @@ class Permissions_SSH:
             - Permissions.assert_dataset_has_posix_acl('test-dataset', 'rwxrwx---+')
         """
         value = SSH.get_output_from_ssh(f'ls -l /mnt/tank | grep {dataset}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        print('ls_output: '+permissions)
+        print('stdout: ' + value.stdout.lower())
         if permissions in value.stdout.lower():
             return True
         return False
