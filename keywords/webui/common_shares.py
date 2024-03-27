@@ -3,6 +3,7 @@ from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
 from keywords.api.post import API_POST
+from keywords.webui.system_services import System_Services as SS
 
 
 class Common_Shares:
@@ -120,6 +121,31 @@ class Common_Shares:
         return result
 
     @classmethod
+    def assert_share_card_actions_menu_dropdown(cls, sharetype: str) -> bool:
+        """
+        This method returns True if the action menu values on the specified share card are visible otherwise it returns False.
+
+        :param sharetype: type of the given share [smb/nfs/iscsi]
+        :return: True if the action menu values on the specified share card are visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_card_actions_menu_dropdown('smb')
+        """
+        COM.click_on_element(f'//ix-{sharetype}-card//*[contains(@data-test,"actions-menu")]')
+        sharetype = SS.return_backend_service_name(sharetype, False)
+        xpath = f'//*[@data-test="button-{sharetype}-actions-menu-'
+        if cls.is_share_service_running(sharetype):
+            assert COM.is_visible(xpath+'turn-off-service"]') is True
+        else:
+            assert COM.is_visible(xpath+'turn-on-service"]') is True
+        assert COM.is_visible(xpath+'config-service"]') is True
+        if not sharetype.__eq__('iscsitarget'):
+            assert COM.is_visible(xpath+'sessions"]') is True
+        if sharetype.__eq__('cifs'):
+            assert COM.is_visible(xpath+'logs"]') is True
+        return True
+
+    @classmethod
     def assert_iscsi_target_is_visible(cls, target_name: str) -> bool:
         """
         This method returns True if the iSCSI target is visible otherwise it returns False.
@@ -220,13 +246,8 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_share_card_status('smb')
         """
-        share = 'nfs'
-        match share_type:
-            case 'smb':
-                share = 'cifs'
-            case 'iscsi':
-                share = 'iscsitarget'
-        return COM.is_visible(xpaths.common_xpaths.button_field(f'service-status-{share}'))
+        share_type = SS.return_backend_service_name(share_type, False)
+        return COM.is_visible(xpaths.common_xpaths.button_field(f'service-status-{share_type}'))
 
     @classmethod
     def assert_share_card_table_header(cls, share_type: str) -> bool:
@@ -329,6 +350,7 @@ class Common_Shares:
             - cls.assert_share_service_in_expected_state(xpath, 'RUNNING', True)
         """
         state = False
+        xpath = SS.return_backend_service_name(xpath, False)
         icon_text = COM.get_element_property(xpaths.common_xpaths.button_field('service-status-'+xpath), 'innerText')
         if (icon_text == expected_text) & (API_POST.is_service_running(xpath) is expected_state):
             state = True
@@ -566,7 +588,7 @@ class Common_Shares:
         :return: True if the service is STOPPED, otherwise it returns False.
 
         Example:
-            - Common.is_share_service_STOPPED('cifs')
+            - Common.is_share_service_STOPPED('smb')
         """
         return cls.assert_share_service_in_expected_state(xpath, 'STOPPED', False)
 
@@ -633,9 +655,10 @@ class Common_Shares:
         :return: True if the service successfully changed to STARTED, otherwise returns False.
 
         Example:
-            - Common_Shares.start_share_service_by_actions_menu('cifs')
+            - Common_Shares.start_share_service_by_actions_menu('smb')
         """
-        cls.toggle_share_service_state_by_actions_menu(service, 'on')
+        if cls.is_share_service_running(service) is False:
+            cls.toggle_share_service_state_by_actions_menu(service, 'on')
         return cls.is_share_service_running(service)
 
     @classmethod
@@ -648,9 +671,10 @@ class Common_Shares:
         :return: True if the service successfully changed to STOPPED, otherwise returns False.
 
         Example:
-            - Common_Shares.stop_share_service_by_actions_menu('cifs')
+            - Common_Shares.stop_share_service_by_actions_menu('smb')
         """
-        cls.toggle_share_service_state_by_actions_menu(service, 'off')
+        if cls.is_share_service_stopped(service) is False:
+            cls.toggle_share_service_state_by_actions_menu(service, 'off')
         return cls.is_share_service_stopped(service)
 
     @classmethod
@@ -663,11 +687,12 @@ class Common_Shares:
         :param toggle: direction in which to toggle the service.
 
         Example:
-            - Common_Shares.toggle_share_service_state_by_actions_menu('cifs', 'on')
+            - Common_Shares.toggle_share_service_state_by_actions_menu('smb', 'on')
         """
         COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(service))
-        if service == 'smb':
-            service = 'cifs'
+        service = SS.return_backend_service_name(service, False)
+        # if service == 'smb':
+        #     service = 'cifs'
         COM.click_button(f'{service}-actions-menu-turn-{toggle}-service')
         text = 'STOPPED'
         if toggle == 'on':

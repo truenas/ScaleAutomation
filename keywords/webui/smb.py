@@ -170,6 +170,42 @@ class SMB:
         return True
 
     @classmethod
+    def assert_smb_acl_ad_who_group_dropdown_values(cls) -> bool:
+        """
+        This method returns True if the AD who user dropdown values exist, otherwise returns False.
+
+        :return: True if the AD who user dropdown values exist, otherwise returns False.
+
+        Example:
+            - SMB.assert_smb_acl_who('user')
+        """
+        assert COM.is_visible('//*[@data-test="input-group"]') is True
+        COM.click_on_element('//*[@data-test="input-group"]')
+        WebUI.delay(0.2)
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-enterprise-read-only-domain-controllers"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-domain-admins"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-domain-users"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-domain-guests"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-domain-computers"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-domain-controllers"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-cert-publishers"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-schema-admins"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-enterprise-admins"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-group-policy-creator-owners"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-read-only-domain-controllers"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-cloneable-domain-controllers"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-protected-users"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-key-admins"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-enterprise-key-admins"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-ras-and-ias-servers"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-allowed-rodc-password-replication-group"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-denied-rodc-password-replication-group"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-dnsadmins"]') is True
+        assert COM.is_visible('//*[@data-test="option-group-ad-03-dnsupdateproxy"]') is True
+        COM.click_on_element('//*[@data-test="input-group"]')
+        return True
+
+    @classmethod
     def assert_smb_acl_ad_who_user_dropdown_values(cls) -> bool:
         """
         This method returns True if the AD who user dropdown values exist, otherwise returns False.
@@ -181,6 +217,7 @@ class SMB:
         """
         assert COM.is_visible('//*[@data-test="input-user"]') is True
         COM.click_on_element('//*[@data-test="input-user"]')
+        WebUI.delay(0.2)
         assert COM.is_visible('//*[@data-test="option-user-ad-03-administrator"]') is True
         assert COM.is_visible('//*[@data-test="option-user-ad-03-guest"]') is True
         assert COM.is_visible('//*[@data-test="option-user-ad-03-krbtgt"]') is True
@@ -307,7 +344,6 @@ class SMB:
        """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.select_field('purpose')) is True
         COM.click_on_element(f'//*[@data-test="select-purpose"]')
-        # purpose = purpose.replace(' ', '-').lower()
         purpose = COM.convert_to_tag_format(purpose)
         COM.click_on_element(f'//*[@data-test="option-purpose-{purpose}"]')
 

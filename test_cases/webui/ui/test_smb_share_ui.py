@@ -25,6 +25,8 @@ class Test_SMB_UI:
         API_POST.create_share('smb', smb_data['name'], '/mnt/'+smb_data['path'])
         NAV.navigate_to_shares()
         assert COMSHARE.assert_share_card_displays('smb')
+        if COMSHARE.is_share_service_running('smb'):
+            COMSHARE.stop_share_service_by_actions_menu('smb')
 
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self, smb_data) -> None:
@@ -46,13 +48,15 @@ class Test_SMB_UI:
         COMSHARE.click_edit_share('smb', smb_data['name'])
         COMSHARE.set_share_description(smb_data['description'])
         COM.click_save_button()
-        COM.click_button('do-not-start')
+        if COM.is_visible('//*[@data-test="button-do-not-start"]'):
+            COM.click_button('do-not-start')
 
         # Verify Share Card Elements
         assert COMSHARE.assert_share_card_displays('smb')
         assert COMSHARE.assert_share_card_status('smb') is True
         assert COMSHARE.assert_share_card_add_button('smb') is True
         assert COMSHARE.assert_share_card_actions_menu_button('smb') is True
+        assert COMSHARE.assert_share_card_actions_menu_dropdown('smb')
         assert COMSHARE.assert_share_card_table_header('smb') is True
         assert COMSHARE.assert_share_name('smb', smb_data['name']) is True
         assert COMSHARE.assert_share_path('smb', smb_data['path']) is True
