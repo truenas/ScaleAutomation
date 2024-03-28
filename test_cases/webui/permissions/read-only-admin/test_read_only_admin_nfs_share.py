@@ -16,7 +16,7 @@ from keywords.webui.nfs import NFS
 @pytest.mark.parametrize('data', get_data_list('read_only_admin_shares'), scope='class')
 class Test_Read_Only_Admin_NFS_Share:
     """
-    This test class tests read-only admin share.
+    This test class tests read-only admin NFS share permissions.
     """
 
     @pytest.fixture(scope='function', autouse=True)

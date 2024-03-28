@@ -17,7 +17,7 @@ from keywords.webui.navigation import Navigation
 @pytest.mark.parametrize('data', get_data_list('read_only_admin_shares'), scope='class')
 class Test_Read_Only_Admin_iSCSI_Share:
     """
-    This test class tests read-only admin share.
+    This test class tests read-only admin iSCSI share permissions.
     """
 
     @pytest.fixture(scope='function', autouse=True)
@@ -183,7 +183,6 @@ class Test_Read_Only_Admin_iSCSI_Share:
         assert Common.assert_save_button_is_locked_and_not_clickable() is True
 
         Common.close_right_panel()
-
 
     @allure.tag('Delete')
     @allure.story("Read Only Admin Is Not Able To Delete An Item On A Tab Of The Sharing iSCSI Page")

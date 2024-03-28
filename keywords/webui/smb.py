@@ -9,6 +9,18 @@ from keywords.webui.common import Common as COM
 class SMB:
 
     @classmethod
+    def assert_edit_smb_panel_header(cls) -> bool:
+        """
+        This method asserts that the SMB edit panel header is displayed.
+
+        :return: True if the SMB edit panel header is displayed, otherwise it returns False.
+
+        Example:
+            - SMB.assert_edit_smb_panel_header()
+        """
+        return COM.assert_right_panel_header('Edit SMB')
+
+    @classmethod
     def assert_guest_access(cls, share: str, user: str = 'nonexistent', password: str = 'nopassword') -> bool:
         """
         This returns True if the share can be accessed by a guest user, otherwise it returns False.
