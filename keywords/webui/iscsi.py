@@ -28,22 +28,16 @@ class iSCSI:
         Example:
             - iSCSI.assert_edit_panel_header_is_visible_from_iscsi_tab('Targets')
         """
-        match tab_name.lower():
-            case 'associated targets':
-                title = 'Associated Target'
-            case 'authorized access':
-                title = 'Authorized Access'
-            case 'extents':
-                title = 'Extent'
-            case 'initiators groups':
-                title = 'Initiator'
-            case 'portals':
-                title = 'Portal'
-            case 'targets':
-                title = 'ISCSI Target'
+        match tab_name:
+            case 'Authorized Access':
+                title = f'Edit {tab_name}'
+            case 'Initiators Groups':
+                title = 'Add Initiator'
+            case 'Targets':
+                title = f'Edit ISCSI {tab_name.rstrip("s")}'
             case _:
-                title = tab_name
-        return COM.assert_right_panel_header(f'Edit {title}')
+                title = f'Edit {tab_name.rstrip("s")}'
+        return COM.assert_right_panel_header(title)
 
     @classmethod
     def assert_sharing_iscsi_page_header(cls) -> bool:
@@ -139,7 +133,7 @@ class iSCSI:
             case 'targets' | 'extents':
                 tab = 'target'
             case _:
-                tab = tab_name
+                tab = tab_name.lower()
         return COM.assert_button_is_locked_and_not_clickable(f'add-{tab}')
 
     @classmethod
@@ -155,20 +149,12 @@ class iSCSI:
             - iSCSI.assert_tab_delete_button_is_locked_and_not_clickable('Targets', 'target-1')
         """
         match tab_name.lower():
-            case 'associated targets':
-                tab = 'associated-target'
             case 'authorized access':
-                tab = 'authorized-access'
-            case 'extents':
-                tab = 'extent'
+                tab = tab_name.replace(' ', '-').lower()
             case 'initiators groups':
                 tab = 'initiator'
-            case 'portals':
-                tab = 'portal'
-            case 'targets':
-                tab = 'target'
             case _:
-                tab = tab_name
+                tab = tab_name.replace(' ', '-').lower().rstrip('s')
         return COM.assert_button_is_locked_and_not_clickable(f'iscsi-{tab}-{row_item}-delete-row-action')
 
     @classmethod
@@ -183,20 +169,12 @@ class iSCSI:
             - iSCSI.click_on_the_item_edit_button('Targets', 'target-1')
         """
         match tab_name.lower():
-            case 'associated targets':
-                tab = 'associated-target'
             case 'authorized access':
-                tab = 'authorized-access'
-            case 'extents':
-                tab = 'extent'
+                tab = tab_name.replace(' ', '-').lower()
             case 'initiators groups':
                 tab = 'initiator'
-            case 'portals':
-                tab = 'portal'
-            case 'targets':
-                tab = 'target'
             case _:
-                tab = tab_name
+                tab = tab_name.replace(' ', '-').lower().rstrip('s')
         COM.click_button(f'iscsi-{tab}-{row_item}-edit-row-action')
 
     @classmethod

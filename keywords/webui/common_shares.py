@@ -22,6 +22,33 @@ class Common_Shares:
         return COM.assert_button_is_locked_and_not_clickable(f'{share_type}-share-add')
 
     @classmethod
+    def assert_card_edit_filesystem_acl_permissions_button_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+        """
+        This method returns True if the edit filesystem ACL button is locked and not clickable
+        otherwise it returns False.
+
+        :param share_name: The name of the share. Example: share1 is share-1
+        :return: True if the edit filesystem ACL button is locked and not clickable otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_card_edit_filesystem_acl_permissions_button_is_locked_and_not_clickable('share-1')
+        """
+        return COM.assert_button_is_locked_and_not_clickable(f'card-smb-share-{share_name}-security-row-action')
+
+    @classmethod
+    def assert_card_edit_share_acl_permissions_button_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+        """
+        This method returns True if the edit share ACL button is locked and not clickable otherwise it returns False.
+
+        :param share_name: The name of the share. Example: share1 is share-1
+        :return: True if the edit share ACL button is locked and not clickable otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_card_edit_share_acl_permissions_button_is_locked_and_not_clickable('share-1')
+        """
+        return COM.assert_button_is_locked_and_not_clickable(f'card-smb-share-{share_name}-share-row-action')
+
+    @classmethod
     def assert_card_iscsi_configure_button_is_locked_and_not_clickable(cls) -> bool:
         """
         This method returns True if the configure button is locked and not clickable otherwise it returns False.
@@ -98,7 +125,7 @@ class Common_Shares:
            - Common_Shares.assert_disable_share_service_is_locked_and_not_clickable('smb')
         """
         COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(share_type))
-        share_type = 'iscsitarget' if share_type == 'iscsi' else share_type
+        share_type = SS.return_backend_service_name(share_type, False)
         result = COM.assert_button_is_locked_and_not_clickable(f'{share_type}-actions-menu-turn-off-service')
         WebUI.send_key('esc')
         return result
@@ -115,7 +142,7 @@ class Common_Shares:
            - Common_Shares.assert_enable_share_service_is_locked_and_not_clickable('smb')
         """
         COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(share_type))
-        share_type = 'iscsitarget' if share_type == 'iscsi' else share_type
+        share_type = SS.return_backend_service_name(share_type, False)
         result = COM.assert_button_is_locked_and_not_clickable(f'{share_type}-actions-menu-turn-on-service')
         WebUI.send_key('esc')
         return result
