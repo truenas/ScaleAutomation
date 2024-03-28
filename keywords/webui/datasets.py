@@ -714,7 +714,7 @@ class Datasets:
         Example:
             - Dataset.click_edit_permissions_button()
         """
-        Common.click_link('edit-permissions')
+        Common.click_button('edit-permissions')
 
     @classmethod
     def click_manage_group_quotas_link(cls, pool: str, dataset_name: str) -> None:
