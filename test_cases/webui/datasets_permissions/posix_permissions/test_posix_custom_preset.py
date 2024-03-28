@@ -37,7 +37,7 @@ class Test_POSIX_Custom_Preset:
         NAV.navigate_to_dashboard()
 
     @allure.issue("NAS-128038", name="NAS-128038")
-    def test_verify_posix_preset_permissions(self, posix_acl_custom) -> None:
+    def test_verify_posix_custom_preset_permissions(self, posix_acl_custom) -> None:
         """
         This test verifies the ability to create and use a custom POSIX ACL preset.
         """
