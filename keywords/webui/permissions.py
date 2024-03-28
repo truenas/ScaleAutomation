@@ -632,7 +632,7 @@ class Permissions:
 
         :return: returns true if the edit permissions button is visible.
         """
-        return COM.is_visible(xpaths.common_xpaths.link_field('edit-permissions'))
+        return COM.is_visible(xpaths.common_xpaths.button_field('edit-permissions'))
 
     @classmethod
     def verify_dataset_permissions_type(cls, permissions_type: str) -> bool:
