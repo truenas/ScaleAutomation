@@ -90,6 +90,27 @@ class Permissions_SSH:
         return file in value.stdout.lower()
 
     @classmethod
+    def assert_file_has_posix_acl(cls, path: str, file_name: str, permissions: str) -> bool:
+        """
+        This method returns True if the given dataset has the given POSIX ACL, otherwise it returns False.
+
+        :param path: The path to the dataset.
+        :param file_name: The name of the file.
+        :param permissions: The permissions to verify.
+        :return: True if the given dataset has the given POSIX ACL, otherwise it returns False.
+
+        Example:
+            - Permissions.assert_dataset_has_posix_acl('test-dataset', 'rwxrwx---+')
+        """
+        value = SSH.get_output_from_ssh(f'ls -l {path} | grep {file_name}', private_config['IP'],
+                                        private_config['USERNAME'], private_config['PASSWORD'])
+        print('ls_output: ' + permissions)
+        print('stdout: ' + value.stdout.lower())
+        if permissions in value.stdout.lower():
+            return True
+        return False
+
+    @classmethod
     def clean_dataset_contents(cls, pool: str, dataset: str) -> None:
         """
         This method removes the files from the given dataset. Due to possible lack of permissions, this method must delete
