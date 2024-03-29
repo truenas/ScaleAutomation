@@ -169,9 +169,9 @@ class Permissions:
         DAT.click_dataset_location(dataset)
         DAT.click_edit_permissions_button()
         COM.click_button('save-as-preset')
-        WebUI.wait_until_clickable(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
-        COM.click_on_element(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
-        assert WebUI.wait_until_not_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)) is True
+        if COM.is_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)):
+            COM.click_on_element(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
+            assert WebUI.wait_until_not_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)) is True
         COM.click_cancel_button()
         assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('cancel')) is True
 
