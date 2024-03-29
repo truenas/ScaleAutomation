@@ -5,6 +5,7 @@ from helper.data_config import get_data_list
 from helper.global_config import private_config
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
+from keywords.api.put import API_PUT
 from keywords.webui.common import Common as COM
 from keywords.webui.datasets import Datasets as DAT
 from keywords.webui.permissions import Permissions as PERM
@@ -20,6 +21,8 @@ class Test_POSIX_Custom_Preset:
         This method creates the dataset and navigates to datasets before testing.
         """
         API_POST.start_service('ssh')
+        API_PUT.enable_user_ssh_password(private_config['USERNAME'])
+        API_PUT.enable_user_all_sudo_commands_no_password(private_config['USERNAME'])
         API_DELETE.delete_dataset(posix_acl_custom['api_path'])
         API_POST.create_dataset(posix_acl_custom['api_path'])
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
