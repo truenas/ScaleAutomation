@@ -26,7 +26,7 @@ def dataset_permission_custom_preset_delete_button(name: str) -> str:
     :param name: The name of the preset.
     :return: the xpath text of the given custom preset delete button.
     """
-    return f'//*[contains(text(), "{name}")]/parent::*//*[@name="cancel"]/parent::*'
+    return f'//*[contains(text(), "{name}")]//parent::*//child::*[@name="cancel"]'
 
 
 def dataset_permissions_item(name: str, permissions: str) -> str:
