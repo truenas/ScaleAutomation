@@ -15,7 +15,7 @@ from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 
 @pytest.mark.parametrize('posix_acl_preset', get_data_list('dataset_permission/posix_acl_preset'), scope='class')
 class Test_POSIX_Presets:
-    @pytest.fixture(scope='function', autouse=True)
+    @pytest.fixture(scope='class', autouse=True)
     def setup_test(self, posix_acl_preset) -> None:
         """
         This method creates the dataset and navigates to datasets before testing.
@@ -39,7 +39,7 @@ class Test_POSIX_Presets:
         PERM.assert_owner_group_input('root')
         PERM.click_save_acl_button()
 
-    @pytest.fixture(scope='function', autouse=True)
+    @pytest.fixture(scope='class', autouse=True)
     def teardown_test(self, posix_acl_preset):
         """
         This method clears any test users after test is run for a clean environment
