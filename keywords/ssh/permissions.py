@@ -1,5 +1,6 @@
 from helper.cli import SSH_Command_Line
 from helper.global_config import private_config
+from helper.webui import WebUI
 from keywords.ssh.common import Common_SSH as SSH
 
 
@@ -46,6 +47,14 @@ class Permissions_SSH:
             - Permissions.assert_dataset_has_posix_acl('test-dataset', 'rwxrwx---+')
         """
         value = SSH.get_output_from_ssh(f'ls -l {path} | grep {dataset}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        i = 0
+        while value.stdout == '':
+            print("stdout is empty. Waiting 2 seconds and trying again. stdout: "+value.stdout)
+            WebUI.delay(2)
+            value = SSH.get_output_from_ssh(f'ls -l {path} | grep {dataset}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+            i += 1
+            if i >= 10:
+                break
         print('ls_output: '+permissions)
         print('stdout: ' + value.stdout.lower())
         if permissions in value.stdout.lower():
