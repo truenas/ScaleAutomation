@@ -35,15 +35,15 @@ class Permissions_SSH:
     @classmethod
     def assert_dataset_has_posix_acl(cls, path: str, dataset: str, permissions: str) -> bool:
         """
-        This method returns True if the given dataset has the given POSIX ACL, otherwise it returns False.
+        This method returns True if the given dataset has been given a POSIX ACL, otherwise it returns False.
 
         :param path: The path to the dataset.
         :param dataset: The name of the dataset.
         :param permissions: The permissions to verify.
-        :return: True if the given dataset has the given POSIX ACL, otherwise it returns False.
+        :return: True if the given dataset has been given a POSIX ACL, otherwise it returns False.
 
         Example:
-            - Permissions.assert_dataset_has_posix_acl('test-dataset', 'rwxrwx---+')
+            - Permissions.assert_dataset_has_posix_acl('/mnt/tank','test-dataset', 'rwxrwx---+')
         """
         value = SSH.get_output_from_ssh(f'ls -l {path} | grep {dataset}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
         print('ls_output: '+permissions)
@@ -92,15 +92,15 @@ class Permissions_SSH:
     @classmethod
     def assert_file_has_posix_acl(cls, path: str, file_name: str, permissions: str) -> bool:
         """
-        This method returns True if the given dataset has the given POSIX ACL, otherwise it returns False.
+        This method returns True if the given file been given a POSIX ACL, otherwise it returns False.
 
         :param path: The path to the dataset.
         :param file_name: The name of the file.
         :param permissions: The permissions to verify.
-        :return: True if the given dataset has the given POSIX ACL, otherwise it returns False.
+        :return: True if the given file been given a POSIX ACL, otherwise it returns False.
 
         Example:
-            - Permissions.assert_dataset_has_posix_acl('test-dataset', 'rwxrwx---+')
+            - Permissions.assert_file_has_posix_acl('/mnt/tank/test-dataset', 'testfile.txt', '-rwxrwx---+ 1 user_admin')
         """
         value = SSH.get_output_from_ssh(f'ls -l {path} | grep {file_name}', private_config['IP'],
                                         private_config['USERNAME'], private_config['PASSWORD'])
