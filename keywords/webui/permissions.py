@@ -170,8 +170,10 @@ class Permissions:
         DAT.click_edit_permissions_button()
         COM.click_button('save-as-preset')
         if COM.is_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)):
-            WebUI.delay(5)
-            COM.click_on_element(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
+            WebUI.execute_script("arguments[0].click();", WebUI.wait_until_clickable(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)))
+            # I am not sure why but this element is very flakey. Selenium's click will not work even thought it's fine manually.
+            # https://ixsystems.atlassian.net/browse/NAS-128105 created on 2024-03-29
+            # COM.click_on_element(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
             assert WebUI.wait_until_not_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)) is True
         COM.click_cancel_button()
         assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('cancel')) is True
@@ -280,8 +282,10 @@ class Permissions:
         This method deletes the custom preset of the given name if it exists and sets the custom preset name input.
         """
         if COM.is_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)):
-            WebUI.delay(5)
-            COM.click_on_element(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
+            WebUI.execute_script("arguments[0].click();", WebUI.wait_until_clickable(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)))
+            # I am not sure why but this element is very flakey. Selenium's click will not work even thought it's fine manually.
+            # https://ixsystems.atlassian.net/browse/NAS-128105 created on 2024-03-29
+            # COM.click_on_element(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
             assert WebUI.wait_until_not_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)) is True
         COM.set_input_field('preset-name', name)
 

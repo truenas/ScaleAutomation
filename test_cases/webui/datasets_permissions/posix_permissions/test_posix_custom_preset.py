@@ -14,6 +14,7 @@ from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 
 @pytest.mark.parametrize('posix_acl_custom', get_data_list('dataset_permission/posix_acl_custom'), scope='class')
 class Test_POSIX_Custom_Preset:
+    @allure.issue("NAS-128105", name="NAS-128105")
     @pytest.fixture(scope='class', autouse=True)
     def setup_test(self, posix_acl_custom) -> None:
         """
@@ -37,7 +38,6 @@ class Test_POSIX_Custom_Preset:
         PERM.set_apply_group_checkbox()
         PERM.click_add_item_button()
         PERM.select_ace_who(posix_acl_custom['who_tag'])
-        # Expected failure below: https://ixsystems.atlassian.net/browse/NAS-128038
         COM.set_checkbox('permissions-read')
         COM.click_button('save-as-preset')
         COM.assert_dialog_visible('Save As Preset')
@@ -50,6 +50,7 @@ class Test_POSIX_Custom_Preset:
         COM.click_button('continue')
         PERM.click_save_acl_button()
 
+    @allure.issue("NAS-128105", name="NAS-128105")
     @pytest.fixture(scope='class', autouse=True)
     def teardown_test(self, posix_acl_custom):
         """
@@ -62,7 +63,6 @@ class Test_POSIX_Custom_Preset:
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
-    @allure.issue("NAS-128038", name="NAS-128038")
     def test_verify_posix_custom_preset_permissions_via_UI(self, posix_acl_custom) -> None:
         """
         This test verifies the ability to create and use a custom POSIX ACL preset and verifies the permissions via WebUI.
