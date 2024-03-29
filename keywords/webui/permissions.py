@@ -161,7 +161,6 @@ class Permissions:
 .
         :param dataset: The name of the dataset to use.
         :param name: The name of the preset to delete.
-        :return: True if the preset was deleted successfully, False otherwise.
 
         Example:
             - Permissions.delete_custom_preset('test-dataset', 'test-preset')
@@ -174,6 +173,7 @@ class Permissions:
         COM.click_on_element(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
         assert WebUI.wait_until_not_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)) is True
         COM.click_cancel_button()
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('cancel')) is True
 
     @classmethod
     def get_dataset_permissions_item_name_by_level(cls, user_category: str, name: str) -> str:
@@ -272,6 +272,16 @@ class Permissions:
         This method sets the Apply User Checkbox.
         """
         COM.set_checkbox('apply-user')
+
+    @classmethod
+    def set_custom_preset_name(cls, name: str) -> None:
+        """
+        This method deletes the custom preset of the given name if it exists and sets the custom preset name input.
+        """
+        if COM.is_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)):
+            COM.click_on_element(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
+            assert WebUI.wait_until_not_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)) is True
+        COM.set_input_field('preset-name', name)
 
     @classmethod
     def set_dataset_group(cls, group: str) -> None:
