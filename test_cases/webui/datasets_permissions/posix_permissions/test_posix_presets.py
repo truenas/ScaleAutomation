@@ -86,7 +86,7 @@ class Test_POSIX_Presets:
         API_PUT.enable_user_all_sudo_commands_no_password(private_config['USERNAME'])
         self.test_verify_posix_preset_permissions_via_UI(posix_acl_preset)
         # Verify the dataset is set with POSIX ACL
-        assert PERM_SSH.assert_dataset_has_posix_acl(posix_acl_preset['dataset'], posix_acl_preset['ls_output']) is True
+        assert PERM_SSH.assert_dataset_has_posix_acl('/mnt/tank', posix_acl_preset['dataset'], posix_acl_preset['ls_output']) is True
         # Verify the ACL presets on the dataset are properly created on the system
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['file_cli']) is True
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_preset['full_path'], posix_acl_preset['owner_cli']) is True

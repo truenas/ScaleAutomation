@@ -78,7 +78,7 @@ class Test_POSIX_Custom_Preset:
         assert PERM.verify_dataset_permissions_edit_button() is True
         assert PERM.verify_dataset_mask_permissions_name() is True
         assert PERM.verify_dataset_mask_permissions(posix_acl_custom['mask_perm']) is True
-        assert PERM_SSH.assert_dataset_has_posix_acl(posix_acl_custom['dataset'], posix_acl_custom['ls_output']) is True
+        assert PERM_SSH.assert_dataset_has_posix_acl('/mnt/tank', posix_acl_custom['dataset'], posix_acl_custom['ls_output']) is True
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_custom['full_path'], posix_acl_custom['file_cli']) is True
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_custom['full_path'], posix_acl_custom['owner_cli']) is True
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_custom['full_path'], posix_acl_custom['group_cli']) is True

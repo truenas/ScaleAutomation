@@ -1020,7 +1020,7 @@ class Common:
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name)) is True
         if cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is not state:
-            cls.click_on_element(f'//*[@data-test="checkbox-{name}"]')
+            cls.click_on_element(xpaths.common_xpaths.checkbox_field(name))
         assert cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is state
 
     @classmethod

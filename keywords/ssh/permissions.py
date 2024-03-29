@@ -33,18 +33,19 @@ class Permissions_SSH:
         return True
 
     @classmethod
-    def assert_dataset_has_posix_acl(cls, dataset: str, permissions: str) -> bool:
+    def assert_dataset_has_posix_acl(cls, path: str, dataset: str, permissions: str) -> bool:
         """
         This method returns True if the given dataset has the given POSIX ACL, otherwise it returns False.
 
-        :param dataset: The name of the dataset to be accessed.
+        :param path: The path to the dataset.
+        :param dataset: The name of the dataset.
         :param permissions: The permissions to verify.
         :return: True if the given dataset has the given POSIX ACL, otherwise it returns False.
 
         Example:
             - Permissions.assert_dataset_has_posix_acl('test-dataset', 'rwxrwx---+')
         """
-        value = SSH.get_output_from_ssh(f'ls -l /mnt/tank | grep {dataset}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        value = SSH.get_output_from_ssh(f'ls -l {path} | grep {dataset}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
         print('ls_output: '+permissions)
         print('stdout: ' + value.stdout.lower())
         if permissions in value.stdout.lower():
