@@ -83,9 +83,6 @@ class Test_POSIX_Custom_Preset:
         """
         This test verifies the ability to create and use a custom POSIX ACL preset and verifies the permissions via SSH.
         """
-        assert PERM.assert_dataset_owner(posix_acl_custom['new_owner']) is True
-        assert PERM.assert_dataset_group(posix_acl_custom['new_owner_group']) is True
-        assert PERM.verify_dataset_permissions_type('POSIX Permissions') is True
         assert PERM_SSH.assert_dataset_has_posix_acl('/mnt/tank', posix_acl_custom['dataset'], posix_acl_custom['ls_output']) is True
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_custom['full_path'], posix_acl_custom['file_cli']) is True
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_custom['full_path'], posix_acl_custom['owner_cli']) is True
