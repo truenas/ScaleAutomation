@@ -48,11 +48,11 @@ class SSH_Command_Line:
         """
         ssh_option = "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o VerifyHostKeyDNS=no -o LogLevel=quiet"
         sshpass = f'sshpass -p {password} ' if password else f'eval `ssh-agent` ; ssh-add {shared_config["KEYPATH"]} ; '
-        print("@@@ COMMAND: " + f'{sshpass}ssh {ssh_option} {username}@{ip} "{command}"')
+        # print("@@@ COMMAND: " + f'{sshpass}ssh {ssh_option} {username}@{ip} "{command}"')
         self.process = Local_Command_Line(f'{sshpass}ssh {ssh_option} {username}@{ip} "{command}"')
         self.stdout = self.process.stdout
         self.stderr = self.process.stderr
         self.status = self.process.status
-        print("@@@ STDOUT: " + self.stdout)
-        print("@@@ STDERR: " + self.stderr)
-        print("@@@ STATUS: " + str(self.status))
+        # print("@@@ STDOUT: " + self.stdout)
+        # print("@@@ STDERR: " + self.stderr)
+        # print("@@@ STATUS: " + str(self.status))
