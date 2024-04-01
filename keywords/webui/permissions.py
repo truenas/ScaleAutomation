@@ -423,14 +423,15 @@ class Permissions:
         COM.unset_checkbox(f'{user_category}-{level}')
 
     @classmethod
-    def verify_dataset_builtin_admin_group_permissions(cls, permissions: str) -> bool:
+    def verify_dataset_builtin_admin_group_permissions(cls, permissions: str, name: str = 'Group – builtin_administrators') -> bool:
         """
         This method returns true if the visible builtin_administrators permissions matches the given permissions, otherwise False.
 
         :param permissions: the expected permissions of the group.
+        :param name: the name of the builtin_administrators group.
         :return: true if the visible builtin_administrators permissions matches the given permissions.
         """
-        val = cls.get_dataset_permissions_item_permissions_by_level('group', 'Group – builtin_administrators')
+        val = cls.get_dataset_permissions_item_permissions_by_level('group', name)
         return val == permissions
 
     @classmethod
@@ -452,8 +453,8 @@ class Permissions:
 
         :return: true if the visible name of the builtin_administrators matches Group – builtin_administrators.
         """
-        val = cls.get_dataset_permissions_item_name_by_level('group', 'Group – builtin_administrators')
-        return val == 'Group – builtin_administrators'
+        val = cls.get_dataset_permissions_item_name_by_level('group', name)
+        return val == name
 
     @classmethod
     def verify_dataset_builtin_admin_group_default_permissions_name(cls) -> bool:

@@ -61,10 +61,10 @@ class Test_NFSv4_Presets:
         assert PERM.verify_dataset_group_permissions_name(nfs4_acl_preset['group_@']) is True
         assert PERM.verify_dataset_group_permissions(nfs4_acl_preset['group_@_perm'], nfs4_acl_preset['group_name']) is True
         assert PERM.verify_dataset_permissions_edit_button() is True
-        if not nfs4_acl_preset['gba'].__contains__('None'):
+        if not nfs4_acl_preset['gba'].__contains__('null'):
             assert PERM.verify_dataset_builtin_admin_group_permissions_name(nfs4_acl_preset['gba']) is True
-            assert PERM.verify_dataset_builtin_admin_group_permissions(nfs4_acl_preset['gba_default_perm']) is True
-        if not nfs4_acl_preset['everyone_@'].__contains__('None'):
+            assert PERM.verify_dataset_builtin_admin_group_permissions(nfs4_acl_preset['gba_perm'], nfs4_acl_preset['gba']) is True
+        if not nfs4_acl_preset['everyone_@'].__contains__('null'):
             assert PERM.verify_dataset_everyone_permissions_name(nfs4_acl_preset['everyone_@'])
             assert PERM.verify_dataset_everyone_permissions(nfs4_acl_preset['everyone_@_perm'], nfs4_acl_preset['everyone_@']) is True
 
@@ -79,7 +79,7 @@ class Test_NFSv4_Presets:
         assert PERM_SSH.verify_getfacl_contains_permissions(nfs4_acl_preset['full_path'], nfs4_acl_preset['getfacl_acl_flags'], 'NFSv4') is True
         assert PERM_SSH.verify_getfacl_contains_permissions(nfs4_acl_preset['full_path'], nfs4_acl_preset['getfacl_owner@'], 'NFSv4') is True
         assert PERM_SSH.verify_getfacl_contains_permissions(nfs4_acl_preset['full_path'], nfs4_acl_preset['getfacl_group@'], 'NFSv4') is True
-        if not nfs4_acl_preset['everyone_@'].__contains__('None'):
+        if not nfs4_acl_preset['everyone_@'].__contains__('null'):
             assert PERM_SSH.verify_getfacl_contains_permissions(nfs4_acl_preset['full_path'], nfs4_acl_preset['getfacl_everyone@'], 'NFSv4') is True
-        if not nfs4_acl_preset['gba'].__contains__('None'):
+        if not nfs4_acl_preset['gba'].__contains__('null'):
             assert PERM_SSH.verify_getfacl_contains_permissions(nfs4_acl_preset['full_path'], nfs4_acl_preset['getfacl_gba'], 'NFSv4') is True
