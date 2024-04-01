@@ -138,7 +138,7 @@ class Permissions_SSH:
     @classmethod
     def verify_getfacl_contains_permissions(cls, dataset_path: str, permissions: str, acl_type: str = '') -> bool:
         """
-        This method returns True if the given dataset has the given permissions using getfacl, otherwise it returns False.
+        This method returns True if the given dataset has the given permissions using the getfacl command, otherwise it returns False.
 
         :param dataset_path: The path of the dataset
         :param permissions: The permissions to verify.
@@ -146,11 +146,11 @@ class Permissions_SSH:
         :return: True if the given dataset has the given permissions using getfacl, otherwise it returns False.
 
         Example:
-            - Permissions.verify_getfacl_contains_preset_permissions('/mnt/tank/test-dataset', 'user::rwx')
+            - Permissions.verify_getfacl_contains_permissions('/mnt/tank/test-dataset', 'user::rwx')
         """
         if acl_type == 'NFSv4':
             acl_type = 'nfs4xdr_'
         value = SSH.get_output_from_ssh(f'{acl_type}getfacl {dataset_path}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
-        if permissions in value.stdout.lower():
+        if permissions in value.stdout:
             return True
         return False
