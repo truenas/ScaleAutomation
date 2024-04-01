@@ -16,7 +16,7 @@ from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 @pytest.mark.parametrize('posix_acl_preset', get_data_list('dataset_permission/posix_acl_preset'), scope='class')
 class Test_POSIX_Presets:
     @pytest.fixture(scope='class', autouse=True)
-    def setup_test(self, posix_acl_preset) -> None:
+    def setup_test(self, posix_acl_preset):
         """
         This method creates the dataset and navigates to datasets before testing.
         """
@@ -50,7 +50,7 @@ class Test_POSIX_Presets:
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
-    def test_verify_posix_preset_permissions_via_UI(self, posix_acl_preset) -> None:
+    def test_verify_posix_preset_permissions_via_UI(self, posix_acl_preset):
         """
         This test verifies the UI on the permissions card of the dataset that has been set with POSIX Preset Permissions.
         """
@@ -80,7 +80,7 @@ class Test_POSIX_Presets:
             assert PERM.verify_dataset_builtin_admin_group_default_permissions_name() is True
             assert PERM.verify_dataset_builtin_admin_group_default_permissions(posix_acl_preset['gba_default_perm']) is True
 
-    def test_verify_posix_preset_permissions_via_SSH(self, posix_acl_preset) -> None:
+    def test_verify_posix_preset_permissions_via_SSH(self, posix_acl_preset):
         """
         This test verifies that the dataset that has been set with POSIX Preset Permissions has the changes reflected via CLI.
         """

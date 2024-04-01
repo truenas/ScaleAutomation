@@ -51,7 +51,7 @@ class Test_Unix_Permissions:
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
-    def test_verify_dataset_permissions_card_ui(self, unix_perms) -> None:
+    def test_verify_dataset_permissions_card_ui(self, unix_perms):
         """
         This test verifies the UI on the permissions card of the dataset that has been set with Unix Permissions.
         """
@@ -99,7 +99,7 @@ class Test_Unix_Permissions:
         PERM.verify_dataset_access(unix_perms['pool'], unix_perms['dataset'], unix_perms['groupname'], private_config['PASSWORD'], unix_perms['group_access'])
         PERM.verify_dataset_access(unix_perms['pool'], unix_perms['dataset'], unix_perms['othername'], private_config['PASSWORD'], unix_perms['other_access'])
 
-    def test_verify_removed_access(self, unix_perms) -> None:
+    def test_verify_removed_access(self, unix_perms):
         """
         This test edits the dataset via WebUI and checks that the changes display and the access level via cli is the same.
         Then it removes the access and checks that the access is removed.

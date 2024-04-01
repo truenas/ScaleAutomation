@@ -13,7 +13,7 @@ from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 
 class Test_NFSv4_UI_Create:
     @pytest.fixture(scope='class', autouse=True)
-    def setup_test(self) -> None:
+    def setup_test(self):
         """
         This method sets up the environment for the test.
         """
@@ -35,7 +35,7 @@ class Test_NFSv4_UI_Create:
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
-    def test_create_dataset_with_nfsv4_acl(self) -> None:
+    def test_create_dataset_with_nfsv4_acl(self):
         """
         This test creates a new dataset and sets it with the NFSv4 ACL Type and verifies the permissions are set.
         """

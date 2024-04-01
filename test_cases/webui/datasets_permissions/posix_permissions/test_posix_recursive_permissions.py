@@ -17,7 +17,7 @@ from keywords.ssh.common import Common_SSH as COM_SSH
 @pytest.mark.parametrize('posix_acl_recursive_permissions', get_data_list('dataset_permission/posix_acl_recursive_permissions'), scope='class')
 class Test_POSIX_Recursive_Permissions:
     @pytest.fixture(scope='class', autouse=True)
-    def setup_test(self, posix_acl_recursive_permissions) -> None:
+    def setup_test(self, posix_acl_recursive_permissions):
         """
         This method creates the dataset and navigates to datasets before testing.
         """
@@ -72,7 +72,7 @@ class Test_POSIX_Recursive_Permissions:
         NAV.navigate_to_dashboard()
 
     @allure.issue("NAS-128091", name="NAS-128091")
-    def test_recursive_permissions_via_UI(self, posix_acl_recursive_permissions) -> None:
+    def test_recursive_permissions_via_UI(self, posix_acl_recursive_permissions):
         """
         This test verifies the ability to use recursive permissions application and verifies the permissions via WebUI
         """
@@ -134,7 +134,7 @@ class Test_POSIX_Recursive_Permissions:
         assert PERM.verify_dataset_permissions_edit_button() is True
 
     @allure.issue("NAS-128091", name="NAS-128091")
-    def test_recursive_permissions_via_SSH(self, posix_acl_recursive_permissions) -> None:
+    def test_recursive_permissions_via_SSH(self, posix_acl_recursive_permissions):
         """
         This test verifies the ability to use recursive permissions application and verifies the permissions via SSH
         """
