@@ -87,10 +87,10 @@ class Test_POSIX_Custom_Preset:
         This test verifies the ability to create and use a custom POSIX ACL preset and verifies the permissions via SSH.
         """
         assert PERM_SSH.assert_dataset_has_posix_acl('/mnt/tank', posix_acl_custom['dataset'], posix_acl_custom['ls_output']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_custom['full_path'], posix_acl_custom['file_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_custom['full_path'], posix_acl_custom['owner_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_custom['full_path'], posix_acl_custom['group_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_custom['full_path'], posix_acl_custom['user_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_custom['full_path'], posix_acl_custom['group2_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_custom['full_path'], posix_acl_custom['other_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_custom['full_path'], posix_acl_custom['mask_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_custom['full_path'], posix_acl_custom['file_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_custom['full_path'], posix_acl_custom['owner_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_custom['full_path'], posix_acl_custom['group_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_custom['full_path'], posix_acl_custom['user_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_custom['full_path'], posix_acl_custom['group2_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_custom['full_path'], posix_acl_custom['other_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_custom['full_path'], posix_acl_custom['mask_cli']) is True
