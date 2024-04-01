@@ -157,7 +157,7 @@ class Storage:
             disk_name = disk_name.partition("(")[0].strip()
             Common.set_checkbox(f'select-disk-{disk_name}')
         if WebUI.wait_until_visible(xpaths.common_xpaths.button_field('dialog-close')) is True:
-            Common.click_button('dialog-close')
+            Common.click_dialog_close_button()
 
     @classmethod
     def set_show_disks_checkbox(cls):

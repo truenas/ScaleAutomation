@@ -17,7 +17,7 @@ from keywords.ssh.common import Common_SSH as COM_SSH
 @pytest.mark.parametrize('posix_acl_recursive_permissions', get_data_list('dataset_permission/posix_acl_recursive_permissions'), scope='class')
 class Test_POSIX_Recursive_Permissions:
     @pytest.fixture(scope='class', autouse=True)
-    def setup_test(self, posix_acl_recursive_permissions) -> None:
+    def setup_test(self, posix_acl_recursive_permissions):
         """
         This method creates the dataset and navigates to datasets before testing.
         """
@@ -72,7 +72,7 @@ class Test_POSIX_Recursive_Permissions:
         NAV.navigate_to_dashboard()
 
     @allure.issue("NAS-128091", name="NAS-128091")
-    def test_recursive_permissions_via_UI(self, posix_acl_recursive_permissions) -> None:
+    def test_recursive_permissions_via_UI(self, posix_acl_recursive_permissions):
         """
         This test verifies the ability to use recursive permissions application and verifies the permissions via WebUI
         """
@@ -134,7 +134,7 @@ class Test_POSIX_Recursive_Permissions:
         assert PERM.verify_dataset_permissions_edit_button() is True
 
     @allure.issue("NAS-128091", name="NAS-128091")
-    def test_recursive_permissions_via_SSH(self, posix_acl_recursive_permissions) -> None:
+    def test_recursive_permissions_via_SSH(self, posix_acl_recursive_permissions):
         """
         This test verifies the ability to use recursive permissions application and verifies the permissions via SSH
         """
@@ -142,36 +142,36 @@ class Test_POSIX_Recursive_Permissions:
         # Expected failure below: https://ixsystems.atlassian.net/browse/NAS-128091
         assert PERM_SSH.assert_dataset_has_posix_acl('/mnt/tank', posix_acl_recursive_permissions['dataset'], posix_acl_recursive_permissions['ls_output']) is True
         assert PERM_SSH.assert_file_has_posix_acl(posix_acl_recursive_permissions['full_path'], 'test_file.txt', posix_acl_recursive_permissions['file_ls_output']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['file_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['owner_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['group_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['user_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['group2_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['other_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['default_user_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['default_group_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['default_other_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['file_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['owner_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['group_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['user_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['group2_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['other_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['default_user_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['default_group_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['default_other_cli']) is True
         # Child dataset verification
         assert PERM_SSH.assert_dataset_has_posix_acl(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['child_dataset'], posix_acl_recursive_permissions['child_ls_output']) is True
         assert PERM_SSH.assert_file_has_posix_acl(posix_acl_recursive_permissions['child_full_path'], 'test_file.txt', posix_acl_recursive_permissions['file_ls_output']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['child_file_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_owner_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_group_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_user_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_group2_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_other_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_default_user_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_default_group_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_default_other_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['child_file_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_owner_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_group_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_user_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_group2_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_other_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_default_user_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_default_group_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['children_default_other_cli']) is True
         # Grandchild dataset verification
         assert PERM_SSH.assert_dataset_has_posix_acl(posix_acl_recursive_permissions['child_full_path'], posix_acl_recursive_permissions['grandchild_dataset'], posix_acl_recursive_permissions['grandchild_ls_output']) is True
         assert PERM_SSH.assert_file_has_posix_acl(posix_acl_recursive_permissions['grandchild_full_path'], 'test_file.txt', posix_acl_recursive_permissions['grandchild_file_ls_output']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['grandchild_file_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_owner_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_group_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_user_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_group2_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_other_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_default_user_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_default_group_cli']) is True
-        assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_default_other_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['grandchild_file_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_owner_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_group_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_user_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_group2_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_other_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_default_user_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_default_group_cli']) is True
+        assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['grandchild_full_path'], posix_acl_recursive_permissions['children_default_other_cli']) is True

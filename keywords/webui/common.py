@@ -397,6 +397,16 @@ class Common:
         cls.click_button('cancel')
 
     @classmethod
+    def click_dialog_close_button(cls) -> None:
+        """
+        This method clicks the dialog close button
+
+        Example:
+            - Common.click_dialog_close_button()
+        """
+        cls.click_button('dialog-close')
+
+    @classmethod
     def click_link(cls, name: str) -> None:
         """
         This method clicks the given link.
