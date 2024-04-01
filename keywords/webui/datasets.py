@@ -1207,6 +1207,26 @@ class Datasets:
         return API_POST.set_filesystem_acl(payload)
 
     @classmethod
+    def set_dataset_acl_type(cls, acltype: str) -> None:
+        """
+        This method sets the dataset ACL Type dropdown to the given type for the dataset.
+
+        :param acltype: is the type of ACL to set. [Inherit, Off, SMB, NFSv4, NFS4, POSIX]
+
+        Example:
+            - Dataset.set_dataset_acl('NFS4')
+        """
+        match acltype.lower():
+            case 'inherit':
+                Common.select_option('acltype', 'acltype-inherit')
+            case 'off':
+                Common.select_option('acltype', 'acltype-off')
+            case 'smb' | 'nfs4' | 'nfsv4':
+                Common.select_option('acltype', 'acltype-smb-nf-sv-4')
+            case 'posix':
+                Common.select_option('acltype', 'acltype-posix')
+
+    @classmethod
     def set_dataset_and_child_datasets_quota_critical_alert_at(cls, percentage: str) -> None:
         """
         This method sets the quota for this dataset.
