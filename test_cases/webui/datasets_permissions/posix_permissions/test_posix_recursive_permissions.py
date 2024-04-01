@@ -139,10 +139,10 @@ class Test_POSIX_Recursive_Permissions:
         This test verifies the ability to use recursive permissions application and verifies the permissions via SSH
         """
         # Parent dataset verification
+        # Expected failure below: https://ixsystems.atlassian.net/browse/NAS-128091
         assert PERM_SSH.assert_dataset_has_posix_acl('/mnt/tank', posix_acl_recursive_permissions['dataset'], posix_acl_recursive_permissions['ls_output']) is True
         assert PERM_SSH.assert_file_has_posix_acl(posix_acl_recursive_permissions['full_path'], 'test_file.txt', posix_acl_recursive_permissions['file_ls_output']) is True
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['file_cli']) is True
-        # Expected failure below: https://ixsystems.atlassian.net/browse/NAS-128091
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['owner_cli']) is True
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['group_cli']) is True
         assert PERM_SSH.verify_getfacl_contains_preset_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['user_cli']) is True
