@@ -192,7 +192,7 @@ class Permissions:
         match user_category:
             case 'user' | 'owner':
                 translated_category = 'person'
-            case 'group' | 'owner group':
+            case 'group' | 'owner group' | 'mask':
                 translated_category = 'people'
             case 'other' | 'everyone':
                 translated_category = 'groups'
@@ -423,18 +423,16 @@ class Permissions:
         COM.unset_checkbox(f'{user_category}-{level}')
 
     @classmethod
-    def verify_dataset_builtin_admin_group_permissions(cls, permissions: str) -> bool:
+    def verify_dataset_builtin_admin_group_permissions(cls, permissions: str, name: str = 'Group – builtin_administrators') -> bool:
         """
         This method returns true if the visible builtin_administrators permissions matches the given permissions, otherwise False.
 
         :param permissions: the expected permissions of the group.
+        :param name: the name of the builtin_administrators group.
         :return: true if the visible builtin_administrators permissions matches the given permissions.
         """
-        if permissions == 'None':
-            return True
-        else:
-            val = cls.get_dataset_permissions_item_permissions_by_level('group', 'Group – builtin_administrators')
-            return val == permissions
+        val = cls.get_dataset_permissions_item_permissions_by_level('group', name)
+        return val == permissions
 
     @classmethod
     def verify_dataset_builtin_admin_group_default_permissions(cls, permissions: str) -> bool:
@@ -455,11 +453,8 @@ class Permissions:
 
         :return: true if the visible name of the builtin_administrators matches Group – builtin_administrators.
         """
-        if name == 'None':
-            return True
-        else:
-            val = cls.get_dataset_permissions_item_name_by_level('group', 'Group – builtin_administrators')
-            return val == 'Group – builtin_administrators'
+        val = cls.get_dataset_permissions_item_name_by_level('group', name)
+        return val == name
 
     @classmethod
     def verify_dataset_builtin_admin_group_default_permissions_name(cls) -> bool:
@@ -481,11 +476,8 @@ class Permissions:
         :param name: the name of everyone group.
         :return: true if the visible everyone permissions matches the given permissions.
         """
-        if permissions == 'None':
-            return True
-        else:
-            val = cls.get_dataset_permissions_item_permissions_by_level('everyone', name)
-            return val == permissions
+        val = cls.get_dataset_permissions_item_permissions_by_level('everyone', name)
+        return val == permissions
 
     @classmethod
     def verify_dataset_everyone_permissions_name(cls, name: str) -> bool:
@@ -495,11 +487,8 @@ class Permissions:
         :param name: the name of everyone group.
         :return: true if the visible everyone permissions matches the given permissions.
         """
-        if name == 'None':
-            return True
-        else:
-            val = cls.get_dataset_permissions_item_name_by_level('everyone', name)
-            return val == name
+        val = cls.get_dataset_permissions_item_name_by_level('everyone', name)
+        return val == name
 
     @classmethod
     def verify_dataset_group_permissions(cls, permissions: str, name: str) -> bool:
@@ -510,11 +499,8 @@ class Permissions:
         :param name: the name of the group.
         :return: true if the visible group permissions matches the given permissions.
         """
-        if name == 'None':
-            return True
-        else:
-            val = cls.get_dataset_permissions_item_permissions_by_level('group', name)
-            return val == permissions
+        val = cls.get_dataset_permissions_item_permissions_by_level('group', name)
+        return val == permissions
 
     @classmethod
     def verify_dataset_group_default_permissions(cls, permissions: str, name: str) -> bool:
@@ -536,11 +522,8 @@ class Permissions:
         :param name: the name of the group.
         :return: true if the visible name of the group matches the given name.
         """
-        if name == 'None':
-            return True
-        else:
-            val = cls.get_dataset_permissions_item_name_by_level('group', name)
-            return val == name
+        val = cls.get_dataset_permissions_item_name_by_level('group', name)
+        return val == name
 
     @classmethod
     def verify_dataset_group_default_permissions_name(cls, name: str) -> bool:
@@ -646,11 +629,8 @@ class Permissions:
         :param name: the name of the owner.
         :return: true if the visible owner permissions matches the given permissions.
         """
-        if name == 'None':
-            return True
-        else:
-            val = cls.get_dataset_permissions_item_permissions_by_level('owner', name)
-            return val == permissions
+        val = cls.get_dataset_permissions_item_permissions_by_level('owner', name)
+        return val == permissions
 
     @classmethod
     def verify_dataset_owner_default_permissions(cls, permissions: str, name: str) -> bool:
@@ -672,11 +652,50 @@ class Permissions:
         :param name: the name of the owner.
         :return: true if the visible name of the owner matches the given name.
         """
-        if name == 'None':
-            return True
-        else:
-            val = cls.get_dataset_permissions_item_name_by_level('owner', name)
-            return val == name
+        val = cls.get_dataset_permissions_item_name_by_level('owner', name)
+        return val == name
+
+    # TODO: Use this base to refactor these verify_dataset_permissions/name methods
+    # @classmethod
+    # def verify_dataset_permissions_entity_name(cls, name: str) -> bool:
+    #     """
+    #     This method returns true if the visible name of the owner matches the given name, otherwise False.
+    #
+    #     :param name: the name of the owner.
+    #     :return: true if the visible name of the owner matches the given name.
+    #     """
+    #     match name.lower():
+    #         case 'everyone':
+    #             return cls.get_dataset_permissions_item_name_by_level('everyone', name) == name
+    #         case 'mask':
+    #             return cls.get_dataset_permissions_item_name_by_level('mask', name) == name
+    #         case 'other':
+    #             return cls.get_dataset_permissions_item_name_by_level('other', name) == name
+    #         case 'owner':
+    #             return cls.get_dataset_permissions_item_name_by_level('owner', name) == name
+    #         case 'group':
+    #             return cls.get_dataset_permissions_item_name_by_level('group', name) == name
+    #
+    # @classmethod
+    # def verify_dataset_permissions_entity_permissions(cls, permissions: str, name: str) -> bool:
+    #     """
+    #     This method returns true if the visible name of the owner matches the given name, otherwise False.
+    #
+    #     :param permissions: the expected permissions of the user.
+    #     :param name: the name of the owner.
+    #     :return: true if the visible name of the user matches the given name.
+    #     """
+    #     match name.lower():
+    #         case 'everyone':
+    #             return cls.get_dataset_permissions_item_permissions_by_level('everyone', name) == permissions
+    #         case 'mask':
+    #             return cls.get_dataset_permissions_item_permissions_by_level('mask', name) == permissions
+    #         case 'other':
+    #             return cls.get_dataset_permissions_item_permissions_by_level('other', name) == permissions
+    #         case 'owner':
+    #             return cls.get_dataset_permissions_item_permissions_by_level('owner', name) == permissions
+    #         case 'group' | 'builtin_administrators':
+    #             return cls.get_dataset_permissions_item_permissions_by_level('group', name) == permissions
 
     @classmethod
     def verify_dataset_owner_default_permissions_name(cls, name: str) -> bool:
