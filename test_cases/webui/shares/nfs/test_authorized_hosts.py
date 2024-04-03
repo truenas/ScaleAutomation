@@ -6,7 +6,8 @@ from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
-from keywords.webui.datasets import Datasets as DATASET
+from keywords.webui.datasets import Datasets as DAT
+from keywords.webui.permissions import Permissions as PERM
 from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.nfs import NFS
 from keywords.ssh.nfs import SSH_NFS as NFS_SSH
@@ -32,7 +33,11 @@ class Test_Authorized_IP_Addresses:
         # TODO: So this needs to have other permissions write, alowed or it needs to have a UID matched user own it like nfs_user (3000)
         # It appears to be working, just need to sort that out. Nobody nogroup is not needed for this test.
         # API_POST.set_dataset_permissions_user_and_group(nfs_data['api_path'], 'nobody', 'nogroup')
-
+        NAV.navigate_to_datasets()
+        DAT.click_dataset_location(nfs_data['dataset_name'])
+        DAT.click_edit_permissions_button()
+        PERM.set_other_access('Read | Write | Execute')
+        COM.click_save_button_and_wait_for_progress_bar()
         # Navigate to the Shares page
         NAV.navigate_to_shares()
         assert COMSHARE.assert_share_card_displays('nfs') is True
