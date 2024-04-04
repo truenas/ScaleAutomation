@@ -35,6 +35,25 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.button_field(f'add-item-{name}'))
 
     @classmethod
+    def assert_button_is_greyed_and_not_clickable(cls, name: str) -> bool:
+        """
+        This method asserts that the given button is greyed and not clickable
+
+        :param name: name of the button
+        :return: True if the button is greyed and not clickable otherwise it returns False
+
+        Example:
+            - Common.assert_button_is_greyed_and_not_clickable('delete')
+        """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field_greyed(name)) is True
+        try:
+            # At this point the button is visible a Timeout or ElementClickIntercepted exception will be thrown.
+            cls.click_button(name, 1)
+        except (ElementClickInterceptedException, TimeoutException):
+            return True
+        return False
+
+    @classmethod
     def assert_button_is_locked_and_not_clickable(cls, name: str) -> bool:
         """
         This method asserts that the given button is locked and not clickable

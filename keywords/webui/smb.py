@@ -4,9 +4,88 @@ from helper.global_config import private_config
 from helper.webui import WebUI
 from keywords.ssh.smb import SSH_SMB as SSHSMB
 from keywords.webui.common import Common as COM
+from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException
 
 
 class SMB:
+    @classmethod
+    def assert_add_button_is_locked_and_not_clickable_on_smb_page(cls):
+        """
+        This method verifies that the add button is locked and not clickable on the SMB page.
+
+        :return: True if add SMB share button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - SMB.assert_add_smb_share_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('samba-add')
+
+    @classmethod
+    def assert_delete_share_button_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+        """
+        This method verifies that the delete button is locked and not clickable.
+
+        :param share_name: The name of the share. Example: share1 is share-1
+        :return: True if the delete button is locked and not clickable otherwise it returns False.
+
+        Example:
+           - SMB.assert_card_share_delete_button_is_locked_and_not_clickable('share-1')
+        """
+        COM.click_on_element(xpaths.smb.smb_share_options(share_name))
+        result = COM.assert_button_is_greyed_and_not_clickable('samba-options-delete')
+        WebUI.send_key('esc')
+        return result
+
+    @classmethod
+    def assert_edit_filesystem_acl_button_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+        """
+        This method verifies that the edit filesystem ACL button is locked and not clickable.
+
+        :param share_name: The name of the share. Example: share1 is share-1
+        :return: True if the edit filesystem ACL button is locked and not clickable otherwise it returns False.
+
+        Example:
+            - SMB.assert_edit_filesystem_acl_button_is_locked_and_not_clickable('share-1')
+        """
+        COM.click_on_element(xpaths.smb.smb_share_options(share_name))
+        result = COM.assert_button_is_greyed_and_not_clickable('samba-options-edit-filesystem-acl')
+        WebUI.send_key('esc')
+        return result
+
+    @classmethod
+    def assert_edit_share_acl_button_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+        """
+        This method verifies that the edit share ACL button is locked and not clickable.
+
+        :param share_name: The name of the share. Example: share1 is share-1
+        :return: True if the edit share ACL button is locked and not clickable otherwise it returns False.
+
+        Example:
+            - SMB.assert_edit_share_acl_button_is_locked_and_not_clickable('share-1')
+        """
+        COM.click_on_element(xpaths.smb.smb_share_options(share_name))
+        result = COM.assert_button_is_greyed_and_not_clickable('samba-options-edit-share-acl')
+        WebUI.send_key('esc')
+        return result
+
+    @classmethod
+    def assert_enabled_checkbox_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+        """
+        This method verifies that the enabled checkbox is locked and not clickable.
+
+        :param share_name: The name of the share. Example: share1 is share-1
+        :return: True if the enabled checkbox is locked and not clickable otherwise it returns False.
+
+        Example:
+            - SMB.assert_enabled_checkbox_is_locked_and_not_clickable('share-1')
+        """
+        # TODO: replace the code below when the webui is updated
+        # The checkbox has the old format.
+        try:
+            COM.click_on_element(f'//*[@data-test="row-{share_name}"]//mat-checkbox//input', 5)
+        except (ElementClickInterceptedException, TimeoutException):
+            return True
+        return False
 
     @classmethod
     def assert_edit_smb_panel_header(cls) -> bool:
@@ -67,6 +146,19 @@ class SMB:
         return SSHSMB.assert_user_can_put_file(file, share, 'nonexistent', 'nopassword')
 
     @classmethod
+    def assert_share_description(cls, desc: str) -> bool:
+        """
+        This method verifies that the share description is visible on the Sharing SMB page.
+
+        :param desc: is the description of the share
+        :return: True if the share description is visible otherwise it returns False.
+
+        Example:
+            - SMB.assert_share_description('myDescription')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', 'description', desc))
+
+    @classmethod
     def assert_share_ignore_list(cls, name: str) -> bool:
         """
         This returns True if the share ignore list contains the given name otherwise it returns False.
@@ -80,6 +172,32 @@ class SMB:
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@formcontrolname="ignore_list"]//*[contains(text(),"{name}")]'))
 
     @classmethod
+    def assert_share_name(cls, name: str) -> bool:
+        """
+        This method verifies that the share name is visible on the Sharing SMB page.
+
+        :param name: is the name of the share
+        :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+            - SMB.assert_share_name('myShare')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', 'name', name))
+
+    @classmethod
+    def assert_share_path(cls, path: str) -> bool:
+        """
+        This method verifies that the path for the share row of the given share on the Sharing SMB page.
+
+        :param path: path of the given share
+        :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+           - SMB.assert_share_path('/mnt/share1')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', 'path', path))
+
+    @classmethod
     def assert_share_watch_list(cls, name: str) -> bool:
         """
         This returns True if the share watch list contains the given name otherwise it returns False.
@@ -91,6 +209,18 @@ class SMB:
             - SMB.assert_share_watch_list('watch-me')
         """
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@formcontrolname="watch_list"]//*[contains(text(),"{name}")]'))
+
+    @classmethod
+    def assert_sharing_smb_page_header(cls) -> bool:
+        """
+        This method verifies that the SMB sharing page header is displayed.
+
+        :return: True if the SMB sharing page header is displayed, otherwise it returns False.
+
+        Example:
+            - SMB.assert_sharing_smb_page_header()
+        """
+        return COM.assert_page_header('SMB')
 
     @classmethod
     def assert_smb_acl_permission(cls, perm: str) -> bool:
@@ -283,6 +413,17 @@ class SMB:
         """
         COM.click_button(f'card-smb-share-{name.lower()}-security-row-action')
         assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit ACL', 1)) is True
+
+    @classmethod
+    def click_edit_share(cls, share_name: str) -> None:
+        """
+        This method clicks the edit share button.
+
+        Example:
+            - SMB.click_edit_share()
+        """
+        COM.click_on_element(xpaths.smb.smb_share_options(share_name))
+        COM.click_button('samba-options-edit')
 
     @classmethod
     def delete_share_by_name(cls, sharetype: str, name: str, action: str) -> None:
