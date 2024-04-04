@@ -55,6 +55,7 @@ class Test_Read_Only_Admin_SMB_Share:
         """
         assert Common_Shares.assert_share_card_displays('smb') is True
         assert Common_Shares.assert_share_name('smb', data['smb_name']) is True
+        assert Common_Shares.assert_share_path('smb', data['smb_path']) is True
         assert Common_Shares.assert_share_description('smb', data['smb_description']) is True
 
     @allure.tag('Update')
@@ -135,3 +136,86 @@ class Test_Read_Only_Admin_SMB_Share:
         """
         assert Common_Shares.assert_share_card_displays('smb') is True
         assert Common_Shares.assert_card_edit_share_acl_permissions_button_is_locked_and_not_clickable(data['smb_xpath']) is True
+
+    @allure.tag('Read')
+    @allure.story("Read Only Admin Is Able To View Pre-Configured SMB Shares On The Sharing SMB Page")
+    def test_read_only_admin_is_able_to_view_pre_configured_smb_shares_on_the_sharing_smb_page(self, data):
+        """
+        This test verifies the read-only admin is able to view pre-configured SMB shares on the Sharing SMB page.
+        """
+        assert Common_Shares.assert_share_card_displays('smb') is True
+        Common_Shares.click_share_card_header_link('smb')
+        assert SMB.assert_sharing_smb_page_header() is True
+        assert SMB.assert_share_name(data['smb_name']) is True
+        assert SMB.assert_share_path(data['smb_path']) is True
+        assert SMB.assert_share_description(data['smb_description']) is True
+
+    @allure.tag('Create')
+    @allure.story("Read Only Admin Is Not Able To Create An NFS Share On The Sharing NFS Page")
+    def test_read_only_admin_is_not_able_to_create_an_nfs_shares_on_the_sharing_nfs_page(self, data):
+        """
+        This test verifies the read-only admin is not able to create an NFS share on the Sharing NFS page.
+        """
+        assert Common_Shares.assert_share_card_displays('smb') is True
+        Common_Shares.click_share_card_header_link('smb')
+        assert SMB.assert_sharing_smb_page_header() is True
+        assert SMB.assert_add_button_is_locked_and_not_clickable_on_smb_page() is True
+
+    @allure.tag('Update')
+    @allure.story("Read Only Admin Is Not Able To Modify An SMB Share On The Sharing SMB Page")
+    def test_read_only_admin_is_not_able_to_modify_an_smb_shares_on_the_sharing_smb_page(self, data):
+        """
+        This test verifies the read-only admin is not able to modify an SMB share on the Sharing SMB page.
+        """
+        assert Common_Shares.assert_share_card_displays('smb') is True
+        Common_Shares.click_share_card_header_link('smb')
+        assert SMB.assert_sharing_smb_page_header() is True
+        SMB.click_edit_share(data['smb_xpath'])
+        assert SMB.assert_edit_smb_panel_header() is True
+        assert Common.assert_header_readonly_badge() is True
+
+        Common.close_right_panel()
+
+    @allure.tag('Delete')
+    @allure.story("Read Only Admin Is Not Able To Delete An SMB Share On The Sharing SMB Page")
+    def test_read_only_admin_is_not_able_to_delete_an_smb_shares_on_the_sharing_smb_page(self, data):
+        """
+        This test verifies the read-only admin is not able to delete an SMB share on the Sharing SMB page.
+        """
+        assert Common_Shares.assert_share_card_displays('smb') is True
+        Common_Shares.click_share_card_header_link('smb')
+        assert SMB.assert_sharing_smb_page_header() is True
+        assert SMB.assert_delete_share_button_is_locked_and_not_clickable(data['smb_xpath']) is True
+
+    @allure.tag('Update')
+    @allure.story("Read Only Admin Is Not Able To Disable Or Enable An SMB Share On The Sharing SMB Page")
+    def test_read_only_admin_is_not_able_to_disable_or_enable_an_smb_shares_on_the_sharing_smb_page(self, data):
+        """
+        This test verifies the read-only admin is not able to disable and enable an SMB share on the Sharing SMB page.
+        """
+        assert Common_Shares.assert_share_card_displays('smb') is True
+        Common_Shares.click_share_card_header_link('smb')
+        assert SMB.assert_sharing_smb_page_header() is True
+        assert SMB.assert_enabled_checkbox_is_locked_and_not_clickable(data['smb_xpath']) is True
+
+    @allure.tag('Update')
+    @allure.story("Read Only Admin Is Not Able To Edit The SMB Filesystem ACL Permissions On The Sharing SMB Page")
+    def test_read_only_admin_is_not_able_to_edit_the_smb_filesystem_acl_permissions_on_the_sharing_smb_page(self, data):
+        """
+        This test verifies the read-only admin is not able to edit the SMB filesystem ACL permissions on the Sharing SMB page.
+        """
+        assert Common_Shares.assert_share_card_displays('smb') is True
+        Common_Shares.click_share_card_header_link('smb')
+        assert SMB.assert_sharing_smb_page_header() is True
+        assert SMB.assert_edit_filesystem_acl_button_is_locked_and_not_clickable(data['smb_xpath']) is True
+
+    @allure.tag('Update')
+    @allure.story("Read Only Admin Is Not Able To Edit The SMB Share ACL Permissions On The Sharing SMB Page")
+    def test_read_only_admin_is_not_able_to_edit_the_smb_share_acl_permissions_on_the_sharing_smb_page(self, data):
+        """
+        This test verifies the read-only admin is not able to edit the SMB share ACL permissions on the Sharing SMB page.
+        """
+        assert Common_Shares.assert_share_card_displays('smb') is True
+        Common_Shares.click_share_card_header_link('smb')
+        assert SMB.assert_sharing_smb_page_header() is True
+        assert SMB.assert_edit_share_acl_button_is_locked_and_not_clickable(data['smb_xpath']) is True
