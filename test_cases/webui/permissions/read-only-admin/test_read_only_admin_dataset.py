@@ -132,10 +132,10 @@ class Test_Read_Only_Admin_Dataset:
         assert Datasets.is_user_quotas_page_visible()
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Can Access Dataset ACL Permissions")
-    def test_read_only_admin_can_access_acl_permissions(self, data):
+    @allure.story("Read Only Admin Is Not Able To Access Dataset ACL Permissions")
+    def test_read_only_admin_can_not_access_acl_permissions(self, data):
         """
-        This test verifies the read-only admin is able to access ACL permissions.
+        This test verifies the read-only admin is not able to access ACL permissions.
         """
         # Navigate to Datasets page
         Navigation.navigate_to_datasets()
@@ -144,14 +144,13 @@ class Test_Read_Only_Admin_Dataset:
         Navigation.navigate_to_datasets()
         Datasets.select_dataset(data["acl_parent_dataset"])
         assert Datasets.is_permissions_card_visible()
-        Datasets.click_edit_permissions_button()
-        assert Permissions.assert_edit_acl_page_header()
+        assert Datasets.assert_edit_dataset_permissions_button_is_locked_and_not_clickable() is True
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Can Dataset Access Unix Permissions")
-    def test_read_only_admin_can_access_unix_permissions(self, data):
+    @allure.story("Read Only Admin Is Not Able To Dataset Access Unix Permissions")
+    def test_read_only_admin_can_not_access_unix_permissions(self, data):
         """
-        This test verifies the read-only admin is able to access Unix permissions.
+        This test verifies the read-only admin is not able to access Unix permissions.
         """
         # Navigate to Datasets page
         Navigation.navigate_to_datasets()
@@ -159,10 +158,8 @@ class Test_Read_Only_Admin_Dataset:
         # Verify the read-only admin is able to access Unix permissions
         Navigation.navigate_to_datasets()
         Datasets.select_dataset(data["generic_parent_dataset"])
-        assert Datasets.is_space_management_card_visible()
         assert Datasets.is_permissions_card_visible()
-        Datasets.click_edit_permissions_button()
-        assert Permissions.assert_edit_permissions_page_header()
+        assert Datasets.assert_edit_dataset_permissions_button_is_locked_and_not_clickable() is True
 
     @allure.tag("Create", "Delete")
     @allure.story("Read Only Admin Is Not Able To Add And Delete Dataset")
@@ -199,7 +196,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Datasets.assert_add_zvol_button_is_locked_and_not_clickable() is True
 
     @allure.tag("Update")
-    @allure.story("Read Only Admin IsNot Able To Modify A Dataset")
+    @allure.story("Read Only Admin Is Not Able To Modify A Dataset")
     def test_read_only_admin_is_not_able_to_modify_a_dataset(self, data):
         """
         This test verifies the read-only admin is not able to modify a dataset.
@@ -210,19 +207,7 @@ class Test_Read_Only_Admin_Dataset:
         # Verify the read-only admin is not able to modify a dataset
         Datasets.select_dataset(data["acl_parent_dataset"])
         assert Datasets.assert_selected_dataset_name(data["acl_parent_dataset"]) is True
-        Datasets.click_edit_dataset_button()
-
-        # Ensure you can't save before editing
-        assert Datasets.assert_edit_dataset_panel_header() is True
-        assert Common.assert_header_readonly_badge() is True
-        assert Common.assert_save_button_is_locked_and_not_clickable() is True
-
-        # Ensure you can't save after editing
-        Datasets.click_advanced_basic_options_button()
-        Datasets.set_dataset_comments('test')
-        assert Common.assert_save_button_is_locked_and_not_clickable() is True
-
-        Common.close_right_panel()
+        assert Datasets.assert_edit_dataset_button_is_locked_and_not_clickable() is True
 
     @allure.tag("Update")
     @allure.story("Read Only Admin Is Not Able To Modify Dataset Space Management Capacity Settings")
@@ -237,10 +222,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Datasets.is_space_management_card_visible()
         Datasets.select_dataset(data["acl_parent_dataset"])
         assert Datasets.assert_selected_dataset_name(data["acl_parent_dataset"]) is True
-        Datasets.click_edit_dataset_space_button()
-        assert Datasets.is_capacity_settings_right_panel_visible() is True
-        assert Common.assert_header_readonly_badge() is True
-        assert Common.assert_save_button_is_locked_and_not_clickable() is True
+        assert Datasets.assert_edit_dataset_space_management_button_is_locked_and_not_clickable() is True
 
     @allure.tag("Update")
     @allure.story("Read Only Admin Is Not Able To Modify Dataset Groups And Users Quotas")
@@ -266,44 +248,6 @@ class Test_Read_Only_Admin_Dataset:
         Datasets.click_manage_user_quotas_link(data['pool'], data["acl_parent_dataset"])
         assert Datasets.is_user_quotas_page_visible()
         assert Datasets.assert_add_quota_button_is_locked_and_not_clickable() is True
-
-    @allure.tag("Update")
-    @allure.story("Read Only Admin Is Not Able To Edit ACL Permissions On Datasets")
-    def test_read_only_admin_is_not_able_to_edit_acl_permissions_on_datasets(self, data):
-        """
-        This test verifies the read-only admin is not able to edit permissions on datasets.
-        """
-        # Navigate to Datasets page
-        Navigation.navigate_to_datasets()
-
-        # Verify the read-only admin is not able to edit permissions on datasets
-        Datasets.select_dataset(data["acl_parent_dataset"])
-        assert Datasets.assert_selected_dataset_name(data["acl_parent_dataset"]) is True
-        Datasets.click_edit_permissions_button()
-        assert Permissions.assert_edit_acl_page_header() is True
-        assert Permissions.assert_save_as_preset_button_is_locked_and_not_clickable() is True
-        assert Permissions.assert_strip_acl_button_is_locked_and_not_clickable() is True
-        assert Permissions.assert_save_acl_button_is_locked_and_not_clickable() is True
-
-        # Return to dataset page or there will be an error when deleting the dataset.
-        Navigation.navigate_to_datasets()
-
-    @allure.tag("Update")
-    @allure.story("Read Only Admin Is Not Able To Edit Unix Permissions On Datasets")
-    def test_read_only_admin_is_not_able_to_edit_unix_permissions_on_datasets(self, data):
-        """
-        This test verifies the read-only admin is not able to edit unix permissions on datasets.
-        """
-        # Navigate to Datasets page
-        Navigation.navigate_to_datasets()
-
-        # Verify the read-only admin is not able to edit unix permissions on datasets
-        Datasets.select_dataset(data["generic_parent_dataset"])
-        assert Datasets.assert_selected_dataset_name(data["generic_parent_dataset"]) is True
-        Datasets.click_edit_permissions_button()
-        assert Permissions.assert_edit_permissions_page_header() is True
-        assert Permissions.assert_set_acl_button_is_locked_and_not_clickable() is True
-        assert Common.assert_save_button_is_locked_and_not_clickable() is True
 
     @allure.tag("Update")
     @allure.story("Read Only Admin Is Not Able To Create Dataset Snapshots")
