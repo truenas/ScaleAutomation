@@ -212,6 +212,16 @@ def checkbox_field_by_row_attribute(field: str, row: int) -> str:
     return f'(//*[@data-test="checkbox-{field}"])[{row}]//input'
 
 
+def button_field_greyed(field: str) -> str:
+    """
+    This function sets the text for the given button name
+
+    :param field: text of the given button name
+    :return: xpath string for given button
+    """
+    return f'//*[@data-test="button-{field}" and @aria-disabled="true"]'
+
+
 def checkbox_field_locked(field: str) -> str:
     """
     This function sets the text for the given checkbox name
@@ -421,7 +431,9 @@ def page_share_attribute(share_type: str, attribute: str, desc: str) -> str:
     :return: xpath string for given share name
     """
     index = 1
+    row_xpath = 'data-test="row"'
     if share_type == "smb":
+        row_xpath = 'role="row"'
         if attribute == 'name':
             index = 1
         if attribute == 'path':
@@ -433,7 +445,7 @@ def page_share_attribute(share_type: str, attribute: str, desc: str) -> str:
             index = 1
         if attribute == 'description':
             index = 2
-    return f'//*[@data-test="row"]/td[{index}]/descendant::*[contains(text(),"{desc}")]'
+    return f'//*[@{row_xpath}]/td[{index}]/descendant::*[contains(text(),"{desc}")]'
 
 
 def share_enabled_slider(sharetype: str, name: str) -> str:

@@ -336,7 +336,8 @@ class WebUI(object):
             - WebUI.wait_until_clickable('xpath', shared_config['SHORT_WAIT'])
         """
         wait = WebDriverWait(cls.web_driver, timeout)
-        assert cls.wait_until_visible(xpath, timeout) is True
+        # Some field like checkbox input may not be visible but are present and clickable.
+        assert cls.wait_until_presence_is_located(xpath, timeout) is True
         return wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
 
     @classmethod
