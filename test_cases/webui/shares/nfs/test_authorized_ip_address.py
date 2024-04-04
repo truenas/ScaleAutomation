@@ -17,7 +17,7 @@ from keywords.ssh.nfs import SSH_NFS as NFS_SSH
 @allure.epic("Shares")
 @allure.feature("NFS")
 @pytest.mark.parametrize('nfs_data', get_data_list('shares/nfs'))
-class Test_Authorized_IP_Addresses:
+class Test_Authorized_IP_Address:
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self, nfs_data):
         """
@@ -29,10 +29,6 @@ class Test_Authorized_IP_Addresses:
         API_POST.start_service('nfs')
         API_POST.create_dataset(nfs_data['api_path'], 'NFS')
         API_POST.create_share('nfs', '', nfs_data['share_page_path'])
-
-        # TODO: So this needs to have other permissions write, alowed or it needs to have a UID matched user own it like nfs_user (3000)
-        # It appears to be working, just need to sort that out. Nobody nogroup is not needed for this test.
-        # API_POST.set_dataset_permissions_user_and_group(nfs_data['api_path'], 'nobody', 'nogroup')
         NAV.navigate_to_datasets()
         DAT.click_dataset_location(nfs_data['dataset_name'])
         DAT.click_edit_permissions_button()
@@ -53,11 +49,11 @@ class Test_Authorized_IP_Addresses:
         API_DELETE.delete_dataset(nfs_data['api_path'], recursive=True, force=True)
         assert NFS_SSH.unmount_nfs_share('auth_host') is True
 
-    @allure.tag("Authorized IP Addresses")
-    @allure.story("NFS Share Authorized IP Addresses")
-    def test_nfs_share_authorized_ip_addresses(self, nfs_data):
+    @allure.tag("Authorized IP Address")
+    @allure.story("NFS Share Authorized IP Address")
+    def test_nfs_share_authorized_ip_address(self, nfs_data):
         """
-        This test edits the NFS share with an authorized host and verifies that the share can/cannot be mounted.
+        This test edits the NFS share with an authorized IP and verifies that the share can/cannot be mounted.
         """
         # Edit the NFS share and set a valid authorized ip address
         assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path']) is True
