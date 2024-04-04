@@ -518,10 +518,8 @@ class Common_Shares:
         Example:
            - Common_Shares.click_edit_share('smb', 'share1')
         """
-        if share_type == 'nfs':
-            name = name.replace('/', '-')
         path = f'card-{share_type}-share-{name.lower()}-edit-row-action'
-        path = path.replace('--', '-')
+        path = COM.convert_to_tag_format(path)
         COM.click_button(path)
         assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit {share_type.upper()}', 3)) is True
 

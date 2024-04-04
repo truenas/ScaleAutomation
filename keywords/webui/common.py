@@ -533,6 +533,7 @@ class Common:
         name = name.replace('/', '-')
         name = name.replace('_', '-')
         name = name.replace(' ', '-')
+        name = name.replace('--', '-')
         return name.lower()
 
     @classmethod
@@ -1039,8 +1040,10 @@ class Common:
             - Common.set_checkbox_by_state('myCheckbox', True)
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name)) is True
+        WebUI.delay(0.2)
         if cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is not state:
             cls.click_on_element(xpaths.common_xpaths.checkbox_field(name))
+            WebUI.delay(0.2)
         assert cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is state
 
     @classmethod
