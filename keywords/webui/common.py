@@ -397,6 +397,16 @@ class Common:
         cls.click_button('cancel')
 
     @classmethod
+    def click_dialog_close_button(cls) -> None:
+        """
+        This method clicks the dialog close button
+
+        Example:
+            - Common.click_dialog_close_button()
+        """
+        cls.click_button('dialog-close')
+
+    @classmethod
     def click_link(cls, name: str) -> None:
         """
         This method clicks the given link.
@@ -1020,7 +1030,7 @@ class Common:
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name)) is True
         if cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is not state:
-            cls.click_on_element(f'//*[@data-test="checkbox-{name}"]')
+            cls.click_on_element(xpaths.common_xpaths.checkbox_field(name))
         assert cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is state
 
     @classmethod

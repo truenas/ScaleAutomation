@@ -161,7 +161,6 @@ class Permissions:
 .
         :param dataset: The name of the dataset to use.
         :param name: The name of the preset to delete.
-        :return: True if the preset was deleted successfully, False otherwise.
 
         Example:
             - Permissions.delete_custom_preset('test-dataset', 'test-preset')
@@ -170,10 +169,15 @@ class Permissions:
         DAT.click_dataset_location(dataset)
         DAT.click_edit_permissions_button()
         COM.click_button('save-as-preset')
-        WebUI.wait_until_clickable(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
-        COM.click_on_element(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
-        assert WebUI.wait_until_not_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)) is True
+        if COM.is_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)):
+            WebUI.execute_script("arguments[0].click();", WebUI.wait_until_clickable(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)))
+            # I am not sure why but this element is very flakey. Selenium's click will not work even though it's fine manually.
+            # Javascript click DOES work.
+            # https://ixsystems.atlassian.net/browse/NAS-128105 created on 2024-03-29
+            # COM.click_on_element(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
+            assert WebUI.wait_until_not_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)) is True
         COM.click_cancel_button()
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('cancel')) is True
 
     @classmethod
     def get_dataset_permissions_item_name_by_level(cls, user_category: str, name: str) -> str:
@@ -188,9 +192,9 @@ class Permissions:
         match user_category:
             case 'user' | 'owner':
                 translated_category = 'person'
-            case 'group' | 'owner group':
+            case 'group' | 'owner group' | 'mask':
                 translated_category = 'people'
-            case 'other':
+            case 'other' | 'everyone':
                 translated_category = 'groups'
         return COM.get_element_property(f"//*[@name='{translated_category}']/ancestor::ix-permissions-item/descendant::*[@class='name' and contains(text(), '{name}')]", "textContent")
 
@@ -209,7 +213,7 @@ class Permissions:
                 translated_category = 'person'
             case 'group' | 'owner group':
                 translated_category = 'people'
-            case 'other':
+            case 'other' | 'everyone':
                 translated_category = 'groups'
         return COM.get_element_property(
             f"//*[@name='{translated_category}']/ancestor::ix-permissions-item/descendant::*[@class='name' and contains(text(), '{name}')]/following-sibling::*[@class='permissions']",
@@ -272,6 +276,19 @@ class Permissions:
         This method sets the Apply User Checkbox.
         """
         COM.set_checkbox('apply-user')
+
+    @classmethod
+    def set_custom_preset_name(cls, name: str) -> None:
+        """
+        This method deletes the custom preset of the given name if it exists and sets the custom preset name input.
+        """
+        if COM.is_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)):
+            WebUI.execute_script("arguments[0].click();", WebUI.wait_until_clickable(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)))
+            # I am not sure why but this element is very flakey. Selenium's click will not work even thought it's fine manually.
+            # https://ixsystems.atlassian.net/browse/NAS-128105 created on 2024-03-29
+            # COM.click_on_element(xpaths.datasets.dataset_permission_custom_preset_delete_button(name))
+            assert WebUI.wait_until_not_visible(xpaths.datasets.dataset_permission_custom_preset_delete_button(name)) is True
+        COM.set_input_field('preset-name', name)
 
     @classmethod
     def set_dataset_group(cls, group: str) -> None:
@@ -406,14 +423,15 @@ class Permissions:
         COM.unset_checkbox(f'{user_category}-{level}')
 
     @classmethod
-    def verify_dataset_builtin_admin_group_permissions(cls, permissions: str) -> bool:
+    def verify_dataset_builtin_admin_group_permissions(cls, permissions: str, name: str = 'Group – builtin_administrators') -> bool:
         """
         This method returns true if the visible builtin_administrators permissions matches the given permissions, otherwise False.
 
         :param permissions: the expected permissions of the group.
+        :param name: the name of the builtin_administrators group.
         :return: true if the visible builtin_administrators permissions matches the given permissions.
         """
-        val = cls.get_dataset_permissions_item_permissions_by_level('group', 'Group – builtin_administrators')
+        val = cls.get_dataset_permissions_item_permissions_by_level('group', name)
         return val == permissions
 
     @classmethod
@@ -428,15 +446,15 @@ class Permissions:
         return val == permissions
 
     @classmethod
-    def verify_dataset_builtin_admin_group_permissions_name(cls) -> bool:
+    def verify_dataset_builtin_admin_group_permissions_name(cls, name: str = 'Group – builtin_administrators') -> bool:
         """
         This method returns true if the visible name of the builtin_administrators matches
         Group – builtin_administrators, otherwise False.
 
         :return: true if the visible name of the builtin_administrators matches Group – builtin_administrators.
         """
-        val = cls.get_dataset_permissions_item_name_by_level('group', 'Group – builtin_administrators')
-        return val == 'Group – builtin_administrators'
+        val = cls.get_dataset_permissions_item_name_by_level('group', name)
+        return val == name
 
     @classmethod
     def verify_dataset_builtin_admin_group_default_permissions_name(cls) -> bool:
@@ -448,6 +466,29 @@ class Permissions:
         """
         val = cls.get_dataset_permissions_item_name_by_level('group', 'Group – default – builtin_administrators')
         return val == 'Group – default – builtin_administrators'
+
+    @classmethod
+    def verify_dataset_everyone_permissions(cls, permissions: str, name: str) -> bool:
+        """
+        This method returns true if the visible everyone permissions matches the given permissions, otherwise False.
+
+        :param permissions: the expected permissions of the owner.
+        :param name: the name of everyone group.
+        :return: true if the visible everyone permissions matches the given permissions.
+        """
+        val = cls.get_dataset_permissions_item_permissions_by_level('everyone', name)
+        return val == permissions
+
+    @classmethod
+    def verify_dataset_everyone_permissions_name(cls, name: str) -> bool:
+        """
+        This method returns true if the visible everyone permissions name matches the given name, otherwise False.
+
+        :param name: the name of everyone group.
+        :return: true if the visible everyone permissions matches the given permissions.
+        """
+        val = cls.get_dataset_permissions_item_name_by_level('everyone', name)
+        return val == name
 
     @classmethod
     def verify_dataset_group_permissions(cls, permissions: str, name: str) -> bool:
@@ -614,6 +655,48 @@ class Permissions:
         val = cls.get_dataset_permissions_item_name_by_level('owner', name)
         return val == name
 
+    # TODO: Use this base to refactor these verify_dataset_permissions/name methods
+    # @classmethod
+    # def verify_dataset_permissions_entity_name(cls, name: str) -> bool:
+    #     """
+    #     This method returns true if the visible name of the owner matches the given name, otherwise False.
+    #
+    #     :param name: the name of the owner.
+    #     :return: true if the visible name of the owner matches the given name.
+    #     """
+    #     match name.lower():
+    #         case 'everyone':
+    #             return cls.get_dataset_permissions_item_name_by_level('everyone', name) == name
+    #         case 'mask':
+    #             return cls.get_dataset_permissions_item_name_by_level('mask', name) == name
+    #         case 'other':
+    #             return cls.get_dataset_permissions_item_name_by_level('other', name) == name
+    #         case 'owner':
+    #             return cls.get_dataset_permissions_item_name_by_level('owner', name) == name
+    #         case 'group':
+    #             return cls.get_dataset_permissions_item_name_by_level('group', name) == name
+    #
+    # @classmethod
+    # def verify_dataset_permissions_entity_permissions(cls, permissions: str, name: str) -> bool:
+    #     """
+    #     This method returns true if the visible name of the owner matches the given name, otherwise False.
+    #
+    #     :param permissions: the expected permissions of the user.
+    #     :param name: the name of the owner.
+    #     :return: true if the visible name of the user matches the given name.
+    #     """
+    #     match name.lower():
+    #         case 'everyone':
+    #             return cls.get_dataset_permissions_item_permissions_by_level('everyone', name) == permissions
+    #         case 'mask':
+    #             return cls.get_dataset_permissions_item_permissions_by_level('mask', name) == permissions
+    #         case 'other':
+    #             return cls.get_dataset_permissions_item_permissions_by_level('other', name) == permissions
+    #         case 'owner':
+    #             return cls.get_dataset_permissions_item_permissions_by_level('owner', name) == permissions
+    #         case 'group' | 'builtin_administrators':
+    #             return cls.get_dataset_permissions_item_permissions_by_level('group', name) == permissions
+
     @classmethod
     def verify_dataset_owner_default_permissions_name(cls, name: str) -> bool:
         """
@@ -632,7 +715,7 @@ class Permissions:
 
         :return: returns true if the edit permissions button is visible.
         """
-        return COM.is_visible(xpaths.common_xpaths.link_field('edit-permissions'))
+        return COM.is_visible(xpaths.common_xpaths.button_field('edit-permissions'))
 
     @classmethod
     def verify_dataset_permissions_type(cls, permissions_type: str) -> bool:

@@ -14,7 +14,7 @@ class Replication:
         Example:
             - Replication.click_close_task_started_button()
         """
-        COM.click_button('dialog-close')
+        COM.click_dialog_close_button()
 
     @classmethod
     def click_run_now_replication_task_by_name(cls, name):

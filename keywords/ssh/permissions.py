@@ -33,18 +33,19 @@ class Permissions_SSH:
         return True
 
     @classmethod
-    def assert_dataset_has_posix_acl(cls, dataset: str, permissions: str) -> bool:
+    def assert_dataset_has_posix_acl(cls, path: str, dataset: str, permissions: str) -> bool:
         """
-        This method returns True if the given dataset has the given POSIX ACL, otherwise it returns False.
+        This method returns True if the given dataset has been given a POSIX ACL, otherwise it returns False.
 
-        :param dataset: The name of the dataset to be accessed.
+        :param path: The path to the dataset.
+        :param dataset: The name of the dataset.
         :param permissions: The permissions to verify.
-        :return: True if the given dataset has the given POSIX ACL, otherwise it returns False.
+        :return: True if the given dataset has been given a POSIX ACL, otherwise it returns False.
 
         Example:
-            - Permissions.assert_dataset_has_posix_acl('test-dataset', 'rwxrwx---+')
+            - Permissions.assert_dataset_has_posix_acl('/mnt/tank','test-dataset', 'rwxrwx---+')
         """
-        value = SSH.get_output_from_ssh(f'ls -l /mnt/tank | grep {dataset}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        value = SSH.get_output_from_ssh(f'ls -l {path} | grep {dataset}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
         print('ls_output: '+permissions)
         print('stdout: ' + value.stdout.lower())
         if permissions in value.stdout.lower():
@@ -89,6 +90,27 @@ class Permissions_SSH:
         return file in value.stdout.lower()
 
     @classmethod
+    def assert_file_has_posix_acl(cls, path: str, file_name: str, permissions: str) -> bool:
+        """
+        This method returns True if the given file been given a POSIX ACL, otherwise it returns False.
+
+        :param path: The path to the dataset.
+        :param file_name: The name of the file.
+        :param permissions: The permissions to verify.
+        :return: True if the given file been given a POSIX ACL, otherwise it returns False.
+
+        Example:
+            - Permissions.assert_file_has_posix_acl('/mnt/tank/test-dataset', 'testfile.txt', '-rwxrwx---+ 1 user_admin')
+        """
+        value = SSH.get_output_from_ssh(f'ls -l {path} | grep {file_name}', private_config['IP'],
+                                        private_config['USERNAME'], private_config['PASSWORD'])
+        print('ls_output: ' + permissions)
+        print('stdout: ' + value.stdout.lower())
+        if permissions in value.stdout.lower():
+            return True
+        return False
+
+    @classmethod
     def clean_dataset_contents(cls, pool: str, dataset: str) -> None:
         """
         This method removes the files from the given dataset. Due to possible lack of permissions, this method must delete
@@ -114,18 +136,21 @@ class Permissions_SSH:
         assert value.status is True and value2.status is True and value3.status is True
 
     @classmethod
-    def verify_getfacl_contains_preset_permissions(cls, dataset_path: str, permissions: str) -> bool:
+    def verify_getfacl_contains_permissions(cls, dataset_path: str, permissions: str, acl_type: str = '') -> bool:
         """
-        This method returns True if the given dataset has the given permissions using getfacl, otherwise it returns False.
+        This method returns True if the given dataset has the given permissions using the getfacl command, otherwise it returns False.
 
         :param dataset_path: The path of the dataset
         :param permissions: The permissions to verify.
+        :param acl_type: The type of ACL to verify. (NFSv4 or POSIX). Defaults to POSIX.
         :return: True if the given dataset has the given permissions using getfacl, otherwise it returns False.
 
         Example:
-            - Permissions.verify_getfacl_contains_preset_permissions('/mnt/tank/test-dataset', 'user::rwx')
+            - Permissions.verify_getfacl_contains_permissions('/mnt/tank/test-dataset', 'user::rwx')
         """
-        value = SSH.get_output_from_ssh(f'getfacl {dataset_path}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
-        if permissions in value.stdout.lower():
+        if acl_type == 'NFSv4':
+            acl_type = 'nfs4xdr_'
+        value = SSH.get_output_from_ssh(f'{acl_type}getfacl {dataset_path}', private_config['IP'], private_config['USERNAME'], private_config['PASSWORD'])
+        if permissions in value.stdout:
             return True
         return False
