@@ -18,7 +18,7 @@ from keywords.ssh.nfs import SSH_NFS as NFS_SSH
 @allure.feature("NFS")
 class Test_Authorized_IP_Address:
     @pytest.fixture(scope='function', autouse=True)
-    def setup_test(self, nfs_data):
+    def setup_test(self):
         """
         This method sets up the environment for the test.
         """
@@ -29,7 +29,7 @@ class Test_Authorized_IP_Address:
         API_POST.create_dataset('tank/auth_ip_test', 'NFS')
         API_POST.create_share('nfs', '', '/mnt/tank/auth_ip_test')
         NAV.navigate_to_datasets()
-        DAT.click_dataset_location('ip_auth_test')
+        DAT.click_dataset_location('auth_ip_test')
         DAT.click_edit_permissions_button()
         PERM.set_other_access('Read | Write | Execute')
         COM.click_save_button_and_wait_for_progress_bar()
@@ -39,7 +39,7 @@ class Test_Authorized_IP_Address:
         assert COMSHARE.assert_share_path('nfs', '/mnt/tank/auth_ip_test') is True
 
     @pytest.fixture(scope='function', autouse=True)
-    def tear_down_test(self, nfs_data):
+    def tear_down_test(self):
         """
         This method deletes the share, dataset and unmounts the NFS share on the client.
         """
@@ -50,7 +50,7 @@ class Test_Authorized_IP_Address:
 
     @allure.tag("Authorized IP Address")
     @allure.story("NFS Share Authorized IP Address")
-    def test_nfs_share_authorized_ip_address(self, nfs_data):
+    def test_nfs_share_authorized_ip_address(self):
         """
         This test edits the NFS share with an authorized IP and verifies that the share can/cannot be mounted.
         """
