@@ -49,6 +49,19 @@ class Data_Protection:
         assert COM.is_visible('//*[starts-with(@data-test,"button-snapshot") and contains(@data-test,"-delete-row-action")]') is False
 
     @classmethod
+    def delete_all_replication_tasks(cls) -> None:
+        """
+        This method deletes all the Replication tasks
+
+        Example:
+            - Data_Protection.delete_all_replication_tasks()
+        """
+        while COM.is_visible('//*[starts-with(@data-test,"button-replication") and contains(@data-test,"-delete-row-action")]'):
+            COM.click_on_element('//*[starts-with(@data-test,"button-replication") and contains(@data-test,"-delete-row-action")]')
+            COM.assert_confirm_dialog()
+        assert COM.is_visible('//*[starts-with(@data-test,"button-replication") and contains(@data-test,"-delete-row-action")]') is False
+
+    @classmethod
     def delete_all_snapshots(cls):
         """
         This method deletes all the Snapshots

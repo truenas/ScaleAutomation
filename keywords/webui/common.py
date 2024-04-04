@@ -1,3 +1,4 @@
+import datetime
 from pathlib import Path
 
 from selenium.common.exceptions import (
@@ -8,6 +9,7 @@ from selenium.common.exceptions import (
 )
 from selenium.webdriver.common.keys import Keys
 
+from helper.cli import SSH_Command_Line
 from helper.reporting import take_screenshot
 from helper.webui import WebUI
 from helper.global_config import private_config
@@ -19,6 +21,25 @@ import xpaths
 
 
 class Common:
+
+    @classmethod
+    def add_test_file(cls, file: str, path: str, ip: str = private_config['IP'],
+                      user: str = private_config['SSH_USERNAME'],
+                      password: str = private_config['PASSWORD']) -> None:
+        """
+        This method adds the files used for testing smb permissions
+
+        :param file: is the name of the file to add
+        :param path: is the path of the file
+        :param ip: is the ip of the system
+        :param user: is the user accessing the system
+        :param password: is the password of user accessing the system
+
+        Example:
+            - Common.add_test_file('myFile.txt', 'tank/path')
+            - Common.add_test_file('myFile.txt', 'tank/path', '10.0.0.1', 'user', 'password')
+        """
+        SSH_Command_Line(f'sudo touch /mnt/{path}/{file}', ip, user, password)
 
     @classmethod
     def assert_add_item_button(cls, name: str) -> bool:
@@ -127,6 +148,31 @@ class Common:
             - Common.assert_dialog_not_visible('Create Pool', shared_config['MEDIUM_WAIT'])
         """
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(dialog_title, 1), wait)
+
+    @classmethod
+    def assert_file_exists(cls, file: str, path: str, ip: str = private_config['IP'],
+                           user: str = private_config['SSH_USERNAME'],
+                           password: str = private_config['PASSWORD']) -> bool:
+        """
+        This method returns True if the given file exists, otherwise it returns False.
+
+        :param file: is the name of the file to find in the response to validate
+        :param path: is the path of the file
+        :param ip: is the ip of the system
+        :param user: is the user accessing the system
+        :param password: is the password of user accessing the system
+        :return: returns True if the given file exists, otherwise it returns False.
+
+        Example:
+            - Common.assert_file_exists('myFile.txt', 'tank/path')
+            - Common.assert_file_exists('myFile.txt', 'tank/path', '10.0.0.1', 'user', 'password')
+        """
+        response = SSH_Command_Line(f'ls -al /mnt/{path}', ip, user, password)
+        # print(f'{file} RESPONSE: {response.status}')
+        # print(f'{file} SUCCESS RESPONSE: {response.stdout}')
+        # print(f'{file} ERROR RESPONSE: {response.stderr}')
+        print(f'{file}: ' + str(response.stdout.__contains__(file)))
+        return response.stdout.__contains__(file)
 
     @classmethod
     def assert_header_readonly_badge(cls) -> bool:
@@ -542,6 +588,24 @@ class Common:
         API_POST.create_non_admin_user(name, fullname, password, smb_auth)
 
     @classmethod
+    def delete_all_test_files(cls, path: str, ip: str = private_config['IP'],
+                              user: str = private_config['SSH_USERNAME'],
+                              password: str = private_config['SSH_PASSWORD']) -> None:
+        """
+        This method adds the files used for testing smb permissions
+
+        :param path: is the path of the file
+        :param ip: is the ip of the system
+        :param user: is the user accessing the system
+        :param password: is the password of user accessing the system
+
+        Example:
+            - Common.add_test_file('myFile.txt', 'tank/path')
+            - Common.add_test_file('myFile.txt', 'tank/path', '10.0.0.1', 'user', 'password')
+        """
+        SSH_Command_Line(f'sudo rm /mnt/{path}/*', ip, user, password)
+
+    @classmethod
     def delete_file(cls, path: str, filename: str) -> None:
         """
         This method deletes the given file if it exists in the given directory
@@ -550,7 +614,7 @@ class Common:
         :param filename: the password of the user used to log in.
 
         Example:
-            - Common.is_file_downloaded('C:/path', 'myfile.txt')
+            - Common.delete_file('C:/path', 'myfile.txt')
         """
         file = Path(path + '/' + filename)
         file.unlink(True)
@@ -568,6 +632,25 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.any_xpath(xpath)).send_keys(Keys.DELETE)
 
     @classmethod
+    def delete_test_file(cls, file: str, path: str, ip: str = private_config['IP'],
+                         user: str = private_config['SSH_USERNAME'],
+                         password: str = private_config['PASSWORD']) -> None:
+        """
+        This method adds the files used for testing smb permissions
+
+        :param file: is the name of the file to add
+        :param path: is the path of the file
+        :param ip: is the ip of the system
+        :param user: is the user accessing the system
+        :param password: is the password of user accessing the system
+
+        Example:
+            - Common.add_test_file('myFile.txt', 'tank/path')
+            - Common.add_test_file('myFile.txt', 'tank/path', '10.0.0.1', 'user', 'password')
+        """
+        SSH_Command_Line(f'sudo rm /mnt/{path}/{file}', ip, user, password)
+
+    @classmethod
     def delete_user_by_api(cls, name: str) -> None:
         """
         This method creates a non admin user
@@ -579,6 +662,61 @@ class Common:
         """
         response = API_DELETE.delete_user(name)
         print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
+
+    @classmethod
+    def get_current_day(cls) -> int:
+        """
+        This method returns the current system day date [1-31]
+
+        :return: returns the current system day date
+
+        Example:
+            - Common.get_current_day()
+        """
+        return datetime.datetime.now().day
+
+    @classmethod
+    def get_current_hour(cls) -> int:
+        """
+        This method returns the current system hour [0-23]
+
+        :return: returns the current system hour
+
+        Example:
+            - Common.get_current_hour()
+        """
+        return datetime.datetime.now().hour
+
+    @classmethod
+    def get_current_minute(cls) -> int:
+        """
+        This method returns the current system minute [0-59]
+
+        :return: returns the current system minute
+
+        Example:
+            - Common.get_current_minute()
+        """
+        return datetime.datetime.now().minute
+
+    @classmethod
+    def get_current_time_element(cls, element: str) -> int:
+        """
+        This method returns the current system element value
+
+        :param element: the element of time to return [day/hour/minute]
+        :return: returns the current system given element value
+
+        Example:
+            - Common.get_current_hour()
+        """
+        match element:
+            case 'minute':
+                return datetime.datetime.now().minute
+            case 'hour':
+                return datetime.datetime.now().hour
+            case 'day':
+                return datetime.datetime.now().day
 
     @classmethod
     def get_element_property(cls, xpath: str, prop: str = 'value') -> str | bool:
@@ -1227,3 +1365,27 @@ class Common:
             print("Not logged in. Logging in as correct user.")
             cls.set_login_form(user, password)
             assert cls.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="button-user-menu"]//*[contains(text(), "{user}")]'))
+
+    @classmethod
+    def wait_for_system_time(cls, time: str, value: int) -> None:
+        """
+        This method waits in increments of 1 interval until the given time element is equal to or later than the given value.
+
+        :param time: the time element to check against. ['day'/'hour'/'minute']
+        :param value: the vale used to verify against.
+
+        Example:
+            - Common.wait_for_system_time('minute', 10)
+        """
+        pause = 0
+        match time:
+            case 'minute':
+                pause = 60
+            case 'hour':
+                pause = 3600
+            case 'day':
+                pause = 86400
+
+        while cls.get_current_time_element(time) < value:
+            print("@@@ WAIT FOR: " + str(cls.get_current_time_element(time)) + " to be: " + str(value))
+            WebUI.delay(pause)
