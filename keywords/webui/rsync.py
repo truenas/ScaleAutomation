@@ -21,7 +21,7 @@ class Rsync:
         COM.assert_confirm_dialog()
         if COM.assert_dialog_visible('FAILED', shared_config['SHORT_WAIT']):
             print("@@@ FAILED RSYNC: ")
-            COM.click_button('close-error-dialog')
+            COM.click_error_dialog_close_button()
         WebUI.refresh()
         # WebUI.wait_until_visible(
         #     f'//*[@data-test="button-state-card-rsync-task{COM.convert_to_tag_format(path)}-null-row-state" and contains(@class,"fn-theme-green")]', shared_config["LONG_WAIT"])
