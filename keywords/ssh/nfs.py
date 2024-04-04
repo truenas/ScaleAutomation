@@ -117,15 +117,14 @@ class SSH_NFS:
         return file in value.stdout.lower()
 
     @classmethod
-    def put_file_in_share(cls, share_path: str) -> str:
+    def put_file_in_share(cls, share_path: str, file: str = "test_file.txt") -> str:
         """
-        This method creates a file in the given dataset and returns true if the file is present.
-        Otherwise, it returns false.
+        This method creates a file in the given dataset and returns the name of the file created.
 
         :param share_path: the path to the dataset the share is attached to.
-        :return: true if write actions are successful.
+        :param file: the name of the file to create Defaults to test_file.txt.
+        :return: the name of the file created.
         """
-        file = "test_file.txt"
         command = f"sudo touch {share_path}/{file}"
         SSH_Command_Line(command, private_config['IP'], private_config['USERNAME'],
                          private_config['PASSWORD'])
