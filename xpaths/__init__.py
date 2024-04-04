@@ -5,5 +5,6 @@ import xpaths.datasets
 import xpaths.iscsi
 import xpaths.services
 import xpaths.sharing
+import xpaths.smb
 import xpaths.ssh
 import xpaths.storage
