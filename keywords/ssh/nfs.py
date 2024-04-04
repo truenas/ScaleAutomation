@@ -75,6 +75,24 @@ class SSH_NFS:
         # return True
 
     @classmethod
+    def verify_share_mounted(cls, mount_path: str, nas_owner: str, nas_group: str, share_perms: str) -> bool:
+        """
+        This method cd's to the mount path, and returns true if the directory is mounted. Otherwise, it returns false.
+
+        :param mount_path: the path from 'nfsshares' to the directory the share is mounted to.
+        :param nas_owner: the owner of the NAS share dataset.
+        :param nas_group: the group of the NAS share dataset.
+        :param share_perms: the expected permissions code of the NAS share dataset.
+        :return: true if the directory is mounted.
+        """
+        command = f"cd ~/nfsshares/{mount_path} ; ls -al"
+        value = SSH_Command_Line(command, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
+        if "drwxr-xr-x" and f"{private_config['NFS_CLIENT_USERNAME']} {private_config['NFS_CLIENT_USERNAME']}" in value.stderr.lower():
+            return False
+        if share_perms and f"{nas_owner} {nas_group}" in value.stderr.lower():
+            return True
+
+    @classmethod
     def verify_share_read_access(cls, mount_path: str) -> bool:
         """
         This method verifies the share read access.

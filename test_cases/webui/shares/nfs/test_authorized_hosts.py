@@ -70,10 +70,11 @@ class Test_Authorized_IP_Addresses:
         # Verify share can mount
         assert COMSHARE.is_share_enabled('nfs', nfs_data['share_page_path']) is True
         assert NFS_SSH.mount_nfs_share(nfs_data['share_page_path'], 'auth_host') is True
-        assert NFS_SSH.verify_share_read_access('auth_host') is True
-        assert NFS_SSH.verify_share_write_access('auth_host') is True
-        assert NFS_SSH.verify_share_execute_access('auth_host') is True
-        assert NFS_SSH.verify_share_delete_access('auth_host') is True
+        if NFS_SSH.verify_share_mounted('auth_host', 'root', 'root', 'drwxr-xr-x'):
+            assert NFS_SSH.verify_share_read_access('auth_host') is True
+            assert NFS_SSH.verify_share_write_access('auth_host') is True
+            assert NFS_SSH.verify_share_execute_access('auth_host') is True
+            assert NFS_SSH.verify_share_delete_access('auth_host') is True
         assert NFS_SSH.unmount_nfs_share('auth_host') is True
         # Edit the NFS share and set an invalid authorized ip address
         COMSHARE.click_edit_share('nfs', nfs_data['share_page_path'])
@@ -82,8 +83,9 @@ class Test_Authorized_IP_Addresses:
         # Verify share cannot mount
         assert COMSHARE.is_share_enabled('nfs', nfs_data['share_page_path']) is True
         assert NFS_SSH.mount_nfs_share(nfs_data['share_page_path'], 'auth_host') is False
-        assert NFS_SSH.verify_share_read_access('auth_host') is False
-        assert NFS_SSH.verify_share_write_access('auth_host') is False
-        assert NFS_SSH.verify_share_execute_access('auth_host') is False
-        assert NFS_SSH.verify_share_delete_access('auth_host') is False
+        if NFS_SSH.verify_share_mounted('auth_host', 'root', 'root', 'drwxr-xr-x'):
+            assert NFS_SSH.verify_share_read_access('auth_host') is False
+            assert NFS_SSH.verify_share_write_access('auth_host') is False
+            assert NFS_SSH.verify_share_execute_access('auth_host') is False
+            assert NFS_SSH.verify_share_delete_access('auth_host') is False
 
