@@ -426,6 +426,16 @@ class Common:
         cls.click_button('dialog-close')
 
     @classmethod
+    def click_error_dialog_close_button(cls) -> None:
+        """
+        This method clicks the error dialog close button
+
+        Example:
+            - Common.click_error_dialog_close_button()
+        """
+        cls.click_button('close-error-dialog')
+
+    @classmethod
     def click_link(cls, name: str) -> None:
         """
         This method clicks the given link.
@@ -542,6 +552,7 @@ class Common:
         name = name.replace('/', '-')
         name = name.replace('_', '-')
         name = name.replace(' ', '-')
+        name = name.replace('--', '-')
         return name.lower()
 
     @classmethod
@@ -1048,8 +1059,10 @@ class Common:
             - Common.set_checkbox_by_state('myCheckbox', True)
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field(name)) is True
+        WebUI.delay(0.2)
         if cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is not state:
             cls.click_on_element(xpaths.common_xpaths.checkbox_field(name))
+            WebUI.delay(0.2)
         assert cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked') is state
 
     @classmethod
