@@ -29,21 +29,13 @@ class Test_Read_Only_Admin_iSCSI_Share:
 
     @pytest.fixture(scope='class', autouse=True)
     def setup_test(self, data):
-        API_POST.create_read_only_admin(data['username'], data['fullname'], data['password'])
         API_ISCSI.create_iscsi_share(data['iscsi_name'], data['pool_name'], int(data['lunid']))
         API_POST.start_service('iscsitarget')
-
-        Common.logoff_truenas()
-        Common.login_to_truenas(data['username'], data['password'])
 
     @pytest.fixture(scope='class', autouse=True)
     def tear_down_test(self, data):
         yield
         API_ISCSI.delete_iscsi_share(data['iscsi_name'], data['pool_name'], int(data['lunid']))
-
-        Common.logoff_truenas()
-        Common.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
-        API_DELETE.delete_user(data['username'])
 
     @allure.tag('Read')
     @allure.story("Read Only Admin Is Able To View Pre-Configured iSCSI Shares On The iSCSI Card")
