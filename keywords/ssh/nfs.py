@@ -34,10 +34,11 @@ class SSH_NFS:
     @classmethod
     def verify_share_delete_access(cls, mount_path: str) -> bool:
         """
-        This method attempts to access the given dataset with the given username and preform write actions.
+        This method attempts to access the given dataset returns true if delete actions are successful.
+        Otherwise, it returns false.
 
         :param mount_path: the path from 'nfsshares' to the directory to mount the share to.
-        :return: True if the dataset is accessible with write access, False otherwise.
+        :return: true if delete actions are successful.
         """
         file = f"test_delete_file.txt"
         command = f"cd ~/nfsshares ; sudo touch {mount_path}/{file}"
@@ -52,12 +53,12 @@ class SSH_NFS:
     @classmethod
     def verify_share_execute_access(cls, mount_path: str) -> bool:
         """
-        This method attempts to access the given dataset with the given username and preform execute actions.
+        This method attempts to access the given dataset returns true if execute actions are successful.
+        Otherwise, it returns false.
 
         :param mount_path: the path from 'nfsshares' to the directory to mount the share to.
-        :return: True if the dataset is accessible with execute access, False otherwise.
+        :return: true if execute actions are successful.
         """
-        # leaving commented for when we need to test file execution permissions.
         file = f"test_exec_file.sh"
         cr_dir = f"test_exec_dir_internal"
         command = f'cd ~/nfsshares/test_execute_dir_external ; chmod 777 . ; touch {file} ;  echo -n "mkdir ~/nfsshares/{mount_path}/{cr_dir}" | cat > {file} ; chmod 777 {file}'
@@ -67,12 +68,6 @@ class SSH_NFS:
         command3 = f"cd ~/nfsshares ; sudo ls -al {mount_path}"
         value = SSH_Command_Line(command3, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
         return cr_dir in value.stdout.lower()
-        # command = f"cd /mnt/{pool}/{dataset}"
-        # value = SSH_Command_Line(command, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
-        # if "permission denied" in value.stderr.lower():
-        #     print("Permission denied while running command.")
-        #     return False
-        # return True
 
     @classmethod
     def verify_share_mounted(cls, mount_path: str, nas_owner: str, nas_group: str, share_perms: str) -> bool:
@@ -95,10 +90,11 @@ class SSH_NFS:
     @classmethod
     def verify_share_read_access(cls, mount_path: str) -> bool:
         """
-        This method verifies the share read access.
+        This method attempts to access the given dataset returns true if read actions are successful.
+        Otherwise, it returns false.
 
         :param mount_path: the path from 'nfsshares' to the directory to mount the share to.
-        :return:
+        :return: true if read actions are successful.
         """
         command = f"cd ~/nfsshares/{mount_path} ; ls -al"
         value = SSH_Command_Line(command, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
@@ -110,10 +106,11 @@ class SSH_NFS:
     @classmethod
     def verify_share_write_access(cls, mount_path: str) -> bool:
         """
-        This method attempts to access the given dataset with the given username and preform write actions.
+        This method attempts to access the given dataset with the given username and returns true if write actions are successful.
+        Otherwise, it returns false.
 
         :param mount_path: the path from 'nfsshares' to the directory to mount the share to.
-        :return: True if the dataset is accessible with write access, False otherwise.
+        :return: true if write actions are successful.
         """
         file = f"test_write_file.txt"
         command = f"cd ~/nfsshares ; touch {mount_path}/{file}"
