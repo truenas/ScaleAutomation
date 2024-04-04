@@ -23,7 +23,10 @@ class Test_NFS_Share_Card_UI:
         """
         This fixture creates all the dataset and NFS shares for the test.
         """
+        NAV.navigate_to_shares()
+        COMSHARE.delete_all_shares_by_share_type('nfs')
         API_POST.stop_service('nfs')
+        NAV.navigate_to_dashboard()
         API_POST.create_dataset("tank/shareone", 'NFS')
         API_POST.create_dataset("tank/sharetwo", 'NFS')
         API_POST.create_dataset("tank/sharethree", 'NFS')

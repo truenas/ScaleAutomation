@@ -132,8 +132,8 @@ class API_DELETE:
             search = 'path=/mnt/'
         response = GET(f'/sharing/{sharetype}?{search}{name}').json()
         if response:
-            smb_id = str(API.get_id_by_type(f'/sharing/{sharetype}?', name))
-            response = DELETE(f'/sharing/{sharetype}/id/' + smb_id)
+            share_id = str(API.get_id_by_type(f'/sharing/{sharetype}?', name))
+            response = DELETE(f'/sharing/{sharetype}/id/' + share_id)
             assert response.status_code == 200, response.text
         return response
 
