@@ -1227,7 +1227,7 @@ class Common:
         WebUI.xpath(xpaths.common_xpaths.input_field('username')).send_keys(username)
         WebUI.xpath(xpaths.common_xpaths.input_field('password')).send_keys(password)
         cls.click_button('log-in')
-        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('log-in')) is True
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('log-in'), shared_config['LONG_WAIT']) is True
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('power-menu')) is True
 
     @classmethod
