@@ -19,6 +19,9 @@ IMPLICITLY_WAIT = 1
 KEYPATH = "~/.ssh/id_rsa_pytest"
 LONG_WAIT = 60
 MEDIUM_WAIT = 15
+ROA_FULLNAME = "READ ONLY ADMIN"
+ROA_PASSWORD = "testing"
+ROA_USER = "roa"
 SHORT_WAIT = 5
 SMB_ACL_ENTRY = [{"ae_who_sid" = "S-1-1-0", "ae_type" = "ALLOWED", "ae_perm" = "FULL"}]
 WAIT = 30

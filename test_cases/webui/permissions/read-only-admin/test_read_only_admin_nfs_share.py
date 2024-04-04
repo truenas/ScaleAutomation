@@ -28,14 +28,10 @@ class Test_Read_Only_Admin_NFS_Share:
 
     @pytest.fixture(scope='class', autouse=True)
     def setup_test(self, data):
-        API_POST.create_read_only_admin(data['username'], data['fullname'], data['password'])
         API_POST.create_dataset(f'{data["pool_name"]}/{data["nfs_name"]}', 'NFS')
         API_POST.create_share('nfs', data['nfs_name'], data['nfs_path'],
                               comment=data['nfs_description'])
         API_POST.start_service('nfs')
-
-        Common.logoff_truenas()
-        Common.login_to_truenas(data['username'], data['password'])
 
     @pytest.fixture(scope='class', autouse=True)
     def tear_down_test(self, data):
@@ -43,9 +39,6 @@ class Test_Read_Only_Admin_NFS_Share:
         API_DELETE.delete_share('nfs', f"{data['pool_name']}/{data['nfs_name']}")
         API_DELETE.delete_dataset(f"{data['pool_name']}/{data['nfs_name']}", force=True)
 
-        Common.logoff_truenas()
-        Common.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
-        API_DELETE.delete_user(data['username'])
 
     @allure.tag('Read')
     @allure.story("Read Only Admin Is Able To View Pre-Configured NFS Shares On The NFS Card")

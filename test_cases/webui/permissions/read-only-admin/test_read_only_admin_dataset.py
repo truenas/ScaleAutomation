@@ -24,15 +24,11 @@ class Test_Read_Only_Admin_Dataset:
         """
         This setup fixture create the dataset and read-only admin for all test cases.
         """
-        API_POST.create_read_only_admin(data['username'], data['fullname'], data['password'])
         API_POST.create_dataset(f'{data["pool"]}/{data["acl_parent_dataset"]}', 'SMB')
         API_POST.create_dataset(f'{data["pool"]}/{data["acl_parent_dataset"]}/{data["acl_child_dataset"]}', 'SMB')
         API_POST.create_dataset(f'{data["pool"]}/{data["generic_parent_dataset"]}', 'GENERIC')
         API_POST.create_dataset(f'{data["pool"]}/{data["generic_parent_dataset"]}/{data["generic_child_dataset"]}', 'GENERIC')
         API_POST.create_snapshot(f'{data["pool"]}/{data["acl_parent_dataset"]}', data['snapshot_name'])
-
-        Common.logoff_truenas()
-        Common.login_to_truenas(data['username'], data['password'])
 
     @pytest.fixture(autouse=True, scope='class')
     def tear_down_test(self, data):
@@ -45,11 +41,6 @@ class Test_Read_Only_Admin_Dataset:
         API_DELETE.delete_snapshot(f'{data["pool"]}/{data["acl_parent_dataset"]}@{data["snapshot_name"]}', recursive=True)
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["acl_parent_dataset"]}', recursive=True, force=True)
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["generic_parent_dataset"]}', recursive=True, force=True)
-
-        Common.logoff_truenas()
-        Common.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
-
-        API_DELETE.delete_user(data['username'])
 
     @allure.tag("Read")
     @allure.story("Read Only Admin Can See The Dataset")
