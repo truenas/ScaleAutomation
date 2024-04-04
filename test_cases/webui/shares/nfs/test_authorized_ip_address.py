@@ -60,7 +60,6 @@ class Test_Authorized_IP_Address:
         NFS.click_add_hosts_button()
         NFS.set_host_and_ip(private_config['NFS_CLIENT_IP'])
         COM.click_save_button_and_wait_for_right_panel()
-        # COMSHARE.handle_share_service_dialog('nfs')
         # Verify share can mount
         assert COMSHARE.is_share_enabled('nfs', '/mnt/tank/auth_ip_test') is True
         assert NFS_SSH.mount_nfs_share('/mnt/tank/auth_ip_test', 'auth_ip') is True
