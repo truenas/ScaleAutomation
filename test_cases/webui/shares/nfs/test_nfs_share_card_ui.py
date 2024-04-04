@@ -23,6 +23,16 @@ class Test_NFS_Share_Card_UI:
         """
         This fixture creates all the dataset and NFS shares for the test.
         """
+        API_DELETE.delete_share('nfs', "tank/shareone")
+        API_DELETE.delete_share('nfs', "tank/sharetwo")
+        API_DELETE.delete_share('nfs', "tank/sharethree")
+        API_DELETE.delete_share('nfs', "tank/sharefour")
+        API_DELETE.delete_share('nfs', "tank/sharefive")
+        API_DELETE.delete_dataset("tank/shareone", recursive=True, force=True)
+        API_DELETE.delete_dataset("tank/sharetwo", recursive=True, force=True)
+        API_DELETE.delete_dataset("tank/sharethree", recursive=True, force=True)
+        API_DELETE.delete_dataset("tank/sharefour", recursive=True, force=True)
+        API_DELETE.delete_dataset("tank/sharefive", recursive=True, force=True)
         API_POST.stop_service('nfs')
         API_POST.create_dataset("tank/shareone", 'NFS')
         API_POST.create_dataset("tank/sharetwo", 'NFS')
