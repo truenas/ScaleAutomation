@@ -31,6 +31,7 @@ class Test_Authorized_IP_Address:
         API_DELETE.delete_share('nfs', 'tank/auth_ip_test')
         API_DELETE.delete_dataset('tank/auth_ip_test', recursive=True, force=True)
         API_POST.start_service('nfs')
+        API_POST.start_service('ssh')
         API_POST.create_dataset('tank/auth_ip_test', 'NFS')
         API_POST.create_share('nfs', '', '/mnt/tank/auth_ip_test')
         NAV.navigate_to_datasets()

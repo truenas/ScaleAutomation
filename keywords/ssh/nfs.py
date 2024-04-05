@@ -26,7 +26,7 @@ class SSH_NFS:
         :param mount_dir: the path from 'nfsshares' to the directory to unmount.
         :return: true if the path is no-longer mounted.
         """
-        command = f'sudo umount ~/nfsshares/{mount_dir}'
+        command = f'sudo umount -f ~/nfsshares/{mount_dir}'
         SSH_Command_Line(command, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
         response = SSH_Command_Line('mount', private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
         return mount_dir not in response.stdout
