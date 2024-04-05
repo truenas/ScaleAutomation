@@ -630,8 +630,8 @@ class Common:
         :param password: is the password of user accessing the system
 
         Example:
-            - Common.add_test_file('myFile.txt', 'tank/path')
-            - Common.add_test_file('myFile.txt', 'tank/path', '10.0.0.1', 'user', 'password')
+            - Common.delete_all_test_files('tank/path')
+            - Common.delete_all_test_files('tank/path', '10.0.0.1', 'user', 'password')
         """
         SSH_Command_Line(f'sudo rm /mnt/{path}/*', ip, user, password)
 
@@ -675,8 +675,8 @@ class Common:
         :param password: is the password of user accessing the system
 
         Example:
-            - Common.add_test_file('myFile.txt', 'tank/path')
-            - Common.add_test_file('myFile.txt', 'tank/path', '10.0.0.1', 'user', 'password')
+            - Common.delete_test_file('myFile.txt', 'tank/path')
+            - Common.delete_test_file('myFile.txt', 'tank/path', '10.0.0.1', 'user', 'password')
         """
         SSH_Command_Line(f'sudo rm /mnt/{path}/{file}', ip, user, password)
 
@@ -701,7 +701,7 @@ class Common:
         :return: returns the current system day date
 
         Example:
-            - Common.get_current_day()
+            - Common.get_current_day('23')
         """
         return datetime.datetime.now().day
 
@@ -713,7 +713,7 @@ class Common:
         :return: returns the current system hour
 
         Example:
-            - Common.get_current_hour()
+            - Common.get_current_hour('16')
         """
         return datetime.datetime.now().hour
 
@@ -725,7 +725,7 @@ class Common:
         :return: returns the current system minute
 
         Example:
-            - Common.get_current_minute()
+            - Common.get_current_minute('12')
         """
         return datetime.datetime.now().minute
 
@@ -738,7 +738,7 @@ class Common:
         :return: returns the current system given element value
 
         Example:
-            - Common.get_current_hour()
+            - Common.get_current_time_element('minute')
         """
         match element:
             case 'minute':
