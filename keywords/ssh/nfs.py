@@ -73,15 +73,11 @@ class SSH_NFS:
         This method cd's to the mount path, and returns true if the directory is mounted. Otherwise, it returns false.
 
         :param mount_dir: the path from 'nfsshares' to the directory the share is mounted to.
-        :param nas_owner: the owner of the NAS share dataset.
-        :param nas_group: the group of the NAS share dataset.
         :param share_perms: the expected permissions code of the NAS share dataset.
         :return: true if the directory is mounted.
         """
         command = f"cd ~/nfsshares/{mount_dir} ; ls -al"
         value = SSH_Command_Line(command, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
-        # if "drwxr-xr-x" and f"{private_config['NFS_CLIENT_USERNAME']} {private_config['NFS_CLIENT_USERNAME']}" in value.stdout.lower():
-        #     return False
         return share_perms in value.stdout.lower()
 
     @classmethod
@@ -122,7 +118,7 @@ class SSH_NFS:
         This method creates a file in the given dataset and returns the name of the file created.
 
         :param share_path: the path to the dataset the share is attached to.
-        :param file: the name of the file to create Defaults to test_file.txt.
+        :param file: the name of the file to create. Defaults to test_file.txt.
         :return: the name of the file created.
         """
         command = f"sudo touch {share_path}/{file}"
