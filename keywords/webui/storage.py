@@ -54,6 +54,7 @@ class Storage:
 
         :return: returns True if the storage dashboard page is visible otherwise it returns False.
         """
+        assert Common.assert_progress_bar_not_visible() is True
         return Common.assert_page_header('Storage Dashboard')
 
     @classmethod

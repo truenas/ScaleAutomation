@@ -35,11 +35,13 @@ class Test_Create_Data_Pool:
 
         # On the general info step set the name of the pool
         assert Common.assert_step_header_is_open('General Info')
+        assert Common.assert_progress_bar_not_visible() is True
         PCW.set_name_entry(data['pool-name'])
         PCW.click_next_button('general')
 
         # On the data step set the pool layout, disk size, width and vdevs
         assert Common.assert_step_header_is_open('Data')
+        assert Common.assert_progress_bar_not_visible() is True
         PCW.select_layout_option('data', data['pool-layout'])
         PCW.select_disk_size_option('data', '20 GiB (HDD)')
         PCW.select_width_option('data', int(data['disk-width']))
@@ -48,6 +50,7 @@ class Test_Create_Data_Pool:
 
         # On the review step UI verify the data, then click on create button to creates the pool
         assert Common.assert_step_header_is_open('Review') is True
+        assert Common.assert_progress_bar_not_visible() is True
         assert PCW.assert_pool_name_value(data['pool-name']) is True
         assert PCW.assert_data_value(data['pool-data']) is True
         assert PCW.assert_est_usable_raw_capacity(data['raw-capacity']) is True
