@@ -82,10 +82,7 @@ class Dashboard:
         :return: True if the new tab opened to the right link, otherwise it returns False.
         """
         initial_tab = WebUI.current_window_handle()
-        if link == "https://www.truenas.com/community/":
-            Common.click_on_element(xpaths.dashboard.truenas_help_card_link("https://www.ixsystems.com/community/"))
-        else:
-            Common.click_on_element(xpaths.dashboard.truenas_help_card_link(link))
+        Common.click_on_element(xpaths.dashboard.truenas_help_card_link(link))
         WebUI.wait_until_number_of_windows_to_be(2)
 
         initial_index = WebUI.window_handles().index(initial_tab)
@@ -169,7 +166,7 @@ class Dashboard:
 
         :return: True if the community forums link opened to the right link, otherwise it returns False.
         """
-        return cls.assert_new_tab_url('https://www.truenas.com/community/')
+        return cls.assert_new_tab_url('https://forums.truenas.com/')
 
     @classmethod
     def assert_the_truenas_help_truenas_newsletter_link(cls) -> bool:
