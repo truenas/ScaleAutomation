@@ -28,24 +28,16 @@ class Test_Read_Only_Admin_SMB_Share:
 
     @pytest.fixture(scope='class', autouse=True)
     def setup_test(self, data):
-        API_POST.create_read_only_admin(data['username'], data['fullname'], data['password'])
         API_POST.create_dataset(f'{data["pool_name"]}/{data["smb_name"]}', 'SMB')
         API_POST.create_share('smb', data['smb_name'], f'/mnt/{data["pool_name"]}/{data["smb_name"]}',
                               comment=data['smb_description'])
         API_POST.start_service('cifs')
-
-        Common.logoff_truenas()
-        Common.login_to_truenas(data['username'], data['password'])
 
     @pytest.fixture(scope='class', autouse=True)
     def tear_down_test(self, data):
         yield
         API_DELETE.delete_share('nfs', f"{data['smb_name']}")
         API_DELETE.delete_dataset(f"{data['pool_name']}/{data['smb_name']}", force=True)
-
-        Common.logoff_truenas()
-        Common.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
-        API_DELETE.delete_user(data['username'])
 
     @allure.tag('Read')
     @allure.story("Read Only Admin Is Able To View Pre-Configured SMB Shares On The SMB Card")

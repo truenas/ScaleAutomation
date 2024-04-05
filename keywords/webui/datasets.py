@@ -91,28 +91,6 @@ class Datasets:
         return Common.assert_label_and_value_exist('Inherited Quotas:', size)
 
     @classmethod
-    def assert_create_snapshot_button_is_locked_and_not_clickable(cls):
-        """
-        This method returns True or False whether the create snapshot button is locked and not clickable.
-        :return: True if the create snapshot button is locked and not clickable, otherwise it returns False.
-
-        Example:
-            - Dataset.assert_create_snapshot_button_is_locked_and_not_clickable()
-        """
-        return Common.assert_button_is_locked_and_not_clickable('create-snapshot')
-
-    @classmethod
-    def assert_delete_dataset_button_is_locked_and_not_clickable(cls):
-        """
-        This method returns True or False whether the delete dataset button is locked and not clickable.
-        :return: True if the delete dataset button is locked and not clickable, otherwise it returns False.
-
-        Example:
-            - Dataset.assert_delete_dataset_button_is_locked_and_not_clickable()
-        """
-        return Common.assert_button_is_locked_and_not_clickable('delete-dataset')
-
-    @classmethod
     def assert_children_size(cls, size: str) -> bool:
         """
         This method return True if the given size is set otherwise it returns False.
@@ -153,6 +131,17 @@ class Datasets:
             case _:
                 name = ''
         return Common.assert_page_header(name)
+
+    @classmethod
+    def assert_create_snapshot_button_is_locked_and_not_clickable(cls):
+        """
+        This method returns True or False whether the create snapshot button is locked and not clickable.
+        :return: True if the create snapshot button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Dataset.assert_create_snapshot_button_is_locked_and_not_clickable()
+        """
+        return Common.assert_button_is_locked_and_not_clickable('create-snapshot')
 
     @classmethod
     def assert_data_protection_card_visible(cls) -> bool:
@@ -368,6 +357,17 @@ class Datasets:
         return Common.is_visible(xpaths.common_xpaths.button_field('delete-dataset'))
 
     @classmethod
+    def assert_delete_dataset_button_is_locked_and_not_clickable(cls):
+        """
+        This method returns True or False whether the delete dataset button is locked and not clickable.
+        :return: True if the delete dataset button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Dataset.assert_delete_dataset_button_is_locked_and_not_clickable()
+        """
+        return Common.assert_button_is_locked_and_not_clickable('delete-dataset')
+
+    @classmethod
     def assert_details_card_field_value(cls, label: str, value: str) -> bool:
         """
         This method returns True or False if the given details card field value is visible.
@@ -495,6 +495,42 @@ class Datasets:
             - Dataset.assert_edit_dataset_panel_header()
         """
         return Common.assert_right_panel_header('Edit Dataset')
+
+    @classmethod
+    def assert_edit_dataset_button_is_locked_and_not_clickable(cls):
+        """
+        This method verifies if the delete dataset permissions button is locked and not clickable.
+
+        :return: True if the delete dataset permissions button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Dataset.assert_delete_dataset_permissions_button_is_locked_and_not_clickable()
+        """
+        return Common.assert_button_is_locked_and_not_clickable('edit-dataset')
+
+    @classmethod
+    def assert_edit_dataset_permissions_button_is_locked_and_not_clickable(cls):
+        """
+        This method verifies if the delete dataset permissions button is locked and not clickable.
+
+        :return: True if the delete dataset permissions button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Dataset.assert_delete_dataset_permissions_button_is_locked_and_not_clickable()
+        """
+        return Common.assert_button_is_locked_and_not_clickable('edit-permissions')
+
+    @classmethod
+    def assert_edit_dataset_space_management_button_is_locked_and_not_clickable(cls):
+        """
+        This method verifies if the delete dataset permissions button is locked and not clickable.
+
+        :return: True if the delete dataset permissions button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Dataset.assert_delete_dataset_permissions_button_is_locked_and_not_clickable()
+        """
+        return Common.assert_button_is_locked_and_not_clickable('edit-quotas')
 
     @classmethod
     def assert_group_quotas(cls, text: str) -> bool:
