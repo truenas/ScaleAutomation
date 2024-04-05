@@ -477,6 +477,18 @@ class Common_Shares:
            - Common_Shares.click_advanced_options()
         """
         COM.click_button('toggle-advanced-options')
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Basic Options')) is True
+
+    @classmethod
+    def click_basic_options(cls) -> None:
+        """
+        This method clicks the basic options button.
+
+        Example:
+           - Common_Shares.click_basic_options()
+        """
+        COM.click_button('toggle-advanced-options')
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Advanced Options')) is True
 
     @classmethod
     def click_delete_share(cls, share_type: str, name: str) -> None:
