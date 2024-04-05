@@ -6,6 +6,7 @@ from helper.global_config import private_config
 from keywords.api.post import API_POST
 from keywords.ssh.common import Common_SSH as SSHCOM
 from keywords.webui.common import Common as COM
+from keywords.webui.common_replication import Common_Replication as COMREP
 from keywords.webui.data_protection import Data_Protection as DP
 from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.rsync import Rsync as RSYNC
@@ -66,7 +67,7 @@ class Test_Rsync:
         RSYNC.set_user(private_config["USERNAME"])
         RSYNC.set_connect_using_keychain()
         RSYNC.set_ssh_connection('rsync-non-to-enc')
-        RSYNC.set_direction_push()
+        COMREP.set_direction_push()
         RSYNC.set_remote_path('/mnt/tank/rsync-enc')
         RSYNC.set_description('rsync-non-to-enc')
         RSYNC.set_schedule_weekly()
@@ -107,7 +108,7 @@ class Test_Rsync:
         RSYNC.set_user(private_config["USERNAME"])
         RSYNC.set_connect_using_keychain()
         RSYNC.set_ssh_connection('rsync-non-to-enc')
-        RSYNC.set_direction_push()
+        COMREP.set_direction_push()
         RSYNC.set_remote_path('/mnt/tank/rsync-enc')
         RSYNC.set_description('rsync-non-to-enc')
         RSYNC.set_schedule_weekly()
@@ -151,7 +152,7 @@ class Test_Rsync:
         RSYNC.set_user(private_config["USERNAME"])
         RSYNC.set_connect_using_keychain()
         RSYNC.set_ssh_connection('rsync-non-to-enc')
-        RSYNC.set_direction_push()
+        COMREP.set_direction_push()
         RSYNC.set_remote_path('/mnt/tank/rsync-enc')
         RSYNC.set_description('rsync-non-to-enc')
         RSYNC.set_schedule_weekly()

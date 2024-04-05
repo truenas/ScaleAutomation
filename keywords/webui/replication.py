@@ -159,6 +159,44 @@ class Replication:
         assert COM.assert_page_header('Dashboard')
 
     @classmethod
+    def select_custom_preset(cls, option: str) -> None:
+        """
+        This method selects the custom preset option
+
+        :param option: is the option to select [daily/hourly/monthly/weekly]
+
+        Example:
+            - Replication.select_custom_preset('monthly')
+        """
+        COM.select_option('presets', f'presets-{COM.convert_to_tag_format(option)}')
+
+    @classmethod
+    def select_destination_read_only(cls, option: str) -> None:
+        """
+        This method selects the destination read only option
+
+        :param option: is the option to select [ignore/require/set]
+
+        Example:
+            - Replication.select_destination_read_only('require')
+        """
+        COM.select_option('readonly', f'readonly-{COM.convert_to_tag_format(option)}')
+
+    @classmethod
+    def select_schedule_preset(cls, option: str) -> None:
+        """
+        This method selects the schedule preset option
+
+        :param option: is the option to select [custom/daily/hourly/monthly/weekly]
+
+        Example:
+            - Replication.select_schedule_preset('monthly')
+        """
+        COM.select_option('schedule-picker-presets', f'schedule-picker-presets-{COM.convert_to_tag_format(option)}')
+        if option == 'custom':
+            WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Presets', 4))
+
+    @classmethod
     def set_custom_snapshots(cls) -> None:
         """
         This method sets the custom snapshot checkbox
@@ -167,6 +205,18 @@ class Replication:
             - Replication.set_custom_snapshots()
         """
         COM.set_checkbox('custom-snapshots')
+
+    @classmethod
+    def set_destination_location(cls, path: str) -> None:
+        """
+        This method sets the given destination path
+
+        :param path: is the path of the destination
+
+        Example:
+            - Replication.set_destination_location('tank/replicate')
+        """
+        COM.set_input_field('target-dataset', path)
 
     @classmethod
     def set_destination_location_on_different_box(cls, path: str, connection: str) -> None:
@@ -221,6 +271,52 @@ class Replication:
         COM.set_input_field(obj, path)
 
     @classmethod
+    def set_preset_custom_day_of_week(cls, day: str, state: bool = False) -> None:
+        """
+        This method sets the given day of the week to the given state (True = on, False = off)
+
+        :param day: is the day of the week [sun/mon/tue/wed/thu/fri/sat]
+        :param state: whether to set te day of the week or not [True/False]
+
+        Example:
+            - Replication.set_preset_custom_day_of_week('sun')
+            - Replication.set_preset_custom_day_of_week('mon', True)
+        """
+        COM.set_checkbox_by_state(COM.convert_to_tag_format(day), state)
+
+    @classmethod
+    def set_preset_custom_month_of_year(cls, month: str, state: bool = False) -> None:
+        """
+        This method sets the given month of the month to the given state (True = on, False = off)
+
+        :param month: is the month of the month [jan/feb/mar/apr/may/jun/jul/aug/sep/oct/nov/dec]
+        :param state: whether to set te month of the month or not [True/False]
+
+        Example:
+            - Replication.set_preset_custom_month_of_year('jan')
+            - Replication.set_preset_custom_month_of_year('feb', True)
+        """
+        COM.set_checkbox_by_state(COM.convert_to_tag_format(month), state)
+
+    @classmethod
+    def set_preset_custom_time(cls, minutes: str = '*', hours: str = '*', days: str = '*') -> None:
+        """
+        This method selects the custom preset option
+
+        :param minutes: is the minute of the hour when to trigger the replication task [*/0-59]
+        :param hours: is the hour of the day when to trigger the replication task [*/0-23]
+        :param days: is the numerical day of the month when to trigger the replication task [*/1-31]
+
+        Example:
+            - Replication.set_preset_custom_time('30')
+            - Replication.set_preset_custom_time('0', '18')
+            - Replication.set_preset_custom_time('*', '*', '5')
+        """
+        COM.set_input_field('minutes', minutes)
+        COM.set_input_field('hours', hours)
+        COM.set_input_field('days', days)
+
+    @classmethod
     def set_run_once_button(cls):
         """
         This method sets the run once checkbox
@@ -232,6 +328,18 @@ class Replication:
             COM.click_radio_button('schedule-method-run-once')
             WebUI.delay(0.2)
         assert COM.get_element_property(xpaths.common_xpaths.radio_button_field_attribute('schedule-method-run-once'), 'checked')
+
+    @classmethod
+    def set_source_location(cls, path: str) -> None:
+        """
+        This method sets the given source path
+
+        :param path: is the path of the source
+
+        Example:
+            - Replication.set_source_location('tank/replicate')
+        """
+        COM.set_input_field('source-datasets', path)
 
     @classmethod
     def set_source_location_on_different_box(cls, path: str, connection: str) -> None:
@@ -259,7 +367,7 @@ class Replication:
         cls.set_location('source-datasets', 'this', '', path)
 
     @classmethod
-    def set_ssh_connection(cls, source, connection) -> None:
+    def set_ssh_connection(cls, source: str, connection: str) -> None:
         """
         This method sets the given ssh connection to the given source
 
@@ -272,6 +380,18 @@ class Replication:
         """
         source = 'ssh-credentials-' + source
         COM.select_option(source, source + '-' + connection)
+
+    @classmethod
+    def set_ssh_connection_advanced(cls, connection: str) -> None:
+        """
+        This method sets the given ssh connection to the given source
+
+        :param connection: is the SSh connection to use (blank = no need for one, local)
+
+        Example:
+            - Replication.set_ssh_connection_advanced('mySSHConnection')
+        """
+        COM.select_option('ssh-credentials', 'ssh-credentials-' + COM.convert_to_tag_format(connection))
 
     @classmethod
     def set_task_name(cls, name: str) -> None:
