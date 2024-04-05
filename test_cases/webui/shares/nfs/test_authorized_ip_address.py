@@ -1,8 +1,12 @@
 import allure
 import pytest
+
+import xpaths
 from helper.global_config import private_config
+from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
+from keywords.api.put import API_PUT
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
 from keywords.webui.datasets import Datasets as DAT
@@ -21,15 +25,20 @@ class Test_Authorized_IP_Address:
         """
         This method sets up the environment for the test.
         """
+        API_PUT.enable_user_all_sudo_commands_no_password(private_config['USERNAME'])
+        API_PUT.enable_user_ssh_password(private_config['USERNAME'])
         assert NFS_SSH.unmount_nfs_share('auth_ip') is True
         API_DELETE.delete_share('nfs', 'tank/auth_ip_test')
         API_DELETE.delete_dataset('tank/auth_ip_test', recursive=True, force=True)
         API_POST.start_service('nfs')
+        API_POST.start_service('ssh')
         API_POST.create_dataset('tank/auth_ip_test', 'NFS')
         API_POST.create_share('nfs', '', '/mnt/tank/auth_ip_test')
         NAV.navigate_to_datasets()
         DAT.click_dataset_location('auth_ip_test')
         DAT.click_edit_permissions_button()
+        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('user'), 'value') is True
+        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('group'), 'value') is True
         PERM.set_other_access('Read | Write | Execute')
         COM.click_save_button_and_wait_for_progress_bar()
         # Navigate to the Shares page
@@ -63,11 +72,11 @@ class Test_Authorized_IP_Address:
         # Verify share can mount
         assert COMSHARE.is_share_enabled('nfs', '/mnt/tank/auth_ip_test') is True
         assert NFS_SSH.mount_nfs_share('/mnt/tank/auth_ip_test', 'auth_ip') is True
-        if NFS_SSH.verify_share_mounted('auth_ip', 'root', 'root', 'drwxr-xr-x') is True:
-            assert NFS_SSH.verify_share_read_access('auth_ip') is True
-            assert NFS_SSH.verify_share_write_access('auth_ip') is True
-            assert NFS_SSH.verify_share_execute_access('auth_ip') is True
-            assert NFS_SSH.verify_share_delete_access('auth_ip') is True
+        assert NFS_SSH.verify_share_mounted('auth_ip', 'drwxr-xrwx  2 root   root') is True
+        assert NFS_SSH.verify_share_read_access('auth_ip') is True
+        assert NFS_SSH.verify_share_write_access('auth_ip') is True
+        assert NFS_SSH.verify_share_execute_access('auth_ip') is True
+        assert NFS_SSH.verify_share_delete_access('/mnt/tank/auth_ip_test', 'auth_ip') is True
         assert NFS_SSH.unmount_nfs_share('auth_ip') is True
         # Edit the NFS share and set an invalid authorized ip address
         COMSHARE.click_edit_share('nfs', '/mnt/tank/auth_ip_test')
@@ -76,9 +85,5 @@ class Test_Authorized_IP_Address:
         # Verify share cannot mount
         assert COMSHARE.is_share_enabled('nfs', '/mnt/tank/auth_ip_test') is True
         assert NFS_SSH.mount_nfs_share('/mnt/tank/auth_ip_test', 'auth_ip') is False
-        if NFS_SSH.verify_share_mounted('auth_ip', 'root', 'root', 'drwxr-xr-x') is True:
-            assert NFS_SSH.verify_share_read_access('auth_ip') is False
-            assert NFS_SSH.verify_share_write_access('auth_ip') is False
-            assert NFS_SSH.verify_share_execute_access('auth_ip') is False
-            assert NFS_SSH.verify_share_delete_access('auth_ip') is False
+        assert NFS_SSH.verify_share_mounted('auth_ip', 'drwxr-xrwx  2 root   root') is False
 
