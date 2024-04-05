@@ -1,3 +1,4 @@
+import xpaths
 from keywords.webui.common import Common as COM
 
 
@@ -11,7 +12,7 @@ class Common_Replication:
         :param direction: is the direction [push/pull]
 
         Example:
-            - Rsync.set_direction('push')
+            - Common_Replication.set_direction('push')
         """
         COM.select_option('direction', 'direction-' + COM.convert_to_tag_format(direction))
 
@@ -21,7 +22,7 @@ class Common_Replication:
         This method sets the rsync direction to pull
 
         Example:
-            - Rsync.set_direction_pull()
+            - Common_Replication.set_direction_pull()
         """
         cls.set_direction('pull')
 
@@ -31,6 +32,6 @@ class Common_Replication:
         This method sets the rsync direction to push
 
         Example:
-            - Rsync.set_direction_push()
+            - Common_Replication.set_direction_push()
         """
         cls.set_direction('push')

@@ -66,6 +66,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\test_data\read_only_admin_dataset.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\test_data\replication.csv">
           <value>
             <Attribute>
@@ -88,6 +95,13 @@
           </value>
         </entry>
         <entry key="\test_data\shares\smb_acl.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\test_data\system_services.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
