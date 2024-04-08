@@ -259,15 +259,15 @@ class Replication:
         """
         prefix = '-on-' if system == 'this' else '-on-a-'
         system = obj + '-from' + prefix + system + '-system'
-        COM.select_option(obj + '-from', system)
+        if COM.get_element_property(xpaths.common_xpaths.select_field(obj + '-from'), "ariaDisabled") == 'false':
+            COM.select_option(obj + '-from', system)
         src = 'source'
         if obj.startswith('target'):
             src = 'target'
         if connection != "":
             cls.set_ssh_connection(src, connection)
-            if src == 'target':
-                if COM.is_visible(xpaths.common_xpaths.button_field('dialog-confirm')) is True:
-                    COM.click_button('dialog-confirm')
+            if COM.is_visible(xpaths.common_xpaths.button_field('dialog-confirm')) is True:
+                COM.click_button('dialog-confirm')
         COM.set_input_field(obj, path)
 
     @classmethod
@@ -312,6 +312,9 @@ class Replication:
             - Replication.set_preset_custom_time('0', '18')
             - Replication.set_preset_custom_time('*', '*', '5')
         """
+        minutes = str(int(minutes) % 60) if minutes != '*' else minutes
+        hours = str(int(hours) % 24) if hours != '*' else hours
+        days = str(int(days) % 31) if days != '*' else days
         COM.set_input_field('minutes', minutes)
         COM.set_input_field('hours', hours)
         COM.set_input_field('days', days)

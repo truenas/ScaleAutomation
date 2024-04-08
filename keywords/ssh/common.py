@@ -8,19 +8,23 @@ from os import path
 class Common_SSH:
 
     @classmethod
-    def add_test_file(cls, full_file_path: str, ip: str, user: str, password: str) -> None:
+    def add_test_file(cls, file: str, path: str, ip: str = private_config['IP'],
+                      user: str = private_config['SSH_USERNAME'],
+                      password: str = private_config['PASSWORD']) -> None:
         """
-        This method adds the given file to the given ip
+        This method adds the files used for testing smb permissions
 
-        :param full_file_path: is the full file path and file to be created
-        :param ip: the IP of the box
-        :param user: is the user to be sending the files
-        :param password: is the password of the user
+        :param file: is the name of the file to add
+        :param path: is the path of the file
+        :param ip: is the ip of the system
+        :param user: is the user accessing the system
+        :param password: is the password of user accessing the system
 
         Example:
-            - Common_SSH.add_test_file('/mnt/tank/dir/file.txt', '10.0.0.1', 'user', 'password')
+            - Common.add_test_file('myFile.txt', 'tank/path')
+            - Common.add_test_file('myFile.txt', 'tank/path', '10.0.0.1', 'user', 'password')
         """
-        SSH_Command_Line(f'touch {full_file_path}', ip, user, password)
+        SSH_Command_Line(f'sudo touch /mnt/{path}/{file}', ip, user, password)
 
     @classmethod
     def add_smb_test_files(cls, user: str, dataset_path: str, ip: str) -> None:

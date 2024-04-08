@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\test_data\ad_credentials.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\test_data\builtin_groups.csv">
           <value>
             <Attribute>
@@ -102,27 +109,6 @@
           </value>
         </entry>
         <entry key="\test_data\system_services.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_05-07_29_46-webui\allure-report\data\suites.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_05-07_43_36-webui\allure-report\data\suites.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_05-07_51_02-webui\allure-report\data\suites.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

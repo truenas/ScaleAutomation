@@ -339,6 +339,28 @@ class API_POST:
         return response
 
     @classmethod
+    def create_remote_snapshot(cls, dataset: str, name: str, recursive: bool = False, suspend_vms: bool = False,
+                               vmware_sync: bool = False) -> Response:
+        """
+        This method creates the given snapshot on remote system.
+
+        :param dataset: is the name of the dataset.
+        :param name: is the name of the snapshot.
+        :param recursive: Optional - True if should the snapshot be recursive else False.
+        :param suspend_vms: Optional - True if should the snapshot suspend vms else False.
+        :param vmware_sync: Optional - True if should the snapshot sync vmware else False.
+
+        :return: the API request response.
+
+        Example:
+            - API_POST.create_remote_snapshot('tank/test-dataset', 'test-snapshot')
+        """
+        private_config['API_IP'] = private_config['REP_DEST_IP']
+        response = cls.create_snapshot(dataset, name, recursive, suspend_vms, vmware_sync)
+        private_config['API_IP'] = private_config['IP']
+        return response
+
+    @classmethod
     def create_share(cls, sharetype: str, name: str, path: str, guest: bool = False, comment: str = '') -> Response:
         """
         This method creates the given share.
