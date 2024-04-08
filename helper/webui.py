@@ -1,12 +1,13 @@
 import pyperclip
 import time
-from selenium.common.exceptions import TimeoutException
 from helper.global_config import shared_config
+from percy import percy_snapshot, percy_screenshot
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -308,6 +309,30 @@ class WebUI(object):
             - WebUI.switch_to_window_index(1)
         """
         cls.web_driver.switch_to.window(cls.web_driver.window_handles[index])
+
+    @classmethod
+    def take_percy_screenshot(cls, name: str) -> None:
+        """
+        This method takes a screenshot for percy of the current window.
+
+        :param name: is the name of the screenshot.
+
+        Example:
+            - WebUI.percy_screenshot('name')
+        """
+        percy_screenshot(cls.web_driver, name, widths=[1920])
+
+    @classmethod
+    def take_percy_snapshot(cls, name: str) -> None:
+        """
+        This method takes a snapshot for percy of the current window.
+
+        :param name: is the name of the snapshot.
+
+        Example:
+            - WebUI.percy_snapshot('name')
+        """
+        percy_snapshot(cls.web_driver, name, widths=[1920])
 
     @classmethod
     def total_time_waited(cls) -> float:

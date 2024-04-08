@@ -1,4 +1,5 @@
 import allure
+import os
 from allure_commons.types import AttachmentType
 from datetime import datetime
 from helper.cli import Local_Command_Line
@@ -6,7 +7,7 @@ from helper.global_config import workdir
 from helper.webui import WebUI
 from keywords.api.get import API_GET
 from pathlib import Path
-
+from subprocess import Popen
 
 # make the timestamp global
 
@@ -71,6 +72,31 @@ def attach_browser_console_logs():
     """
     console_logs = '\n'.join(map(str, WebUI.get_console_log()))
     allure.attach(console_logs, name='browser_console.log', attachment_type="text/plain", extension="attach")
+
+
+def start_percy_session():
+    """
+    This method starts percy session if PERCY_TOKEN is set.
+
+    Example:
+        - start_percy_session()
+    """
+    if os.getenv('PERCY_TOKEN') is not None:
+        Popen(f'npx percy exec:start', shell=True)
+        WebUI.delay(1)
+    else:
+        print('PERCY_TOKEN environment variable is not set. Skipping starting percy session.')
+
+
+def stop_percy_session():
+    """
+    This method stops percy session if PERCY_TOKEN is set.
+
+    Example:
+        - stop_percy_session()
+    """
+    if os.getenv('PERCY_TOKEN') is not None:
+        Popen('npx percy exec:stop', shell=True)
 
 
 def take_screenshot(name):
