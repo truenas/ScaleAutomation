@@ -1,4 +1,5 @@
 import xpaths
+from helper.webui import WebUI
 
 from keywords.webui.common import Common
 
@@ -137,6 +138,20 @@ class Snapshots:
             - Snapshots.expand_snapshot('test-snapshot')
         """
         Common.click_on_element(xpaths.common_xpaths.any_text(snapshot_name))
+
+    @classmethod
+    def select_schedule_preset(cls, option: str) -> None:
+        """
+        This method selects the schedule preset option
+
+        :param option: is the option to select [custom/daily/hourly/monthly/weekly]
+
+        Example:
+            - Replication.select_schedule_preset('monthly')
+        """
+        Common.select_option('schedule-presets', f'schedule-presets-{Common.convert_to_tag_format(option)}')
+        if option == 'custom':
+            WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Presets', 4))
 
     @classmethod
     def select_snapshot_dataset(cls, path: str):

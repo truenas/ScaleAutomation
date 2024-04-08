@@ -51,7 +51,8 @@ def any_pill(name: str, text: str) -> str:
     :param text: text of the pill
     :return: xpath string for given pill
     """
-    return f'//*[@data-test="input-{name}"]/preceding-sibling::mat-chip-row/descendant::*[contains(text(),"{text}")]'
+    # return f'//*[@data-test="input-{name}"]/preceding-sibling::mat-chip-row/descendant::*[contains(text(),"{text}")]'
+    return f'//*[@data-test="input-{name}"]/ancestor::mat-chip-grid/descendant::*[contains(text(),"{text}")]'
 
 
 def any_pill_delete(name: str, text: str) -> str:
