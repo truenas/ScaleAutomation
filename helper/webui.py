@@ -1,7 +1,7 @@
 import pyperclip
 import time
 from helper.global_config import shared_config
-from percy import percy_snapshot, percy_screenshot
+from percy import percy_snapshot
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
@@ -309,18 +309,6 @@ class WebUI(object):
             - WebUI.switch_to_window_index(1)
         """
         cls.web_driver.switch_to.window(cls.web_driver.window_handles[index])
-
-    @classmethod
-    def take_percy_screenshot(cls, name: str) -> None:
-        """
-        This method takes a screenshot for percy of the current window.
-
-        :param name: is the name of the screenshot.
-
-        Example:
-            - WebUI.percy_screenshot('name')
-        """
-        percy_screenshot(cls.web_driver, name, widths=[1920])
 
     @classmethod
     def take_percy_snapshot(cls, name: str) -> None:
