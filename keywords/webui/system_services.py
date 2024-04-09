@@ -287,3 +287,15 @@ class System_Services:
     def verify_edit_button_visible_by_servicename(cls, servicename: str) -> None:
         name = cls.return_backend_service_name(servicename)
         assert COM.is_visible(xpaths.common_xpaths.button_field(f'{name}-edit'))
+
+    @classmethod
+    def set_nfs_service_protocols(cls, options: str) -> None:
+        """
+        This method sets the NFS service Enabled Protocols.
+
+        :param options: The protocols to set. NFSv3 and/or NFSv4
+        """
+        if COM.is_visible('//*[@data-test="select-protocols"]//*[contains(text(), "NFSv3")]') is False & options.__contains__('NFSv3'):
+            COM.select_option('protocols', 'protocols-nf-sv-3')
+        if COM.is_visible('//*[@data-test="select-protocols"]//*[contains(text(), "NFSv4")]') is False & options.__contains__('NFSv4'):
+            COM.select_option('protocols', 'protocols-nf-sv-4')

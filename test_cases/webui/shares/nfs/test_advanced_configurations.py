@@ -15,6 +15,7 @@ from keywords.webui.permissions import Permissions as PERM
 from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.nfs import NFS
 from keywords.ssh.nfs import SSH_NFS as NFS_SSH
+from keywords.webui.system_services import System_Services as SERV
 
 
 @allure.tag("NFS Shares")
@@ -40,6 +41,12 @@ class Test_Advanced_Configurations:
         DAT.click_edit_permissions_button()
         assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('user'), 'value') is True
         assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('group'), 'value') is True
+        PERM.set_dataset_user(nfs_advanced_config["dataset_user"])
+        PERM.set_dataset_group(nfs_advanced_config["dataset_group"])
+        PERM.set_apply_user_checkbox()
+        PERM.set_apply_group_checkbox()
+        PERM.set_user_access(nfs_advanced_config["dataset_user_perms"])
+        PERM.set_group_access(nfs_advanced_config["dataset_group_perms"])
         PERM.set_other_access(nfs_advanced_config["dataset_other_perms"])
         COM.click_save_button_and_wait_for_progress_bar()
         NAV.navigate_to_shares()
@@ -73,7 +80,7 @@ class Test_Advanced_Configurations:
         # Verify share can mount
         assert COMSHARE.is_share_enabled('nfs', nfs_advanced_config["share_page_path"]) is True
         assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
-        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"]) is True
+        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is True
         assert NFS_SSH.verify_share_read_access(nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.verify_share_write_access(nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.verify_share_execute_access(nfs_advanced_config["mount_dir"]) is True
@@ -105,7 +112,7 @@ class Test_Advanced_Configurations:
         # Verify share can mount but only read access is granted
         assert COMSHARE.is_share_enabled('nfs', nfs_advanced_config["share_page_path"]) is True
         assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
-        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"]) is True
+        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is True
         assert NFS_SSH.verify_share_read_access(nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.verify_share_write_access(nfs_advanced_config["mount_dir"]) is False
         assert NFS_SSH.verify_share_execute_access(nfs_advanced_config["mount_dir"]) is False
@@ -119,7 +126,7 @@ class Test_Advanced_Configurations:
         # Verify share can mount and now full access is granted
         assert COMSHARE.is_share_enabled('nfs', nfs_advanced_config["share_page_path"]) is True
         assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
-        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"]) is True
+        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is True
         assert NFS_SSH.verify_share_read_access(nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.verify_share_write_access(nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.verify_share_execute_access(nfs_advanced_config["mount_dir"]) is True
@@ -143,13 +150,11 @@ class Test_Advanced_Configurations:
         # Verify share can mount
         assert COMSHARE.is_share_enabled('nfs', nfs_advanced_config["share_page_path"]) is True
         assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
-        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"],
-                                            nfs_advanced_config["permissions_code"]) is True
+        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is True
         assert NFS_SSH.verify_share_read_access(nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.verify_share_write_access(nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.verify_share_execute_access(nfs_advanced_config["mount_dir"]) is True
-        assert NFS_SSH.verify_share_delete_access(nfs_advanced_config["share_page_path"],
-                                                  nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.verify_share_delete_access(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True
         # Edit the NFS share and set an invalid network address
         COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
@@ -159,7 +164,65 @@ class Test_Advanced_Configurations:
         COM.click_save_button_and_wait_for_right_panel()
         # Verify share cannot mount
         assert COMSHARE.is_share_enabled('nfs', nfs_advanced_config["share_page_path"]) is True
-        assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"],
-                                       nfs_advanced_config["mount_dir"]) is False
+        assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is False
         assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"],
                                             nfs_advanced_config["permissions_code"]) is False
+
+    @allure.tag("mapall user", "mapall group")
+    @allure.story("NFS Share mapall user and mapall group")
+    @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[3:4])
+    def test_nfs_share_mapall_user_and_group(self, nfs_advanced_config):
+        """
+        This test edits the NFS share with a mapall user and group and verifies that the share can/cannot be mounted and
+        access is appropriately granted.
+        """
+        # Edit the NFS share and set a valid authorized network address
+        assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
+        COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
+        COM.set_checkbox('enabled')
+        COMSHARE.click_advanced_options()
+        NFS.set_mapall_user(nfs_advanced_config["mapall_user"])
+        COM.click_save_button_and_wait_for_right_panel()
+        # Set NFS service to allow NFSv3 and NFSv4 protocols
+        NAV.navigate_to_system_settings_services()
+        SERV.click_edit_button_by_servicename('NFS')
+        SERV.set_nfs_service_protocols('NFSv3, NFSv4')
+        COM.click_save_button_and_wait_for_right_panel()
+        # Verify share can mount
+        assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is True
+        assert NFS_SSH.verify_share_read_access(nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.verify_share_write_access(nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.verify_share_execute_access(nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.verify_share_delete_access(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True
+        # Edit the NFS share and remove the mapall user and group
+        NAV.navigate_to_shares()
+        assert COMSHARE.assert_share_card_displays('nfs') is True
+        assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
+        COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
+        COMSHARE.click_advanced_options()
+        NFS.set_mapall_group(nfs_advanced_config["mapall_group"])
+        COM.click_save_button_and_wait_for_right_panel()
+        # Verify access is not mapped
+        assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is True
+        assert NFS_SSH.verify_share_read_access(nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.verify_share_write_access(nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.verify_share_execute_access(nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.verify_share_delete_access(nfs_advanced_config["share_page_path"],
+                                                  nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True
+        COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
+        COMSHARE.click_advanced_options()
+        NFS.unset_mapall_user()
+        NFS.unset_mapall_group()
+        COM.click_save_button_and_wait_for_right_panel()
+        # Verify access is not mapped
+        assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is True
+        assert NFS_SSH.verify_share_read_access(nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.verify_share_write_access(nfs_advanced_config["mount_dir"]) is False
+        assert NFS_SSH.verify_share_execute_access(nfs_advanced_config["mount_dir"]) is False
+        assert NFS_SSH.verify_share_delete_access(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is False
+        assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True

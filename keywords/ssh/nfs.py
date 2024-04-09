@@ -44,8 +44,7 @@ class SSH_NFS:
         file = cls.put_file_in_share(nas_path)
         command = f"cd ~/nfsshares ; rm -rf {mount_dir}/{file}"
         SSH_Command_Line(command, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
-        value = SSH_Command_Line(f'sudo ls -al ~/nfsshares/{mount_dir}', private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'],
-                                 private_config['NFS_CLIENT_PASSWORD'])
+        value = SSH_Command_Line(f'sudo ls -al ~/nfsshares/{mount_dir}', private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
         return file not in value.stdout.lower()
 
     @classmethod
@@ -65,20 +64,22 @@ class SSH_NFS:
         SSH_Command_Line(command2, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
         command3 = f"cd ~/nfsshares ; sudo ls -al {mount_dir}"
         value = SSH_Command_Line(command3, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
+        SSH_Command_Line(f"cd ~/nfsshares ; rm -rf {mount_dir}/{cr_dir}", private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
         return cr_dir in value.stdout.lower()
 
     @classmethod
-    def verify_share_mounted(cls, mount_dir: str, share_perms: str) -> bool:
+    def verify_share_mounted(cls, mount_dir: str, share_perms: str, ownership: str) -> bool:
         """
         This method cd's to the mount path, and returns true if the directory is mounted. Otherwise, it returns false.
 
         :param mount_dir: the path from 'nfsshares' to the directory the share is mounted to.
         :param share_perms: the expected permissions code of the NAS share dataset.
-        :return: true if the directory is mounted.
+        :param ownership: the expected ownership of the NAS share dataset.
+        :return: true if the directory ownership and permissions have changed to the share permissions.
         """
-        command = f"cd ~/nfsshares/{mount_dir} ; ls -al"
+        command = f"sudo ls -al ~/nfsshares/{mount_dir}"
         value = SSH_Command_Line(command, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
-        return share_perms in value.stdout.lower()
+        return share_perms and ownership in value.stdout.lower()
 
     @classmethod
     def verify_share_read_access(cls, mount_dir: str) -> bool:
@@ -89,7 +90,7 @@ class SSH_NFS:
         :param mount_dir: the path from 'nfsshares' to the directory to mount the share to.
         :return: true if read actions are successful.
         """
-        command = f"cd ~/nfsshares/{mount_dir} ; ls -al"
+        command = f"cd ~/nfsshares ; ls {mount_dir}"
         value = SSH_Command_Line(command, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
         if "permission denied" in value.stderr.lower():
             print("Permission denied while running command.")
@@ -110,6 +111,7 @@ class SSH_NFS:
         SSH_Command_Line(command, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
         command2 = f"cd ~/nfsshares ; sudo ls -al {mount_dir}"
         value = SSH_Command_Line(command2, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
+        SSH_Command_Line(f"cd ~/nfsshares ; rm -rf {mount_dir}/{file}", private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
         return file in value.stdout.lower()
 
     @classmethod
@@ -129,3 +131,19 @@ class SSH_NFS:
                                  private_config['PASSWORD'])
         assert file in value.stdout.lower()
         return file
+
+    @classmethod
+    def clear_share_contents(cls, mount_dir: str) -> bool:
+        """
+        This method clears the contents of the given share and returns true if the share is empty. Otherwise, it returns false.
+
+        :param mount_dir:
+        :return: true if the share is empty
+        """
+        command = f"sudo rm -rf {mount_dir}/**"
+        SSH_Command_Line(command, private_config['IP'], private_config['USERNAME'],
+                         private_config['PASSWORD'])
+        command2 = f"sudo ls {mount_dir}"
+        value = SSH_Command_Line(command2, private_config['IP'], private_config['USERNAME'],
+                                 private_config['PASSWORD'])
+        return value.stdout is ""
