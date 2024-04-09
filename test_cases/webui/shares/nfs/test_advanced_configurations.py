@@ -17,50 +17,44 @@ from keywords.webui.nfs import NFS
 from keywords.ssh.nfs import SSH_NFS as NFS_SSH
 
 
-def setup_test(data_binding: list):
-    """
-    This method sets up the environment for the test.
-    """
-    API_PUT.enable_user_all_sudo_commands_no_password(private_config['USERNAME'])
-    API_PUT.enable_user_ssh_password(private_config['USERNAME'])
-    assert NFS_SSH.unmount_nfs_share(data_binding['mount_dir']) is True
-    API_DELETE.delete_share('nfs', data_binding["api_path"])
-    API_DELETE.delete_dataset(data_binding["api_path"], recursive=True, force=True)
-    API_POST.start_service('nfs')
-    API_POST.start_service('ssh')
-    API_POST.create_dataset(data_binding["api_path"], 'NFS')
-    API_POST.create_share('nfs', '', data_binding["share_page_path"])
-    NAV.navigate_to_datasets()
-    DAT.click_dataset_location(data_binding["dataset_name"])
-    DAT.click_edit_permissions_button()
-    assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('user'), 'value') is True
-    assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('group'), 'value') is True
-    PERM.set_other_access(data_binding["dataset_other_perms"])
-    COM.click_save_button_and_wait_for_progress_bar()
-    NAV.navigate_to_shares()
-    assert COMSHARE.assert_share_card_displays('nfs') is True
-    assert COMSHARE.assert_share_path('nfs', data_binding["share_page_path"]) is True
-
-
 @allure.tag("NFS Shares")
 @allure.epic("Shares")
 @allure.feature("NFS")
 class Test_Advanced_Configurations:
-    @pytest.fixture(scope='class', autouse=True)
-    def tear_down_test(self):
+    @pytest.fixture(scope='function', autouse=True)
+    def setup_test(self, nfs_advanced_config):
+        """
+        This method sets up the environment for the test.
+        """
+        API_PUT.enable_user_all_sudo_commands_no_password(private_config['USERNAME'])
+        API_PUT.enable_user_ssh_password(private_config['USERNAME'])
+        assert NFS_SSH.unmount_nfs_share(nfs_advanced_config['mount_dir']) is True
+        API_DELETE.delete_share('nfs', nfs_advanced_config["api_path"])
+        API_DELETE.delete_dataset(nfs_advanced_config["api_path"], recursive=True, force=True)
+        API_POST.start_service('nfs')
+        API_POST.start_service('ssh')
+        API_POST.create_dataset(nfs_advanced_config["api_path"], 'NFS')
+        API_POST.create_share('nfs', '', nfs_advanced_config["share_page_path"])
+        NAV.navigate_to_datasets()
+        DAT.click_dataset_location(nfs_advanced_config["dataset_name"])
+        DAT.click_edit_permissions_button()
+        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('user'), 'value') is True
+        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('group'), 'value') is True
+        PERM.set_other_access(nfs_advanced_config["dataset_other_perms"])
+        COM.click_save_button_and_wait_for_progress_bar()
+        NAV.navigate_to_shares()
+        assert COMSHARE.assert_share_card_displays('nfs') is True
+        assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
+
+    @pytest.fixture(scope='function', autouse=True)
+    def tear_down_test(self, nfs_advanced_config):
         """
         This method deletes the share, dataset and unmounts the NFS share on the client.
         """
         yield
-        API_DELETE.delete_share('nfs', 'tank/auth_ip_test')
-        API_DELETE.delete_share('nfs', 'tank/read_only_test')
-        API_DELETE.delete_share('nfs', 'tank/auth_network_test')
-        API_DELETE.delete_dataset('tank/auth_ip_test', recursive=True, force=True)
-        API_DELETE.delete_dataset('tank/read_only_test', recursive=True, force=True)
-        API_DELETE.delete_dataset('tank/auth_network_test', recursive=True, force=True)
-        assert NFS_SSH.unmount_nfs_share('auth_ip') is True
-        assert NFS_SSH.unmount_nfs_share('read_only') is True
-        assert NFS_SSH.unmount_nfs_share('auth_network') is True
+        API_DELETE.delete_share('nfs', nfs_advanced_config["api_path"])
+        API_DELETE.delete_dataset(nfs_advanced_config["api_path"], recursive=True, force=True)
+        assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True
 
     @allure.tag("Authorized IP Address")
     @allure.story("NFS Share Authorized IP Address")
@@ -69,7 +63,6 @@ class Test_Advanced_Configurations:
         """
         This test edits the NFS share with an authorized IP and verifies that the share can/cannot be mounted.
         """
-        setup_test(nfs_advanced_config)
         # Edit the NFS share and set a valid authorized ip address
         assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
         COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
@@ -102,7 +95,6 @@ class Test_Advanced_Configurations:
         """
         This test edits the NFS share with an authorized IP and verifies that the share can/cannot be mounted.
         """
-        setup_test(nfs_advanced_config)
         # Edit the NFS share and set it to read only
         assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
         COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
@@ -140,7 +132,6 @@ class Test_Advanced_Configurations:
         """
         This test edits the NFS share with an authorized network address and verifies that the share can/cannot be mounted.
         """
-        setup_test(nfs_advanced_config)
         # Edit the NFS share and set a valid authorized network address
         assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
         COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
