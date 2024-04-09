@@ -94,8 +94,8 @@ class Test_SMB_AD_User:
         assert SSHSMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
         NAV.navigate_to_shares()
         SMB.click_edit_share_filesystem_acl('SMBADUSER')
-        COM.click_on_element('//*[contains(text(),"domain users")]/ancestor::ix-permissions-item/following-sibling::*/ix-icon')
-        COM.click_on_element('//*[contains(text(),"domain admins")]/ancestor::ix-permissions-item/following-sibling::*/ix-icon')
+        # COM.click_on_element('//*[contains(text(),"domain users")]/ancestor::ix-permissions-item/following-sibling::*/ix-icon')
+        # COM.click_on_element('//*[contains(text(),"domain admins")]/ancestor::ix-permissions-item/following-sibling::*/ix-icon')
         PERM.select_ace_who('user')
         PERM.select_ace_user(f'AD03\\{ad_data["username"].lower()}')
         PERM.set_ace_permissions('READ')
