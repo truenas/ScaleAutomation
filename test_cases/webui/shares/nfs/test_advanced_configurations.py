@@ -163,7 +163,7 @@ class Test_Advanced_Configurations:
         # Edit the NFS share and set an invalid network address
         COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
         NFS.click_add_networks_button()
-        NFS.set_network('192.168.1.52')
+        NFS.set_network('123.44.5.66')
         NFS.set_network_mask('24')
         COM.click_save_button_and_wait_for_right_panel()
         # Verify share cannot mount
