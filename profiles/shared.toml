@@ -19,6 +19,7 @@ IMPLICITLY_WAIT = 1
 KEYPATH = "~/.ssh/id_rsa_pytest"
 LONG_WAIT = 60
 MEDIUM_WAIT = 15
+PERCY_URL = ''
 ROA_FULLNAME = "READ ONLY ADMIN"
 ROA_PASSWORD = "testing"
 ROA_USER = "roa"

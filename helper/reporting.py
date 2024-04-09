@@ -45,7 +45,7 @@ def allure_environment():
         file.write(f'version={version}\n')
         file.write(f'short_version={version_short}\n')
         file.write(f'short_version={version_short}\n')
-        if shared_config['PERCY_URL'] is not None:
+        if shared_config['PERCY_URL']:
             file.write(f"percy_report={shared_config['PERCY_URL']}\n")
 
 
