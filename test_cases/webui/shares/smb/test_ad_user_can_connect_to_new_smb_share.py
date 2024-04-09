@@ -55,7 +55,8 @@ class Test_SMB_AD_User:
         # Verify SMB AD user can access Share
         assert SMB.assert_user_can_access('SMBADUSER', ad_data['username'], ad_data['password']) is True
 
-    @allure.tag("Delete")
+    @allure.tag("Delete", "NAS-128277")
+    @allure.issue("NAS-128277", "NAS-128277")
     @allure.story("Verify SMB AD user can access after reboot")
     def test_ad_user_can_access_after_reboot(self, ad_data) -> None:
 
@@ -86,7 +87,8 @@ class Test_SMB_AD_User:
         # Verify SMB Guest can edit file
         assert SSHSMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
 
-    @allure.tag("Read")
+    @allure.tag("Read", "NAS-128277")
+    @allure.issue("NAS-128277", "NAS-128277")
     @allure.story("Verify SMB AD user denied edit file with read permissions")
     def test_ad_user_denied_edit_file_with_read_permissions(self, ad_data) -> None:
 
@@ -100,5 +102,5 @@ class Test_SMB_AD_User:
         PERM.select_ace_user(f'AD03\\{ad_data["username"].lower()}')
         PERM.set_ace_permissions('READ')
         PERM.click_save_acl_button()
-        API_POST.restart_service('cifs')
+        # API_POST.restart_service('cifs')
         assert SSHSMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is False
