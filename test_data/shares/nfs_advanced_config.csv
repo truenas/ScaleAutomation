@@ -1,0 +1,4 @@
+dataset_name,api_path,share_page_path,maproot_group,mapall_user,mapall_group,security,networks,hosts,permissions_code,mount_dir,dataset_owner_perms,dataset_other_perms,dataset_group_perms
+auth_ip_test,tank/auth_ip_test,/mnt/tank/auth_ip_test,,,,,,,drwxr-xrwx  2 root   root,auth_ip,,Read | Write | Execute,
+read_only,tank/read_only,/mnt/tank/read_only,,,,,,,drwxr-xrwx  2 root   root,read_only,,Read | Write | Execute
+auth_network_test,tank/auth_network_test,/mnt/tank/auth_network_test,,,,,,,drwxr-xrwx  2 root   root,auth_network,,Read | Write | Execute
