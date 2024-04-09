@@ -107,7 +107,9 @@ def percy_threading():
     p = Popen('npx percy exec:start', shell=True, universal_newlines=True, stdout=PIPE)
     while True:
         line = p.stdout.readline()
-        print(line)
+        # print every percy output for console
+        if '[percy]' in line:
+            print(line)
         if '[percy] Finalized build' in line:
             shared_config['PERCY_URL'] = line.partition(':')[2].strip()
             break
