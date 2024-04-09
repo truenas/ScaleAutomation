@@ -100,4 +100,5 @@ class Test_SMB_AD_User:
         PERM.select_ace_user(f'AD03\\{ad_data["username"].lower()}')
         PERM.set_ace_permissions('READ')
         PERM.click_save_acl_button()
+        API_POST.restart_service('cifs')
         assert SSHSMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is False
