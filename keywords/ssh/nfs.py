@@ -4,6 +4,22 @@ from helper.global_config import private_config
 
 class SSH_NFS:
     @classmethod
+    def clear_share_contents(cls, mount_dir: str) -> bool:
+        """
+        This method clears the contents of the given share and returns true if the share is empty. Otherwise, it returns false.
+
+        :param mount_dir: the path to the mounted directory.
+        :return: true if the share is empty.
+        """
+        command = f"sudo rm -rf {mount_dir}/**"
+        SSH_Command_Line(command, private_config['IP'], private_config['USERNAME'],
+                         private_config['PASSWORD'])
+        command2 = f"sudo ls {mount_dir}"
+        value = SSH_Command_Line(command2, private_config['IP'], private_config['USERNAME'],
+                                 private_config['PASSWORD'])
+        return value.stdout is ""
+
+    @classmethod
     def mount_nfs_share(cls, nas_path: str, mount_dir: str) -> bool:
         """
         This method mounts the given NAS share to the given path and returns true if the mount is successful. Otherwise, it returns false.
@@ -131,19 +147,3 @@ class SSH_NFS:
                                  private_config['PASSWORD'])
         assert file in value.stdout.lower()
         return file
-
-    @classmethod
-    def clear_share_contents(cls, mount_dir: str) -> bool:
-        """
-        This method clears the contents of the given share and returns true if the share is empty. Otherwise, it returns false.
-
-        :param mount_dir:
-        :return: true if the share is empty
-        """
-        command = f"sudo rm -rf {mount_dir}/**"
-        SSH_Command_Line(command, private_config['IP'], private_config['USERNAME'],
-                         private_config['PASSWORD'])
-        command2 = f"sudo ls {mount_dir}"
-        value = SSH_Command_Line(command2, private_config['IP'], private_config['USERNAME'],
-                                 private_config['PASSWORD'])
-        return value.stdout is ""
