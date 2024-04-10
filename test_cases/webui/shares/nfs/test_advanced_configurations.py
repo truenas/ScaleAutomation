@@ -93,7 +93,7 @@ class Test_Advanced_Configurations:
         # Verify share cannot mount
         assert COMSHARE.is_share_enabled('nfs', nfs_advanced_config["share_page_path"]) is True
         assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is False
-        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"]) is False
+        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is False
 
     @allure.tag("Read Only")
     @allure.story("NFS Share Read Only")
@@ -165,8 +165,7 @@ class Test_Advanced_Configurations:
         # Verify share cannot mount
         assert COMSHARE.is_share_enabled('nfs', nfs_advanced_config["share_page_path"]) is True
         assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is False
-        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"],
-                                            nfs_advanced_config["permissions_code"]) is False
+        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is False
 
     @allure.tag("mapall user", "mapall group")
     @allure.story("NFS Share mapall user and mapall group")
