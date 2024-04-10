@@ -33,6 +33,25 @@ class Replication:
             f'//*[@data-test="button-state-replication-task-{COM.convert_to_tag_format(name)}-row-state" and contains(@class,"fn-theme-green")]', shared_config['LONG_WAIT']) is True
 
     @classmethod
+    def click_save_button_and_resolve_dialogs(cls):
+        """
+        This method clicks the save button and resolves subsequent dialogs
+
+        Example:
+            - Replication.click_save_button_and_resolve_dialogs()
+        """
+        COM.click_save_button()
+
+        if cls.is_destination_snapshots_dialog_visible() is True:
+            COM.assert_confirm_dialog()
+        if cls.is_sudo_enabled_dialog_visible() is True:
+            COM.assert_confirm_dialog()
+        if cls.is_task_started_dialog_visible() is True:
+            cls.click_close_task_started_button()
+        if cls.is_run_now_dialog_visible() is True:
+            COM.cancel_confirm_dialog()
+
+    @classmethod
     def close_destination_box(cls) -> None:
         """
         This method closes the destination box browser window and switches to the source box browser window

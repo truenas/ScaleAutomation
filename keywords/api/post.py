@@ -339,25 +339,25 @@ class API_POST:
         return response
 
     @classmethod
-    def create_remote_snapshot(cls, dataset: str, name: str, recursive: bool = False, suspend_vms: bool = False,
-                               vmware_sync: bool = False) -> Response:
+    def create_remote_snapshot_with_naming_schema(cls, dataset: str, schema: str = "auto-%Y-%m-%d_%H-%M") -> Response:
         """
         This method creates the given snapshot on remote system.
 
         :param dataset: is the name of the dataset.
-        :param name: is the name of the snapshot.
-        :param recursive: Optional - True if should the snapshot be recursive else False.
-        :param suspend_vms: Optional - True if should the snapshot suspend vms else False.
-        :param vmware_sync: Optional - True if should the snapshot sync vmware else False.
-
+        :param schema: is the naming schema of the snapshot.
         :return: the API request response.
 
         Example:
-            - API_POST.create_remote_snapshot('tank/test-dataset', 'test-snapshot')
+            - API_POST.create_remote_snapshot_with_naming_schema('tank/test-dataset', 'auto-%Y-%m-%d_%H-%M')
         """
+        payload = {
+            "dataset": dataset,
+            "naming_schema": schema
+        }
         private_config['API_IP'] = private_config['REP_DEST_IP']
-        response = cls.create_snapshot(dataset, name, recursive, suspend_vms, vmware_sync)
+        response = POST('/zfs/snapshot', payload)
         private_config['API_IP'] = private_config['IP']
+        assert response.status_code == 200, response.text
         return response
 
     @classmethod
@@ -416,7 +416,7 @@ class API_POST:
             "suspend_vms": suspend_vms,
             "vmware_sync": vmware_sync
         }
-        response = POST('/zfs/snapshot/', payload)
+        response = POST('/zfs/snapshot', payload)
         assert response.status_code == 200, response.text
         return response
 
@@ -437,6 +437,22 @@ class API_POST:
         job_status = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
         assert job_status['state'] == 'SUCCESS', job_status['results']
         return job_status
+
+    @classmethod
+    def delete_all_remote_dataset_snapshots(cls, name: str) -> dict:
+        """
+        This method deletes all snapshots for the given remote dataset.
+
+        :param name: is name of the remote dataset.
+        :return: the API request response.
+
+        Example:
+            - API_DELETE.delete_all_remote_dataset_snapshots('tank/myDataset')
+        """
+        private_config['API_IP'] = private_config['REP_DEST_IP']
+        response = cls.delete_all_dataset_snapshots(name)
+        private_config['API_IP'] = private_config['IP']
+        return response
 
     @classmethod
     def export_pool(cls, name: str, destroy: bool = False) -> dict:

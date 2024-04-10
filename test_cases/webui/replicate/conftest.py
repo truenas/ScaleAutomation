@@ -24,11 +24,6 @@ def setup_class(rep):
     """
     This method creates all ssh connections needed for replication
     """
-    # Setup Datasets.
-    API_POST.create_dataset(rep['source'])
-    API_POST.create_dataset(rep['destination'])
-    API_POST.create_remote_dataset(rep['source'])
-    API_POST.create_remote_dataset(rep['destination'])
 
     # Setup SSH connections.
     Navigation.navigate_to_backup_credentials()
@@ -44,5 +39,8 @@ def setup_class(rep):
 
     # Remove Snapshots if exists
     DP.delete_all_periodic_snapshot_tasks()
-    DP.delete_all_snapshots()
+    API_POST.delete_all_dataset_snapshots(rep['source'])
+    API_POST.delete_all_dataset_snapshots(rep['destination'])
+    API_POST.delete_all_remote_dataset_snapshots(rep['source'])
+    API_POST.delete_all_remote_dataset_snapshots(rep['destination'])
     Navigation.navigate_to_data_protection()
