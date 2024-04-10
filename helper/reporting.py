@@ -1,14 +1,15 @@
 import allure
+import os
+import threading
 from allure_commons.types import AttachmentType
 from datetime import datetime
 from helper.cli import Local_Command_Line
-from helper.global_config import workdir
+from helper.global_config import workdir, shared_config
 from helper.webui import WebUI
 from keywords.api.get import API_GET
 from pathlib import Path
+from subprocess import Popen, PIPE, run
 
-
-# make the timestamp global
 
 def create_timestamp() -> str:
     now = datetime.now()
@@ -43,6 +44,9 @@ def allure_environment():
         file.write(f'product_type={product_type}\n')
         file.write(f'version={version}\n')
         file.write(f'short_version={version_short}\n')
+        file.write(f'short_version={version_short}\n')
+        if shared_config['PERCY_URL']:
+            file.write(f"percy_report={shared_config['PERCY_URL']}\n")
 
 
 def allure_reporting():
@@ -71,6 +75,44 @@ def attach_browser_console_logs():
     """
     console_logs = '\n'.join(map(str, WebUI.get_console_log()))
     allure.attach(console_logs, name='browser_console.log', attachment_type="text/plain", extension="attach")
+
+
+def start_percy_session():
+    """
+    This method starts percy session if PERCY_TOKEN is set.
+
+    Example:
+        - start_percy_session()
+    """
+    if os.getenv('PERCY_TOKEN') is not None:
+        threading_percy = threading.Thread(target=percy_threading)
+        threading_percy.start()
+        WebUI.delay(1)
+    else:
+        print('PERCY_TOKEN environment variable is not set. Skipping starting percy session.')
+
+
+def stop_percy_session():
+    """
+    This method stops percy session if PERCY_TOKEN is set.
+
+    Example:
+        - stop_percy_session()
+    """
+    if os.getenv('PERCY_TOKEN') is not None:
+        run('npx percy exec:stop', shell=True)
+
+
+def percy_threading():
+    p = Popen('npx percy exec:start', shell=True, universal_newlines=True, stdout=PIPE)
+    while True:
+        line = p.stdout.readline()
+        # print every percy output for console
+        if '[percy]' in line:
+            print(line)
+        if '[percy] Finalized build' in line:
+            shared_config['PERCY_URL'] = line.partition(':')[2].strip()
+            break
 
 
 def take_screenshot(name):
