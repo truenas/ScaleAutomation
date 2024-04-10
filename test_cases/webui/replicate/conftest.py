@@ -2,6 +2,7 @@ import pytest
 
 from helper.data_config import get_data_list
 from helper.global_config import private_config
+from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.api.put import API_PUT
 from keywords.webui.data_protection import Data_Protection as DP
@@ -24,6 +25,15 @@ def setup_class(rep):
     """
     This method creates all ssh connections needed for replication
     """
+    # Setup Datasets
+    API_DELETE.delete_dataset(rep['source'])
+    API_DELETE.delete_dataset(rep['destination'])
+    API_DELETE.delete_remote_dataset(rep['source'])
+    API_DELETE.delete_remote_dataset(rep['destination'])
+    API_POST.create_dataset(rep['source'])
+    API_POST.create_dataset(rep['destination'])
+    API_POST.create_remote_dataset(rep['source'])
+    API_POST.create_remote_dataset(rep['destination'])
 
     # Setup SSH connections.
     Navigation.navigate_to_backup_credentials()
