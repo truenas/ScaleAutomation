@@ -299,3 +299,5 @@ class System_Services:
             COM.select_option('protocols', 'protocols-nf-sv-3')
         if COM.is_visible('//*[@data-test="select-protocols"]//*[contains(text(), "NFSv4")]') is False & options.__contains__('NFSv4'):
             COM.select_option('protocols', 'protocols-nf-sv-4')
+        WebUI.delay(0.5)
+        
