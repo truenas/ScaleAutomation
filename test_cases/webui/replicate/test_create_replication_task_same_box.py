@@ -2,6 +2,8 @@ import allure
 import pytest
 
 from helper.data_config import get_data_list
+from keywords.api.delete import API_DELETE
+from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 from keywords.webui.data_protection import Data_Protection as DP
 from keywords.webui.navigation import Navigation as NAV
@@ -20,6 +22,10 @@ class Test_Create_Replicate_Task_Same_Box:
         """
         This method sets up each test to start with test replication tasks deleted
         """
+        API_POST.create_dataset(rep['source'])
+        API_POST.create_dataset(rep['destination'])
+        API_POST.delete_all_dataset_snapshots(rep['source'])
+        API_POST.delete_all_dataset_snapshots(rep['destination'])
         NAV.navigate_to_data_protection()
         if REP.is_replication_task_visible(rep['task-name']) is True:
             REP.delete_replication_task_by_name(rep['task-name'])
@@ -31,10 +37,13 @@ class Test_Create_Replicate_Task_Same_Box:
         """
         yield
         # reset the change
-        DP.delete_all_periodic_snapshot_tasks()
-        DP.delete_all_snapshots()
         NAV.navigate_to_data_protection()
+        DP.delete_all_periodic_snapshot_tasks()
         REP.delete_replication_task_by_name(rep['task-name'])
+        API_POST.delete_all_dataset_snapshots(rep['source'])
+        API_POST.delete_all_dataset_snapshots(rep['destination'])
+        API_DELETE.delete_dataset(rep['source'])
+        API_DELETE.delete_dataset(rep['destination'])
 
     @allure.tag("Create")
     @allure.story("Setup and Run Replication Task to Local Box")
@@ -51,14 +60,7 @@ class Test_Create_Replicate_Task_Same_Box:
 
         REP.set_run_once_button()
         REP.unset_read_only_destination_checkbox()
-        COM.click_save_button()
-
-        if REP.is_destination_snapshots_dialog_visible() is True:
-            COM.assert_confirm_dialog()
-        if REP.is_task_started_dialog_visible() is True:
-            REP.click_close_task_started_button()
-        if REP.is_run_now_dialog_visible() is True:
-            COM.cancel_confirm_dialog()
+        REP.click_save_button_and_resolve_dialogs()
         assert REP.is_replication_task_visible(rep['task-name']) is True
 
         REP.click_run_now_replication_task_by_name(rep['task-name'])

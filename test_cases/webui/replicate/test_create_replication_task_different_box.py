@@ -24,14 +24,14 @@ class Test_Create_Replicate_Task_Different_Box:
         """
         This method sets up each test to start with test replication tasks deleted
         """
-        API_DELETE.delete_dataset(rep['source'])
-        API_DELETE.delete_dataset(rep['destination'])
-        API_DELETE.delete_remote_dataset(rep['source'])
-        API_DELETE.delete_remote_dataset(rep['destination'])
         API_POST.create_dataset(rep['source'])
         API_POST.create_dataset(rep['destination'])
+        API_POST.delete_all_dataset_snapshots(rep['source'])
+        API_POST.delete_all_dataset_snapshots(rep['destination'])
         API_POST.create_remote_dataset(rep['source'])
         API_POST.create_remote_dataset(rep['destination'])
+        API_POST.delete_all_remote_dataset_snapshots(rep['source'])
+        API_POST.delete_all_remote_dataset_snapshots(rep['destination'])
         NAV.navigate_to_data_protection()
         if REP.is_replication_task_visible(rep['task-name']) is True:
             REP.delete_replication_task_by_name(rep['task-name'])

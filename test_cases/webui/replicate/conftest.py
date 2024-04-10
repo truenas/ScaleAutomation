@@ -2,7 +2,6 @@ import pytest
 
 from helper.data_config import get_data_list
 from helper.global_config import private_config
-from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.api.put import API_PUT
 from keywords.webui.data_protection import Data_Protection as DP
@@ -11,29 +10,11 @@ from keywords.webui.ssh_connection import SSH_Connection as SSHCON
 
 
 @pytest.fixture(scope='class', autouse=True)
-def navigate_to_():
-    """
-    This method starts all tests to navigate to the Data Protection page
-    """
-    # Ensure we are on the Data Protection page.
-    Navigation.navigate_to_data_protection()
-
-
-@pytest.fixture(scope='class', autouse=True)
 @pytest.mark.parametrize('rep', get_data_list('replication'), scope='class')
 def setup_class(rep):
     """
     This method creates all ssh connections needed for replication
     """
-    # Setup Datasets
-    API_DELETE.delete_dataset(rep['source'])
-    API_DELETE.delete_dataset(rep['destination'])
-    API_DELETE.delete_remote_dataset(rep['source'])
-    API_DELETE.delete_remote_dataset(rep['destination'])
-    API_POST.create_dataset(rep['source'])
-    API_POST.create_dataset(rep['destination'])
-    API_POST.create_remote_dataset(rep['source'])
-    API_POST.create_remote_dataset(rep['destination'])
 
     # Setup SSH connections.
     Navigation.navigate_to_backup_credentials()
@@ -48,9 +29,5 @@ def setup_class(rep):
     private_config['API_IP'] = private_config['IP']
 
     # Remove Snapshots if exists
-    DP.delete_all_periodic_snapshot_tasks()
-    API_POST.delete_all_dataset_snapshots(rep['source'])
-    API_POST.delete_all_dataset_snapshots(rep['destination'])
-    API_POST.delete_all_remote_dataset_snapshots(rep['source'])
-    API_POST.delete_all_remote_dataset_snapshots(rep['destination'])
     Navigation.navigate_to_data_protection()
+    DP.delete_all_periodic_snapshot_tasks()
