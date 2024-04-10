@@ -1,4 +1,5 @@
 allure-pytest
+percy-selenium
 pyperclip
 pytest
 pytest-timeout
