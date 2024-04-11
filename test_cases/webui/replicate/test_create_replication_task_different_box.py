@@ -93,7 +93,7 @@ class Test_Create_Replicate_Task_Different_Box:
         assert COM.assert_text_is_visible(rep['destination']) is True
         REP.close_destination_box()
 
-    @allure.tag("Create")
+    @allure.tag("Create", "NAS-T1154")
     @allure.story("System Trigger Replication Task to Remote Box")
     def test_system_trigger_replicate_task_push(self, rep) -> None:
         """
@@ -179,7 +179,7 @@ class Test_Create_Replicate_Task_Different_Box:
         assert COM.assert_file_exists('rep_trigger.txt', rep['destination'], private_config['REP_DEST_IP']) is True
         REP.close_destination_box()
 
-    @allure.tag("Create")
+    @allure.tag("Create", "NAS-T1269")
     @allure.story("System Trigger Replication Task to Local Box")
     def test_system_trigger_replicate_task_pull(self, rep) -> None:
         """
