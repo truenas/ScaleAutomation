@@ -49,7 +49,12 @@ class Test_Create_Replicate_Task_Same_Box:
     @allure.story("Setup and Run Replication Task to Local Box")
     def test_setup_and_run_replicate_task(self, rep) -> None:
         """
-        This test verifies a replicate task can be setup
+        Summary: This test verifies a local replicate task can be created, "Run Now", and task is successful
+
+        Test Steps:
+        1. Create Replication Task (Source and Destination = local)
+        2. Trigger Task with "Run Now" button
+        3. Verify Replication Task is successful (Status = FINISHED)
         """
         DP.click_add_replication_button()
         REP.set_source_location_on_same_box(rep['source'])

@@ -63,8 +63,14 @@ class Test_Create_Replicate_Task_Different_Box:
     @allure.story("Setup and Run Replication Task to Remote Box")
     def test_setup_and_run_replicate_task(self, rep) -> None:
         """
-        This test verifies a replicate task can be setup
-        """
+        Summary: This test verifies a replicate task can be created, "Run Now", and snapshot on Destination is created
+
+        Test Steps:
+        1. Create Replication Task
+        2. Trigger Task with "Run Now" button
+        3. Verify Replication Task is successful (Status = FINISHED)
+        4. Verify snapshot exists on Destination (remote)
+       """
         DP.click_add_replication_button()
         REP.set_source_location_on_same_box(rep['source'])
         REP.set_destination_location_on_different_box(rep['destination'], rep['connection-name'])
@@ -91,7 +97,17 @@ class Test_Create_Replicate_Task_Different_Box:
     @allure.story("System Trigger Replication Task to Remote Box")
     def test_system_trigger_replicate_task_push(self, rep) -> None:
         """
-        This test verifies a replicate task can be triggered by the system
+        Summary: This test verifies a push replicate task can be triggered by the system and files transferred
+
+        Test Steps:
+        1. Add test file to Source (local)
+        2. Create Replication Task and set to trigger 1 min in future then wait for system time to catch up
+        3. Verify Replication Task is successful (Status = FINISHED)
+        4. Verify file exists on Destination (remote)
+        5. Add new test file to Source (local)
+        6. Update Replication Task to trigger 1 min in future then wait for system time to catch up
+        7. Verify Replication Task is successful (Status = FINISHED)
+        8. Verify file exists on Destination (remote)
         """
         # create replication task
         SSHCOM.add_test_file('rep_one.txt', rep['source'])
@@ -167,7 +183,17 @@ class Test_Create_Replicate_Task_Different_Box:
     @allure.story("System Trigger Replication Task to Local Box")
     def test_system_trigger_replicate_task_pull(self, rep) -> None:
         """
-        This test verifies a replicate task can be triggered by the system
+        Summary: This test verifies a pull replicate task can be triggered by the system and files transferred
+
+        Test Steps:
+        1. Add test file to Source (remote)
+        2. Create Replication Task and set to trigger 1 min in future then wait for system time to catch up
+        3. Verify Replication Task is successful (Status = FINISHED)
+        4. Verify file exists on Destination (local)
+        5. Add new test file to Source (remote)
+        6. Update Replication Task to trigger 1 min in future then wait for system time to catch up
+        7. Verify Replication Task is successful (Status = FINISHED)
+        8. Verify file exists on Destination (local)
         """
         # create replication task
         SSHCOM.add_test_file('rep_one.txt', rep['source'], private_config['REP_DEST_IP'])
