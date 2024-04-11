@@ -109,7 +109,7 @@ class Test_Local_Groups:
         LG.expand_group_by_name(groups['alt-group-name'])
         LG.click_group_edit_button_by_name(groups['alt-group-name'])
         assert LG.assert_gid_field_is_disabled() is True
-        COM.click_save_button_and_wait_for_progress_bar()
+        COM.close_right_panel()
         LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
         LG.delete_group_by_api(groups['alt-group-name'], groups['group-privileges'])
 
