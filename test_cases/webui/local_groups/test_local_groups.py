@@ -108,8 +108,9 @@ class Test_Local_Groups:
         assert LG.assert_group_gid(groups['alt-group-name'], groups['dup-gid']) is True
         LG.expand_group_by_name(groups['alt-group-name'])
         LG.click_group_edit_button_by_name(groups['alt-group-name'])
+        assert COM.assert_right_panel_header('Edit Group') is True
         assert LG.assert_gid_field_is_disabled() is True
-        COM.click_save_button_and_wait_for_progress_bar()
+        COM.close_right_panel()
         LG.delete_group_by_api(groups['group-name'], groups['group-privileges'])
         LG.delete_group_by_api(groups['alt-group-name'], groups['group-privileges'])
 
