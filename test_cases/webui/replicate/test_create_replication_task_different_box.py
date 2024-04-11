@@ -39,7 +39,7 @@ class Test_Create_Replicate_Task_Different_Box:
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self, rep) -> None:
         """
-        This test removes the replicate task
+        This method removes the replicate task, snapshots, and cleans up the system
         """
         # reset the change
         yield
