@@ -44,7 +44,7 @@ class Test_Create_Replicate_Task_Different_Box:
         # reset the change
         yield
         # # clean destination box
-        REP.close_destination_box()
+        # REP.close_destination_box()
         API_POST.delete_all_remote_dataset_snapshots(rep['source'])
         API_POST.delete_all_remote_dataset_snapshots(rep['destination'])
         API_DELETE.delete_remote_dataset(rep['source'])
@@ -85,6 +85,7 @@ class Test_Create_Replicate_Task_Different_Box:
         NAV.navigate_to_data_protection()
         DP.click_snapshots_button()
         assert COM.assert_text_is_visible(rep['destination']) is True
+        REP.close_destination_box()
 
     @allure.tag("Create")
     @allure.story("System Trigger Replication Task to Remote Box")
@@ -160,6 +161,7 @@ class Test_Create_Replicate_Task_Different_Box:
         DP.click_snapshots_button()
         assert COM.assert_text_is_visible(rep['destination']) is True
         assert COM.assert_file_exists('rep_trigger.txt', rep['destination'], private_config['REP_DEST_IP']) is True
+        REP.close_destination_box()
 
     @allure.tag("Create")
     @allure.story("System Trigger Replication Task to Local Box")
