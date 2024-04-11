@@ -5,6 +5,20 @@ from helper.global_config import private_config
 class SSH_SMB:
 
     @classmethod
+    def add_smb_test_files(cls, user: str, dataset_path: str, ip: str) -> None:
+        """
+        This method adds the files used for testing smb permissions
+
+        :param user: is the user to be sending files to the smb share
+        :param dataset_path: is the path if the smb share
+        :param ip: the IP of the smb share box
+        """
+        SSH_Command_Line(f'cd ~; touch putfile', private_config['SMB_ACL_IP'], user, 'testing')
+        SSH_Command_Line(f'cd /mnt/{dataset_path}/; touch getfile', ip, user, 'testing')
+        SSH_Command_Line(f'cd /mnt/{dataset_path}/; touch deletefile', ip, user, 'testing')
+        SSH_Command_Line(f'cd /mnt/{dataset_path}/; echo "touch execfile2.txt" >> /mnt/{dataset_path}/execfile.sh', ip, user, 'testing')
+
+    @classmethod
     def assert_directory_exists(cls, directory: str, share: str, user: str, password: str, ad: bool = False) -> bool:
         """
         This returns True if the given directory exists, otherwise it returns False.
@@ -174,6 +188,15 @@ class SSH_SMB:
         - SMB.assert_user_can_put_file('myFile', 'myShare', 'user', 'password', True)
         """
         return cls.assert_target_command(file, share, user, password, ad, "put_file")
+
+    @classmethod
+    def delete_smb_test_files(cls, user: str) -> None:
+        """
+        This method deletes the files used for testing smb permissions
+
+        :param user: is the user to be sending files to the smb share
+        """
+        SSH_Command_Line(f'rm * | grep file', private_config['SMB_ACL_IP'], user, 'testing')
 
     @classmethod
     def smbclient_command(cls, share: str, use_ad: str, user: str, password: str, command: str) -> SSH_Command_Line:

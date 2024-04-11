@@ -5,6 +5,7 @@ from helper.data_config import get_data_list
 from helper.global_config import private_config
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
+from keywords.ssh.common import Common_SSH as SSHCOM
 from keywords.webui.common import Common as COM
 from keywords.webui.data_protection import Data_Protection as DP
 from keywords.webui.navigation import Navigation as NAV
@@ -25,8 +26,12 @@ class Test_Create_Replicate_Task_Different_Box:
         """
         API_POST.create_dataset(rep['source'])
         API_POST.create_dataset(rep['destination'])
+        API_POST.delete_all_dataset_snapshots(rep['source'])
+        API_POST.delete_all_dataset_snapshots(rep['destination'])
         API_POST.create_remote_dataset(rep['source'])
         API_POST.create_remote_dataset(rep['destination'])
+        API_POST.delete_all_remote_dataset_snapshots(rep['source'])
+        API_POST.delete_all_remote_dataset_snapshots(rep['destination'])
         NAV.navigate_to_data_protection()
         if REP.is_replication_task_visible(rep['task-name']) is True:
             REP.delete_replication_task_by_name(rep['task-name'])
@@ -34,13 +39,14 @@ class Test_Create_Replicate_Task_Different_Box:
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self, rep) -> None:
         """
-        This test removes the replicate task
+        This method removes the replicate task, snapshots, and cleans up the system
         """
         # reset the change
         yield
         # # clean destination box
-        DP.delete_all_snapshots()
-        REP.close_destination_box()
+        # REP.close_destination_box()
+        API_POST.delete_all_remote_dataset_snapshots(rep['source'])
+        API_POST.delete_all_remote_dataset_snapshots(rep['destination'])
         API_DELETE.delete_remote_dataset(rep['source'])
         API_DELETE.delete_remote_dataset(rep['destination'])
 
@@ -48,7 +54,8 @@ class Test_Create_Replicate_Task_Different_Box:
         NAV.navigate_to_data_protection()
         DP.delete_all_replication_tasks()
         DP.delete_all_periodic_snapshot_tasks()
-        DP.delete_all_snapshots()
+        API_POST.delete_all_dataset_snapshots(rep['source'])
+        API_POST.delete_all_dataset_snapshots(rep['destination'])
         API_DELETE.delete_dataset(rep['source'])
         API_DELETE.delete_dataset(rep['destination'])
 
@@ -56,8 +63,14 @@ class Test_Create_Replicate_Task_Different_Box:
     @allure.story("Setup and Run Replication Task to Remote Box")
     def test_setup_and_run_replicate_task(self, rep) -> None:
         """
-        This test verifies a replicate task can be setup
-        """
+        Summary: This test verifies a replicate task can be created, "Run Now", and snapshot on Destination is created
+
+        Test Steps:
+        1. Create Replication Task
+        2. Trigger Task with "Run Now" button
+        3. Verify Replication Task is successful (Status = FINISHED)
+        4. Verify snapshot exists on Destination (remote)
+       """
         DP.click_add_replication_button()
         REP.set_source_location_on_same_box(rep['source'])
         REP.set_destination_location_on_different_box(rep['destination'], rep['connection-name'])
@@ -67,16 +80,7 @@ class Test_Create_Replicate_Task_Different_Box:
 
         REP.set_run_once_button()
         REP.unset_read_only_destination_checkbox()
-        COM.click_save_button()
-
-        if REP.is_destination_snapshots_dialog_visible() is True:
-            COM.assert_confirm_dialog()
-        if REP.is_sudo_enabled_dialog_visible() is True:
-            COM.assert_confirm_dialog()
-        if REP.is_task_started_dialog_visible() is True:
-            REP.click_close_task_started_button()
-        if REP.is_run_now_dialog_visible() is True:
-            COM.cancel_confirm_dialog()
+        REP.click_save_button_and_resolve_dialogs()
         assert REP.is_replication_task_visible(rep['task-name']) is True
 
         REP.click_run_now_replication_task_by_name(rep['task-name'])
@@ -87,15 +91,26 @@ class Test_Create_Replicate_Task_Different_Box:
         NAV.navigate_to_data_protection()
         DP.click_snapshots_button()
         assert COM.assert_text_is_visible(rep['destination']) is True
+        REP.close_destination_box()
 
-    @allure.tag("Create")
+    @allure.tag("Create", "NAS-T1154")
     @allure.story("System Trigger Replication Task to Remote Box")
-    def test_system_trigger_replicate_task(self, rep) -> None:
+    def test_system_trigger_replicate_task_push(self, rep) -> None:
         """
-        This test verifies a replicate task can be triggered by the system
+        Summary: This test verifies a push replicate task can be triggered by the system and files transferred
+
+        Test Steps:
+        1. Add test file to Source (local)
+        2. Create Replication Task and set to trigger 1 min in future then wait for system time to catch up
+        3. Verify Replication Task is successful (Status = FINISHED)
+        4. Verify file exists on Destination (remote)
+        5. Add new test file to Source (local)
+        6. Update Replication Task to trigger 1 min in future then wait for system time to catch up
+        7. Verify Replication Task is successful (Status = FINISHED)
+        8. Verify file exists on Destination (remote)
         """
         # create replication task
-        COM.add_test_file('rep_one.txt', rep['source'])
+        SSHCOM.add_test_file('rep_one.txt', rep['source'])
         assert COM.assert_file_exists('rep_one.txt', rep['source']) is True
 
         DP.click_add_replication_button()
@@ -109,16 +124,7 @@ class Test_Create_Replicate_Task_Different_Box:
         current_minute = COM.get_current_minute()
         REP.set_preset_custom_time(minutes=str(current_minute + 1))
         COM.click_button('done')
-        COM.click_save_button()
-
-        if REP.is_destination_snapshots_dialog_visible() is True:
-            COM.assert_confirm_dialog()
-        if REP.is_sudo_enabled_dialog_visible() is True:
-            COM.assert_confirm_dialog()
-        if REP.is_task_started_dialog_visible() is True:
-            REP.click_close_task_started_button()
-        if REP.is_run_now_dialog_visible() is True:
-            COM.cancel_confirm_dialog()
+        REP.click_save_button_and_resolve_dialogs()
         assert REP.is_replication_task_visible(rep['task-name']) is True
 
         # Set replication destination to not read only
@@ -141,7 +147,7 @@ class Test_Create_Replicate_Task_Different_Box:
         # Verify file on destination
         assert COM.assert_file_exists('rep_one.txt', rep['destination'], private_config['REP_DEST_IP']) is True
 
-        COM.add_test_file('rep_trigger.txt', rep['source'])
+        SSHCOM.add_test_file('rep_trigger.txt', rep['source'])
         assert COM.assert_file_exists('rep_trigger.txt', rep['source']) is True
 
         # Take new snapshot
@@ -171,3 +177,82 @@ class Test_Create_Replicate_Task_Different_Box:
         DP.click_snapshots_button()
         assert COM.assert_text_is_visible(rep['destination']) is True
         assert COM.assert_file_exists('rep_trigger.txt', rep['destination'], private_config['REP_DEST_IP']) is True
+        REP.close_destination_box()
+
+    @allure.tag("Create", "NAS-T1269")
+    @allure.story("System Trigger Replication Task to Local Box")
+    def test_system_trigger_replicate_task_pull(self, rep) -> None:
+        """
+        Summary: This test verifies a pull replicate task can be triggered by the system and files transferred
+
+        Test Steps:
+        1. Add test file to Source (remote)
+        2. Create Replication Task and set to trigger 1 min in future then wait for system time to catch up
+        3. Verify Replication Task is successful (Status = FINISHED)
+        4. Verify file exists on Destination (local)
+        5. Add new test file to Source (remote)
+        6. Update Replication Task to trigger 1 min in future then wait for system time to catch up
+        7. Verify Replication Task is successful (Status = FINISHED)
+        8. Verify file exists on Destination (local)
+        """
+        # create replication task
+        SSHCOM.add_test_file('rep_one.txt', rep['source'], private_config['REP_DEST_IP'])
+        assert COM.assert_file_exists('rep_one.txt', rep['source'], private_config['REP_DEST_IP']) is True
+        API_POST.create_remote_snapshot_with_naming_schema(rep['source'])
+
+        DP.click_add_replication_button()
+        REP.set_source_location_on_different_box(rep['source'], rep['connection-name'])
+        REP.set_destination_location_on_same_box(rep['destination'])
+        REP.set_task_name(rep['task-name'])
+        COM.click_next_button()
+
+        REP.select_schedule_preset('custom')
+        current_minute = COM.get_current_minute()
+        REP.set_preset_custom_time(minutes=str(current_minute + 1))
+        COM.click_button('done')
+        REP.click_save_button_and_resolve_dialogs()
+        assert REP.is_replication_task_visible(rep['task-name']) is True
+
+        # Set replication destination to not read only
+        DP.click_edit_replication_task_by_name(rep['task-name'])
+        REP.select_destination_read_only('ignore')
+
+        COM.set_checkbox('schedule')
+        REP.select_schedule_preset('custom')
+        current_minute = COM.get_current_minute()
+        REP.set_preset_custom_time(minutes=str(current_minute + 1))
+        COM.click_button('done')
+        COM.click_save_button()
+
+        COM.wait_for_system_time('minute', current_minute + 1)
+        # Soft page refresh
+        NAV.navigate_to_datasets()
+        NAV.navigate_to_data_protection()
+        assert REP.get_replication_status(rep['task-name']) == rep['status']
+
+        # Verify file on destination
+        assert COM.assert_file_exists('rep_one.txt', rep['destination']) is True
+
+        SSHCOM.add_test_file('rep_trigger.txt', rep['source'], private_config['REP_DEST_IP'])
+        assert COM.assert_file_exists('rep_trigger.txt', rep['source'], private_config['REP_DEST_IP']) is True
+
+        # Take new snapshot
+        API_POST.create_remote_snapshot_with_naming_schema(rep['source'])
+
+        DP.click_edit_replication_task_by_name(rep['task-name'])
+        REP.select_schedule_preset('custom')
+        current_minute = COM.get_current_minute()
+        REP.set_preset_custom_time(minutes=str(current_minute + 1))
+        COM.click_button('done')
+        COM.click_save_button()
+
+        COM.wait_for_system_time('minute', current_minute + 1)
+        # Soft page refresh
+        NAV.navigate_to_datasets()
+        NAV.navigate_to_data_protection()
+        assert REP.get_replication_status(rep['task-name']) == rep['status']
+
+        # Verify Snapshot exists
+        DP.click_snapshots_button()
+        assert COM.assert_text_is_visible(rep['destination']) is True
+        assert COM.assert_file_exists('rep_trigger.txt', rep['destination']) is True
