@@ -98,12 +98,11 @@ class Test_Local_Groups:
             COM.click_save_button_and_wait_for_progress_bar()
             assert LG.is_group_visible(groups['group-name']) is True
             assert LG.assert_group_gid(groups['group-name'], groups['dup-gid']) is True
-
         LG.click_add_group_button()
         LG.set_allow_duplicate_gids()
         LG.set_group_gid(groups['dup-gid'])
         LG.set_group_name(groups['alt-group-name'])
-        COM.click_save_button_and_wait_for_progress_bar()
+        COM.click_save_button_and_wait_for_right_panel()
         assert LG.is_group_visible(groups['alt-group-name']) is True
         assert LG.assert_group_gid(groups['alt-group-name'], groups['dup-gid']) is True
         LG.expand_group_by_name(groups['alt-group-name'])
