@@ -285,8 +285,8 @@ class NFS:
         Example:
             - NFS.set_maproot_group('group1')
         """
-        COM.set_input_field('maproot-group', name, True)
-        WebUI.delay(0.2)
+        COM.set_input_field('maproot-group', name, False)
+        WebUI.delay(0.5)
 
     @classmethod
     def set_maproot_user(cls, name: str) -> None:
@@ -298,8 +298,8 @@ class NFS:
         Example:
             - NFS.set_maproot_user('user1')
         """
-        COM.set_input_field('maproot-user', name, True)
-        WebUI.delay(0.2)
+        COM.set_input_field('maproot-user', name, False)
+        WebUI.delay(0.5)
 
     @classmethod
     def set_network(cls, network: str) -> None:

@@ -1,5 +1,6 @@
-dataset_name,api_path,share_page_path,maproot_user,maproot_group,mapall_user,mapall_group,security,network,network_mask,host,permissions_code,dataset_ownership,mount_dir,dataset_user,dataset_group,dataset_user_perms,dataset_group_perms,dataset_other_perms
-auth_ip_test,tank/auth_ip_test,/mnt/tank/auth_ip_test,,,,,,,,,drwxr-xrwx,root   root,auth_ip,root,root,Read | Write | Execute,Read | Execute,Read | Write | Execute
-read_only,tank/read_only,/mnt/tank/read_only,,,,,,,,,drwxr-xrwx,root   root,read_only,root,root,Read | Write | Execute,Read | Execute,Read | Write | Execute
-auth_network_test,tank/auth_network_test,/mnt/tank/auth_network_test,,,,,,,,,drwxr-xrwx,root   root,auth_network,root,root,Read | Write | Execute,Read | Execute,Read | Write | Execute
-mapall_user_and_group,tank/mapall_user_and_group,/mnt/tank/mapall_user_and_group,,,nobody,nogroup,,,,,drwxrwxr--,nobody nogroup,mapall_testing,nobody,nogroup,Read | Write | Execute,Read | Write | Execute,Read
+dataset_name,api_path,share_page_path,maproot_user,maproot_group,mapall_user,mapall_group,security,network,network_mask,host,permissions_code,maproot_user_permissions_code,maproot_both_permissions_code,dataset_ownership,mount_dir,dataset_user,dataset_group,dataset_user_perms,dataset_group_perms,dataset_other_perms
+auth_ip_test,tank/auth_ip_test,/mnt/tank/auth_ip_test,,,,,,,,,drwxr-xrwx,,,root   root,auth_ip,root,root,Read | Write | Execute,Read | Execute,Read | Write | Execute
+read_only,tank/read_only,/mnt/tank/read_only,,,,,,,,,drwxr-xrwx,,,root   root,read_only,root,root,Read | Write | Execute,Read | Execute,Read | Write | Execute
+auth_network_test,tank/auth_network_test,/mnt/tank/auth_network_test,,,,,,,,,drwxr-xrwx,,,root   root,auth_network,root,root,Read | Write | Execute,Read | Execute,Read | Write | Execute
+mapall_user_and_group,tank/mapall_user_and_group,/mnt/tank/mapall_user_and_group,,,nobody,nogroup,,,,,drwxrwxr--,,,nobody nogroup,mapall_testing,nobody,nogroup,Read | Write | Execute,Read | Write | Execute,Read
+maproot_user_and_group,tank/maproot_user_and_group,/mnt/tank/maproot_user_and_group,admin,admin,,,,,,,drwxrwxr-x,950    950,950    950,950    950,maproot_testing,admin,admin,Read | Write | Execute,Read | Write | Execute,Read | Execute
