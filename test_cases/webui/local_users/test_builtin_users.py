@@ -27,7 +27,7 @@ class Test_Builtin_Users:
         """
         yield
         # Clean up environment.
-        LU.unset_show_builtin_users_toggle()
+        LU.unset_show_builtin_groups_toggle()
         NAV.navigate_to_dashboard()
 
     @allure.tag("Read")
