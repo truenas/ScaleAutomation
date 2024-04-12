@@ -45,6 +45,7 @@ class Test_Local_Groups:
         if LG.is_group_visible(groups['group-name']) is False:
             API_POST.create_group(groups['group-name'])
             assert LG.is_group_visible(groups['group-name']) is True
+            
         LG.expand_group_by_name(groups['group-name'])
         LG.click_group_members_button(groups['group-name'])
         LG.click_user_account_by_name(groups['username'])
