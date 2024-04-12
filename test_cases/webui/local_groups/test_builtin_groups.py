@@ -14,7 +14,7 @@ class Test_Builtin_Groups:
     @pytest.fixture(scope='class', autouse=True)
     def setup_test(self) -> None:
         """
-        This method navigates to Local Groups, sets the list to 100 items and enables built-in groups toggle.
+        This method sets up each test to start with builtin groups not shown
         """
         NAV.navigate_to_local_groups()
         COM.set_100_items_per_page()
@@ -23,12 +23,11 @@ class Test_Builtin_Groups:
     @pytest.fixture(scope='class', autouse=True)
     def teardown_test(self):
         """
-        This method unsets the show built-in groups toggle and navigates to dashboard
+        This method clears any test groups after test is run for a clean environment
         """
         yield
         # Clean up environment.
         LG.unset_show_builtin_groups_toggle()
-        NAV.navigate_to_dashboard()
 
     @allure.tag("Read")
     @allure.story("Verify Built in Local Groups")
