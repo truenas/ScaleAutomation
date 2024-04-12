@@ -74,7 +74,7 @@ class Test_Rsync:
         COM.click_save_button()
 
         # add file to local dataset
-        SSHCOM.add_test_file('/mnt/tank/rsync-non/newfile.txt', private_config['IP'],
+        SSHCOM.add_test_file('newfile.txt', '/mnt/tank/rsync-non', private_config['IP'],
                              'sshuser', 'testing')
         response = SSHCOM.list_directory('/mnt/tank/rsync-non', private_config['IP'],
                                          'sshuser', 'testing')
@@ -115,7 +115,7 @@ class Test_Rsync:
         COM.click_save_button()
 
         # add file to local dataset
-        SSHCOM.add_test_file('/mnt/tank/rsync-non/newfile.txt', private_config['IP'],
+        SSHCOM.add_test_file('newfile.txt', '/mnt/tank/rsync-non', private_config['IP'],
                              'sshuser', 'testing')
         response = SSHCOM.list_directory('/mnt/tank/rsync-non', private_config['IP'],
                                          'sshuser', 'testing')
@@ -159,7 +159,7 @@ class Test_Rsync:
         COM.click_save_button()
 
         # add file to local dataset
-        SSHCOM.add_test_file('/mnt/tank/rsync-enc/newfile.txt', private_config['IP'],
+        SSHCOM.add_test_file('newfile.txt', '/mnt/tank/rsync-enc', private_config['IP'],
                              'sshuser', 'testing')
         response = SSHCOM.list_directory('/mnt/tank/rsync-enc', private_config['IP'],
                                          'sshuser', 'testing')

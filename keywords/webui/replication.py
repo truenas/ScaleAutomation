@@ -33,6 +33,25 @@ class Replication:
             f'//*[@data-test="button-state-replication-task-{COM.convert_to_tag_format(name)}-row-state" and contains(@class,"fn-theme-green")]', shared_config['LONG_WAIT']) is True
 
     @classmethod
+    def click_save_button_and_resolve_dialogs(cls):
+        """
+        This method clicks the save button and resolves subsequent dialogs
+
+        Example:
+            - Replication.click_save_button_and_resolve_dialogs()
+        """
+        COM.click_save_button()
+
+        if cls.is_destination_snapshots_dialog_visible() is True:
+            COM.assert_confirm_dialog()
+        if cls.is_sudo_enabled_dialog_visible() is True:
+            COM.assert_confirm_dialog()
+        if cls.is_task_started_dialog_visible() is True:
+            cls.click_close_task_started_button()
+        if cls.is_run_now_dialog_visible() is True:
+            COM.cancel_confirm_dialog()
+
+    @classmethod
     def close_destination_box(cls) -> None:
         """
         This method closes the destination box browser window and switches to the source box browser window
@@ -259,15 +278,15 @@ class Replication:
         """
         prefix = '-on-' if system == 'this' else '-on-a-'
         system = obj + '-from' + prefix + system + '-system'
-        COM.select_option(obj + '-from', system)
+        if COM.get_element_property(xpaths.common_xpaths.select_field(obj + '-from'), "ariaDisabled") == 'false':
+            COM.select_option(obj + '-from', system)
         src = 'source'
         if obj.startswith('target'):
             src = 'target'
         if connection != "":
             cls.set_ssh_connection(src, connection)
-            if src == 'target':
-                if COM.is_visible(xpaths.common_xpaths.button_field('dialog-confirm')) is True:
-                    COM.click_button('dialog-confirm')
+            if COM.is_visible(xpaths.common_xpaths.button_field('dialog-confirm')) is True:
+                COM.click_button('dialog-confirm')
         COM.set_input_field(obj, path)
 
     @classmethod
@@ -312,6 +331,9 @@ class Replication:
             - Replication.set_preset_custom_time('0', '18')
             - Replication.set_preset_custom_time('*', '*', '5')
         """
+        minutes = str(int(minutes) % 60) if minutes != '*' else minutes
+        hours = str(int(hours) % 24) if hours != '*' else hours
+        days = str(int(days) % 31) if days != '*' else days
         COM.set_input_field('minutes', minutes)
         COM.set_input_field('hours', hours)
         COM.set_input_field('days', days)
