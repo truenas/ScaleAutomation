@@ -56,7 +56,7 @@ class Test_Create_Adv_Replicate_Task_Other_Pool_Same_Box:
         API_POST.delete_all_dataset_snapshots('two/advrep')
         API_POST.export_pool('two', True)
 
-    @allure.tag("Create")
+    @allure.tag("Create", "NAS-T1671")
     @allure.story("Create Advanced Replication Task to anther Pool on Local Box")
     def test_create_advanced_replicate_task_to_other_pool(self) -> None:
         """
