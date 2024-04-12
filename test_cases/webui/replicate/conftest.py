@@ -1,6 +1,5 @@
 import pytest
 
-from helper.data_config import get_data_list
 from helper.global_config import private_config
 from keywords.api.post import API_POST
 from keywords.api.put import API_PUT
@@ -10,7 +9,6 @@ from keywords.webui.ssh_connection import SSH_Connection as SSHCON
 
 
 @pytest.fixture(scope='class', autouse=True)
-@pytest.mark.parametrize('rep', get_data_list('replication'), scope='class')
 def setup_class(rep):
     """
     This method creates all ssh connections needed for replication
