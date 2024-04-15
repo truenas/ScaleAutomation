@@ -231,8 +231,15 @@ class Test_Advanced_Configurations:
     @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[4:5])
     def test_nfs_share_maproot_user_and_group(self, nfs_advanced_config):
         """
-        This test edits the NFS share with a maproot user and group and verifies that the maproot is set be and
-        access is appropriately granted.
+        Summary: This test edits the NFS share with a maproot user and maproot group and verifies that the maproot
+        is set be and that root access is appropriately granted only when set.
+
+        Test Steps:
+        1. Create an NFS share without maproot set.
+        2. Verify share can mount but root access is not granted.
+        3. Set maproot user and verify root user is mapped.
+        4. Set maproot group and verify root group is mapped.
+        5. Remove maproot user and group mapping and verify root access is no-longer granted.
         """
         assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
         # Set NFS service to allow NFSv3 and NFSv4 protocols
