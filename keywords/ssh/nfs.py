@@ -84,12 +84,13 @@ class SSH_NFS:
         return cr_dir in value.stdout.lower()
 
     @classmethod
-    def verify_share_maproot_access(cls, mount_dir: str, permissions_code: str = "") -> bool:
+    def verify_share_maproot_access(cls, mount_dir: str, ownership: str = "") -> bool:
         """
-        This method attempts to access the share with maproot access and returns true if actions as the set maproot are successful. Otherwise, it returns false.
+        This method attempts to access the share with maproot access and returns true if actions as the set maproot are
+        successful. Otherwise, it returns false.
 
-        :param permissions_code: the expected permissions code of the created directory.
         :param mount_dir: the path from 'nfsshares' to the directory to mount the share to.
+        :param ownership: the expected ownership of the created directory.
         :return: true if actions as the set maproot are successful
         """
         directory = f"test_maproot_dir"
@@ -104,7 +105,7 @@ class SSH_NFS:
                                   private_config['NFS_CLIENT_PASSWORD'])
         SSH_Command_Line(f"cd ~/nfsshares ; sudo rm -rf {mount_dir}/{directory}", private_config['NFS_CLIENT_IP'],
                          private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
-        return permissions_code in value2.stdout
+        return ownership in value2.stdout
 
     @classmethod
     def verify_share_mounted(cls, mount_dir: str, share_perms: str, ownership: str) -> bool:
