@@ -260,14 +260,14 @@ class Test_Advanced_Configurations:
         NFS.set_maproot_user(nfs_advanced_config["maproot_user"])
         COM.click_save_button_and_wait_for_right_panel()
         # Verify maproot user is set
-        assert NFS_SSH.verify_share_maproot_access(nfs_advanced_config["mount_dir"], nfs_advanced_config["maproot_user_permissions_code"]) is True
+        assert NFS_SSH.verify_share_maproot_access(nfs_advanced_config["mount_dir"], nfs_advanced_config["maproot_user_ownership"]) is True
         # Edit the NFS share and set the maproot group
         COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
         COMSHARE.click_advanced_options()
         NFS.set_maproot_group(nfs_advanced_config["maproot_group"])
         COM.click_save_button_and_wait_for_right_panel()
         # Verify maproot user and group is set
-        assert NFS_SSH.verify_share_maproot_access(nfs_advanced_config["mount_dir"], nfs_advanced_config["maproot_both_permissions_code"]) is True
+        assert NFS_SSH.verify_share_maproot_access(nfs_advanced_config["mount_dir"], nfs_advanced_config["maproot_both_ownership"]) is True
         # Edit the NFS share and unset the maproot user and group
         COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
         COMSHARE.click_advanced_options()
