@@ -42,7 +42,7 @@ class Test_SMB_Connect_To_Share:
         # # Environment Teardown
         yield
         SSH.delete_smb_test_files(smb_data['user'])
-        assert SSH.assert_file_not_exist(smb_data['user'], 'putfile') is True
+        assert SSH.assert_file_exists('putfile', smb_data['path'], user=smb_data['user'], password='testing') is False
         API_DELETE.delete_share('smb', smb_data['name'])
         API_DELETE.delete_dataset(smb_data['path'])
 
