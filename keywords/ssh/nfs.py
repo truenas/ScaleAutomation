@@ -93,7 +93,7 @@ class SSH_NFS:
         :param ownership: the expected ownership of the created directory.
         :return: true if actions as the set maproot are successful
         """
-        directory = f"test_maproot_dir"
+        directory = "test_maproot_dir"
         command = f"cd ~/nfsshares/{mount_dir} ; sudo mkdir {directory}"
         value = SSH_Command_Line(command, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'],
                                  private_config['NFS_CLIENT_PASSWORD'])
