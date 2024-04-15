@@ -42,7 +42,6 @@ class Common_SSH:
         :return: returns True if the expected file does not exist, otherwise False
         """
         response = SSH_Command_Line(f'ls -al /mnt/{file_path}/{file}', ip, user, password)
-        print("@RESPONSE: " + response.stdout)
         return file in response.stdout
 
     @classmethod
