@@ -226,7 +226,7 @@ class Test_Advanced_Configurations:
         assert NFS_SSH.verify_share_delete_access(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is False
         assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True
 
-    @allure.tag("maproot user", "maproot group")
+    @allure.tag("maproot user", "maproot group", "NAS-T1156")
     @allure.story("NFS Share maproot user and maproot group")
     @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[4:5])
     def test_nfs_share_maproot_user_and_group(self, nfs_advanced_config):
