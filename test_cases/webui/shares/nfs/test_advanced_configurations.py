@@ -175,7 +175,7 @@ class Test_Advanced_Configurations:
         This test edits the NFS share with a mapall user and group and verifies that the share can/cannot be mounted and
         access is appropriately granted.
         """
-        # Edit the NFS share and set a valid authorized network address
+        # Edit the NFS share and set the mapall user
         assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
         COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
         COM.set_checkbox('enabled')
@@ -187,7 +187,7 @@ class Test_Advanced_Configurations:
         SERV.click_edit_button_by_servicename('NFS')
         SERV.set_nfs_service_protocols('NFSv3, NFSv4')
         COM.click_save_button_and_wait_for_right_panel()
-        # Verify share can mount
+        # Verify access is mapped
         assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is True
         assert NFS_SSH.verify_share_read_access(nfs_advanced_config["mount_dir"]) is True
@@ -195,7 +195,7 @@ class Test_Advanced_Configurations:
         assert NFS_SSH.verify_share_execute_access(nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.verify_share_delete_access(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True
-        # Edit the NFS share and remove the mapall user and group
+        # Edit the NFS share and set the mapall group
         NAV.navigate_to_shares()
         assert COMSHARE.assert_share_card_displays('nfs') is True
         assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
@@ -203,15 +203,15 @@ class Test_Advanced_Configurations:
         COMSHARE.click_advanced_options()
         NFS.set_mapall_group(nfs_advanced_config["mapall_group"])
         COM.click_save_button_and_wait_for_right_panel()
-        # Verify access is not mapped
+        # Verify access is mapped
         assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is True
         assert NFS_SSH.verify_share_read_access(nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.verify_share_write_access(nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.verify_share_execute_access(nfs_advanced_config["mount_dir"]) is True
-        assert NFS_SSH.verify_share_delete_access(nfs_advanced_config["share_page_path"],
-                                                  nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.verify_share_delete_access(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
         assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True
+        # unset mapall user and group
         COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
         COMSHARE.click_advanced_options()
         NFS.unset_mapall_user()
@@ -224,4 +224,56 @@ class Test_Advanced_Configurations:
         assert NFS_SSH.verify_share_write_access(nfs_advanced_config["mount_dir"]) is False
         assert NFS_SSH.verify_share_execute_access(nfs_advanced_config["mount_dir"]) is False
         assert NFS_SSH.verify_share_delete_access(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is False
+        assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True
+
+    @allure.tag("maproot user", "maproot group", "NAS-T1156")
+    @allure.story("NFS Share maproot user and maproot group")
+    @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[4:5])
+    def test_nfs_share_maproot_user_and_group(self, nfs_advanced_config):
+        """
+        Summary: This test edits the NFS share with a maproot user and maproot group and verifies that the maproot
+        is set be and that root access is appropriately granted only when set.
+
+        Test Steps:
+        1. Create an NFS share without maproot set.
+        2. Verify share can mount but root access is not granted.
+        3. Set maproot user and verify root user is mapped.
+        4. Set maproot group and verify root group is mapped.
+        5. Remove maproot user and group mapping and verify root access is no-longer granted.
+        """
+        assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
+        # Set NFS service to allow NFSv3 and NFSv4 protocols
+        NAV.navigate_to_system_settings_services()
+        SERV.click_edit_button_by_servicename('NFS')
+        SERV.set_nfs_service_protocols('NFSv3, NFSv4')
+        COM.click_save_button_and_wait_for_right_panel()
+        # Verify maproot is not set
+        assert NFS_SSH.mount_nfs_share(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
+        assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is True
+        assert NFS_SSH.verify_share_maproot_access(nfs_advanced_config["mount_dir"]) is False
+        # Edit the NFS share and set the maproot user
+        NAV.navigate_to_shares()
+        assert COMSHARE.assert_share_card_displays('nfs') is True
+        assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
+        COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
+        COMSHARE.click_advanced_options()
+        NFS.set_maproot_user(nfs_advanced_config["maproot_user"])
+        COM.click_save_button_and_wait_for_right_panel()
+        # Verify maproot user is set
+        assert NFS_SSH.verify_share_maproot_access(nfs_advanced_config["mount_dir"], nfs_advanced_config["maproot_user_ownership"]) is True
+        # Edit the NFS share and set the maproot group
+        COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
+        COMSHARE.click_advanced_options()
+        NFS.set_maproot_group(nfs_advanced_config["maproot_group"])
+        COM.click_save_button_and_wait_for_right_panel()
+        # Verify maproot user and group is set
+        assert NFS_SSH.verify_share_maproot_access(nfs_advanced_config["mount_dir"], nfs_advanced_config["maproot_both_ownership"]) is True
+        # Edit the NFS share and unset the maproot user and group
+        COMSHARE.click_edit_share('nfs', nfs_advanced_config["share_page_path"])
+        COMSHARE.click_advanced_options()
+        NFS.unset_maproot_user()
+        NFS.unset_maproot_group()
+        COM.click_save_button_and_wait_for_right_panel()
+        # Verify maproot user and group is not set
+        assert NFS_SSH.verify_share_maproot_access(nfs_advanced_config["mount_dir"]) is False
         assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True
