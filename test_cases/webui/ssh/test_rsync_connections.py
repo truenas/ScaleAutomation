@@ -24,7 +24,7 @@ class Test_Rsync:
         """
         # verify file does not exist in remote dataset
         SSHCOM.remove_all_test_files('tank/rsync-enc', private_config['REP_DEST_IP'])
-        SSHCOM.remove_all_test_files('tank/rsync-non' , private_config['REP_DEST_IP'])
+        SSHCOM.remove_all_test_files('tank/rsync-non', private_config['REP_DEST_IP'])
         assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', private_config['REP_DEST_IP'],
                                          'sshuser', 'testing') is False
 
