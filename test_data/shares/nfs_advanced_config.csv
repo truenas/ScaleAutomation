@@ -3,4 +3,4 @@ auth_ip_test,tank/auth_ip_test,/mnt/tank/auth_ip_test,,,,,,,,,drwxr-xrwx,,,root 
 read_only,tank/read_only,/mnt/tank/read_only,,,,,,,,,drwxr-xrwx,,,root   root,read_only,root,root,Read | Write | Execute,Read | Execute,Read | Write | Execute
 auth_network_test,tank/auth_network_test,/mnt/tank/auth_network_test,,,,,,,,,drwxr-xrwx,,,root   root,auth_network,root,root,Read | Write | Execute,Read | Execute,Read | Write | Execute
 mapall_user_and_group,tank/mapall_user_and_group,/mnt/tank/mapall_user_and_group,,,nobody,nogroup,,,,,drwxrwxr--,,,nobody nogroup,mapall_testing,nobody,nogroup,Read | Write | Execute,Read | Write | Execute,Read
-maproot_user_and_group,tank/maproot_user_and_group,/mnt/tank/maproot_user_and_group,admin,admin,,,,,,,drwxrwxr-x,950    950,950    950,950    950,maproot_testing,admin,admin,Read | Write | Execute,Read | Write | Execute,Read | Execute
+maproot_user_and_group,tank/maproot_user_and_group,/mnt/tank/maproot_user_and_group,admin,root,,,,,,,drwxrwxr-x,950 nogroup,950 root,950 root,maproot_testing,admin,root,Read | Write | Execute,Read | Write | Execute,Read | Execute
