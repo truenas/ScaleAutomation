@@ -3,11 +3,14 @@ import pytest
 from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
+from keywords.api.put import API_PUT
 
 
 @pytest.fixture(scope='class', autouse=True)
 def setup_class():
     API_POST.create_non_admin_user('sshuser', 'sshuser Full', 'testing')
+    API_PUT.enable_user_all_sudo_commands_no_password('sshuser')
+    API_PUT.enable_user_ssh_password('sshuser')
     API_POST.create_remote_non_admin_user('sshuser', 'sshuser Full', 'testing')
 
     API_DELETE.delete_dataset('tank/rsync-enc')

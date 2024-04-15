@@ -25,8 +25,8 @@ class Test_Rsync:
         # verify file does not exist in remote dataset
         SSHCOM.remove_all_test_files('tank/rsync-enc', private_config['REP_DEST_IP'])
         SSHCOM.remove_all_test_files('tank/rsync-non', private_config['REP_DEST_IP'])
-        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', private_config['REP_DEST_IP'],
-                                         'sshuser', 'testing') is False
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', private_config['REP_DEST_IP']) is False
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non', private_config['REP_DEST_IP']) is False
 
         # delete task if already exists
         NAV.navigate_to_data_protection()
@@ -72,12 +72,11 @@ class Test_Rsync:
         COM.click_save_button()
 
         # add file to local dataset
-        SSHCOM.add_test_file('newfile.txt', 'tank/rsync-non')
+        SSHCOM.add_test_file('newfile.txt', 'tank/rsync-non', user='sshuser', password='testing')
         assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non') is True
 
         # verify file does not exist on remote dataset
-        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non',
-                                         ip=private_config['REP_DEST_IP']) is False
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non', ip=private_config['REP_DEST_IP']) is False
         RSYNC.click_run_now_rsync_task_by_path('/mnt/tank/rsync-non')
 
         # verify task fails
@@ -109,19 +108,16 @@ class Test_Rsync:
         COM.click_save_button()
 
         # add file to local dataset
-        SSHCOM.add_test_file('newfile.txt', 'tank/rsync-non')
+        SSHCOM.add_test_file('newfile.txt', 'tank/rsync-non', user='sshuser', password='testing')
         assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non') is True
         checksum = SSHCOM.get_file_checksum('/mnt/tank/rsync-non/newfile.txt', 'sshuser', 'testing')
 
         # verify file does not exist on remote dataset
-        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', private_config['REP_DEST_IP'],
-                                         'sshuser', 'testing') is False
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', private_config['REP_DEST_IP']) is False
         RSYNC.click_run_now_rsync_task_by_path('/mnt/tank/rsync-non')
         assert RSYNC.get_rsync_status('/mnt/tank/rsync-non') == 'SUCCESS'
         # verify file does exist on remote dataset
-        response = SSHCOM.list_directory('/mnt/tank/rsync-enc/rsync-non', private_config['REP_DEST_IP'],
-                                         'sshuser', 'testing')
-        assert response.__contains__('newfile.txt')
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non') is True
         assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-non/newfile.txt', 'sshuser', 'testing') == checksum
 
     @allure.tag("Create")
@@ -149,16 +145,14 @@ class Test_Rsync:
         COM.click_save_button()
 
         # add file to local dataset
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non') is True
         SSHCOM.add_test_file('newfile.txt', 'tank/rsync-enc')
         assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc') is True
         checksum = SSHCOM.get_file_checksum('/mnt/tank/rsync-enc/newfile.txt', 'sshuser', 'testing')
 
         # verify file does not exist on remote dataset
-        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', private_config['REP_DEST_IP'],
-                                         'sshuser', 'testing') is False
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', private_config['REP_DEST_IP']) is False
         RSYNC.click_run_now_rsync_task_by_path('/mnt/tank/rsync-enc')
         assert RSYNC.get_rsync_status('/mnt/tank/rsync-enc') == 'SUCCESS'
-        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc/rsync-enc',
-                                         private_config['REP_DEST_IP'],
-                                         'sshuser', 'testing') is True
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc/rsync-enc', private_config['REP_DEST_IP']) is True
         assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-enc/newfile.txt', 'sshuser', 'testing') == checksum
