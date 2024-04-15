@@ -2,7 +2,7 @@ import xpaths
 from helper.global_config import shared_config
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
-
+from keywords.webui.navigation import Navigation as NAV
 
 class Rsync:
 
@@ -16,15 +16,19 @@ class Rsync:
         Example:
             - Rsync.click_run_now_rsync_task_by_name('/my/Rsync/Path')
         """
-        WebUI.refresh()
+        # WebUI.refresh()
+        # Soft page refresh
+        NAV.navigate_to_datasets()
+        NAV.navigate_to_data_protection()
         COM.click_button(f'card-rsync-task{COM.convert_to_tag_format(path)}-null-play-arrow-row-action')
         COM.assert_confirm_dialog()
         if COM.assert_dialog_visible('FAILED', shared_config['SHORT_WAIT']):
             print("@@@ FAILED RSYNC: ")
             COM.click_error_dialog_close_button()
-        WebUI.refresh()
-        # WebUI.wait_until_visible(
-        #     f'//*[@data-test="button-state-card-rsync-task{COM.convert_to_tag_format(path)}-null-row-state" and contains(@class,"fn-theme-green")]', shared_config["LONG_WAIT"])
+        # WebUI.refresh()
+        # Soft page refresh
+        NAV.navigate_to_datasets()
+        NAV.navigate_to_data_protection()
 
     @classmethod
     def delete_rsync_task_by_path(cls, path: str) -> None:
