@@ -99,7 +99,7 @@ class SSH_NFS:
         if "permission denied" in value.stderr.lower():
             print("Permission denied while running command.")
             return False
-        command2 = f"sudo ls -al ~/nfsshares/{mount_dir}"
+        command2 = f"sudo ls -l ~/nfsshares/{mount_dir}"
         value2 = SSH_Command_Line(command2, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'],
                                   private_config['NFS_CLIENT_PASSWORD'])
         SSH_Command_Line(f"cd ~/nfsshares ; sudo rm -rf {mount_dir}/{directory}", private_config['NFS_CLIENT_IP'],
