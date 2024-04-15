@@ -73,7 +73,7 @@ class Test_Rsync:
 
         # add file to local dataset
         SSHCOM.add_test_file('newfile.txt', 'tank/rsync-non', user='sshuser', password='testing')
-        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non') is True
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non', user='sshuser', password='testing') is True
 
         # verify file does not exist on remote dataset
         assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non', ip=private_config['REP_DEST_IP']) is False
@@ -109,7 +109,7 @@ class Test_Rsync:
 
         # add file to local dataset
         SSHCOM.add_test_file('newfile.txt', 'tank/rsync-non', user='sshuser', password='testing')
-        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non') is True
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non', user='sshuser', password='testing') is True
         checksum = SSHCOM.get_file_checksum('/mnt/tank/rsync-non/newfile.txt', 'sshuser', 'testing')
 
         # verify file does not exist on remote dataset
@@ -117,7 +117,7 @@ class Test_Rsync:
         RSYNC.click_run_now_rsync_task_by_path('/mnt/tank/rsync-non')
         assert RSYNC.get_rsync_status('/mnt/tank/rsync-non') == 'SUCCESS'
         # verify file does exist on remote dataset
-        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non') is True
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non', user='sshuser', password='testing') is True
         assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-non/newfile.txt', 'sshuser', 'testing') == checksum
 
     @allure.tag("Create")
@@ -147,7 +147,7 @@ class Test_Rsync:
         # add file to local dataset
         assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non') is True
         SSHCOM.add_test_file('newfile.txt', 'tank/rsync-enc')
-        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc') is True
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', user='sshuser', password='testing') is True
         checksum = SSHCOM.get_file_checksum('/mnt/tank/rsync-enc/newfile.txt', 'sshuser', 'testing')
 
         # verify file does not exist on remote dataset
