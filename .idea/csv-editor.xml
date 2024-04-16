@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\test_data\ad_credentials.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\test_data\builtin_groups.csv">
           <value>
             <Attribute>
@@ -25,6 +32,13 @@
           </value>
         </entry>
         <entry key="\test_data\certificates.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\test_data\create-data-pool.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

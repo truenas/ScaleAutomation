@@ -5,6 +5,7 @@ from helper.global_config import private_config
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.ssh.common import Common_SSH as SSH
+from keywords.ssh.smb import SSH_SMB as SSHSMB
 from keywords.webui.common import Common as COM
 from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.local_users import Local_Users as LU
@@ -41,7 +42,7 @@ class Test_SMB_Connect_To_Share:
         """
         # # Environment Teardown
         yield
-        SSH.delete_smb_test_files(smb_data['user'])
+        SSHSMB.delete_smb_test_files(smb_data['user'])
         assert SSH.assert_file_exists('putfile', smb_data['path'], user=smb_data['user'], password='testing') is False
         API_DELETE.delete_share('smb', smb_data['name'])
         API_DELETE.delete_dataset(smb_data['path'])
@@ -55,7 +56,7 @@ class Test_SMB_Connect_To_Share:
         SERVICE.restart_service_by_api('cifs')
 
         # # Add SMB Files
-        SSH.add_smb_test_files(smb_data['user'], smb_data['path'], private_config['IP'])
+        SSHSMB.add_smb_test_files(smb_data['user'], smb_data['path'], private_config['IP'])
         assert SSH.verify_smb_share_read_permission(smb_data['user'], smb_data['read']) is True
         assert SSH.verify_smb_share_write_permission(smb_data['user'], smb_data['write']) is True
         assert SSH.verify_smb_share_exec_permission(smb_data['user'], smb_data['execute']) is True
@@ -78,7 +79,7 @@ class Test_SMB_Connect_To_Share:
         SERVICE.restart_service_by_api('cifs')
 
         # # Add SMB Files
-        SSH.add_smb_test_files(smb_data['user'], smb_data['path'], private_config['IP'])
+        SSHSMB.add_smb_test_files(smb_data['user'], smb_data['path'], private_config['IP'])
         assert SSH.verify_smb_share_read_permission(smb_data['user'], smb_data['read']) is True
         assert SSH.verify_smb_share_write_permission(smb_data['user'], smb_data['write']) is True
         assert SSH.verify_smb_share_exec_permission(smb_data['user'], smb_data['execute']) is True

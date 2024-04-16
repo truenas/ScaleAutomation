@@ -12,7 +12,7 @@ class Common_SSH:
                       user: str = private_config['SSH_USERNAME'],
                       password: str = private_config['SSH_PASSWORD']) -> None:
         """
-        This method adds files to be used for testing
+        This method adds the given file to the given ip
 
         :param file: is the name of the file to add
         :param file_path: is the path of the file

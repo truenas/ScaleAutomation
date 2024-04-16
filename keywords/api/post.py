@@ -339,6 +339,28 @@ class API_POST:
         return response
 
     @classmethod
+    def create_remote_snapshot_with_naming_schema(cls, dataset: str, schema: str = "auto-%Y-%m-%d_%H-%M") -> Response:
+        """
+        This method creates the given snapshot on remote system.
+
+        :param dataset: is the name of the dataset.
+        :param schema: is the naming schema of the snapshot.
+        :return: the API request response.
+
+        Example:
+            - API_POST.create_remote_snapshot_with_naming_schema('tank/test-dataset', 'auto-%Y-%m-%d_%H-%M')
+        """
+        payload = {
+            "dataset": dataset,
+            "naming_schema": schema
+        }
+        private_config['API_IP'] = private_config['REP_DEST_IP']
+        response = POST('/zfs/snapshot', payload)
+        private_config['API_IP'] = private_config['IP']
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
     def create_share(cls, sharetype: str, name: str, path: str, guest: bool = False, comment: str = '') -> Response:
         """
         This method creates the given share.
@@ -394,7 +416,36 @@ class API_POST:
             "suspend_vms": suspend_vms,
             "vmware_sync": vmware_sync
         }
-        response = POST('/zfs/snapshot/', payload)
+        response = POST('/zfs/snapshot', payload)
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def create_snapshot_task(cls, dataset: str, schema: str = "auto-%Y-%m-%d_%H-%M", recursive: bool = False,
+                             lifetime_value: int = 2, lifetime_unit: str = "WEEK") -> Response:
+        """
+        This method creates the given periodic snapshot task.
+
+        :param dataset: is the name of the dataset.
+        :param schema: is the naming schema of the snapshot.
+        :param recursive: is whether to recursively apply snapshot.
+        :param lifetime_value: is the lifetime value retention.
+        :param lifetime_unit: is the lifetime unit retention. [DAY/HOUR/MONTH/WEEK/YEAR]
+        :return: the API request response.
+
+        Example:
+            - API_POST.create_snapshot_task('tank/test-dataset')
+            - API_POST.create_snapshot_task('tank/test-dataset', 'auto-%Y-%m-%d_%H-%M')
+            - API_POST.create_snapshot_task('tank/test-dataset', 'auto-%Y-%m-%d_%H-%M', True, 2, "WEEK")
+        """
+        payload = {
+            "dataset": dataset,
+            "recursive": recursive,
+            "lifetime_value": lifetime_value,
+            "lifetime_unit": lifetime_unit.upper(),
+            "naming_schema": schema
+        }
+        response = POST('/pool/snapshottask', payload)
         assert response.status_code == 200, response.text
         return response
 
@@ -415,6 +466,22 @@ class API_POST:
         job_status = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
         assert job_status['state'] == 'SUCCESS', job_status['results']
         return job_status
+
+    @classmethod
+    def delete_all_remote_dataset_snapshots(cls, name: str) -> dict:
+        """
+        This method deletes all snapshots for the given remote dataset.
+
+        :param name: is name of the remote dataset.
+        :return: the API request response.
+
+        Example:
+            - API_DELETE.delete_all_remote_dataset_snapshots('tank/myDataset')
+        """
+        private_config['API_IP'] = private_config['REP_DEST_IP']
+        response = cls.delete_all_dataset_snapshots(name)
+        private_config['API_IP'] = private_config['IP']
+        return response
 
     @classmethod
     def export_pool(cls, name: str, destroy: bool = False) -> dict:
