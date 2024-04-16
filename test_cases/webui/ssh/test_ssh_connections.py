@@ -52,8 +52,8 @@ class Test_SSH:
 
         SSH.set_ssh_connection_name(ssh['connection_name'])
         SSH.set_url(url)
-        SSH.set_admin_credentials(private_config["SSH_USERNAME"], private_config["SSH_PASSWORD"])
-        SSH.set_username(private_config["SSH_USERNAME"])
+        SSH.set_admin_credentials(ssh["ssh_username"], private_config["SSH_PASSWORD"])
+        SSH.set_username(ssh["ssh_username"])
         SSH.set_passwordless_sudo_checkbox()
         SSH.click_generate_new_private_key()
         COM.click_save_button()
