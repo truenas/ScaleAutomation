@@ -23,8 +23,6 @@ class Rsync:
             print("@@@ FAILED RSYNC: ")
             COM.click_error_dialog_close_button()
         WebUI.refresh()
-        # WebUI.wait_until_visible(
-        #     f'//*[@data-test="button-state-card-rsync-task{COM.convert_to_tag_format(path)}-null-row-state" and contains(@class,"fn-theme-green")]', shared_config["LONG_WAIT"])
 
     @classmethod
     def delete_rsync_task_by_path(cls, path: str) -> None:
