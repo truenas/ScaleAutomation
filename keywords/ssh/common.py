@@ -32,7 +32,7 @@ class Common_SSH:
                            user: str = private_config['SSH_USERNAME'],
                            password: str = private_config['SSH_PASSWORD']) -> bool:
         """
-        This method deletes the files used for testing smb permissions
+        This method verifies the given file exists in the given file path
 
         :param file: is the name of the file to add
         :param file_path: is the path of the file
@@ -155,7 +155,7 @@ class Common_SSH:
                        user: str = private_config['SSH_USERNAME'],
                        password: str = private_config['PASSWORD']) -> str:
         """
-        This method adds the given file to the given ip
+        This method lists the given directory of the given ip
 
         :param full_path: is the full directory path
         :param ip: the IP of the box
@@ -172,7 +172,7 @@ class Common_SSH:
                               user: str = private_config['SSH_USERNAME'],
                               password: str = private_config['SSH_PASSWORD']) -> None:
         """
-        This method adds files to be used for testing
+        This method removes all files from the given file path
 
         :param file_path: is the path of the file
         :param ip: is the ip of the system
