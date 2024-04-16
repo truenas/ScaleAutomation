@@ -68,7 +68,15 @@ class Test_Advanced_Configurations:
     @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[:1])
     def test_nfs_share_authorized_ip_address(self, nfs_advanced_config):
         """
-        This test edits the NFS share with an authorized IP and verifies that the share can/cannot be mounted.
+        Summary: This test sets an NFS share with an authorized IP address and verifies that the share can only be mounted on the authorized client.
+
+        Test Steps:
+        1. Create an NFS share with an authorized ip address set.
+        2. Verify share can mount from the client with the authorized ip address.
+        3. Verify client can read/write/execute/delete on the share.
+        4. Unmount the NFS share.
+        5. Edit the NFS share and set a different authorized ip address than the client.
+        6. Verify share cannot mount from the client with the previous authorized ip address.
         """
         # Edit the NFS share and set a valid authorized ip address
         assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
@@ -100,7 +108,15 @@ class Test_Advanced_Configurations:
     @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[1:2])
     def test_read_only_share(self, nfs_advanced_config):
         """
-        This test edits the NFS share with an authorized IP and verifies that the share can/cannot be mounted.
+        Summary: This test sets an NFS share to read only and verifies that the share can be mounted but
+        only read access is granted.
+
+        Test Steps:
+        1. Create an NFS share and set it to read only.
+        2. Verify share can mount and that only read access is granted.
+        4. Unmount the NFS share.
+        5. Edit the NFS share and unset read only.
+        6. Verify share can mount and that full access is granted.
         """
         # Edit the NFS share and set it to read only
         assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
@@ -137,7 +153,16 @@ class Test_Advanced_Configurations:
     @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[2:3])
     def test_nfs_share_authorized_network_address(self, nfs_advanced_config):
         """
-        This test edits the NFS share with an authorized network address and verifies that the share can/cannot be mounted.
+        Summary: This test sets an NFS share with an authorized network address and verifies that the share can only
+        be mounted on a client on the authorized network.
+
+        Test Steps:
+        1. Create an NFS share with an authorized network address set.
+        2. Verify share can mount from the client on the authorized network.
+        3. Verify client can read/write/execute/delete on the share.
+        4. Unmount the NFS share.
+        5. Edit the NFS share and set a different network address than the client.
+        6. Verify share cannot mount from the client on the previous authorized network.
         """
         # Edit the NFS share and set a valid authorized network address
         assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
@@ -172,8 +197,16 @@ class Test_Advanced_Configurations:
     @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[3:4])
     def test_nfs_share_mapall_user_and_group(self, nfs_advanced_config):
         """
-        This test edits the NFS share with a mapall user and group and verifies that the share can/cannot be mounted and
-        access is appropriately granted.
+        Summary: This test edits the NFS share with a mapall user and group and verifies that the share can mounted and
+        that access is appropriately mapped to the user and/or group.
+
+        Test Steps:
+        1. Create an NFS share with the mapall user set.
+        2. Verify share can mount and that the mapped user access can read/write/execute/delete.
+        3. Unmount the NFS share.
+        4. Edit the NFS share and set the mapall group.
+        5. Verify share can mount and that the mapped group access can read/write/execute/delete.
+        6. Remove mapall user and group and verify access has been removed.
         """
         # Edit the NFS share and set the mapall user
         assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
