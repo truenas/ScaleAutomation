@@ -1,7 +1,6 @@
 import allure
 import pytest
 
-from helper.cli import SSH_Command_Line
 from helper.global_config import private_config
 from keywords.api.post import API_POST
 from keywords.ssh.common import Common_SSH as SSHCOM
@@ -24,11 +23,10 @@ class Test_Rsync:
         This method sets up each test to start with datasets and services to execute Rsync functionality
         """
         # verify file does not exist in remote dataset
-        SSH_Command_Line('sudo rm -rf /mnt/tank/rsync-enc/',
-                         private_config['REP_DEST_IP'], 'sshuser', 'testing')
-        response = SSH_Command_Line('ls -al /mnt/tank/rsync-enc/',
-                                    private_config['REP_DEST_IP'], 'sshuser', 'testing')
-        assert response.stdout.__contains__('newfile.txt') is False
+        SSHCOM.remove_all_test_files('tank/rsync-enc', private_config['REP_DEST_IP'])
+        SSHCOM.remove_all_test_files('tank/rsync-non', private_config['REP_DEST_IP'])
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', private_config['REP_DEST_IP']) is False
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non', private_config['REP_DEST_IP']) is False
 
         # delete task if already exists
         NAV.navigate_to_data_protection()
@@ -74,16 +72,11 @@ class Test_Rsync:
         COM.click_save_button()
 
         # add file to local dataset
-        SSHCOM.add_test_file('newfile.txt', '/mnt/tank/rsync-non', private_config['IP'],
-                             'sshuser', 'testing')
-        response = SSHCOM.list_directory('/mnt/tank/rsync-non', private_config['IP'],
-                                         'sshuser', 'testing')
-        assert response.__contains__('newfile.txt')
+        SSHCOM.add_test_file('newfile.txt', 'tank/rsync-non', user='sshuser', password='testing')
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non', user='sshuser', password='testing') is True
 
         # verify file does not exist on remote dataset
-        response = SSHCOM.list_directory('/mnt/tank/rsync-enc', private_config['REP_DEST_IP'],
-                                         'sshuser', 'testing')
-        assert not response.__contains__('newfile.txt')
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non', ip=private_config['REP_DEST_IP']) is False
         RSYNC.click_run_now_rsync_task_by_path('/mnt/tank/rsync-non')
 
         # verify task fails
@@ -115,23 +108,16 @@ class Test_Rsync:
         COM.click_save_button()
 
         # add file to local dataset
-        SSHCOM.add_test_file('newfile.txt', '/mnt/tank/rsync-non', private_config['IP'],
-                             'sshuser', 'testing')
-        response = SSHCOM.list_directory('/mnt/tank/rsync-non', private_config['IP'],
-                                         'sshuser', 'testing')
-        assert response.__contains__('newfile.txt')
+        SSHCOM.add_test_file('newfile.txt', 'tank/rsync-non', user='sshuser', password='testing')
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non', user='sshuser', password='testing') is True
         checksum = SSHCOM.get_file_checksum('/mnt/tank/rsync-non/newfile.txt', 'sshuser', 'testing')
 
         # verify file does not exist on remote dataset
-        response = SSHCOM.list_directory('/mnt/tank/rsync-enc', private_config['REP_DEST_IP'],
-                                         'sshuser', 'testing')
-        assert not response.__contains__('newfile.txt')
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', private_config['REP_DEST_IP']) is False
         RSYNC.click_run_now_rsync_task_by_path('/mnt/tank/rsync-non')
         assert RSYNC.get_rsync_status('/mnt/tank/rsync-non') == 'SUCCESS'
         # verify file does exist on remote dataset
-        response = SSHCOM.list_directory('/mnt/tank/rsync-enc/rsync-non', private_config['REP_DEST_IP'],
-                                         'sshuser', 'testing')
-        assert response.__contains__('newfile.txt')
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non', user='sshuser', password='testing') is True
         assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-non/newfile.txt', 'sshuser', 'testing') == checksum
 
     @allure.tag("Create")
@@ -159,21 +145,13 @@ class Test_Rsync:
         COM.click_save_button()
 
         # add file to local dataset
-        SSHCOM.add_test_file('newfile.txt', '/mnt/tank/rsync-enc', private_config['IP'],
-                             'sshuser', 'testing')
-        response = SSHCOM.list_directory('/mnt/tank/rsync-enc', private_config['IP'],
-                                         'sshuser', 'testing')
-        assert response.__contains__('newfile.txt')
+        SSHCOM.add_test_file('newfile.txt', 'tank/rsync-enc', user='sshuser', password='testing')
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', user='sshuser', password='testing') is True
         checksum = SSHCOM.get_file_checksum('/mnt/tank/rsync-enc/newfile.txt', 'sshuser', 'testing')
 
         # verify file does not exist on remote dataset
-        response = SSHCOM.list_directory('/mnt/tank/rsync-enc', private_config['REP_DEST_IP'],
-                                         'sshuser', 'testing')
-        assert not response.__contains__('newfile.txt')
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', private_config['REP_DEST_IP']) is False
         RSYNC.click_run_now_rsync_task_by_path('/mnt/tank/rsync-enc')
         assert RSYNC.get_rsync_status('/mnt/tank/rsync-enc') == 'SUCCESS'
-        # verify file does on remote dataset
-        response = SSHCOM.list_directory('/mnt/tank/rsync-enc/rsync-enc', private_config['REP_DEST_IP'],
-                                         'sshuser', 'testing')
-        assert response.__contains__('newfile.txt')
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc/rsync-enc', private_config['REP_DEST_IP']) is True
         assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-enc/newfile.txt', 'sshuser', 'testing') == checksum

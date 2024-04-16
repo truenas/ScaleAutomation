@@ -8,14 +8,14 @@ from os import path
 class Common_SSH:
 
     @classmethod
-    def add_test_file(cls, file: str, path: str, ip: str = private_config['IP'],
+    def add_test_file(cls, file: str, file_path: str, ip: str = private_config['IP'],
                       user: str = private_config['SSH_USERNAME'],
-                      password: str = private_config['PASSWORD']) -> None:
+                      password: str = private_config['SSH_PASSWORD']) -> None:
         """
-        This method adds files to be used for testing
+        This method adds the given file to the given ip
 
         :param file: is the name of the file to add
-        :param path: is the path of the file
+        :param file_path: is the path of the file
         :param ip: is the ip of the system
         :param user: is the user accessing the system
         :param password: is the password of user accessing the system
@@ -24,19 +24,25 @@ class Common_SSH:
             - Common.add_test_file('myFile.txt', 'tank/path')
             - Common.add_test_file('myFile.txt', 'tank/path', '10.0.0.1', 'user', 'password')
         """
-        SSH_Command_Line(f'sudo touch /mnt/{path}/{file}', ip, user, password)
+        SSH_Command_Line(f'sudo touch /mnt/{file_path}/{file}', ip, user, password)
+        assert cls.assert_file_exists(file, file_path, ip, user, password) is True
 
     @classmethod
-    def assert_file_not_exist(cls, user: str, file: str) -> bool:
+    def assert_file_exists(cls, file: str, file_path: str, ip: str = private_config['IP'],
+                           user: str = private_config['SSH_USERNAME'],
+                           password: str = private_config['SSH_PASSWORD']) -> bool:
         """
-        This method deletes the files used for testing smb permissions
+        This method verifies the given file exists in the given file path
 
-        :param user: is the user to be searching for file
-        :param file: is the name of the file that should not exist
+        :param file: is the name of the file to add
+        :param file_path: is the path of the file
+        :param ip: is the ip of the system
+        :param user: is the user accessing the system
+        :param password: is the password of user accessing the system
         :return: returns True if the expected file does not exist, otherwise False
         """
-        response = SSH_Command_Line('ls -al ~', private_config['SMB_ACL_IP'], user, 'testing')
-        return file not in response.stdout
+        response = SSH_Command_Line(f'ls -al /mnt/{file_path}/{file}', ip, user, password)
+        return file in response.stdout
 
     @classmethod
     def create_ssh_key(cls):
@@ -145,9 +151,11 @@ class Common_SSH:
         return open(path.expanduser(f'{shared_config["KEYPATH"]}.pub'), 'r').read().strip()
 
     @classmethod
-    def list_directory(cls, full_path: str, ip: str, user: str, password: str) -> str:
+    def list_directory(cls, full_path: str, ip: str = private_config['IP'],
+                       user: str = private_config['SSH_USERNAME'],
+                       password: str = private_config['PASSWORD']) -> str:
         """
-        This method adds the given file to the given ip
+        This method lists the given directory of the given ip
 
         :param full_path: is the full directory path
         :param ip: the IP of the box
@@ -158,6 +166,24 @@ class Common_SSH:
             - Common_SSH.list_directory('/mnt/tank/dir', '10.0.0.1', 'user', 'password')
         """
         return SSH_Command_Line(f'ls -al {full_path}', ip, user, password).stdout
+
+    @classmethod
+    def remove_all_test_files(cls, file_path: str, ip: str = private_config['IP'],
+                              user: str = private_config['SSH_USERNAME'],
+                              password: str = private_config['SSH_PASSWORD']) -> None:
+        """
+        This method removes all files from the given file path
+
+        :param file_path: is the path of the file
+        :param ip: is the ip of the system
+        :param user: is the user accessing the system
+        :param password: is the password of user accessing the system
+
+        Example:
+            - Common.remove_all_test_files('tank/path')
+            - Common.remove_all_test_files('tank/path', '10.0.0.1', 'user', 'password')
+        """
+        SSH_Command_Line(f'sudo rm -rf /mnt/{file_path}/', ip, user, password)
 
     @classmethod
     def set_host_ssh_key_and_enable_ssh_on_the_nas(cls, username: str):
