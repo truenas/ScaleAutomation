@@ -421,6 +421,35 @@ class API_POST:
         return response
 
     @classmethod
+    def create_snapshot_task(cls, dataset: str, schema: str = "auto-%Y-%m-%d_%H-%M", recursive: bool = False,
+                             lifetime_value: int = 2, lifetime_unit: str = "WEEK") -> Response:
+        """
+        This method creates the given periodic snapshot task.
+
+        :param dataset: is the name of the dataset.
+        :param schema: is the naming schema of the snapshot.
+        :param recursive: is whether to recursively apply snapshot.
+        :param lifetime_value: is the lifetime value retention.
+        :param lifetime_unit: is the lifetime unit retention. [DAY/HOUR/MONTH/WEEK/YEAR]
+        :return: the API request response.
+
+        Example:
+            - API_POST.create_snapshot_task('tank/test-dataset')
+            - API_POST.create_snapshot_task('tank/test-dataset', 'auto-%Y-%m-%d_%H-%M')
+            - API_POST.create_snapshot_task('tank/test-dataset', 'auto-%Y-%m-%d_%H-%M', True, 2, "WEEK")
+        """
+        payload = {
+            "dataset": dataset,
+            "recursive": recursive,
+            "lifetime_value": lifetime_value,
+            "lifetime_unit": lifetime_unit.upper(),
+            "naming_schema": schema
+        }
+        response = POST('/pool/snapshottask', payload)
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
     def delete_all_dataset_snapshots(cls, dataset: str) -> dict:
         """
         This method delete all snapshots from given dataset.
