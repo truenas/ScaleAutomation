@@ -145,8 +145,7 @@ class Test_Rsync:
         COM.click_save_button()
 
         # add file to local dataset
-        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-non') is True
-        SSHCOM.add_test_file('newfile.txt', 'tank/rsync-enc')
+        SSHCOM.add_test_file('newfile.txt', 'tank/rsync-enc', user='sshuser', password='testing')
         assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', user='sshuser', password='testing') is True
         checksum = SSHCOM.get_file_checksum('/mnt/tank/rsync-enc/newfile.txt', 'sshuser', 'testing')
 
