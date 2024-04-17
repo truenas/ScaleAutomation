@@ -6,4 +6,4 @@ def user(name: str) -> str:
     :param name: text of the given username
     :return: xpath string for given username
     """
-    return f'//*[@data-test="row-user-{name}"]'
+    return f'//*[@data-test="text-username-user-{name}-row-text"]'
