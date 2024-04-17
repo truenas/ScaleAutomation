@@ -139,9 +139,6 @@ class Test_Create_Replicate_Task_Different_Box:
         COM.click_save_button()
 
         COM.wait_for_system_time('minute', current_minute + 1)
-        # Soft page refresh
-        NAV.navigate_to_datasets()
-        NAV.navigate_to_data_protection()
         assert REP.get_replication_status(rep['task-name']) == rep['status']
 
         # Verify file on destination
@@ -166,9 +163,6 @@ class Test_Create_Replicate_Task_Different_Box:
         COM.click_save_button()
 
         COM.wait_for_system_time('minute', current_minute + 1)
-        # Soft page refresh
-        NAV.navigate_to_datasets()
-        NAV.navigate_to_data_protection()
         assert REP.get_replication_status(rep['task-name']) == rep['status']
 
         # log onto destination box and verify Snapshot exists
@@ -225,9 +219,6 @@ class Test_Create_Replicate_Task_Different_Box:
         COM.click_save_button()
 
         COM.wait_for_system_time('minute', current_minute + 1)
-        # Soft page refresh
-        NAV.navigate_to_datasets()
-        NAV.navigate_to_data_protection()
         assert REP.get_replication_status(rep['task-name']) == rep['status']
 
         # Verify file on destination
@@ -247,9 +238,6 @@ class Test_Create_Replicate_Task_Different_Box:
         COM.click_save_button()
 
         COM.wait_for_system_time('minute', current_minute + 1)
-        # Soft page refresh
-        NAV.navigate_to_datasets()
-        NAV.navigate_to_data_protection()
         assert REP.get_replication_status(rep['task-name']) == rep['status']
 
         # Verify Snapshot exists
