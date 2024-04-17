@@ -37,7 +37,7 @@ class Test_Local_Users:
         API_DELETE.delete_user(users['username'])
         API_DELETE.delete_user(users['username'] + '-edt')
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
-        NAV.navigate_to_dashboard()
+        # NAV.navigate_to_dashboard()
 
     @allure.tag("Create")
     @allure.story("Add New Local Users")
@@ -93,6 +93,7 @@ class Test_Local_Users:
         # Warning dialog
         LU.confirm_home_warning_dialog()
         assert LU.assert_error_user_home_directory_not_writable() is True
+        COM.click_error_dialog_close_button()
 
         LU.set_user_home_directory(users['home-dir'])
         LU.set_user_create_home_directory_checkbox()
