@@ -601,7 +601,7 @@ class Local_Users:
          - Local_Users.is_user_visible('username')
         """
         name = COM.convert_to_tag_format(username)
-        return WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
+        return WebUI.wait_until_visible(xpaths.local_users.user(name))
 
     @classmethod
     def is_user_not_visible(cls, username: str) -> bool:
