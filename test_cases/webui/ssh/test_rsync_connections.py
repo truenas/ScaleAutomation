@@ -128,7 +128,7 @@ class Test_Rsync:
         """
         # add connection and key pair if they don't already exist
         NAV.navigate_to_backup_credentials()
-        assert SSH.assert_ssh_connection_exists('rsync-non-to-enc') is True
+        assert SSH.assert_ssh_connection_exists('rsync-loc-to-enc') is True
 
         NAV.navigate_to_data_protection()
         DP.click_add_rsync_button()
@@ -137,21 +137,20 @@ class Test_Rsync:
         RSYNC.set_rsync_mode_ssh()
         RSYNC.set_user(private_config["USERNAME"])
         RSYNC.set_connect_using_keychain()
-        RSYNC.set_ssh_connection('rsync-non-to-enc')
+        RSYNC.set_ssh_connection('rsync-loc-to-enc')
         COMREP.set_direction_push()
         RSYNC.set_remote_path('/mnt/tank/rsync-enc')
-        RSYNC.set_description('rsync-non-to-enc')
+        RSYNC.set_description('rsync-loc-to-enc')
         RSYNC.set_schedule_weekly()
         COM.click_save_button()
 
         # add file to local dataset
         SSHCOM.add_test_file('newfile.txt', 'tank/rsync-enc', user='sshuser', password='testing')
         assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', user='sshuser', password='testing') is True
-        checksum = SSHCOM.get_file_checksum('/mnt/tank/rsync-enc/newfile.txt', 'sshuser', 'testing')
+        API_POST.lock_dataset('tank/rsync-enc')
 
         # verify file does not exist on remote dataset
         assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc', private_config['REP_DEST_IP']) is False
         RSYNC.click_run_now_rsync_task_by_path('/mnt/tank/rsync-enc')
         assert RSYNC.get_rsync_status('/mnt/tank/rsync-enc') == 'SUCCESS'
-        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc/rsync-enc', private_config['REP_DEST_IP']) is True
-        assert SSHCOM.get_remote_file_checksum('/mnt/tank/rsync-enc/rsync-enc/newfile.txt', 'sshuser', 'testing') == checksum
+        assert SSHCOM.assert_file_exists('newfile.txt', 'tank/rsync-enc/rsync-enc', private_config['REP_DEST_IP']) is False
