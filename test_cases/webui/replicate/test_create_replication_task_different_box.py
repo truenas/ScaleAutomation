@@ -44,7 +44,6 @@ class Test_Create_Replicate_Task_Different_Box:
         # reset the change
         yield
         # # clean destination box
-        # REP.close_destination_box()
         API_POST.delete_all_remote_dataset_snapshots(rep['source'])
         API_POST.delete_all_remote_dataset_snapshots(rep['destination'])
         API_DELETE.delete_remote_dataset(rep['source'])
