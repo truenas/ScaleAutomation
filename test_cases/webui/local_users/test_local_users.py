@@ -37,7 +37,6 @@ class Test_Local_Users:
         API_DELETE.delete_user(users['username'])
         API_DELETE.delete_user(users['username'] + '-edt')
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
-        # NAV.navigate_to_dashboard()
 
     @allure.tag("Create")
     @allure.story("Add New Local Users")
