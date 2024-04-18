@@ -150,9 +150,21 @@ class Test_Local_Users:
         LU.set_user_home_directory(users['home-dir'])
         LU.set_user_create_home_directory_checkbox()
 
+        # Home Directory requires User Read. Verify Error message, then set User Read permission
         LU.unset_user_home_directory_permission_user_read_checkbox()
+        COM.click_save_button()
+        assert LU.assert_error_user_home_directory_requires_read() is True
+        COM.click_error_dialog_close_button()
+        LU.set_user_home_directory_permission_user_read_checkbox()
+
         LU.unset_user_home_directory_permission_user_write_checkbox()
+
+        # Home Directory requires User Execution. Verify Error message, then set User Execute permission
         LU.unset_user_home_directory_permission_user_execute_checkbox()
+        COM.click_save_button()
+        assert LU.assert_error_user_home_directory_requires_execute() is True
+        COM.click_error_dialog_close_button()
+        LU.set_user_home_directory_permission_user_execute_checkbox()
 
         LU.unset_user_home_directory_permission_group_read_checkbox()
         LU.unset_user_home_directory_permission_group_write_checkbox()
@@ -161,20 +173,6 @@ class Test_Local_Users:
         LU.unset_user_home_directory_permission_other_read_checkbox()
         LU.unset_user_home_directory_permission_other_write_checkbox()
         LU.unset_user_home_directory_permission_other_execute_checkbox()
-
-        COM.click_save_button()
-
-        # Home Directory requires User Execution. Verify Error message, then set User Execute permission
-        assert LU.assert_error_user_home_directory_requires_execute() is True
-
-        LU.set_user_home_directory_permission_user_execute_checkbox()
-
-        COM.click_save_button()
-
-        # Home Directory requires User Read. Verify Error message, then set User Read permission
-        assert LU.assert_error_user_home_directory_requires_read() is True
-
-        LU.set_user_home_directory_permission_user_read_checkbox()
 
         COM.click_save_button_and_wait_for_progress_bar()
 
