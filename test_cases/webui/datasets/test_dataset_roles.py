@@ -63,5 +63,5 @@ class Test_Dataset_Roles:
         if role['dataset'] == "smb_share":
             API_DELETE.delete_share('smb', 'smb_share')
             API_DELETE.delete_dataset('tank/smb_share')
-        if role['dataset'] == "ix-applications":
-            API_DELETE.delete_dataset('tank/ix-applications', recursive=True, force=True)
+        # if role['dataset'] == "ix-applications":
+            # API_DELETE.delete_dataset('tank/ix-applications', recursive=True, force=True)
