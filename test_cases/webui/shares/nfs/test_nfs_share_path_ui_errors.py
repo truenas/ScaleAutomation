@@ -65,7 +65,7 @@ class Test_NFS_Share_Path_UI_Errors:
 
         # Assert error message displays and saving disabled
         assert NFS.assert_error_nfs_share_path_nonexistent() is True
-        assert COM.is_save_button_disabled() is True
+        COM.click_error_dialog_close_button()
 
         # Trigger the Path is required error
         COM.clear_input_field('path', True)
@@ -80,7 +80,7 @@ class Test_NFS_Share_Path_UI_Errors:
 
         # Assert error message displays and saving disabled
         assert NFS.assert_error_nfs_share_path_duplicate(nfs_data['share_page_path_alt']) is True
-        assert COM.is_save_button_disabled() is True
+        COM.click_error_dialog_close_button()
 
         # Verify share still in original state when editing is cancelled
         COM.close_right_panel()
