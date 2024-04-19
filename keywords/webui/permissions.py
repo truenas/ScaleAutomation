@@ -297,9 +297,9 @@ class Permissions:
 
         :param group: the name of the group.
         """
-        COM.is_visible(xpaths.common_xpaths.input_field('group'))
-        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('group'), 'value') is True
-        COM.set_input_field('group', group, True)
+        COM.is_visible(xpaths.common_xpaths.input_field('gid'))
+        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('gid'), 'value') is True
+        COM.set_input_field('gid', group, True)
 
     @classmethod
     def set_dataset_owner(cls, owner: str) -> None:
@@ -320,6 +320,7 @@ class Permissions:
         :param owner group: the name of the owner group.
         """
         COM.is_visible(xpaths.common_xpaths.input_field('owner-group'))
+        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('owner-group'), 'value') is True
         COM.set_input_field('owner-group', group, True)
 
     @classmethod
@@ -329,9 +330,9 @@ class Permissions:
 
         :param user: the name of the user.
         """
-        COM.is_visible(xpaths.common_xpaths.input_field('user'))
-        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('user'), 'value') is True
-        COM.set_input_field('user', user, True)
+        COM.is_visible(xpaths.common_xpaths.input_field('uid'))
+        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('uid'), 'value') is True
+        COM.set_input_field('uid', user, True)
 
     @classmethod
     def set_permissions_checkbox(cls, user_category: str, level: str) -> None:

@@ -48,11 +48,15 @@ class Test_NFS_Share_Path_UI_Errors:
     @allure.story('NFS Share Path UI Errors')
     def test_nfs_share_path_ui_errors(self, nfs_data) -> None:
         """
-        This test case covers the following:
-         - Trigger the nonexistent path error
-         - Trigger the Path is required error
-         - Trigger the duplicate share error
-         - Verify share still in original state when editing is cancelled
+        Summary: This test creates an NFS share and verifies the basic UI errors display.
+
+        Test Steps:
+        1. Edit the NFS share and verify that the following errors are displayed when expected:
+            - Trigger the nonexistent path error
+            - Trigger the Path is required error
+            - Trigger the duplicate share error
+        2. Verify share still in original state when editing is cancelled.
+        3. Navigate to the datasets page and verify that the share is attached to the dataset.
         """
 
         # Trigger the nonexistent path error
@@ -63,9 +67,9 @@ class Test_NFS_Share_Path_UI_Errors:
         COM.set_checkbox('enabled')
         COM.click_save_button()
 
-        # Assert error message displays and saving disabled
+        # Assert error message displays
         assert NFS.assert_error_nfs_share_path_nonexistent() is True
-        assert COM.is_save_button_disabled() is True
+        COM.click_error_dialog_close_button()
 
         # Trigger the Path is required error
         COM.clear_input_field('path', True)
@@ -78,9 +82,9 @@ class Test_NFS_Share_Path_UI_Errors:
         COMSHARE.set_share_path(nfs_data['api_path_alt'])
         COM.click_save_button()
 
-        # Assert error message displays and saving disabled
+        # Assert error message displays
         assert NFS.assert_error_nfs_share_path_duplicate(nfs_data['share_page_path_alt']) is True
-        assert COM.is_save_button_disabled() is True
+        COM.click_error_dialog_close_button()
 
         # Verify share still in original state when editing is cancelled
         COM.close_right_panel()

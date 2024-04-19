@@ -51,7 +51,26 @@ class Test_Edit_NFS_Share:
     @allure.story("Edit NFS Share Advanced Options")
     def test_edit_nfs_share_advanced_options(self, nfs_data):
         """
-        This test edits the NFS share with advanced options.
+        Summary: This test creates an NFS and configures it with advanced options in the UI.
+
+        Test Steps:
+        1. Edit the NFS share and configure it with advanced options:
+            - Authorized network address
+            - Authorized ip address
+            - Read only
+            - Maproot user
+            - Maproot group
+            - Security type
+        3. Navigate to the datasets page and verify that the share is attached to the dataset.
+        4. Navigate to the shares page and verify that the share is displayed on the shares page.
+        5. Re-edit the NFS share and configure it with new advanced options:
+            - Unset read only
+            - Unset maproot user
+            - Unset maproot group
+            - Set mapall user
+            - Set mapall group
+        6. Navigate to the datasets page and verify that the share is attached to the dataset.
+        7. Navigate to the shares page and verify that the share is displayed on the shares page.
         """
 
         # Edit the NFS share with advanced options
@@ -117,7 +136,14 @@ class Test_Edit_NFS_Share:
     @allure.story("Edit NFS Share With Existing Dataset")
     def test_edit_nfs_share_with_existing_dataset(self, nfs_data):
         """
-        This test edits the NFS share with existing dataset.
+        Summary: This test edits a created share and attaches it to a different existing dataset and verifies the
+        attachment has changed to the new dataset.
+
+        Test Steps:
+        1. Edit the NFS share and configure it with different existing dataset.
+        2. Navigate to the datasets page and verify that the share is attached to the new dataset.
+        3. Navigate to the shares page and edit the share and configure it with the previous dataset.
+        4. Navigate to the datasets page and verify that the share is attached to the previous dataset.
         """
 
         # Edit the NFS share
@@ -153,7 +179,14 @@ class Test_Edit_NFS_Share:
     @allure.story("Edit NFS Share With Nonexistent Dataset")
     def test_edit_nfs_share_with_nonexistent_dataset(self, nfs_data):
         """
-        This test edits the NFS share with nonexistent dataset.
+        Summary: This test edits a created share and attaches it a nonexistent dataset and verifies the share
+        cannot be saved and does not detach from the existing dataset.
+
+        Test Steps:
+        1. Edit the NFS share and configure it with a nonexistent dataset.
+        2. Verify the share cannot be saved.
+        3. Navigate to the datasets page and verify that the share is still attached to the previous dataset.
+        4. Navigate to the shares page and verify that the share is still displayed on the shares page.
         """
 
         # Edit the NFS share with nonexistent path
@@ -166,7 +199,7 @@ class Test_Edit_NFS_Share:
 
         # Assert error message displays and saving disabled
         assert NFS.assert_error_nfs_share_path_nonexistent() is True
-        assert COM.is_save_button_disabled() is True
+        COM.click_error_dialog_close_button()
         COM.close_right_panel()
 
         # Verify share still in original state when editing is cancelled
@@ -185,7 +218,17 @@ class Test_Edit_NFS_Share:
     @allure.story("NFS Share Edit Advanced UI Errors")
     def test_nfs_share_advanced_ui_errors(self, nfs_data):
         """
-        This test errors in the NFS share edit advanced UI.
+        Summary: This test creates an NFS share and verifies the advanced UI errors display.
+
+        Test Steps:
+        1. Edit the NFS share and verify that the following errors are displayed when expected:
+            - Trigger the maproot user required error
+            - Trigger mapall user override error
+            - Trigger invalid ip error
+            - Trigger network is required error
+            - Trigger Authorized Hosts and IP addresses is required error
+        2. Verify share still in original state when editing is cancelled.
+        3. Navigate to the datasets page and verify that the share is attached to the dataset.
         """
 
         # Trigger the maproot user required error
@@ -198,8 +241,7 @@ class Test_Edit_NFS_Share:
 
         # Assert error message displays and saving disabled
         assert NFS.assert_error_nfs_share_maproot_user_required() is True
-        assert COM.is_save_button_disabled() is True
-        NFS.unset_maproot_group()
+        COM.click_error_dialog_close_button()
 
         # Trigger mapall user override error
         NFS.set_maproot_user('admin')
@@ -208,7 +250,7 @@ class Test_Edit_NFS_Share:
 
         # Assert error message displays and saving disabled
         assert NFS.assert_error_nfs_share_mapall_user_override() is True
-        assert COM.is_save_button_disabled() is True
+        COM.click_error_dialog_close_button()
         NFS.unset_maproot_user()
         NFS.unset_mapall_user()
         COM.select_then_deselect_input_field('comment')
@@ -257,7 +299,12 @@ class Test_Edit_NFS_Share:
     @allure.story("Disable NFS Share")
     def test_nfs_share_disabled_share(self, nfs_data):
         """
-        This test disables the NFS share.
+        Summary: This test edits a created share and disables it and verifies that the share is still attached to the dataset.
+
+        Test Steps:
+        1. Edit the NFS share and disable it.
+        2. Navigate to the datasets page and verify that the share is still attached to the previous dataset.
+        3. Navigate to the shares page and verify that the share is still displayed on the shares page.
         """
 
         # Disable the NFS share

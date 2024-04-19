@@ -42,7 +42,12 @@ class Test_Delete_NFS_Share:
     @allure.story('Delete NFS Share')
     def test_delete_new_nfs_share(self, nfs_data):
         """
-        This test verifies the NFS share can be deleted.
+        Summary: This test deletes an NFS share and verifies that the share is detached from the dataset in the UI.
+
+        Test Steps:
+        1. Delete the NFS share.
+        3. Navigate to the datasets page and verify that the share is still detached from the dataset.
+        4. Navigate to the shares page and verify that the share is not displayed on the shares page.
         """
         # Delete NFS share
         assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path']) is True

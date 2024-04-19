@@ -197,4 +197,4 @@ class Navigation:
         Example
          - Navigation.navigate_to_system_settings_services()
         """
-        cls.navigate_to('system-settings', 'Services', 'services')
+        cls.navigate_to('system', 'Services', 'services')

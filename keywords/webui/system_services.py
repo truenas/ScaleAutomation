@@ -53,7 +53,7 @@ class System_Services:
         :param servicename: the name of the service.
         """
         name = cls.return_backend_service_name(servicename, False)
-        COM.click_button(f'{name}-edit')
+        COM.click_button(f'service-{name}-edit-row-action')
 
     @classmethod
     def is_service_autostart_set_by_name(cls, service: str) -> bool:

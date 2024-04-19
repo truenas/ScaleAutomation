@@ -398,13 +398,13 @@ def share_attached(name: str, sharetype: str) -> str:
         return xpath+f'NFS")]'
 
 
-def card_share_attribute(share_type: str, attribute: str, desc: str) -> str:
+def card_share_attribute(share_type: str, attribute: str, text: str) -> str:
     """
     This function sets the text for the given share name
 
     :param share_type: type of the given share
     :param attribute: attribute of the given share [name/path/description]
-    :param desc: description of the given share
+    :param text: text of the given share attribute
     :return: xpath string for given share name
     """
     index = 1
@@ -420,7 +420,8 @@ def card_share_attribute(share_type: str, attribute: str, desc: str) -> str:
             index = 1
         if attribute == 'description':
             index = 2
-    return f'//ix-{share_type}-card//*[@data-test="row"]/td[{index}]/descendant::*[contains(text(),"{desc}")]'
+    # return f'//ix-{share_type}-card//*[@data-test="row"]/td[{index}]/descendant::*[contains(text(),"{desc}")]'
+    return f'//ix-{share_type}-card//td[{index}]/descendant::*[contains(text(),"{text}")]'
 
 
 def page_share_attribute(share_type: str, attribute: str, desc: str) -> str:
