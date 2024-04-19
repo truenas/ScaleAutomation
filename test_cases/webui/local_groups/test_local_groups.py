@@ -39,7 +39,14 @@ class Test_Local_Groups:
     @allure.story("Add Member to Local Groups")
     def test_add_member_to_new_group(self, groups) -> None:
         """
-        This test verifies adding a member to a new local group
+        Summary: This test verifies adding a member to a new local group
+
+        Test Steps:
+        1. Expand and Edit group
+        2. Add User to Group Members list
+        3. Verify User in Group Members list, and NOT in User list
+        4. Remove User from Group Members list
+        5. Verify User in User list, and NOT in Group Members list
         """
         # Environment setup
         if LG.is_group_visible(groups['group-name']) is False:
@@ -63,7 +70,14 @@ class Test_Local_Groups:
     @allure.story("Create New Local Groups")
     def test_create_new_local_group(self, groups) -> None:
         """
-        This test verifies a new local group can be created
+        Summary: This test verifies a new local group can be created
+
+        Test Steps:
+        1. Click Add Group button
+        2. Set Group values (gid, name, privileges, allow sudo, allow sudo no pswd)
+        3. Verify sudo commands disabled
+        4. Click Save button
+        5. Verify Group exists and is visible
         """
         LG.click_add_group_button()
         LG.set_group_gid(groups['gid'])
@@ -88,7 +102,13 @@ class Test_Local_Groups:
     @allure.story("Create New Local Groups with Duplicate GID")
     def test_create_new_local_group_with_duplicate_gid(self, groups) -> None:
         """
-        This test verifies a new local group with duplicate ID can be created
+        Summary: This test verifies a new local group with duplicate ID can be created
+
+        Test Steps:
+        1. Click Add Group button
+        2. Set Group values (duplicate gid, name)
+        3. Click Save button
+        4. Verify duplicate Group exists and has duplicate GID is visible
         """
         # Environment setup
         if LG.is_group_visible(groups['group-name']) is False:
@@ -118,7 +138,14 @@ class Test_Local_Groups:
     @allure.story("Delete Member from Local Groups")
     def test_delete_member_from_new_group(self, groups) -> None:
         """
-        This test verifies deleting a member from a new local group
+        Summary: This test verifies deleting a member from a new local group
+
+        Test Steps:
+        1. Expand and Edit Group
+        2. Remove User from Group Members list
+        3. Click Save button
+        4. Expand and Edit Group
+        5. Verify user NOT in Group Member list
         """
         # Environment setup
         if LG.is_group_visible(groups['group-name']) is False:
@@ -136,7 +163,7 @@ class Test_Local_Groups:
 
         LG.expand_group_by_name(groups['group-name'])
         LG.click_group_members_button(groups['group-name'])
-        LG.click_user_account_by_name(groups['username'])
+        LG.click_group_members_by_name(groups['username'])
         LG.click_remove_from_list_button()
         assert LG.is_user_in_group_list(groups['username']) is False
         assert LG.is_user_in_users_list(groups['username']) is True
@@ -151,7 +178,12 @@ class Test_Local_Groups:
     @allure.story("Delete Local Groups")
     def test_delete_new_local_group(self, groups) -> None:
         """
-        This test verifies a new local group can be deleted
+        Summary: This test verifies a new local group can be deleted
+
+        Test Steps:
+        1. Expand Group
+        2. Click Delete Group button
+        3. Verify Group deleted and is NOT visible
         """
         # Environment setup
         if LG.is_group_visible(groups['group-name']) is False:
@@ -165,7 +197,17 @@ class Test_Local_Groups:
     @allure.story("Edit Local Groups")
     def test_edit_local_group(self, groups) -> None:
         """
-        This test verifies a local group can be edited
+        Summary: This test verifies a local group can be edited
+
+        Test Steps:
+        1. Expand and Edit Group
+        2. Edit Group values (name, privileges, Allow sudo commands, samba auth)
+        3. Click Save button
+        4. Verify old Group is not visible and new group is visible
+        5. Expand and Edit Group
+        6. Edit Group values (name, privileges, Allow sudo commands, samba auth)
+        7. Click Save button
+        8. Verify old Group is visible
         """
         if LG.is_group_visible(groups['group-name']) is False:
             API_POST.create_group(groups['group-name'])
