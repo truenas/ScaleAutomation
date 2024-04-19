@@ -87,4 +87,4 @@ class Test_Dataset_Tree:
         yield
         API_DELETE.delete_share('smb', 'smb_share')
         API_DELETE.delete_dataset('tank/smb_share')
-        API_DELETE.delete_dataset('tank/ix-applications', recursive=True, force=True)
+        # API_DELETE.delete_dataset('tank/ix-applications', recursive=True, force=True)
