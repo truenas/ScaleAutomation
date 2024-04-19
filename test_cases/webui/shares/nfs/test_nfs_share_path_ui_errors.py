@@ -48,7 +48,7 @@ class Test_NFS_Share_Path_UI_Errors:
     @allure.story('NFS Share Path UI Errors')
     def test_nfs_share_path_ui_errors(self, nfs_data) -> None:
         """
-        Summary: This test creates an NFS and verifies that it is attached to the dataset in the UI.
+        Summary: This test creates an NFS share and verifies the basic UI errors display.
 
         Test Steps:
         1. Edit the NFS share and verify that the following errors are displayed when expected:
