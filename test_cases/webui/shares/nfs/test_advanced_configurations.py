@@ -39,8 +39,8 @@ class Test_Advanced_Configurations:
         NAV.navigate_to_datasets()
         DAT.click_dataset_location(nfs_advanced_config["dataset_name"])
         DAT.click_edit_permissions_button()
-        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('user'), 'value') is True
-        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('group'), 'value') is True
+        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('uid'), 'value') is True
+        assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('gid'), 'value') is True
         PERM.set_dataset_user(nfs_advanced_config["dataset_user"])
         PERM.set_dataset_group(nfs_advanced_config["dataset_group"])
         PERM.set_apply_user_checkbox()

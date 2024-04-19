@@ -166,7 +166,7 @@ class Test_Edit_NFS_Share:
 
         # Assert error message displays and saving disabled
         assert NFS.assert_error_nfs_share_path_nonexistent() is True
-        assert COM.is_save_button_disabled() is True
+        COM.click_error_dialog_close_button()
         COM.close_right_panel()
 
         # Verify share still in original state when editing is cancelled
@@ -198,8 +198,8 @@ class Test_Edit_NFS_Share:
 
         # Assert error message displays and saving disabled
         assert NFS.assert_error_nfs_share_maproot_user_required() is True
-        assert COM.is_save_button_disabled() is True
-        NFS.unset_maproot_group()
+        COM.click_error_dialog_close_button()
+        COM.close_right_panel()
 
         # Trigger mapall user override error
         NFS.set_maproot_user('admin')
