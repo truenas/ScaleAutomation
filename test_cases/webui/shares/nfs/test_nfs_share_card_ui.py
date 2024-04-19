@@ -63,7 +63,20 @@ class Test_NFS_Share_Card_UI:
     @allure.story("NFS Share Card UI")
     def test_nfs_share_card_ui(self, nfs_data):
         """
-        This test verifies the NFS share card UI.
+        Summary: This verifies that the NFS share card UI is displayed as expected.
+
+        Test Steps:
+        1. This test verifies the following UI elements are displayed:
+            - Actions menu button
+            - Actions menu start service button
+            - Actions menu stop service button
+            - Add share button
+            - Share enabled slider
+            - Share edit button
+            - Share delete button
+        2. Create 5 shares and verify only 4 are displayed before clicking on View all.
+        3. Click on View all and verify that all shares are displayed.
+        4. Verify that the share controls previously checked are still displayed after clicking on View all.
         """
 
         # Verify NFS Card on Sharing page UI
