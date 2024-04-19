@@ -33,6 +33,7 @@ class Test_Builtin_Groups:
 
     @allure.tag("Read")
     @allure.story("Verify Built in Local Groups")
+    @allure.issue("NAS-128406", "NAS-128406")
     def test_built_in_group(self, built_in) -> None:
         """
         This test verifies built in groups display
@@ -41,6 +42,5 @@ class Test_Builtin_Groups:
         assert LG.is_group_visible(built_in['group-name']) is True
         assert LG.get_group_list_gid(built_in['group-name']) == built_in['gid']
         assert LG.get_group_list_builtin(built_in['group-name']) == built_in['Builtin']
-        # assert LG.get_group_list_allow_sudo_commands(built_in['group-name']) == built_in['Allows sudo commands']
-        assert LG.get_group_list_allow_sudo_commands(built_in['group-name']) == 'Yes'
+        assert LG.get_group_list_allow_sudo_commands(built_in['group-name']) == built_in['Allows sudo commands']
         assert LG.get_group_list_samba_auth(built_in['group-name']) == built_in['Samba Authentication']
