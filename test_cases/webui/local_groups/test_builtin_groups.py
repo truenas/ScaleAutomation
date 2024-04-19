@@ -10,6 +10,7 @@ from keywords.webui.navigation import Navigation as NAV
 @allure.tag("Local_Groups")
 @allure.epic("Credentials")
 @allure.feature("Local Groups")
+@pytest.mark.parametrize('built_in', get_data_list('builtin_groups'), scope='function')
 class Test_Builtin_Groups:
     @pytest.fixture(scope='class', autouse=True)
     def setup_test(self) -> None:
@@ -32,10 +33,17 @@ class Test_Builtin_Groups:
 
     @allure.tag("Read")
     @allure.story("Verify Built in Local Groups")
-    @pytest.mark.parametrize('built_in', get_data_list('builtin_groups'), scope='function')
+    @allure.issue("NAS-128406", "NAS-128406")
     def test_built_in_group(self, built_in) -> None:
         """
-        This test verifies built in groups display
+        Summary: This test verifies built in groups display
+
+        Test Steps:
+        1. Verify group Name displays
+        2. Verify group gid displays
+        3. Verify group builtin displays
+        4. Verify group allow sudo commands displays
+        5. Verify group samba auth displays
         """
         # COM.set_search_field(built_in['group-name'])
         assert LG.is_group_visible(built_in['group-name']) is True

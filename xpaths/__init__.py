@@ -3,6 +3,7 @@ import xpaths.common_xpaths
 import xpaths.dashboard
 import xpaths.datasets
 import xpaths.iscsi
+import xpaths.local_groups
 import xpaths.local_users
 import xpaths.services
 import xpaths.sharing
