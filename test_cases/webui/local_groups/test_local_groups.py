@@ -136,7 +136,7 @@ class Test_Local_Groups:
 
         LG.expand_group_by_name(groups['group-name'])
         LG.click_group_members_button(groups['group-name'])
-        LG.click_user_account_by_name(groups['username'])
+        LG.click_group_members_by_name(groups['username'])
         LG.click_remove_from_list_button()
         assert LG.is_user_in_group_list(groups['username']) is False
         assert LG.is_user_in_users_list(groups['username']) is True

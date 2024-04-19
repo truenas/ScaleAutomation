@@ -56,7 +56,7 @@ def members_user(name: str) -> str:
     :param name: name of the given member user
     :return: xpath string for given group member's user value
     """
-    return f'//mat-list-item//*[contains(text(),"{name}")]'
+    return f'//*[@id="user-list"]//*[text()="{name}"]'
 
 
 def roles(name: str) -> str:

@@ -118,7 +118,7 @@ class Local_Groups:
          - Local_Groups.assert_group_gid('group-name', '3000')
         """
         group_name = COM.convert_to_tag_format(group_name)
-        return WebUI.get_attribute(f'//*[@data-test="row-{group_name}"]/td[2]', 'innerText') == gid
+        return WebUI.get_attribute(xpaths.local_groups.gid(group_name), 'innerText') == gid
 
     @classmethod
     def assert_sudo_commands_is_disabled(cls) -> bool:
@@ -216,6 +216,18 @@ class Local_Groups:
          - Local_Groups.click_group_members_button('group-name')
         """
         cls.click_group_action_button(group_name, 'members')
+
+    @classmethod
+    def click_group_members_by_name(cls, username: str) -> None:
+        """
+        This method clicks the given username
+
+        :param username: is the name of the user
+
+        Example
+         - Local_Groups.click_user_account_by_name('username')
+        """
+        COM.click_on_element(xpaths.local_groups.members_group_member(username))
 
     @classmethod
     def click_remove_from_list_button(cls) -> None:
@@ -349,7 +361,8 @@ class Local_Groups:
          - Local_Groups.expand_group_by_name('group_name')
         """
         group_name = COM.convert_to_tag_format(group_name)
-        COM.click_on_element(xpaths.local_groups.group(group_name))
+        if COM.is_visible(xpaths.common_xpaths.button_field(group_name+'-edit')) is False:
+            COM.click_on_element(xpaths.local_groups.group(group_name))
 
     @classmethod
     def get_group_list_allow_sudo_commands(cls, group) -> str:
