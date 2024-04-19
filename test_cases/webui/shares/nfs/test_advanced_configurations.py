@@ -21,6 +21,7 @@ from keywords.webui.system_services import System_Services as SERV
 @allure.tag("NFS Shares")
 @allure.epic("Shares")
 @allure.feature("NFS")
+@allure.issue("NAS-128417", name="NAS-128417")
 class Test_Advanced_Configurations:
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self, nfs_advanced_config):
@@ -39,6 +40,7 @@ class Test_Advanced_Configurations:
         NAV.navigate_to_datasets()
         DAT.click_dataset_location(nfs_advanced_config["dataset_name"])
         DAT.click_edit_permissions_button()
+        # Expected failure below: https://ixsystems.atlassian.net/browse/NAS-128417
         assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('uid'), 'value') is True
         assert WebUI.wait_until_field_populates(xpaths.common_xpaths.input_field('gid'), 'value') is True
         PERM.set_dataset_user(nfs_advanced_config["dataset_user"])
