@@ -118,7 +118,7 @@ class Local_Groups:
          - Local_Groups.assert_group_gid('group-name', '3000')
         """
         group_name = COM.convert_to_tag_format(group_name)
-        return WebUI.get_attribute(f'//*[@data-test="row-{group_name}"]/td[2]', 'innerText') == gid
+        return WebUI.get_attribute(xpaths.local_groups.gid(group_name), 'innerText') == gid
 
     @classmethod
     def assert_sudo_commands_is_disabled(cls) -> bool:
@@ -152,7 +152,7 @@ class Local_Groups:
         Example
          - Local_Groups.click_add_group_button()
         """
-        COM.click_button('add')
+        COM.click_button('add-group')
 
     @classmethod
     def click_add_to_list_button(cls) -> None:
@@ -177,9 +177,9 @@ class Local_Groups:
          - Local_Groups.click_group_action_button('group-name', 'edit')
          - Local_Groups.click_group_action_button('group-name', 'members')
         """
-        group_name = COM.convert_to_tag_format(group_name)
-        assert COM.is_visible(xpaths.common_xpaths.button_field(group_name + '-' + action))
-        COM.click_button(group_name + '-' + action)
+        group_name = COM.convert_to_tag_format(group_name + '-' + action)
+        assert COM.is_visible(xpaths.common_xpaths.button_field(group_name))
+        COM.click_button(group_name)
 
     @classmethod
     def click_group_delete_button_by_name(cls, group_name: str) -> None:
@@ -218,6 +218,18 @@ class Local_Groups:
         cls.click_group_action_button(group_name, 'members')
 
     @classmethod
+    def click_group_members_by_name(cls, username: str) -> None:
+        """
+        This method clicks the given username
+
+        :param username: is the name of the user
+
+        Example
+         - Local_Groups.click_user_account_by_name('username')
+        """
+        COM.click_on_element(xpaths.local_groups.members_group_member(username))
+
+    @classmethod
     def click_remove_from_list_button(cls) -> None:
         """
         This method clicks the Remove From List button.
@@ -237,7 +249,7 @@ class Local_Groups:
         Example
          - Local_Groups.click_user_account_by_name('username')
         """
-        COM.click_on_element(f'//mat-list-item//*[contains(text(),"{username}")]')
+        COM.click_on_element(xpaths.local_groups.members_user(username))
 
     @classmethod
     def create_group_by_api(cls, group_name: str, smb_access: bool = False) -> None:
@@ -349,7 +361,8 @@ class Local_Groups:
          - Local_Groups.expand_group_by_name('group_name')
         """
         group_name = COM.convert_to_tag_format(group_name)
-        COM.click_on_element(f'//*[@data-test="row-{group_name}"]')
+        if COM.is_visible(xpaths.common_xpaths.button_field(group_name+'-edit')) is False:
+            COM.click_on_element(xpaths.local_groups.group(group_name))
 
     @classmethod
     def get_group_list_allow_sudo_commands(cls, group) -> str:
@@ -362,28 +375,27 @@ class Local_Groups:
         Example
          - Local_Groups.get_group_list_builtin('group name')
         """
-        return cls.get_group_list_attribute(group, 4)
+        # TODO: Fix/Remove this if '_ssh' group is removed or changed
+        index = True if group == "_ssh" else False
+        return cls.get_group_list_attribute(xpaths.local_groups.allow_sudo_commands(COM.convert_to_tag_format(group)), index)
 
     @classmethod
-    def get_group_list_attribute(cls, group: str, col: int) -> str:
+    def get_group_list_attribute(cls, path: str, index: bool = False) -> str:
         """
-        This method returns the group list attribute from the given group and col
+        This method returns the group list attribute from the given path
 
-        :param group: is the name of the group
-        :param col: is the column of the group list
-        :return: returns the group list attribute from the given group and col
+        :param path: is the path of the group attribute
+        :param index: True if group name is '_ssh'
+        :return: returns the group list attribute from the given path
 
         Example
-         - Local_Groups.get_group_list_attribute('group name', 3)
+         - Local_Groups.get_group_list_attribute('xpath')
+         - Local_Groups.get_group_list_attribute('xpath', True)
         """
         # TODO: Fix/Remove this if '_ssh' group is removed or changed
-        index = 1
-        if group == "_ssh":
-            index = 2
-        group = COM.convert_to_tag_format(group)
-        return COM.get_element_property(
-            xpaths.common_xpaths.any_xpath(f'(//*[@data-test="row-{group}"][{index}]//td)[{col}]'),
-            'textContent').strip()
+        if index:
+            path = f'({path})[2]'
+        return COM.get_element_property(path, 'textContent').strip()
 
     @classmethod
     def get_group_list_builtin(cls, group) -> str:
@@ -396,7 +408,9 @@ class Local_Groups:
         Example
          - Local_Groups.get_group_list_builtin('group name')
         """
-        return cls.get_group_list_attribute(group, 3)
+        # TODO: Fix/Remove this if '_ssh' group is removed or changed
+        index = True if group == "_ssh" else False
+        return cls.get_group_list_attribute(xpaths.local_groups.builtin(COM.convert_to_tag_format(group)), index)
 
     @classmethod
     def get_group_list_gid(cls, group) -> str:
@@ -409,7 +423,9 @@ class Local_Groups:
         Example
          - Local_Groups.get_group_list_gid('group name')
         """
-        return cls.get_group_list_attribute(group, 2)
+        # TODO: Fix/Remove this if '_ssh' group is removed or changed
+        index = True if group == "_ssh" else False
+        return cls.get_group_list_attribute(xpaths.local_groups.gid(COM.convert_to_tag_format(group)), index)
 
     @classmethod
     def get_group_list_roles(cls, group) -> str:
@@ -422,7 +438,9 @@ class Local_Groups:
         Example
          - Local_Groups.get_group_list_roles('group name')
         """
-        return cls.get_group_list_attribute(group, 6)
+        # TODO: Fix/Remove this if '_ssh' group is removed or changed
+        index = True if group == "_ssh" else False
+        return cls.get_group_list_attribute(xpaths.local_groups.roles(COM.convert_to_tag_format(group)), index)
 
     @classmethod
     def get_group_list_samba_auth(cls, group) -> str:
@@ -435,7 +453,9 @@ class Local_Groups:
         Example
          - Local_Groups.get_group_list_samba_auth('group name')
         """
-        return cls.get_group_list_attribute(group, 5)
+        # TODO: Fix/Remove this if '_ssh' group is removed or changed
+        index = True if group == "_ssh" else False
+        return cls.get_group_list_attribute(xpaths.local_groups.samba_auth(COM.convert_to_tag_format(group)), index)
 
     @classmethod
     def is_group_visible(cls, group_name: str) -> bool:
@@ -449,12 +469,12 @@ class Local_Groups:
          - Local_Groups.is_group_visible('group-name')
         """
         name = COM.convert_to_tag_format(group_name)
-        if not COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]')):
+        if not COM.is_visible(xpaths.local_groups.group(name)):
             NAV.navigate_to_dashboard()
             NAV.navigate_to_local_groups()
         if not COM.assert_page_header('Groups'):
             NAV.navigate_to_local_groups()
-        return WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
+        return WebUI.wait_until_visible(xpaths.local_groups.group(name))
 
     @classmethod
     def is_user_in_group_list(cls, username: str) -> bool:
@@ -467,7 +487,7 @@ class Local_Groups:
         Example
          - Local_Groups.is_user_in_group_list('username')
         """
-        return COM.is_visible(f'//*[@id="member-list"]//*[text()="{username}"]')
+        return COM.is_visible(xpaths.local_groups.members_group_member(username))
 
     @classmethod
     def is_user_in_users_list(cls, username: str) -> bool:
@@ -480,7 +500,7 @@ class Local_Groups:
         Example
          - Local_Groups.is_user_in_users_list('username')
         """
-        return COM.is_visible(f'//*[@id="user-list"]//*[text()="{username}"]')
+        return COM.is_visible(xpaths.local_groups.members_user(username))
 
     @classmethod
     def select_group_privileges(cls, privilege: str) -> None:

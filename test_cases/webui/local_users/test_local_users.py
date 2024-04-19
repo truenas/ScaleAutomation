@@ -37,13 +37,18 @@ class Test_Local_Users:
         API_DELETE.delete_user(users['username'])
         API_DELETE.delete_user(users['username'] + '-edt')
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
-        NAV.navigate_to_dashboard()
 
     @allure.tag("Create")
     @allure.story("Add New Local Users")
     def test_add_new_user(self, users) -> None:
         """
-        This test verifies a new user can be created
+        Summary: This test verifies a new user can be created
+
+        Test Steps:
+        1. Click Add User button
+        2. Edit User values (username, fullname, password, confirm password, email)
+        3. Click Save button
+        4. Verify User is visible
         """
         API_DELETE.delete_user(users['username'])
         assert LU.is_user_visible(users['username']) is False
@@ -65,7 +70,12 @@ class Test_Local_Users:
     @allure.story("Delete Local Users")
     def test_delete_new_user(self, users) -> None:
         """
-        This test verifies a new user can be deleted
+        Summary: This test verifies a new user can be deleted
+
+        Test Steps:
+        1. Verify User is visible
+        2. Expand User then Delete User and confirm
+        3. Verify User is Not visible
         """
         assert LU.is_user_visible(users['username'])
 
@@ -78,7 +88,13 @@ class Test_Local_Users:
     @allure.story("Edit Local Users - Authentication Fields")
     def test_edit_user_authentication_fields(self, users) -> None:
         """
-        This test verifies a new user can be created
+        Summary: This test verifies user authentication fields can be edited
+
+        Test Steps:
+        1. Verify User is visible
+        2. Edit User Authentication fields
+        3. Click Save button
+        4. Verify User Authentication fields are set
         """
         assert LU.is_user_visible(users['username']) is True
 
@@ -93,6 +109,7 @@ class Test_Local_Users:
         # Warning dialog
         LU.confirm_home_warning_dialog()
         assert LU.assert_error_user_home_directory_not_writable() is True
+        COM.click_error_dialog_close_button()
 
         LU.set_user_home_directory(users['home-dir'])
         LU.set_user_create_home_directory_checkbox()
@@ -138,7 +155,13 @@ class Test_Local_Users:
     @allure.story("Edit Local Users - Directory Permissions")
     def test_edit_user_directory_permissions(self, users) -> None:
         """
-        This test verifies the user directory permissions can be edited
+        Summary: This test verifies user directory permission fields can be edited
+
+        Test Steps:
+        1. Verify User is visible
+        2. Edit User directory permission fields
+        3. Click Save button
+        4. Verify User directory permission fields are set
         """
         assert LU.is_user_visible(users['username']) is True
 
@@ -149,9 +172,21 @@ class Test_Local_Users:
         LU.set_user_home_directory(users['home-dir'])
         LU.set_user_create_home_directory_checkbox()
 
+        # Home Directory requires User Read. Verify Error message, then set User Read permission
         LU.unset_user_home_directory_permission_user_read_checkbox()
+        COM.click_save_button()
+        assert LU.assert_error_user_home_directory_requires_read() is True
+        COM.click_error_dialog_close_button()
+        LU.set_user_home_directory_permission_user_read_checkbox()
+
         LU.unset_user_home_directory_permission_user_write_checkbox()
+
+        # Home Directory requires User Execution. Verify Error message, then set User Execute permission
         LU.unset_user_home_directory_permission_user_execute_checkbox()
+        COM.click_save_button()
+        assert LU.assert_error_user_home_directory_requires_execute() is True
+        COM.click_error_dialog_close_button()
+        LU.set_user_home_directory_permission_user_execute_checkbox()
 
         LU.unset_user_home_directory_permission_group_read_checkbox()
         LU.unset_user_home_directory_permission_group_write_checkbox()
@@ -160,20 +195,6 @@ class Test_Local_Users:
         LU.unset_user_home_directory_permission_other_read_checkbox()
         LU.unset_user_home_directory_permission_other_write_checkbox()
         LU.unset_user_home_directory_permission_other_execute_checkbox()
-
-        COM.click_save_button()
-
-        # Home Directory requires User Execution. Verify Error message, then set User Execute permission
-        assert LU.assert_error_user_home_directory_requires_execute() is True
-
-        LU.set_user_home_directory_permission_user_execute_checkbox()
-
-        COM.click_save_button()
-
-        # Home Directory requires User Read. Verify Error message, then set User Read permission
-        assert LU.assert_error_user_home_directory_requires_read() is True
-
-        LU.set_user_home_directory_permission_user_read_checkbox()
 
         COM.click_save_button_and_wait_for_progress_bar()
 
@@ -199,7 +220,13 @@ class Test_Local_Users:
     @allure.story("Edit Local Users - Identification Fields")
     def test_edit_user_identification_fields(self, users) -> None:
         """
-        This test verifies the user identification fields can be edited
+        Summary: This test verifies user identification fields can be edited
+
+        Test Steps:
+        1. Verify User is visible
+        2. Edit User identification fields
+        3. Click Save button
+        4. Verify User identification fields are set
         """
         assert LU.is_user_visible(users['username']) is True
 
@@ -231,7 +258,13 @@ class Test_Local_Users:
     @allure.story("Edit Local Users - User ID and Group Fields")
     def test_edit_user_user_id_and_group_fields(self, users) -> None:
         """
-        This test verifies the user id and group fields can be edited
+        Summary: This test verifies user id and group fields can be edited
+
+        Test Steps:
+        1. Verify User is visible
+        2. Edit user id and group fields
+        3. Click Save button
+        4. Verify user id and group fields are set
         """
         assert LU.is_user_visible(users['username']) is True
 
@@ -255,7 +288,14 @@ class Test_Local_Users:
     @allure.story("Edit Local Users - Login with New User")
     def verify_user_login_after_edit(self, users) -> None:
         """
-        This test verifies the user can log in after identification fields edited
+        Summary: This test verifies user can log in after identification fields edited
+
+        Test Steps:
+        1. Verify User is visible
+        2. Edit User identification fields
+        3. Click Save button
+        4. Log off
+        4. Verify User can log in
         """
         assert LU.is_user_visible(users['username']) is True
 

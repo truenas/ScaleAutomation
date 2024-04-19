@@ -553,9 +553,7 @@ class Local_Users:
          - Local_Users.get_users_list_builtin('username')
         """
         name = COM.convert_to_tag_format(name)
-        return COM.get_element_property(
-            xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]//ix-cell-yesno'),
-            'textContent') == 'Yes'
+        return COM.get_element_property(xpaths.local_users.builtin(name), 'textContent') == 'Yes'
 
     @classmethod
     def get_users_list_full_name(cls, name) -> str:
@@ -569,9 +567,7 @@ class Local_Users:
          - Local_Users.get_users_list_full_name('username')
         """
         name = COM.convert_to_tag_format(name)
-        return COM.get_element_property(
-            xpaths.common_xpaths.any_xpath(f'(//*[@data-test="row-{name}"]//ix-cell-text)[3]'),
-            'textContent')
+        return COM.get_element_property(xpaths.local_users.full_name(name), 'textContent')
 
     @classmethod
     def get_users_list_uid(cls, name) -> str:
@@ -585,9 +581,7 @@ class Local_Users:
          - Local_Users.get_users_list_uid('username')
         """
         name = COM.convert_to_tag_format(name)
-        return COM.get_element_property(
-            xpaths.common_xpaths.any_xpath(f'(//*[@data-test="row-{name}"]//ix-cell-text)[2]'),
-            'textContent')
+        return COM.get_element_property(xpaths.local_users.uid(name), 'textContent')
 
     @classmethod
     def is_user_visible(cls, username: str) -> bool:
@@ -601,7 +595,7 @@ class Local_Users:
          - Local_Users.is_user_visible('username')
         """
         name = COM.convert_to_tag_format(username)
-        return WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
+        return WebUI.wait_until_visible(xpaths.local_users.user(name))
 
     @classmethod
     def is_user_not_visible(cls, username: str) -> bool:
