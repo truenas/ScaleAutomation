@@ -20,7 +20,7 @@ class Rsync:
         COM.click_button(f'card-rsync-task{COM.convert_to_tag_format(path)}-null-play-arrow-row-action')
         COM.assert_confirm_dialog()
         if COM.assert_dialog_visible('FAILED', shared_config['SHORT_WAIT']):
-            print("@@@ FAILED RSYNC: ")
+            print("RSYNC failed correctly")
             COM.click_error_dialog_close_button()
         WebUI.refresh()
 

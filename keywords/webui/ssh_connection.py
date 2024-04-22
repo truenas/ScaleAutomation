@@ -2,6 +2,7 @@ import xpaths
 from helper.global_config import private_config
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
+from keywords.webui.navigation import Navigation as NAV
 
 
 class SSH_Connection:
@@ -29,8 +30,8 @@ class SSH_Connection:
             cls.set_username(ssh_username)
             cls.set_passwordless_sudo_checkbox()
             cls.click_generate_new_private_key()
-            COM.click_save_button()
-            WebUI.refresh()
+            COM.click_save_button_and_wait_for_right_panel()
+            NAV.navigate_to_backup_credentials()
         return cls.is_ssh_connection_visible(connection)
 
     @classmethod
