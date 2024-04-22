@@ -89,9 +89,9 @@ class Test_Edit_WG_Easy:
         # edit app initial values
         Apps.edit_app('WG Easy')
         Apps.navigate_to_app_section('Network Configuration')
+        COM.unset_checkbox('host-network')
         COM.set_input_field('udp-port', '30000')
         COM.set_input_field('web-port', '30001')
-        COM.unset_checkbox('host-network')
         COM.click_save_button_and_wait_for_progress_bar()
         assert COM.assert_page_header('Installed') is True
         assert Apps.is_app_running('WG Easy') is True
