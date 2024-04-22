@@ -59,8 +59,9 @@ class Replication:
         Example:
             - Replication.close_destination_box()
         """
-        COM.logoff_truenas()
-        WebUI.close_window()
+        if WebUI.web_driver.current_url.__contains__(private_config['REP_DEST_IP']):
+            COM.logoff_truenas()
+            WebUI.close_window()
         cls.switch_to_source_box()
 
     @classmethod
@@ -92,6 +93,7 @@ class Replication:
         Example:
             - Replication.get_replication_status('myRepTask')
     """
+        WebUI.refresh()
         return COM.get_element_property(xpaths.common_xpaths.button_field(f'state-replication-task-{COM.convert_to_tag_format(name)}-row-state'), 'innerText').strip(' ')
 
     @classmethod
