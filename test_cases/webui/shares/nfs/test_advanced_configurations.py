@@ -73,7 +73,6 @@ class Test_Advanced_Configurations:
         yield
         NAV.navigate_to_shares()
         COMSHARE.delete_all_shares_by_share_type('nfs')
-        NAV.navigate_to_dashboard()
 
     @allure.tag("Authorized IP Address")
     @allure.story("NFS Share Authorized IP Address")
