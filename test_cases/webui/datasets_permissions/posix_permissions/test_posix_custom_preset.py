@@ -44,7 +44,7 @@ class Test_POSIX_Custom_Preset:
         COM.click_button('save-as-preset')
         COM.assert_dialog_visible('Save As Preset')
         PERM.set_custom_preset_name(posix_acl_custom['custom_name'])
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_spinner()
         PERM.click_save_acl_button()
         DAT.click_edit_permissions_button()
         PERM.click_use_preset_button()

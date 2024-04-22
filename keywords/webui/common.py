@@ -551,10 +551,21 @@ class Common:
         This method clicks the save button and waits for the progress bar to disappear
 
         Example:
-            - Common.click_save_button_and_wait_for_progress_bar_to_disappear()
+            - Common.click_save_button_and_wait_for_progress_bar()
         """
         cls.click_save_button()
         return cls.assert_progress_bar_not_visible()
+
+    @classmethod
+    def click_save_button_and_wait_for_progress_spinner(cls) -> bool:
+        """
+        This method clicks the save button and waits for the progress spinner to disappear
+
+        Example:
+            - Common.click_save_button_and_wait_for_progress_spinner()
+        """
+        cls.click_save_button()
+        return cls.assert_progress_spinner_not_visible()
 
     @classmethod
     def click_save_button_and_wait_for_right_panel(cls) -> bool:

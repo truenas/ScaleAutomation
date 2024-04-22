@@ -34,6 +34,7 @@ class Test_POSIX_Presets:
         COM.click_radio_button("use-preset-select-a-preset-acl")
         COM.select_option('preset-name', posix_acl_preset['preset_name'])
         COM.click_button('continue')
+        COM.assert_progress_spinner_not_visible()
         COM.assert_page_header('Edit ACL')
         PERM.assert_owner_input('root')
         PERM.assert_owner_group_input('root')
