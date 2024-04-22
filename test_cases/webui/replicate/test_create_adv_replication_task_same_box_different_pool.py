@@ -30,6 +30,7 @@ class Test_Create_Adv_Replicate_Task_Other_Pool_Same_Box:
         PCW.set_name_entry('two')
         PCW.click_next_button('general')
 
+        assert COM.assert_step_header_is_open('Data')
         PCW.select_layout_option('data', 'Mirror')
         PCW.select_disk_size_option('data', '20 GiB (HDD)')
         PCW.select_width_option('data', 2)
