@@ -65,6 +65,17 @@ class Test_Advanced_Configurations:
         API_DELETE.delete_dataset(nfs_advanced_config["api_path"], recursive=True, force=True)
         assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True
 
+    @pytest.fixture(scope='class', autouse=True)
+    def tear_down_class(self, nfs_advanced_config):
+        """
+        This method deletes all shares left behind and unmounts the NFS share on the client.
+        """
+        yield
+        assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True
+        NAV.navigate_to_shares()
+        COMSHARE.delete_all_shares_by_share_type('nfs')
+        NAV.navigate_to_dashboard()
+
     @allure.tag("Authorized IP Address")
     @allure.story("NFS Share Authorized IP Address")
     @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[:1])
