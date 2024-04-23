@@ -4,7 +4,6 @@ from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as COMSHARE
-from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation as NAV
 
 
@@ -23,6 +22,7 @@ def test_delete_new_smb_share(smb_data) -> None:
     COMSHARE.click_delete_share('smb', smb_data['name'])
     COM.assert_confirm_dialog()
 
+    NAV.navigate_to_shares()
     assert not COMSHARE.is_share_visible('smb', smb_data['name'])
 
     # Environment Teardown
