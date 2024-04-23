@@ -56,7 +56,7 @@ class Test_SSH:
         SSH.set_username(ssh["ssh_username"])
         SSH.set_passwordless_sudo_checkbox()
         SSH.click_generate_new_private_key()
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_right_panel()
 
         assert SSH.is_ssh_connection_visible(ssh['connection_name']) is True
 
