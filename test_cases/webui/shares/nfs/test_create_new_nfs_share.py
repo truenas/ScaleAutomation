@@ -24,6 +24,7 @@ class Test_Create_NFS_Share:
         This fixture sets the dataset for the NFS share test
         """
         API_POST.create_dataset(nfs_data['api_path'], 'NFS')
+        API_POST.stop_service('nfs')
 
         # Navigate to Shares page
         NAV.navigate_to_shares()
