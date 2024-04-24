@@ -533,6 +533,7 @@ class Common_Shares:
         path = f'card-{share_type}-share-{name.lower()}-edit-row-action'
         path = COM.convert_to_tag_format(path)
         COM.click_button(path)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.close_right_panel()) is True
         assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit {share_type.upper()}', 3)) is True
 
     @classmethod
