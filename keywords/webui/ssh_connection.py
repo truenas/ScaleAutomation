@@ -70,6 +70,7 @@ class SSH_Connection:
         name = COM.convert_to_tag_format(name)
         COM.click_button(f'ssh-keypair-{name}-key-delete-row-action')
         COM.assert_confirm_dialog()
+        NAV.navigate_to_backup_credentials()
 
     @classmethod
     def click_delete_ssh_connection_button(cls, name) -> None:
@@ -110,7 +111,7 @@ class SSH_Connection:
         """
         assert COM.is_visible(xpaths.common_xpaths.button_field('download-actions'))
         COM.click_button('download-actions')
-        WebUI.delay(0.2)
+        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('download-private-key'))
 
     @classmethod
     def click_edit_ssh_keypairs_download_private_key_button(cls) -> None:
