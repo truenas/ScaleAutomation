@@ -27,10 +27,12 @@ class Replication:
             - Replication.click_run_now_replication_task_by_name('myRepTask')
         """
         WebUI.refresh()
-        COM.click_button(f'replication-task-{COM.convert_to_tag_format(name)}-play-arrow-row-action')
+        name = COM.convert_to_tag_format(name)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field(f'replication-task-{name}-play-arrow-row-action')) is True
+        COM.click_button(f'replication-task-{name}-play-arrow-row-action')
         COM.assert_confirm_dialog()
         assert WebUI.wait_until_visible(
-            f'//*[@data-test="button-state-replication-task-{COM.convert_to_tag_format(name)}-row-state" and contains(@class,"fn-theme-green")]', shared_config['LONG_WAIT']) is True
+            f'//*[@data-test="button-state-replication-task-{name}-row-state" and contains(@class,"fn-theme-green")]', shared_config['LONG_WAIT']) is True
 
     @classmethod
     def click_save_button_and_resolve_dialogs(cls):
@@ -50,6 +52,9 @@ class Replication:
             cls.click_close_task_started_button()
         if cls.is_run_now_dialog_visible() is True:
             COM.cancel_confirm_dialog()
+        assert COM.assert_progress_bar_not_visible(shared_config['EXTRA_LONG_WAIT']) is True
+        return WebUI.wait_until_not_visible(xpaths.common_xpaths.close_right_panel())
+
 
     @classmethod
     def close_destination_box(cls) -> None:
