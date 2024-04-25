@@ -11,6 +11,7 @@ from keywords.webui.data_protection import Data_Protection as DP
 from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.replication import Replication as REP
 from keywords.webui.snapshots import Snapshots as SNAP
+from keywords.webui.ssh_connection import SSH_Connection as SSHCON
 
 
 @allure.tag("Replication")
@@ -32,6 +33,8 @@ class Test_Create_Replicate_Task_Different_Box:
         API_POST.create_remote_dataset(rep['destination'])
         API_POST.delete_all_remote_dataset_snapshots(rep['source'])
         API_POST.delete_all_remote_dataset_snapshots(rep['destination'])
+        NAV.navigate_to_backup_credentials()
+        SSHCON.assert_ssh_connection_exists(rep['connection-name'])
         NAV.navigate_to_data_protection()
         if REP.is_replication_task_visible(rep['task-name']) is True:
             REP.delete_replication_task_by_name(rep['task-name'])
