@@ -52,7 +52,7 @@ class Replication:
             cls.click_close_task_started_button()
         if cls.is_run_now_dialog_visible() is True:
             COM.cancel_confirm_dialog()
-        assert COM.assert_progress_bar_not_visible() is True
+        assert COM.assert_progress_bar_not_visible(shared_config['EXTRA_LONG_WAIT']) is True
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.close_right_panel())
 
 
