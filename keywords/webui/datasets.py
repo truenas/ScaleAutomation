@@ -830,6 +830,7 @@ class Datasets:
             Common.set_input_field('confirm-dataset-name', f'{pool}/{dataset}')
             Common.set_checkbox('confirm')
             Common.click_on_element(xpaths.common_xpaths.button_field_by_row('delete-dataset', 2))
+            assert Common.assert_progress_spinner_not_visible()
             WebUI.delay(1)
 
     @classmethod
