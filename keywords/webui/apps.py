@@ -301,7 +301,8 @@ class Apps:
         name = COM.convert_to_tag_format(name)
         COM.click_on_element(f'//ix-app-row//div[contains(text(),"{name}")]')
         COM.click_button(f'{name}-edit')
-        assert COM.assert_page_header(f'Edit {name}')
+        assert COM.assert_page_header(f'Edit {name}') is True
+        assert COM.assert_progress_bar_not_visible() is True
 
     @classmethod
     def get_app_status(cls, name: str) -> str:
