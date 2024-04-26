@@ -52,7 +52,6 @@ class Test_POSIX_Recursive_Permissions:
         PERM.set_apply_owner_checkbox()
         PERM.set_apply_group_checkbox()
         COM.unset_checkbox('permissions-write')
-        COM.unset_checkbox('permissions-execute')
         COM.set_checkbox('recursive')
         COM.assert_confirm_dialog()
         COM.set_checkbox('traverse')
@@ -71,13 +70,11 @@ class Test_POSIX_Recursive_Permissions:
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
-    @allure.issue("NAS-128091", name="NAS-128091")
     def test_recursive_permissions_via_UI(self, posix_acl_recursive_permissions):
         """
         This test verifies the ability to use recursive permissions application and verifies the permissions via WebUI
         """
         # Parent dataset verification
-        # Expected failure below: https://ixsystems.atlassian.net/browse/NAS-128091
         assert PERM.assert_dataset_owner(posix_acl_recursive_permissions['new_owner']) is True
         assert PERM.assert_dataset_group(posix_acl_recursive_permissions['new_owner_group']) is True
         assert PERM.verify_dataset_permissions_type('POSIX Permissions') is True
@@ -133,13 +130,11 @@ class Test_POSIX_Recursive_Permissions:
         assert PERM.verify_dataset_other_default_permissions(posix_acl_recursive_permissions['other_default_perm']) is True
         assert PERM.verify_dataset_permissions_edit_button() is True
 
-    @allure.issue("NAS-128091", name="NAS-128091")
     def test_recursive_permissions_via_SSH(self, posix_acl_recursive_permissions):
         """
         This test verifies the ability to use recursive permissions application and verifies the permissions via SSH
         """
         # Parent dataset verification
-        # Expected failure below: https://ixsystems.atlassian.net/browse/NAS-128091
         assert PERM_SSH.assert_dataset_has_posix_acl('/mnt/tank', posix_acl_recursive_permissions['dataset'], posix_acl_recursive_permissions['ls_output']) is True
         assert PERM_SSH.assert_file_has_posix_acl(posix_acl_recursive_permissions['full_path'], 'test_file.txt', posix_acl_recursive_permissions['file_ls_output']) is True
         assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_recursive_permissions['full_path'], posix_acl_recursive_permissions['file_cli']) is True
