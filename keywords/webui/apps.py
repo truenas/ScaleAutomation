@@ -486,7 +486,8 @@ class Apps:
             Apps.click_install_app(name)
             cls.handle_docker_limit_dialog()
             Apps.set_app_values(name)
-            assert COM.click_save_button_and_wait_for_progress_bar() is True
+            COM.click_save_button()
+            assert COM.assert_dialog_not_visible('Installing', shared_config['EXTRA_LONG_WAIT']) is True
             assert COM.assert_page_header('Installed', shared_config['EXTRA_LONG_WAIT']) is True
             assert COM.assert_progress_bar_not_visible() is True
             assert cls.is_app_running(name) is True
