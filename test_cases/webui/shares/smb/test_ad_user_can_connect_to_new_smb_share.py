@@ -35,6 +35,7 @@ class Test_SMB_AD_User:
         API_POST.create_dataset('tank/SMBADUSER', 'SMB')
         API_POST.create_share('smb', 'SMBADUSER', '/mnt/tank/SMBADUSER')
         API_POST.start_service('cifs')
+        API_POST.start_service('ssh')
 
     @pytest.fixture(scope='class', autouse=True)
     def teardown_test(self, ad_data) -> None:
