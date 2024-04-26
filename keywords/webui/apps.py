@@ -301,7 +301,8 @@ class Apps:
         name = COM.convert_to_tag_format(name)
         COM.click_on_element(f'//ix-app-row//div[contains(text(),"{name}")]')
         COM.click_button(f'{name}-edit')
-        assert COM.assert_page_header(f'Edit {name}')
+        assert COM.assert_page_header(f'Edit {name}') is True
+        assert COM.assert_progress_bar_not_visible() is True
 
     @classmethod
     def get_app_status(cls, name: str) -> str:
@@ -486,7 +487,8 @@ class Apps:
             Apps.click_install_app(name)
             cls.handle_docker_limit_dialog()
             Apps.set_app_values(name)
-            assert COM.click_save_button_and_wait_for_progress_bar() is True
+            COM.click_save_button()
+            assert COM.assert_dialog_not_visible('Installing', shared_config['EXTRA_LONG_WAIT']) is True
             assert COM.assert_page_header('Installed', shared_config['EXTRA_LONG_WAIT']) is True
             assert COM.assert_progress_bar_not_visible() is True
             assert cls.is_app_running(name) is True
