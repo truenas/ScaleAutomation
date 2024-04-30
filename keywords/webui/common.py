@@ -1059,6 +1059,7 @@ class Common:
             shared_config['EXTRA_LONG_WAIT']) is True
         assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT']) is True
         WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
+        assert API_Common.is_system_ready() is True
 
     @classmethod
     def select_then_deselect_input_field(cls, name: str) -> None:

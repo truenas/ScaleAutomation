@@ -84,6 +84,20 @@ class API_Common:
         return user_results.json()[0]['uid']
 
     @classmethod
+    def is_system_ready(cls) -> bool:
+        """
+        This method returns True if the system is READY, otherwise False. [ SHUTTING_DOWN, READY, BOOTING ]
+
+        :return: returns True if the system is READY, otherwise False.
+
+        Example:
+        - API_Common.is_system_ready()
+        """
+        state = GET("/system/state")
+        print("@@@ SYSTEM IS: "+state.text)
+        return state.text.__contains__("READY")
+
+    @classmethod
     def wait_on_job(cls, job_id: int, max_timeout: int) -> dict:
         """
         This method wait for API ID to return SUCCESS or FAILED and TIMEOUT.
