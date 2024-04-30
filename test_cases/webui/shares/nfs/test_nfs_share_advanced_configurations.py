@@ -51,6 +51,8 @@ class Test_Advanced_Configurations:
         COM.click_save_button_and_wait_for_progress_bar()
         NAV.navigate_to_shares()
         assert COMSHARE.assert_share_card_displays('nfs') is True
+        if COMSHARE.assert_share_card_view_all_button('nfs') is True:
+            COM.click_link('nfs-share-view-all')
         assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True
 
     @pytest.fixture(scope='function', autouse=True)
