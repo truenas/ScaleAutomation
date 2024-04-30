@@ -98,8 +98,8 @@ class SSH_Connection:
         """
         name = COM.convert_to_tag_format(name)
         COM.click_button(f'ssh-keypair-{name}-key-edit-row-action')
-        assert COM.assert_right_panel_header('SSH Keypairs')
-        assert COM.is_visible(xpaths.common_xpaths.button_field('save'))
+        assert COM.assert_right_panel_header('SSH Keypairs') is True
+        assert COM.is_visible(xpaths.common_xpaths.button_field('save')) is True
 
     @classmethod
     def click_edit_ssh_keypairs_download_actions_button(cls) -> None:
@@ -109,7 +109,7 @@ class SSH_Connection:
         Example:
             - SSH_Connection.click_edit_ssh_keypairs_download_actions_button()
         """
-        assert COM.is_visible(xpaths.common_xpaths.button_field('download-actions'))
+        assert COM.is_visible(xpaths.common_xpaths.button_field('download-actions')) is True
         COM.click_button('download-actions')
         WebUI.wait_until_visible(xpaths.common_xpaths.button_field('download-private-key'))
 
@@ -121,7 +121,7 @@ class SSH_Connection:
         Example:
             - SSH_Connection.click_edit_ssh_keypairs_download_private_key_button()
         """
-        assert COM.is_visible(xpaths.common_xpaths.button_field('download-private-key'))
+        assert COM.is_visible(xpaths.common_xpaths.button_field('download-private-key')) is True
         COM.click_button('download-private-key')
         WebUI.delay(0.5)
 
