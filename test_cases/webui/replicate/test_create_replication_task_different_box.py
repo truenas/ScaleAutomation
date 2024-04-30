@@ -155,7 +155,7 @@ class Test_Create_Replicate_Task_Different_Box:
         current_minute = COM.get_current_minute()
         REP.set_preset_custom_time(minutes=str(current_minute + 1))
         COM.click_button('done')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_right_panel()
 
         DP.click_edit_replication_task_by_name(rep['task-name'])
         REP.select_schedule_preset('custom')
