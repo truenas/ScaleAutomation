@@ -931,6 +931,13 @@ class Common:
         print("@@@ PATH: " + download_path)
         file = Path(download_path + '/' + filename)
         print("@@@ FILE: " + str(file))
+        i = 0
+        while file.is_file() is False:
+            i = i + 1
+            WebUI.delay(5)
+            if i > 6:
+                print("File not found")
+                return False
         return file.is_file()
 
     @classmethod
