@@ -416,6 +416,24 @@ class API_POST:
         return response
 
     @classmethod
+    def create_share_admin(cls, username: str, fullname: str, password: str, smb_auth: str = 'True') -> Response:
+        share_administrators = API_GET.get_group_id('truenas_sharing_administrators')
+        payload = {
+            "username": username,
+            "group_create": True,
+            "groups": [share_administrators],
+            "home": "/mnt/tank",
+            "home_create": True,
+            "full_name": fullname,
+            "email": f"{username}@nowhere.com",
+            "password": password,
+            "shell": "/usr/bin/bash",
+            "ssh_password_enabled": True,
+            "smb": eval(smb_auth.lower().capitalize())
+        }
+        return POST('/user', payload)
+
+    @classmethod
     def create_snapshot(cls, dataset: str, name: str, recursive: bool = False, suspend_vms: bool = False,
                         vmware_sync: bool = False) -> Response:
         """
