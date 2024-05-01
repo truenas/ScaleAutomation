@@ -9,9 +9,9 @@ class Data_Protection:
     @classmethod
     def assert_add_scrub_task_button_is_locked_and_not_clickable(cls):
         """
-        This method verifies if the delete dataset permissions button is locked and not clickable.
+        This method verifies if the add scrub task button is locked and not clickable.
 
-        :return: True if the delete dataset permissions button is locked and not clickable, otherwise it returns False.
+        :return: True if the add scrub task button is locked and not clickable, otherwise it returns False.
 
         Example:
             - Data_Protection.assert_add_scrub_task_button_is_locked_and_not_clickable()
@@ -21,10 +21,10 @@ class Data_Protection:
     @classmethod
     def assert_delete_scrub_task_button_is_locked_and_not_clickable(cls, description: str):
         """
-        This method verifies if the delete dataset permissions button is locked and not clickable.
+        This method verifies if the delete scrub task button is locked and not clickable.
 
         :param description: description of the scrub task
-        :return: True if the delete dataset permissions button is locked and not clickable, otherwise it returns False.
+        :return: True if the delete scrub task button is locked and not clickable, otherwise it returns False.
 
         Example:
             - Data_Protection.assert_delete_scrub_task_button_is_locked_and_not_clickable('description')
@@ -35,10 +35,10 @@ class Data_Protection:
     @classmethod
     def assert_enable_scrub_task_toggle_is_locked_and_not_clickable(cls, description: str):
         """
-        This method verifies if the delete dataset permissions button is locked and not clickable.
+        This method verifies if the enable scrub task toggle is locked and not clickable.
 
         :param description: description of the scrub task
-        :return: True if the delete dataset permissions button is locked and not clickable, otherwise it returns False.
+        :return: True if the enable scrub task toggle is locked and not clickable, otherwise it returns False.
 
         Example:
             - Data_Protection.assert_enable_scrub_task_toggle_is_locked_and_not_clickable('description')
