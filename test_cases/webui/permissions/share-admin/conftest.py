@@ -10,11 +10,11 @@ def setup_user():
     """
     This setup fixture create the  share admin for the session.
     """
-    print(f'Username: {shared_config["SHA_USER"]}')
-    API_POST.create_share_admin(shared_config['SHA_USER'], shared_config['SHA_FULLNAME'], shared_config['SHA_PASSWORD'])
+    print(f'Username: {shared_config["SHARE_ADMIN_USER"]}')
+    API_POST.create_share_admin(shared_config['SHARE_ADMIN_USER'], shared_config['SHARE_ADMIN_FULLNAME'], shared_config['SHARE_ADMIN_PASSWORD'])
 
     Common.logoff_truenas()
-    Common.login_to_truenas(shared_config['SHA_USER'], shared_config['SHA_PASSWORD'])
+    Common.login_to_truenas(shared_config['SHARE_ADMIN_USER'], shared_config['SHARE_ADMIN_PASSWORD'])
 
 
 @pytest.fixture(autouse=True, scope='package')
@@ -26,4 +26,4 @@ def delete_user():
     Common.logoff_truenas()
     Common.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
 
-    API_DELETE.delete_user(shared_config['SHA_USER'])
+    API_DELETE.delete_user(shared_config['SHARE_ADMIN_USER'])
