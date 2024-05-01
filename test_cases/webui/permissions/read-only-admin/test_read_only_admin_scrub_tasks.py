@@ -21,6 +21,7 @@ class Test_Read_Only_Admin_Scrub_Tasks:
         """
         This setup fixture create the dataset and read-only admin for all test cases.
         """
+        API_DELETE.delete_scrub_task("tank")
         API_POST.create_scrub_task()
         NAV.navigate_to_data_protection()
 
