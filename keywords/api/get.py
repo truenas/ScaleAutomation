@@ -97,6 +97,19 @@ class API_GET:
         return response
 
     @classmethod
+    def get_system_state(cls) -> str:
+        """
+        This method gets the system state.
+
+        :return: The API request response. [ SHUTTING_DOWN, READY, BOOTING ]
+
+        Example:
+            - API_GET.get_system_state()
+        """
+        response = GET('/system/state/')
+        return response.text
+
+    @classmethod
     def get_system_version(cls) -> Response:
         """
         This method gets the system version.

@@ -169,6 +169,25 @@ class Common:
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(dialog_title, 1), wait)
 
     @classmethod
+    def assert_element_is_locked_and_not_clickable(cls, xpath: str) -> bool:
+        """
+        This method asserts that the given element is locked and not clickable
+
+        :param xpath: xpath of the element
+        :return: True if the element is locked and not clickable otherwise it returns False
+
+        Example:
+            - Common.assert_button_is_locked_and_not_clickable('delete')
+        """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(xpath)) is True
+        try:
+            # At this point the element is visible a Timeout or ElementClickIntercepted exception will be thrown.
+            cls.click_on_element(xpath, 1)
+        except (ElementClickInterceptedException, TimeoutException):
+            return True
+        return False
+
+    @classmethod
     def assert_file_exists(cls, file: str, path: str, ip: str = private_config['IP'],
                            user: str = private_config['SSH_USERNAME'],
                            password: str = private_config['PASSWORD']) -> bool:
@@ -1059,6 +1078,7 @@ class Common:
             shared_config['EXTRA_LONG_WAIT']) is True
         assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT']) is True
         WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
+        assert API_Common.is_system_ready() is True
 
     @classmethod
     def select_then_deselect_input_field(cls, name: str) -> None:
