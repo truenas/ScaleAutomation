@@ -7,6 +7,73 @@ from keywords.webui.navigation import Navigation as NAV
 class Data_Protection:
 
     @classmethod
+    def assert_add_scrub_task_button_is_locked_and_not_clickable(cls):
+        """
+        This method verifies if the delete dataset permissions button is locked and not clickable.
+
+        :return: True if the delete dataset permissions button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_add_scrub_task_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('scrub-task-add')
+
+    @classmethod
+    def assert_delete_scrub_task_button_is_locked_and_not_clickable(cls, description: str):
+        """
+        This method verifies if the delete dataset permissions button is locked and not clickable.
+
+        :param description: description of the scrub task
+        :return: True if the delete dataset permissions button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_delete_scrub_task_button_is_locked_and_not_clickable('description')
+        """
+        description = COM.convert_to_tag_format(description)
+        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.scrub_task_delete_button(description))
+
+    @classmethod
+    def assert_enable_scrub_task_toggle_is_locked_and_not_clickable(cls, description: str):
+        """
+        This method verifies if the delete dataset permissions button is locked and not clickable.
+
+        :param description: description of the scrub task
+        :return: True if the delete dataset permissions button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_enable_scrub_task_toggle_is_locked_and_not_clickable('description')
+        """
+        description = COM.convert_to_tag_format(description)
+        print("@@@ TOGGLE: "+xpaths.data_protection.scrub_task_enable_toggle(description))
+        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.scrub_task_enable_toggle(description))
+
+    @classmethod
+    def assert_preset_dialog_visible(cls) -> bool:
+        """
+        This method returns True if the dialog is visible, otherwise it returns False.
+
+        :return: True if the Presets dialog is visible, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_preset_dialog_visible()
+        """
+        return WebUI.wait_until_visible(xpaths.common_xpaths.any_header("Presets", 4))
+
+    @classmethod
+    def assert_scrub_task_description(cls, description) -> bool:
+        """
+        This method returns True if the given scrub task description is visible, otherwise returns False.
+
+        :param description: description of the scrub task
+        :return: True if the given scrub task description is visible, otherwise returns False.
+
+        Example:
+            - Data_Protection.assert_scrub_task_description("Scrub Task Description")
+        """
+        description = COM.convert_to_tag_format(description)
+        return COM.is_visible(xpaths.data_protection.scrub_task_description(description))
+
+    @classmethod
     def click_add_replication_button(cls) -> None:
         """
         This method clicks the Add Replication task button
@@ -38,6 +105,20 @@ class Data_Protection:
         """
         COM.click_button(f'replication-task-{COM.convert_to_tag_format(name)}-edit-row-action')
         COM.assert_right_panel_header('Edit Replication Task')
+
+    @classmethod
+    def click_edit_scrub_task(cls, description):
+        """
+        This method clicks the edit button for the given replication task
+
+        :param description: the description of the given scrub task
+
+        Example:
+            - Data_Protection.click_edit_scrub_task('description')
+        """
+        description = COM.convert_to_tag_format(description)
+        COM.click_on_element(xpaths.data_protection.scrub_task_edit_button(description))
+        assert COM.assert_right_panel_header('Edit Scrub Task') is True
 
     @classmethod
     def click_edit_snapshot_task_by_name(cls, name):
@@ -121,9 +202,21 @@ class Data_Protection:
         :return: the status for the given task.
 
         Example:
-            - Common_Replication.get_task_status('myRepTask', 'replication')
-            - Common_Replication.get_task_status('mySnapshotTask', 'snapshot')
+            - Data_Protection.get_task_status('myRepTask', 'replication')
+            - Data_Protection.get_task_status('mySnapshotTask', 'snapshot')
     """
         task_type = COM.convert_to_tag_format(task_type)
         name = COM.convert_to_tag_format(name)
         return COM.get_element_property(xpaths.common_xpaths.any_xpath(f'//*[contains(@data-test,"state-{task_type}-task-{name}")]'), 'innerText')
+
+    @classmethod
+    def set_schedule(cls, schedule: str) -> None:
+        """
+        This method sets the schedule to the given schedule
+
+        :param schedule: is the schedule [hourly/daily/weekly/monthly/custom]
+
+        Example:
+            - Data_Protection.set_schedule('weekly')
+        """
+        COM.select_option('schedule-presets', 'schedule-presets-' + COM.convert_to_tag_format(schedule))
