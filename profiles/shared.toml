@@ -23,6 +23,9 @@ PERCY_URL = ''
 ROA_FULLNAME = "READ ONLY ADMIN"
 ROA_PASSWORD = "testing"
 ROA_USER = "roa"
+SHA_FULLNAME = "SHARE ADMIN"
+SHA_PASSWORD = "testing"
+SHA_USER = "sha"
 SHORT_WAIT = 5
 SMB_ACL_ENTRY = [{"ae_who_sid" = "S-1-1-0", "ae_type" = "ALLOWED", "ae_perm" = "FULL"}]
 WAIT = 30
