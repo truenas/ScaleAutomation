@@ -361,6 +361,29 @@ class API_POST:
         return response
 
     @classmethod
+    def create_scrub_task(cls, pool: int = 1, enable: bool = True) -> Response:
+        """
+        This method creates a scrub task on given pool if it doesn't exist.
+
+        :param pool: is the pool number. Defaults to 1
+        :param enable: whether to enable scrub task or not. Defaults to True
+
+        Example:
+            - API_POST.create_scrub_task()
+            - API_POST.create_scrub_task(2)
+            - API_POST.create_scrub_task(2, False)
+        """
+        payload = {
+            "pool": pool,
+            "description": "Scrub Task For Pool",
+            "enabled": enable
+        }
+        response = POST('/pool/scrub', payload)
+        if response.status_code != 200:
+            print("@@@ CREATE SCRUB TASK: " + response.text)
+        return response
+
+    @classmethod
     def create_share(cls, sharetype: str, name: str, path: str, guest: bool = False, comment: str = '') -> Response:
         """
         This method creates the given share.
