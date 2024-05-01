@@ -44,7 +44,6 @@ class Data_Protection:
             - Data_Protection.assert_enable_scrub_task_toggle_is_locked_and_not_clickable('description')
         """
         description = COM.convert_to_tag_format(description)
-        print("@@@ TOGGLE: "+xpaths.data_protection.scrub_task_enable_toggle(description))
         return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.scrub_task_enable_toggle(description))
 
     @classmethod
