@@ -125,6 +125,9 @@ class API_DELETE:
 
         :param pool_name: is the pool nome.
         :return: the API request response.
+
+        Example:
+            - API_DELETE.delete_scrub_task('pool_name')
         """
         response = GET(f'/pool/scrub?pool_name={pool_name}').json()
         if response:
