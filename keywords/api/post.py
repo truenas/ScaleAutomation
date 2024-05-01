@@ -361,7 +361,7 @@ class API_POST:
         return response
 
     @classmethod
-    def create_scrub_task(cls, pool: int = 1, enable: bool = True) -> None:
+    def create_scrub_task(cls, pool: int = 1, enable: bool = True) -> Response:
         """
         This method creates a scrub task on given pool if it doesn't exist.
 
@@ -371,6 +371,7 @@ class API_POST:
         Example:
             - API_POST.create_scrub_task()
             - API_POST.create_scrub_task(2)
+            - API_POST.create_scrub_task(2, False)
         """
         payload = {
             "pool": pool,
@@ -380,6 +381,7 @@ class API_POST:
         response = POST('/pool/scrub', payload)
         if response.status_code != 200:
             print("@@@ CREATE SCRUB TASK: " + response.text)
+        return response
 
     @classmethod
     def create_share(cls, sharetype: str, name: str, path: str, guest: bool = False, comment: str = '') -> Response:
