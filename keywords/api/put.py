@@ -1,4 +1,4 @@
-from helper.api import PUT, Response
+from helper.api import PUT, Response, GET
 from helper.global_config import private_config, shared_config
 from keywords.api.common import API_Common
 
@@ -348,4 +348,28 @@ class API_PUT:
         """
         userid = API_Common.get_user_id(username)
         return PUT(f'/user/id/{userid}', payload)
+
+    @classmethod
+    def set_cloud_sync_task_enabled(cls, name: str, state: bool = True) -> Response:
+        """
+        This method sets the given cloud sync task to the given enabled state.
+
+        :param name: is name of the cloud sync credential.
+        :param state: is the state to set the cloud sync task. Default is True
+        :return: the API request response.
+
+        Example:
+            - API_POST.set_cloud_sync_task_enabled('name')
+            - API_POST.set_cloud_sync_task_enabled('name', False)
+        """
+        cred_id = 0
+        response = GET(f'/cloudsync/credentials?name={name}').json()
+        if response:
+            cred_id = response[0]['id']
+        payload = {
+          "enabled": state
+        }
+        response = PUT(f'/cloudsync/id/{cred_id}', payload)
+        assert response.status_code == 200, response.text
+        return response
 
