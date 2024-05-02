@@ -619,6 +619,8 @@ class Common:
         Example:
             - Common.convert_to_tag_format('Element Name')
         """
+        if name.__contains__("Amazon S3"):
+            name = "Amazon-S-3"
         if name.__contains__('AD03\\'):
             name = name.replace('AD03\\', 'AD-03-')
         if name.__contains__('iperf3'):
