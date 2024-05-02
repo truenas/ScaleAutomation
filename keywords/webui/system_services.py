@@ -52,7 +52,7 @@ class System_Services:
 
         :param servicename: the name of the service.
         """
-        name = cls.return_backend_service_name(servicename, False)
+        name = cls.return_backend_service_name(servicename)
         COM.click_button(f'service-{name}-edit-row-action')
 
     @classmethod
@@ -64,8 +64,8 @@ class System_Services:
         :return: returns the state of the auto start checkbox of the given service.
         """
         service_backend = cls.return_backend_service_name(service)
-        assert (COM.is_visible(xpaths.common_xpaths.checkbox_field(f'{service_backend}')))
-        return COM.is_checked(f'{service_backend}')
+        assert (COM.is_visible(xpaths.common_xpaths.toggle_field(f'start-automatically-service-{service_backend}-row-toggle'))) is True
+        return COM.is_toggle_enabled(f'start-automatically-service-{service_backend}-row-toggle')
 
     @classmethod
     def is_service_status_running_by_name(cls, service: str) -> bool:
@@ -76,7 +76,7 @@ class System_Services:
         :return: returns the running status of the given service.
         """
         service_backend = cls.return_backend_service_name(service)
-        return COM.is_toggle_enabled(service_backend)
+        return COM.is_toggle_enabled(f'running-service-{service_backend}-row-toggle')
 
     @classmethod
     def restart_service_by_api(cls, service: str) -> None:
@@ -88,26 +88,31 @@ class System_Services:
         assert API_POST.start_service(service).status_code == 200
 
     @classmethod
-    def return_backend_service_name(cls, service: str, append: bool = True) -> str:
+    def return_backend_service_name(cls, service: str, api: bool = False) -> str:
         """
         This method returns the backend name of the given service.
 
-        :param append: Whether to append "-service" to the end of the converted name. Default value, True.
         :param service: The name of the service.
+        :param api: if used for api, defaults to false.
         :return: returns the state of the backend name of the given service.
         """
         returned_name = service.lower()
-        match service.lower():
-            case 'iscsi':
-                returned_name = 'iscsitarget'
-            case 'smart' | 's.m.a.r.t.':
-                returned_name = 'smartd'
-            case 'smb':
-                returned_name = 'cifs'
-            case _:
-                pass
-        if append:
-            returned_name = returned_name+'-service'
+        if api:
+            match service.lower():
+                case 'iscsi':
+                    returned_name = 'iscsitarget'
+                case 'smart' | 's.m.a.r.t.':
+                    returned_name = 'smartd'
+                case 'smb':
+                    returned_name = 'cifs'
+                case _:
+                    pass
+        else:
+            match service.lower():
+                case 'smart' | 's.m.a.r.t.':
+                    returned_name = 's-m-a-r-t'
+                case _:
+                    pass
         return returned_name
 
     @classmethod
@@ -200,7 +205,7 @@ class System_Services:
 
         :param service: is the name of the service to start
         """
-        service_backend = cls.return_backend_service_name(service, False)
+        service_backend = cls.return_backend_service_name(service, True)
         assert API_POST.start_service(service_backend).status_code == 200
 
     @classmethod
@@ -237,7 +242,8 @@ class System_Services:
 
         :param service: The name of the service to stop
         """
-        service_backend = cls.return_backend_service_name(service, False)
+        service_backend = cls.return_backend_service_name(service, True)
+        print("service_backend = "+service_backend)
         assert API_POST.stop_service(service_backend).status_code == 200
 
     @classmethod
@@ -256,8 +262,8 @@ class System_Services:
         :param state: The state to toggle the service auto start status to.
         """
         service_backend = cls.return_backend_service_name(service)
-        COM.set_checkbox_by_state(f'{service_backend}', state)
-        assert (COM.is_checked(f'{service_backend}') is state)
+        COM.set_toggle_by_state(f'start-automatically-service-{service_backend}-row-toggle', state)
+        assert (COM.is_toggle_enabled(f'start-automatically-service-{service_backend}-row-toggle') is state)
 
     @classmethod
     def toggle_service_running_status_by_name(cls, service: str, state: bool, error_dialog: bool = False):
@@ -269,19 +275,19 @@ class System_Services:
         :param error_dialog: If the service displays an error dialog upon starting.
         """
         service_backend = cls.return_backend_service_name(service)
-        if COM.is_toggle_enabled(service_backend) is not state:
-            COM.set_toggle_by_state(service_backend, state)
+        if COM.is_toggle_enabled(f'running-service-{service_backend}-row-toggle') is not state:
+            COM.set_toggle_by_state(f'running-service-{service_backend}-row-toggle', state)
             if error_dialog | state is False:
                 COM.assert_confirm_dialog()
             i = 0
-            assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(service_backend)) is True
-            while COM.is_toggle_enabled(service_backend) is not state:
+            assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(f'running-service-{service_backend}-row-toggle')) is True
+            while COM.is_toggle_enabled(f'running-service-{service_backend}-row-toggle') is not state:
                 WebUI.delay(2)
                 i += 1
                 if i >= 10:
                     print(f'Total wait: 20 seconds. Toggle still did not equal {state}')
                     break
-        assert (COM.is_toggle_enabled(service_backend) is state)
+        assert (COM.is_toggle_enabled(f'running-service-{service_backend}-row-toggle') is state)
 
     @classmethod
     def verify_edit_button_visible_by_servicename(cls, servicename: str) -> None:

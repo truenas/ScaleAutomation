@@ -125,7 +125,7 @@ class Common_Shares:
            - Common_Shares.assert_disable_share_service_is_locked_and_not_clickable('smb')
         """
         COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(share_type))
-        share_type = SS.return_backend_service_name(share_type, False)
+        share_type = SS.return_backend_service_name(share_type)
         result = COM.assert_button_is_locked_and_not_clickable(f'{share_type}-actions-menu-turn-off-service')
         WebUI.send_key('esc')
         return result
@@ -142,7 +142,7 @@ class Common_Shares:
            - Common_Shares.assert_enable_share_service_is_locked_and_not_clickable('smb')
         """
         COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(share_type))
-        share_type = SS.return_backend_service_name(share_type, False)
+        share_type = SS.return_backend_service_name(share_type)
         result = COM.assert_button_is_locked_and_not_clickable(f'{share_type}-actions-menu-turn-on-service')
         WebUI.send_key('esc')
         return result
@@ -159,7 +159,7 @@ class Common_Shares:
            - Common_Shares.assert_share_card_actions_menu_dropdown('smb')
         """
         COM.click_on_element(f'//ix-{sharetype}-card//*[contains(@data-test,"actions-menu")]')
-        sharetype = SS.return_backend_service_name(sharetype, False)
+        sharetype = SS.return_backend_service_name(sharetype)
         xpath = f'//*[@data-test="button-{sharetype}-actions-menu-'
         if cls.is_share_service_running(sharetype):
             assert COM.is_visible(xpath+'turn-off-service"]') is True
@@ -273,7 +273,7 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_share_card_status('smb')
         """
-        share_type = SS.return_backend_service_name(share_type, False)
+        share_type = SS.return_backend_service_name(share_type)
         return COM.is_visible(xpaths.common_xpaths.button_field(f'service-status-{share_type}'))
 
     @classmethod
@@ -377,7 +377,7 @@ class Common_Shares:
             - cls.assert_share_service_in_expected_state(xpath, 'RUNNING', True)
         """
         state = False
-        xpath = SS.return_backend_service_name(xpath, False)
+        xpath = SS.return_backend_service_name(xpath)
         icon_text = COM.get_element_property(xpaths.common_xpaths.button_field('service-status-'+xpath), 'innerText')
         if (icon_text == expected_text) & (API_POST.is_service_running(xpath) is expected_state):
             state = True
@@ -727,7 +727,7 @@ class Common_Shares:
             - Common_Shares.toggle_share_service_state_by_actions_menu('smb', 'on')
         """
         COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(service))
-        service = SS.return_backend_service_name(service, False)
+        service = SS.return_backend_service_name(service)
         # if service == 'smb':
         #     service = 'cifs'
         COM.click_button(f'{service}-actions-menu-turn-{toggle}-service')

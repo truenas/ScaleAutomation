@@ -17,16 +17,16 @@ from keywords.webui.ups import UPS
 
 
 class Test_System_Services:
-    @pytest.fixture(scope='function', autouse=True)
-    def setup_test(self) -> None:
+    @pytest.fixture(scope='class', autouse=True)
+    def setup_class(self) -> None:
         """
         This method navigates to the System Settings Services page.
         """
         NAV.navigate_to_system_settings_services()
         assert COM.assert_page_header("Services") is True
 
-    @pytest.fixture(scope='function', autouse=True)
-    def teardown_test(self):
+    @pytest.fixture(scope='class', autouse=True)
+    def teardown_class(self):
         """
         This method navigates to the Dashboard at the end of the test.
         """
@@ -37,7 +37,6 @@ class Test_System_Services:
         SERV.start_service_by_api('SMART')
         if COM.is_visible(xpaths.common_xpaths.close_right_panel()):
             COM.close_right_panel()
-        NAV.navigate_to_dashboard()
 
     @pytest.mark.parametrize('services', get_data_list('system_services'), scope='function')
     def test_verify_system_services_start(self, services):
@@ -118,6 +117,8 @@ class Test_System_Services:
         iSCSI.verify_iscsi_configuration_wizard_create_choose_block_device_ui()
         COM.close_right_panel()
         assert COM.assert_page_header("iSCSI") is True
+        NAV.navigate_to_system_settings_services()
+        assert COM.assert_page_header("Services") is True
 
     def test_verify_nfs_service_edit_ui(self):
         """
