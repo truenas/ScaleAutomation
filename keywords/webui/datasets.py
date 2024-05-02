@@ -696,7 +696,10 @@ class Datasets:
         Example:
             - Dataset.click_dataset_location('root')
         """
-        Common.set_input_field('search', location)
+        cls.expand_all_datasets()
+        if Common.is_visible(xpaths.datasets.link_dataset(location)) is False:
+            Common.set_input_field('search', location)
+        WebUI.wait_until_visible(xpaths.datasets.link_dataset(location), shared_config['MEDIUM_WAIT'])
         Common.click_on_element(xpaths.datasets.link_dataset(location))
 
     @classmethod
@@ -832,6 +835,18 @@ class Datasets:
             Common.click_on_element(xpaths.common_xpaths.button_field_by_row('delete-dataset', 2))
             assert Common.assert_progress_spinner_not_visible()
             WebUI.delay(1)
+
+    @classmethod
+    def expand_all_datasets(cls) -> None:
+        """
+        This method expands all datasets.
+
+        Example:
+            - Dataset.expand_dataset('test-dataset')
+        """
+        while Common.is_visible(xpaths.common_xpaths.any_xpath('(//*[contains(text(),"chevron_right")]/parent::button)[1]')):
+            Common.click_on_element(xpaths.common_xpaths.any_xpath('(//*[contains(text(),"chevron_right")]/parent::button)[1]'))
+        assert Common.is_visible(xpaths.common_xpaths.any_xpath('(//*[contains(text(),"chevron_right")]/parent::button)[1]')) is False
 
     @classmethod
     def expand_dataset(cls, name: str) -> None:
