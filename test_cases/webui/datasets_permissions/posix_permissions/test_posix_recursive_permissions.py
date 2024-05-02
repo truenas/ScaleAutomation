@@ -70,6 +70,7 @@ class Test_POSIX_Recursive_Permissions:
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
+    @allure.issue('NAS-128726', 'NAS-128726')
     def test_recursive_permissions_via_UI(self, posix_acl_recursive_permissions):
         """
         This test verifies the ability to use recursive permissions application and verifies the permissions via WebUI
@@ -93,6 +94,7 @@ class Test_POSIX_Recursive_Permissions:
         assert PERM.verify_dataset_permissions_edit_button() is True
         # Child dataset verification
         DAT.expand_dataset(posix_acl_recursive_permissions['dataset'])
+        # Possible expected failure below for: NAS-128726
         DAT.click_dataset_location(posix_acl_recursive_permissions['child_dataset'])
         assert PERM.assert_dataset_owner(posix_acl_recursive_permissions['new_owner']) is True
         assert PERM.assert_dataset_group(posix_acl_recursive_permissions['new_owner_group']) is True

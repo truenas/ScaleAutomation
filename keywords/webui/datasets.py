@@ -696,8 +696,8 @@ class Datasets:
         Example:
             - Dataset.click_dataset_location('root')
         """
-        WebUI.scroll_to_element(xpaths.datasets.link_dataset('tank'))
-        cls.expand_all_datasets()
+        # The scroll is a workaround for NAS-128726
+        WebUI.scroll_to_element(xpaths.common_xpaths.any_header('Datasets', 1))
         if Common.is_visible(xpaths.datasets.link_dataset(location)) is False:
             Common.set_input_field('search', location)
         WebUI.wait_until_visible(xpaths.datasets.link_dataset(location), shared_config['MEDIUM_WAIT'])
