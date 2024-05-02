@@ -696,6 +696,7 @@ class Datasets:
         Example:
             - Dataset.click_dataset_location('root')
         """
+        WebUI.scroll_to_top_of_page()
         cls.expand_all_datasets()
         if Common.is_visible(xpaths.datasets.link_dataset(location)) is False:
             Common.set_input_field('search', location)
@@ -846,6 +847,7 @@ class Datasets:
         """
         while Common.is_visible(xpaths.common_xpaths.any_xpath('(//*[contains(text(),"chevron_right")]/parent::button)[1]')):
             Common.click_on_element(xpaths.common_xpaths.any_xpath('(//*[contains(text(),"chevron_right")]/parent::button)[1]'))
+            WebUI.delay(0.1)
         assert Common.is_visible(xpaths.common_xpaths.any_xpath('(//*[contains(text(),"chevron_right")]/parent::button)[1]')) is False
 
     @classmethod
