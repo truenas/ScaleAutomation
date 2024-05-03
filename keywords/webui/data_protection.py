@@ -7,7 +7,19 @@ from keywords.webui.navigation import Navigation as NAV
 class Data_Protection:
 
     @classmethod
-    def assert_add_scrub_task_button_is_locked_and_not_clickable(cls):
+    def assert_add_cloud_sync_task_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method verifies if the add cloud sync task button is locked and not clickable.
+
+        :return: True if the add cloud sync task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_add_cloud_sync_task_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('cloudsync-task-add')
+
+    @classmethod
+    def assert_add_scrub_task_button_is_locked_and_not_clickable(cls) -> bool:
         """
         This method verifies if the add scrub task button is locked and not clickable.
 
@@ -19,7 +31,35 @@ class Data_Protection:
         return COM.assert_button_is_locked_and_not_clickable('scrub-task-add')
 
     @classmethod
-    def assert_delete_scrub_task_button_is_locked_and_not_clickable(cls, description: str):
+    def assert_cloud_sync_task_description(cls, description: str) -> bool:
+        """
+        This method returns True if the given cloud sync task description is visible, otherwise returns False.
+
+        :param description: description of the cloud sync task
+        :return: True if the given scrub task description is visible, otherwise returns False.
+
+        Example:
+            - Data_Protection.assert_cloud_sync_task_description("description")
+        """
+        description = COM.convert_to_tag_format(description)
+        return COM.is_visible(xpaths.data_protection.cloud_sync_task_description(description))
+
+    @classmethod
+    def assert_delete_cloud_sync_task_button_is_locked_and_not_clickable(cls, description: str) -> bool:
+        """
+        This method verifies if the delete cloud sync task button is locked and not clickable.
+
+        :param description: description of the cloud sync task
+        :return: True if the delete cloud sync task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_delete_cloud_sync_task_button_is_locked_and_not_clickable('description')
+        """
+        description = COM.convert_to_tag_format(description)
+        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.cloud_sync_task_delete_button(description))
+
+    @classmethod
+    def assert_delete_scrub_task_button_is_locked_and_not_clickable(cls, description: str) -> bool:
         """
         This method verifies if the delete scrub task button is locked and not clickable.
 
@@ -33,7 +73,35 @@ class Data_Protection:
         return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.scrub_task_delete_button(description))
 
     @classmethod
-    def assert_enable_scrub_task_toggle_is_locked_and_not_clickable(cls, description: str):
+    def assert_dry_run_cloud_sync_task_button_is_locked_and_not_clickable(cls, description: str) -> bool:
+        """
+        This method verifies if the dry run cloud sync task button is locked and not clickable.
+
+        :param description: description of the cloud sync task
+        :return: True if the dry run cloud sync task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_dry_run_cloud_sync_task_button_is_locked_and_not_clickable('description')
+        """
+        description = COM.convert_to_tag_format(description)
+        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.cloud_sync_task_dry_run_button(description))
+
+    @classmethod
+    def assert_enable_cloud_sync_task_toggle_is_locked_and_not_clickable(cls, description: str) -> bool:
+        """
+        This method verifies if the enable cloud sync task toggle is locked and not clickable.
+
+        :param description: description of the cloud sync task
+        :return: True if the enable cloud sync task toggle is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_enable_cloud_sync_task_toggle_is_locked_and_not_clickable('description')
+        """
+        description = COM.convert_to_tag_format(description)
+        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.cloud_sync_task_enable_toggle(description))
+
+    @classmethod
+    def assert_enable_scrub_task_toggle_is_locked_and_not_clickable(cls, description: str) -> bool:
         """
         This method verifies if the enable scrub task toggle is locked and not clickable.
 
@@ -59,7 +127,35 @@ class Data_Protection:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_header("Presets", 4))
 
     @classmethod
-    def assert_scrub_task_description(cls, description) -> bool:
+    def assert_restore_cloud_sync_task_button_is_locked_and_not_clickable(cls, description: str) -> bool:
+        """
+        This method verifies if the restore cloud sync task button is locked and not clickable.
+
+        :param description: description of the cloud sync task
+        :return: True if the restore cloud sync task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_restore_cloud_sync_task_button_is_locked_and_not_clickable('description')
+        """
+        description = COM.convert_to_tag_format(description)
+        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.cloud_sync_task_restore_button(description))
+
+    @classmethod
+    def assert_run_cloud_sync_task_button_is_locked_and_not_clickable(cls, description: str) -> bool:
+        """
+        This method verifies if the run now cloud sync task button is locked and not clickable.
+
+        :param description: description of the cloud sync task
+        :return: True if the run now cloud sync task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_run_cloud_sync_task_button_is_locked_and_not_clickable('description')
+        """
+        description = COM.convert_to_tag_format(description)
+        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.cloud_sync_task_run_now_button(description))
+
+    @classmethod
+    def assert_scrub_task_description(cls, description: str) -> bool:
         """
         This method returns True if the given scrub task description is visible, otherwise returns False.
 
@@ -93,7 +189,23 @@ class Data_Protection:
         COM.click_button('rsync-task-add')
 
     @classmethod
-    def click_edit_replication_task_by_name(cls, name):
+    def click_edit_cloud_sync_task(cls, description: str) -> None:
+        """
+        This method clicks the edit button for the given cloud sync task
+
+        :param description: the description of the given cloud sync task
+
+        Example:
+            - Data_Protection.click_edit_cloud_sync_task('description')
+        """
+        description = COM.convert_to_tag_format(description)
+        COM.click_on_element(xpaths.data_protection.cloud_sync_task_edit_button(description))
+        # TODO: Fix when NAS-128725 is addressed
+        COM.cancel_confirm_dialog()
+        assert COM.assert_right_panel_header('Edit Cloud Sync Task') is True
+
+    @classmethod
+    def click_edit_replication_task_by_name(cls, name: str) -> None:
         """
         This method clicks the edit button for the given replication task
 
@@ -106,9 +218,9 @@ class Data_Protection:
         COM.assert_right_panel_header('Edit Replication Task')
 
     @classmethod
-    def click_edit_scrub_task(cls, description):
+    def click_edit_scrub_task(cls, description: str) -> None:
         """
-        This method clicks the edit button for the given replication task
+        This method clicks the edit button for the given scrub task
 
         :param description: the description of the given scrub task
 
@@ -120,7 +232,7 @@ class Data_Protection:
         assert COM.assert_right_panel_header('Edit Scrub Task') is True
 
     @classmethod
-    def click_edit_snapshot_task_by_name(cls, name):
+    def click_edit_snapshot_task_by_name(cls, name: str) -> None:
         """
         This method clicks the edit button for the given replication task
 
@@ -134,7 +246,7 @@ class Data_Protection:
         COM.assert_right_panel_header('Edit Periodic Snapshot Task')
 
     @classmethod
-    def click_snapshots_button(cls):
+    def click_snapshots_button(cls) -> None:
         """
         This method clicks the Snapshots button
 
@@ -170,7 +282,7 @@ class Data_Protection:
         assert COM.is_visible('//*[starts-with(@data-test,"button-replication") and contains(@data-test,"-delete-row-action")]') is False
 
     @classmethod
-    def delete_all_snapshots(cls):
+    def delete_all_snapshots(cls) -> None:
         """
         This method deletes all the Snapshots
 

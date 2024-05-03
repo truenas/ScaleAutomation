@@ -812,3 +812,59 @@ class API_POST:
         payload = {"id": dataset, "unlock_options": unlock_options}
         return cls.toggle_dataset_lock_by_state(payload, 'unlock', 'remote')
 
+    @classmethod
+    def create_cloud_sync_credential(cls, name: str, provider: str, access_key: str, secret_key: str) -> Response:
+        """
+        This method creates the given cloud sync credential.
+
+        :param name: is the name of the cloud sync.
+        :param provider: is the provider of the cloud sync.
+        :param access_key: is the access_key of the cloud sync.
+        :param secret_key: is the secret_key of the cloud sync.
+        :return: the API request response.
+
+        Example:
+            - API_POST.create_cloud_sync_credential('name', 'provider', 'access key', 'secret key')
+        """
+        payload = {
+          "name": name,
+          "provider": provider,
+          "attributes": {
+            "access_key_id": access_key,
+            "secret_access_key": secret_key
+          }
+        }
+        response = POST('/cloudsync/credentials', payload)
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def create_cloud_sync_task(cls, name: str, description: str) -> Response:
+        """
+        This method creates the given cloud sync task.
+
+        :param name: is name of the cloud sync credential.
+        :param description: is the description of the cloud sync task.
+        :return: the API request response.
+
+        Example:
+            - API_POST.create_cloud_sync_task('description')
+        """
+        cred_id = 0
+        response = GET(f'/cloudsync/credentials?name={name}').json()
+        if response:
+            cred_id = response[0]['id']
+        payload = {
+          "description": description,
+          "path": "/mnt/tank",
+          "credentials": cred_id,
+          "direction": "PULL",
+          "transfer_mode": "COPY",
+          "attributes": {
+            "bucket": "qaostest",
+            "folder": "/"
+          }
+        }
+        response = POST('/cloudsync', payload)
+        assert response.status_code == 200, response.text
+        return response
