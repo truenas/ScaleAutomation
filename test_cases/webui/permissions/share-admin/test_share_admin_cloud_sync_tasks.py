@@ -11,18 +11,18 @@ from keywords.webui.data_protection import Data_Protection as DP
 from keywords.webui.navigation import Navigation as NAV
 
 
-@allure.tag('Read Only Admin', 'Cloud Sync Tasks', "Users", 'Permissions', 'Data Protection')
+@allure.tag('Share Admin', 'Cloud Sync Tasks', "Users", 'Permissions', 'Data Protection')
 @allure.epic('Permissions')
-@allure.feature('Read Only Admin')
+@allure.feature('Share Admin')
 @pytest.mark.parametrize('cloud_sync', get_data_list('backup_credentials'), scope='class')
-class Test_Read_Only_Admin_Cloud_Sync_Tasks:
+class Test_Share_Admin_Cloud_Sync_Tasks:
     """
-    This test class tests read-only admin Cloud Sync Tasks
+    This test class tests share admin Cloud Sync Tasks
     """
     @pytest.fixture(autouse=True, scope='class')
     def setup_test(self, cloud_sync):
         """
-        This setup fixture create the dataset and read-only admin for all test cases.
+        This setup fixture create the dataset and share admin for all test cases.
         """
         API_DELETE.delete_cloud_sync_task(cloud_sync['description'])
         API_DELETE.delete_cloud_sync_credential(cloud_sync['name'])
@@ -33,26 +33,26 @@ class Test_Read_Only_Admin_Cloud_Sync_Tasks:
     @pytest.fixture(autouse=True, scope='class')
     def tear_down_test(self, cloud_sync):
         """
-        This teardown fixture delete the Scrub Tasks and read-only admin for all test cases.
+        This teardown fixture delete the Scrub Tasks and share admin for all test cases.
         """
         yield
         API_DELETE.delete_cloud_sync_task(cloud_sync['description'])
         API_DELETE.delete_cloud_sync_credential(cloud_sync['name'])
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Can See The Cloud Sync Tasks")
-    def test_read_only_admin_can_see_the_cloud_sync_tasks(self, cloud_sync):
+    @allure.story("Share Admin Can See The Cloud Sync Tasks")
+    def test_share_admin_can_see_the_cloud_sync_tasks(self, cloud_sync):
         """
-        This test verifies the read-only admin is able to see Cloud Sync tasks.
+        This test verifies the share admin is able to see Cloud Sync tasks.
         """
         assert DP.assert_cloud_sync_task_description(cloud_sync['description']) is True
 
     @allure.tag("Read")
     @allure.issue("NAS-128725", "NAS-128725")
-    @allure.story("Read Only Admin Can View the Configured Cloud Sync Task")
-    def test_read_only_admin_can_view_the_configured_cloud_sync_task(self, cloud_sync):
+    @allure.story("Share Admin Can View the Configured Cloud Sync Task")
+    def test_share_admin_can_view_the_configured_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the read-only admin is able to view the configured Cloud Sync task.
+        This test verifies the share admin is able to view the configured Cloud Sync task.
         """
         DP.click_edit_cloud_sync_task(cloud_sync['description'])
         assert COM.is_visible(xpaths.common_xpaths.input_field("description")) is True
@@ -76,36 +76,36 @@ class Test_Read_Only_Admin_Cloud_Sync_Tasks:
         COM.close_right_panel()
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Is Not Able to add a Cloud Sync task")
-    def test_read_only_admin_can_not_add_cloud_sync_task(self):
+    @allure.story("Share Admin Is Not Able to add a Cloud Sync task")
+    def test_share_admin_can_not_add_cloud_sync_task(self):
         """
-        This test verifies the read-only admin is not able to add a Cloud Sync task.
+        This test verifies the share admin is not able to add a Cloud Sync task.
         """
         assert DP.assert_add_cloud_sync_task_button_is_locked_and_not_clickable() is True
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Is Not Able to delete a Cloud Sync task")
-    def test_read_only_admin_can_not_delete_cloud_sync_task(self, cloud_sync):
+    @allure.story("Share Admin Is Not Able to delete a Cloud Sync task")
+    def test_share_admin_can_not_delete_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the read-only admin is not able to delete a Cloud Sync task.
+        This test verifies the share admin is not able to delete a Cloud Sync task.
         """
         assert DP.assert_delete_cloud_sync_task_button_is_locked_and_not_clickable(cloud_sync['description']) is True
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Is Not Able to modify a Cloud Sync task")
-    def test_read_only_admin_can_not_modify_cloud_sync_task(self, cloud_sync):
+    @allure.story("Share Admin Is Not Able to modify a Cloud Sync task")
+    def test_share_admin_can_not_modify_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the read-only admin is not able to modify a Cloud Sync task.
+        This test verifies the share admin is not able to modify a Cloud Sync task.
         """
         DP.click_edit_cloud_sync_task(cloud_sync['description'])
         assert COM.assert_button_is_locked_and_not_clickable('save') is True
         COM.close_right_panel()
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Is Not Able to enable and disable Cloud Sync tasks")
-    def test_read_only_admin_can_not_enable_and_disable_cloud_sync_task(self, cloud_sync):
+    @allure.story("Share Admin Is Not Able to enable and disable Cloud Sync tasks")
+    def test_share_admin_can_not_enable_and_disable_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the read-only admin is not able to enable and disable Cloud Sync tasks.
+        This test verifies the share admin is not able to enable and disable Cloud Sync tasks.
         """
         assert DP.assert_enable_cloud_sync_task_toggle_is_locked_and_not_clickable(cloud_sync['description']) is True
         API_PUT.set_cloud_sync_task_enabled(cloud_sync['name'], False)
@@ -113,18 +113,18 @@ class Test_Read_Only_Admin_Cloud_Sync_Tasks:
         assert DP.assert_enable_cloud_sync_task_toggle_is_locked_and_not_clickable(cloud_sync['description']) is True
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Is Not Able To Run the Cloud Sync task")
-    def test_read_only_admin_can_not_run_cloud_sync_task(self, cloud_sync):
+    @allure.story("Share Admin Is Not Able To Run the Cloud Sync task")
+    def test_share_admin_can_not_run_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the read-only admin is not able to run the Cloud Sync task.
+        This test verifies the share admin is not able to run the Cloud Sync task.
         """
         assert DP.assert_run_cloud_sync_task_button_is_locked_and_not_clickable(cloud_sync['description']) is True
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Is Not Able To Dry Run the Cloud Sync task")
-    def test_read_only_admin_can_not_dry_run_cloud_sync_task(self, cloud_sync):
+    @allure.story("Share Admin Is Not Able To Dry Run the Cloud Sync task")
+    def test_share_admin_can_not_dry_run_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the read-only admin is not able to dry run the Cloud Sync task.
+        This test verifies the share admin is not able to dry run the Cloud Sync task.
         """
         assert DP.assert_dry_run_cloud_sync_task_button_is_locked_and_not_clickable(cloud_sync['description']) is True
         DP.click_edit_cloud_sync_task(cloud_sync['description'])
@@ -132,9 +132,9 @@ class Test_Read_Only_Admin_Cloud_Sync_Tasks:
         COM.close_right_panel()
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Is Not Able To Restore the Cloud Sync task")
-    def test_read_only_admin_can_not_restore_cloud_sync_task(self, cloud_sync):
+    @allure.story("Share Admin Is Not Able To Restore the Cloud Sync task")
+    def test_share_admin_can_not_restore_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the read-only admin is not able to restore the Cloud Sync task.
+        This test verifies the share admin is not able to restore the Cloud Sync task.
         """
         assert DP.assert_restore_cloud_sync_task_button_is_locked_and_not_clickable(cloud_sync['description']) is True
