@@ -3,6 +3,7 @@ import pytest
 import xpaths
 from helper.global_config import private_config
 from helper.data_config import get_data_list
+from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 from keywords.webui.system_services import System_Services as SERV
 from keywords.webui.navigation import Navigation as NAV
@@ -44,11 +45,11 @@ class Test_System_Services:
         This test verifies the that the system services can be started via the WebUI
         """
         runnable_bool = eval(services['runnable'])
-        error_dialog_bool = eval(services['error_dialog'])
         SERV.stop_service_by_api(services['service_name'])
-        assert SERV.is_service_status_running_by_name(services['service_name']) is False
-        SERV.start_service_by_name(services['service_name'], error_dialog_bool, runnable_bool)
-        assert SERV.is_service_status_running_by_name(services['service_name']) is runnable_bool
+        assert SERV.is_service_running_toggle_enabled(services['service_name']) is False
+        SERV.start_service_by_name(services['service_name'], runnable_bool)
+        assert SERV.is_service_running_toggle_enabled(services['service_name']) is runnable_bool
+        assert API_POST.is_service_running(SERV.return_backend_service_name(services['service_name'], True)) is runnable_bool
         SERV.stop_service_by_api(services['service_name'])
 
     @pytest.mark.parametrize('services', get_data_list('system_services'), scope='function')
@@ -57,12 +58,12 @@ class Test_System_Services:
         This test verifies the that the system services can be stopped via the WebUI
         """
         runnable_bool = eval(services['runnable'])
-        if runnable_bool:
-            SERV.start_service_by_api(services['service_name'])
-            assert SERV.is_service_status_running_by_name(services['service_name']) is True
-            SERV.stop_service_by_name(services['service_name'])
-            assert SERV.is_service_status_running_by_name(services['service_name']) is False
-            SERV.stop_service_by_api(services['service_name'])
+        SERV.start_service_by_api(services['service_name'])
+        assert SERV.is_service_running_toggle_enabled(services['service_name']) is runnable_bool
+        SERV.stop_service_by_name(services['service_name'])
+        assert SERV.is_service_running_toggle_enabled(services['service_name']) is False
+        assert API_POST.is_service_running(SERV.return_backend_service_name(services['service_name'], True)) is False
+        SERV.stop_service_by_api(services['service_name'])
 
     def test_verify_system_services_do_autostart_on_reboot(self):
         """

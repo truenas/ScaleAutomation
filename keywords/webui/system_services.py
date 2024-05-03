@@ -10,27 +10,32 @@ services_list = ['ftp', 'iscsi', 'nfs', 'smart', 'smb', 'snmp', 'ssh', 'ups']
 
 class System_Services:
     @classmethod
-    def assert_all_services_autostart_off(cls):
+    def assert_all_services_autostart_off(cls) -> None:
         for items in services_list:
             assert not cls.is_service_autostart_set_by_name(items)
+            assert API_POST.is_service_autostart_enabled(cls.return_backend_service_name(items, True)) is False
 
     @classmethod
-    def assert_all_services_autostart_on(cls):
+    def assert_all_services_autostart_on(cls) -> None:
         for items in services_list:
             assert cls.is_service_autostart_set_by_name(items)
+            assert API_POST.is_service_autostart_enabled(cls.return_backend_service_name(items, True)) is True
 
     @classmethod
-    def assert_all_services_running(cls):
+    def assert_all_services_running(cls) -> None:
         for items in services_list:
             if items == 'ups':
-                assert not cls.is_service_status_running_by_name(items)
+                assert cls.is_service_running_toggle_enabled(items) is False
+                assert API_POST.is_service_running(cls.return_backend_service_name(items, True)) is False
             else:
-                assert cls.is_service_status_running_by_name(items)
+                assert cls.is_service_running_toggle_enabled(items)
+                assert API_POST.is_service_running(cls.return_backend_service_name(items, True)) is True
 
     @classmethod
-    def assert_all_services_not_running(cls):
+    def assert_all_services_not_running(cls) -> None:
         for items in services_list:
-            assert not cls.is_service_status_running_by_name(items)
+            assert not cls.is_service_running_toggle_enabled(items)
+            assert API_POST.is_service_running(cls.return_backend_service_name(items, True)) is False
 
     @classmethod
     def click_advanced_settings_button(cls, service: str = '') -> None:
@@ -68,12 +73,12 @@ class System_Services:
         return COM.is_toggle_enabled(f'start-automatically-service-{service_backend}-row-toggle')
 
     @classmethod
-    def is_service_status_running_by_name(cls, service: str) -> bool:
+    def is_service_running_toggle_enabled(cls, service: str) -> bool:
         """
-        This method returns the running status of the given service.
+        This method returns true if the given service running toggle is enabled, otherwise returns false.
 
         :param service: The system name of the service
-        :return: returns the running status of the given service.
+        :return: true if the given service running toggle is enabled
         """
         service_backend = cls.return_backend_service_name(service)
         return COM.is_toggle_enabled(f'running-service-{service_backend}-row-toggle')
@@ -116,7 +121,7 @@ class System_Services:
         return returned_name
 
     @classmethod
-    def set_all_services_autostart_off(cls):
+    def set_all_services_autostart_off(cls) -> None:
         """
         This method sets the auto start checkbox of all services to off.
         """
@@ -124,7 +129,7 @@ class System_Services:
             cls.toggle_service_autostart(items, False)
 
     @classmethod
-    def set_all_services_autostart_on(cls):
+    def set_all_services_autostart_on(cls) -> None:
         """
         This method sets the auto start checkbox of all services to on.
         """
@@ -132,7 +137,7 @@ class System_Services:
             cls.toggle_service_autostart(items, True)
 
     @classmethod
-    def set_all_services_autostart_off_by_api(cls):
+    def set_all_services_autostart_off_by_api(cls) -> None:
         """
         This method sets the auto start status of all services to off via api call.
         """
@@ -140,7 +145,7 @@ class System_Services:
             cls.set_service_autostart_off_by_api(items)
 
     @classmethod
-    def set_all_services_running_status_by_state(cls, state: bool):
+    def set_all_services_running_status_by_state(cls, state: bool) -> None:
         """
         This method returns toggles on the auto start checkbox of all services.
 
@@ -156,7 +161,7 @@ class System_Services:
                 cls.stop_service_by_name(items)
 
     @classmethod
-    def set_service_autostart_off(cls, service: str):
+    def set_service_autostart_off(cls, service: str) -> None:
         """
         This method returns toggles off the auto start checkbox of the given service.
 
@@ -165,7 +170,7 @@ class System_Services:
         cls.toggle_service_autostart(service, False)
 
     @classmethod
-    def set_service_autostart_on(cls, service: str):
+    def set_service_autostart_on(cls, service: str) -> None:
         """
         This method returns toggles on the auto start checkbox of the given service.
 
@@ -174,7 +179,7 @@ class System_Services:
         cls.toggle_service_autostart(service, True)
 
     @classmethod
-    def set_service_autostart_off_by_api(cls, service: str):
+    def set_service_autostart_off_by_api(cls, service: str) -> None:
         """
         This method sets the auto start status of the given service to off via api call.
 
@@ -183,7 +188,7 @@ class System_Services:
         assert API_PUT.set_service_autostart(service, False).status_code == 200
 
     @classmethod
-    def set_service_autostart_on_by_api(cls, service: str):
+    def set_service_autostart_on_by_api(cls, service: str) -> None:
         """
         This method sets the auto start status of the given service to on via api call.
 
@@ -192,7 +197,7 @@ class System_Services:
         assert API_PUT.set_service_autostart(service, True).status_code == 200
 
     @classmethod
-    def start_all_services(cls):
+    def start_all_services(cls) -> None:
         """
         This method starts all services.
         """
@@ -206,29 +211,30 @@ class System_Services:
         :param service: is the name of the service to start
         """
         service_backend = cls.return_backend_service_name(service, True)
-        assert API_POST.start_service(service_backend).status_code == 200
+        if service_backend == "ups":
+            assert API_POST.start_service(service_backend).json() is False
+        else:
+            assert API_POST.start_service(service_backend).json() is True
 
     @classmethod
-    def start_service_by_name(cls, service: str, error_dialog: bool = False, runnable: bool = True):
+    def start_service_by_name(cls, service: str, runnable: bool) -> None:
         """
         This method starts the given service via WebUI.
 
         :param service: The name of the service.
-        :param error_dialog: If the service displays an error dialog upon starting.
-        :param runnable: If the service is able to start without error by default.
+        :param runnable: If the service is runnable without error by default.
         """
-        if runnable:
-            cls.toggle_service_running_status_by_name(service, True, error_dialog)
+        cls.toggle_service_running_status_by_name(service, runnable)
 
     @classmethod
-    def stop_all_services(cls):
+    def stop_all_services(cls) -> None:
         """
         This method stops all services.
         """
         cls.set_all_services_running_status_by_state(False)
 
     @classmethod
-    def stop_all_services_by_api(cls):
+    def stop_all_services_by_api(cls) -> None:
         """
         This method stops all services by api call.
         """
@@ -246,14 +252,14 @@ class System_Services:
         assert API_POST.stop_service(service_backend).status_code == 200
 
     @classmethod
-    def stop_service_by_name(cls, service: str):
+    def stop_service_by_name(cls, service: str) -> None:
         """
         This method stops the given service via WebUI.
         """
         cls.toggle_service_running_status_by_name(service, False)
 
     @classmethod
-    def toggle_service_autostart(cls, service: str, state: bool):
+    def toggle_service_autostart(cls, service: str, state: bool) -> None:
         """
         This method returns toggles the auto start checkbox of the given service to the given state.
 
@@ -263,20 +269,26 @@ class System_Services:
         service_backend = cls.return_backend_service_name(service)
         COM.set_toggle_by_state(f'start-automatically-service-{service_backend}-row-toggle', state)
         assert (COM.is_toggle_enabled(f'start-automatically-service-{service_backend}-row-toggle') is state)
+        assert API_POST.is_service_autostart_enabled(cls.return_backend_service_name(service, True)) is state
 
     @classmethod
-    def toggle_service_running_status_by_name(cls, service: str, state: bool, error_dialog: bool = False):
+    def toggle_service_running_status_by_name(cls, service: str, state: bool) -> None:
         """
         This toggles the running status of the given service.
 
         :param service: The name of the service.
         :param state: The state to toggle the given service to.
-        :param error_dialog: If the service displays an error dialog upon starting.
         """
         service_backend = cls.return_backend_service_name(service)
+        if service_backend == 'ups':
+            toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(f'running-service-{service_backend}-row-toggle'))
+            toggle.click()
+            assert COM.assert_progress_spinner_not_visible() is True
+            COM.assert_dialog_visible('Error starting service UPS.')
+            COM.click_error_dialog_close_button()
         if COM.is_toggle_enabled(f'running-service-{service_backend}-row-toggle') is not state:
             COM.set_toggle_by_state(f'running-service-{service_backend}-row-toggle', state)
-            if error_dialog | state is False:
+            if state is False:
                 COM.assert_confirm_dialog()
             i = 0
             assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(f'running-service-{service_backend}-row-toggle')) is True
@@ -287,6 +299,7 @@ class System_Services:
                     print(f'Total wait: 20 seconds. Toggle still did not equal {state}')
                     break
         assert (COM.is_toggle_enabled(f'running-service-{service_backend}-row-toggle') is state)
+        assert API_POST.is_service_running(cls.return_backend_service_name(service, True)) is state
 
     @classmethod
     def verify_edit_button_visible_by_servicename(cls, servicename: str) -> None:
@@ -305,4 +318,3 @@ class System_Services:
         if COM.is_visible('//*[@data-test="select-protocols"]//*[contains(text(), "NFSv4")]') is False & options.__contains__('NFSv4'):
             COM.select_option('protocols', 'protocols-nf-sv-4')
         WebUI.delay(0.5)
-        
