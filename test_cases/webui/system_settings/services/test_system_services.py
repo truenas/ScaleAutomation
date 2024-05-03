@@ -63,7 +63,6 @@ class Test_System_Services:
         SERV.stop_service_by_name(services['service_name'])
         assert SERV.is_service_running_toggle_enabled(services['service_name']) is False
         assert API_POST.is_service_running(SERV.return_backend_service_name(services['service_name'], True)) is False
-        SERV.stop_service_by_api(services['service_name'])
 
     def test_verify_system_services_do_autostart_on_reboot(self):
         """
