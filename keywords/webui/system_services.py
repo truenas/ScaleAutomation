@@ -69,8 +69,8 @@ class System_Services:
         :return: returns the state of the auto start checkbox of the given service.
         """
         service_backend = cls.return_backend_service_name(service, True)
-        assert (COM.is_visible(xpaths.common_xpaths.checkbox_field(f'{service_backend}')))
-        return COM.is_checked(f'{service_backend}')
+        assert (COM.is_visible(xpaths.common_xpaths.checkbox_field(service_backend)))
+        return COM.is_checked(service_backend)
 
     @classmethod
     def is_service_running_toggle_enabled(cls, service: str) -> bool:
@@ -261,8 +261,8 @@ class System_Services:
         :param state: The state to toggle the service auto start status to.
         """
         service_backend = cls.return_backend_service_name(service, True)
-        COM.set_checkbox_by_state(f'{service_backend}', state)
-        assert (COM.is_checked(f'{service_backend}') is state)
+        COM.set_checkbox_by_state(service_backend, state)
+        assert (COM.is_checked(service_backend) is state)
         assert API_POST.is_service_autostart_enabled(cls.return_backend_service_name(service, False)) is state
 
     @classmethod
@@ -273,25 +273,25 @@ class System_Services:
         :param state: The state to toggle the given service to.
         """
         service_backend = cls.return_backend_service_name(service, True)
-        if service_backend == 'ups':
-            toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(f'{service_backend}'))
+        if service == 'UPS':
+            toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(service_backend))
             toggle.click()
             assert COM.assert_progress_spinner_not_visible() is True
             COM.assert_dialog_visible('Error starting service UPS.')
             COM.click_error_dialog_close_button()
-        if COM.is_toggle_enabled(f'{service_backend}') is not state:
-            COM.set_toggle_by_state(f'{service_backend}', state)
+        if COM.is_toggle_enabled(service_backend) is not state:
+            COM.set_toggle_by_state(service_backend, state)
             if state is False:
                 COM.assert_confirm_dialog()
             i = 0
-            assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(f'{service_backend}')) is True
-            while COM.is_toggle_enabled(f'{service_backend}') is not state:
+            assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(service_backend)) is True
+            while COM.is_toggle_enabled(service_backend) is not state:
                 WebUI.delay(2)
                 i += 1
                 if i >= 10:
                     print(f'Total wait: 20 seconds. Toggle still did not equal {state}')
                     break
-        assert (COM.is_toggle_enabled(f'{service_backend}') is state)
+        assert (COM.is_toggle_enabled(service_backend) is state)
         assert API_POST.is_service_running(cls.return_backend_service_name(service, False)) is state
 
     @classmethod
