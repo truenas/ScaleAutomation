@@ -550,11 +550,21 @@ class API_POST:
         return job_status
 
     @classmethod
+    def is_service_autostart_enabled(cls, service: str) -> bool:
+        """
+        This method returns True if the service autostart is enabled. otherwise False.
+
+        :param service: is the service name.
+        :return: True if the service is autostart is enabled, otherwise False.
+        """
+        return POST('/service/started_or_enabled', service).json()
+
+    @classmethod
     def is_service_running(cls, service: str) -> bool:
         """
         This method returns True if the service is running. otherwise False.
 
-        :param service: is the service nome.
+        :param service: is the service name.
         :return: True if the service is running, otherwise False.
         """
         return POST('/service/started/', service).json()
