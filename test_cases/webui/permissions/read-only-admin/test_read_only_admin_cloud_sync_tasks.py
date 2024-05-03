@@ -48,7 +48,7 @@ class Test_Read_Only_Admin_Cloud_Sync_Tasks:
         assert DP.assert_cloud_sync_task_description(cloud_sync['description']) is True
 
     @allure.tag("Read")
-    @allure.issue("NAS-128701", "NAS-128701")
+    @allure.issue("NAS-128725", "NAS-128725")
     @allure.story("Read Only Admin Can View the Configured Cloud Sync Task")
     def test_read_only_admin_can_view_the_configured_cloud_sync_task(self, cloud_sync):
         """
