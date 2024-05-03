@@ -361,6 +361,29 @@ class API_POST:
         return response
 
     @classmethod
+    def create_scrub_task(cls, pool: int = 1, enable: bool = True) -> Response:
+        """
+        This method creates a scrub task on given pool if it doesn't exist.
+
+        :param pool: is the pool number. Defaults to 1
+        :param enable: whether to enable scrub task or not. Defaults to True
+
+        Example:
+            - API_POST.create_scrub_task()
+            - API_POST.create_scrub_task(2)
+            - API_POST.create_scrub_task(2, False)
+        """
+        payload = {
+            "pool": pool,
+            "description": "Scrub Task For Pool",
+            "enabled": enable
+        }
+        response = POST('/pool/scrub', payload)
+        if response.status_code != 200:
+            print("@@@ CREATE SCRUB TASK: " + response.text)
+        return response
+
+    @classmethod
     def create_share(cls, sharetype: str, name: str, path: str, guest: bool = False, comment: str = '') -> Response:
         """
         This method creates the given share.
@@ -391,6 +414,24 @@ class API_POST:
                 response = POST(f'/sharing/{sharetype}/', {"path": path, "comment": comment})
             assert response.status_code == 200, response.text
         return response
+
+    @classmethod
+    def create_share_admin(cls, username: str, fullname: str, password: str, smb_auth: str = 'True') -> Response:
+        share_administrators = API_GET.get_group_id('truenas_sharing_administrators')
+        payload = {
+            "username": username,
+            "group_create": True,
+            "groups": [share_administrators],
+            "home": "/mnt/tank",
+            "home_create": True,
+            "full_name": fullname,
+            "email": f"{username}@nowhere.com",
+            "password": password,
+            "shell": "/usr/bin/bash",
+            "ssh_password_enabled": True,
+            "smb": eval(smb_auth.lower().capitalize())
+        }
+        return POST('/user', payload)
 
     @classmethod
     def create_snapshot(cls, dataset: str, name: str, recursive: bool = False, suspend_vms: bool = False,
@@ -509,11 +550,21 @@ class API_POST:
         return job_status
 
     @classmethod
+    def is_service_autostart_enabled(cls, service: str) -> bool:
+        """
+        This method returns True if the service autostart is enabled. otherwise False.
+
+        :param service: is the service name.
+        :return: True if the service is autostart is enabled, otherwise False.
+        """
+        return POST('/service/started_or_enabled', service).json()
+
+    @classmethod
     def is_service_running(cls, service: str) -> bool:
         """
         This method returns True if the service is running. otherwise False.
 
-        :param service: is the service nome.
+        :param service: is the service name.
         :return: True if the service is running, otherwise False.
         """
         return POST('/service/started/', service).json()
@@ -760,3 +811,60 @@ class API_POST:
         unlock_options = {"datasets": [{"name": dataset, "passphrase": "encryption"}]}
         payload = {"id": dataset, "unlock_options": unlock_options}
         return cls.toggle_dataset_lock_by_state(payload, 'unlock', 'remote')
+
+    @classmethod
+    def create_cloud_sync_credential(cls, name: str, provider: str, access_key: str, secret_key: str) -> Response:
+        """
+        This method creates the given cloud sync credential.
+
+        :param name: is the name of the cloud sync.
+        :param provider: is the provider of the cloud sync.
+        :param access_key: is the access_key of the cloud sync.
+        :param secret_key: is the secret_key of the cloud sync.
+        :return: the API request response.
+
+        Example:
+            - API_POST.create_cloud_sync_credential('name', 'provider', 'access key', 'secret key')
+        """
+        payload = {
+          "name": name,
+          "provider": provider,
+          "attributes": {
+            "access_key_id": access_key,
+            "secret_access_key": secret_key
+          }
+        }
+        response = POST('/cloudsync/credentials', payload)
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def create_cloud_sync_task(cls, name: str, description: str) -> Response:
+        """
+        This method creates the given cloud sync task.
+
+        :param name: is name of the cloud sync credential.
+        :param description: is the description of the cloud sync task.
+        :return: the API request response.
+
+        Example:
+            - API_POST.create_cloud_sync_task('description')
+        """
+        cred_id = 0
+        response = GET(f'/cloudsync/credentials?name={name}').json()
+        if response:
+            cred_id = response[0]['id']
+        payload = {
+          "description": description,
+          "path": "/mnt/tank",
+          "credentials": cred_id,
+          "direction": "PULL",
+          "transfer_mode": "COPY",
+          "attributes": {
+            "bucket": "qaostest",
+            "folder": "/"
+          }
+        }
+        response = POST('/cloudsync', payload)
+        assert response.status_code == 200, response.text
+        return response

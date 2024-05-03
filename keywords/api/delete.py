@@ -38,6 +38,42 @@ class API_DELETE:
         return response
 
     @classmethod
+    def delete_cloud_sync_credential(cls, name: str) -> Response:
+        """
+        This method deletes the Cloud Sync credential by the given name.
+
+        :param name: is name of the cloud sync credential.
+        :return: the API request response.
+
+        Example:
+            - API_DELETE.delete_cloud_sync_credential('name')
+        """
+        response = GET(f'/cloudsync/credentials?name={name}').json()
+        if response:
+            cred_id = response[0]['id']
+            response = DELETE(f'/cloudsync/credentials/id/{cred_id}')
+            assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def delete_cloud_sync_task(cls, description: str) -> Response:
+        """
+        This method deletes the Cloud Sync task by the given task description.
+
+        :param description: is description of the cloud sync task.
+        :return: the API request response.
+
+        Example:
+            - API_DELETE.delete_cloud_sync_task('description')
+        """
+        response = GET(f'/cloudsync?description={description}').json()
+        if response:
+            task_id = response[0]['id']
+            response = DELETE(f'/cloudsync/id/{task_id}')
+            assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
     def delete_dataset(cls, name: str, recursive: bool = False, force: bool = False) -> Response:
         """
         This method deletes the given dataset.
@@ -116,6 +152,24 @@ class API_DELETE:
         private_config['API_IP'] = private_config['REP_DEST_IP']
         response = cls.delete_user(name)
         private_config['API_IP'] = private_config['IP']
+        return response
+
+    @classmethod
+    def delete_scrub_task(cls, pool_name: str) -> Response:
+        """
+        This method deletes scrub task by the given pool_name.
+
+        :param pool_name: is the pool nome.
+        :return: the API request response.
+
+        Example:
+            - API_DELETE.delete_scrub_task('pool_name')
+        """
+        response = GET(f'/pool/scrub?pool_name={pool_name}').json()
+        if response:
+            pool_id = response[0]['id']
+            response = DELETE(f'/pool/scrub/id/{pool_id}')
+            assert response.status_code == 200, response.text
         return response
 
     @classmethod

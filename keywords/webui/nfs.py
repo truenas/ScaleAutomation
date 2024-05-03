@@ -427,7 +427,7 @@ class NFS:
             - NFS.verify_nfs_sessions_page_opens()
         """
         if COM.assert_page_header('Services'):
-            COM.click_link('nfs-sessions')
+            COM.click_button('service-nfs-list-row-action')
         elif COM.assert_page_header('Sharing'):
             COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('NFS'))
             COM.click_button('nfs-actions-menu-sessions')
