@@ -243,7 +243,6 @@ class System_Services:
         :param service: The name of the service to stop
         """
         service_backend = cls.return_backend_service_name(service, True)
-        print("service_backend = "+service_backend)
         assert API_POST.stop_service(service_backend).status_code == 200
 
     @classmethod
