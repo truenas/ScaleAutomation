@@ -19,6 +19,18 @@ class Data_Protection:
         return COM.assert_button_is_locked_and_not_clickable('cloudsync-task-add')
 
     @classmethod
+    def assert_add_periodic_snapshot_task_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method verifies if the add periodic snapshot task button is locked and not clickable.
+
+        :return: True if the add periodic snapshot task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_add_periodic_snapshot_task_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('snapshot-task-add')
+
+    @classmethod
     def assert_add_scrub_task_button_is_locked_and_not_clickable(cls) -> bool:
         """
         This method verifies if the add scrub task button is locked and not clickable.
@@ -31,12 +43,24 @@ class Data_Protection:
         return COM.assert_button_is_locked_and_not_clickable('scrub-task-add')
 
     @classmethod
+    def assert_add_vm_periodic_snapshot_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method verifies if the add vm periodic snapshot button is locked and not clickable.
+
+        :return: True if the add vm periodic snapshot button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_add_vm_periodic_snapshot_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('add-vmware-snapshot')
+
+    @classmethod
     def assert_cloud_sync_task_description(cls, description: str) -> bool:
         """
         This method returns True if the given cloud sync task description is visible, otherwise returns False.
 
         :param description: description of the cloud sync task
-        :return: True if the given scrub task description is visible, otherwise returns False.
+        :return: True if the given cloud sync task description is visible, otherwise returns False.
 
         Example:
             - Data_Protection.assert_cloud_sync_task_description("description")
@@ -59,6 +83,20 @@ class Data_Protection:
         return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.cloud_sync_task_delete_button(description))
 
     @classmethod
+    def assert_delete_periodic_snapshot_task_button_is_locked_and_not_clickable(cls, path: str) -> bool:
+        """
+        This method verifies if the delete periodic snapshot task button is locked and not clickable.
+
+        :param path: path of the periodic snapshot task
+        :return: True if the delete periodic snapshot task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_delete_periodic_snapshot_task_button_is_locked_and_not_clickable('tank/dataset')
+        """
+        path = COM.convert_to_tag_format(path)
+        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.periodic_snapshot_task_delete_button(path))
+
+    @classmethod
     def assert_delete_scrub_task_button_is_locked_and_not_clickable(cls, description: str) -> bool:
         """
         This method verifies if the delete scrub task button is locked and not clickable.
@@ -71,6 +109,20 @@ class Data_Protection:
         """
         description = COM.convert_to_tag_format(description)
         return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.scrub_task_delete_button(description))
+
+    @classmethod
+    def assert_delete_vm_periodic_snapshot_task_button_is_locked_and_not_clickable(cls, path: str) -> bool:
+        """
+        This method verifies if the delete vm periodic snapshot task button is locked and not clickable.
+
+        :param path: path of the periodic snapshot task
+        :return: True if the delete vm periodic snapshot task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_delete_vm_periodic_snapshot_task_button_is_locked_and_not_clickable('tank/dataset')
+        """
+        path = COM.convert_to_tag_format(path)
+        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.vm_periodic_snapshot_task_delete_button(path))
 
     @classmethod
     def assert_dry_run_cloud_sync_task_button_is_locked_and_not_clickable(cls, description: str) -> bool:
@@ -101,6 +153,20 @@ class Data_Protection:
         return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.cloud_sync_task_enable_toggle(description))
 
     @classmethod
+    def assert_enable_periodic_snapshot_task_toggle_is_locked_and_not_clickable(cls, path: str) -> bool:
+        """
+        This method verifies if the enable periodic snapshot task toggle is locked and not clickable.
+
+        :param path: path of the cloud sync task
+        :return: True if the enable periodic snapshot task toggle is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_enable_periodic_snapshot_task_toggle_is_locked_and_not_clickable('tank/dataset')
+        """
+        path = COM.convert_to_tag_format(path)
+        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.periodic_snapshot_task_enable_toggle(path))
+
+    @classmethod
     def assert_enable_scrub_task_toggle_is_locked_and_not_clickable(cls, description: str) -> bool:
         """
         This method verifies if the enable scrub task toggle is locked and not clickable.
@@ -113,6 +179,20 @@ class Data_Protection:
         """
         description = COM.convert_to_tag_format(description)
         return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.scrub_task_enable_toggle(description))
+
+    @classmethod
+    def assert_periodic_snapshot_task_dataset(cls, path: str) -> bool:
+        """
+        This method returns True if the given periodic snapshot task path is visible, otherwise returns False.
+
+        :param path: path of the periodic snapshot task
+        :return: True if the given periodic snapshot task path is visible, otherwise returns False.
+
+        Example:
+            - Data_Protection.assert_periodic_snapshot_task_dataset("tank/dataset")
+        """
+        path = COM.convert_to_tag_format(path)
+        return COM.is_visible(xpaths.data_protection.periodic_snapshot_task_path(path))
 
     @classmethod
     def assert_preset_dialog_visible(cls) -> bool:
@@ -205,6 +285,20 @@ class Data_Protection:
         assert COM.assert_right_panel_header('Edit Cloud Sync Task') is True
 
     @classmethod
+    def click_edit_periodic_snapshot_task(cls, path: str) -> None:
+        """
+        This method clicks the edit button for the given periodic snapshot task
+
+        :param path: the path of the given periodic snapshot task
+
+        Example:
+            - Data_Protection.click_edit_periodic_snapshot_task('tank/dataset')
+        """
+        path = COM.convert_to_tag_format(path)
+        COM.click_on_element(xpaths.data_protection.periodic_snapshot_task_edit_button(path))
+        COM.assert_right_panel_header('Edit Periodic Snapshot Task')
+
+    @classmethod
     def click_edit_replication_task_by_name(cls, name: str) -> None:
         """
         This method clicks the edit button for the given replication task
@@ -244,6 +338,20 @@ class Data_Protection:
         status = cls.get_task_status(name, 'snapshot')
         COM.click_button(f'snapshot-task-{COM.convert_to_tag_format(name)}-{COM.convert_to_tag_format(status)}-edit-row-action')
         COM.assert_right_panel_header('Edit Periodic Snapshot Task')
+
+    @classmethod
+    def click_edit_vm_periodic_snapshot_task(cls, path: str) -> None:
+        """
+        This method clicks the edit button for the given vm periodic snapshot task
+
+        :param path: the path of the given periodic snapshot task
+
+        Example:
+            - Data_Protection.click_edit_vm_periodic_snapshot_task('tank/dataset')
+        """
+        path = COM.convert_to_tag_format(path)
+        COM.click_on_element(xpaths.data_protection.vm_periodic_snapshot_task_edit_button(path))
+        COM.assert_right_panel_header('Edit VM Periodic Snapshot Task')
 
     @classmethod
     def click_snapshots_button(cls) -> None:

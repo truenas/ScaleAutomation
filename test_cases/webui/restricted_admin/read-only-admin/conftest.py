@@ -12,6 +12,7 @@ def setup_user():
     """
     print(f'Username: {shared_config["ROA_USER"]}')
     API_POST.create_read_only_admin(shared_config['ROA_USER'], shared_config['ROA_FULLNAME'], shared_config['ROA_PASSWORD'])
+    API_DELETE.delete_all_periodic_snapshots_tasks()
 
     Common.logoff_truenas()
     Common.login_to_truenas(shared_config['ROA_USER'], shared_config['ROA_PASSWORD'])

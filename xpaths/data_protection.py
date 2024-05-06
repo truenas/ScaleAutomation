@@ -69,6 +69,46 @@ def cloud_sync_task_run_now_button(description: str) -> str:
     return f'//*[@data-test="button-card-cloudsync-task-{description}-play-arrow-row-action"]'
 
 
+def periodic_snapshot_task_delete_button(path: str) -> str:
+    """
+    This function returns the xpath text delete button of the given periodic snapshot task path.
+
+    :param path: The path of the periodic snapshot task.
+    :return: The xpath text delete button of the given periodic snapshot task path.
+    """
+    return f'//*[contains(@data-test,"button-snapshot-task-{path}") and contains(@data-test,"-delete-row-action")]'
+
+
+def periodic_snapshot_task_edit_button(path: str) -> str:
+    """
+    This function returns the xpath text edit button of the given periodic snapshot task path.
+
+    :param path: The path of the periodic snapshot task.
+    :return: The xpath text edit button of the given periodic snapshot task path.
+    """
+    return f'//*[contains(@data-test,"button-snapshot-task-{path}") and contains(@data-test,"-edit-row-action")]'
+
+
+def periodic_snapshot_task_enable_toggle(path: str) -> str:
+    """
+    This function returns the xpath text of the periodic snapshot task enable toggle by the given periodic snapshot task path.
+
+    :param path: The path of the periodic snapshot task.
+    :return: The xpath text of the periodic snapshot task enable toggle by the given periodic snapshot task path.
+    """
+    return f'//*[contains(@data-test,"toggle-enabled-snapshot-task-{path}")]//button'
+
+
+def periodic_snapshot_task_path(path: str) -> str:
+    """
+    This function returns the xpath text of the given periodic snapshot task path.
+
+    :param path: The path of the periodic snapshot task.
+    :return: The xpath text of the given periodic snapshot task path.
+    """
+    return f'//*[contains(@data-test,"text-pool-dataset-snapshot-task-{path}")]'
+
+
 def scrub_task_description(description: str) -> str:
     """
     This function returns the xpath text of the given scrub task description.
@@ -107,3 +147,14 @@ def scrub_task_enable_toggle(description: str) -> str:
     :return: The xpath text of the scrub task enable toggle by the given scrub task description.
     """
     return f'//*[contains(@data-test,"{description}-row-toggle")]//button'
+
+
+def vm_periodic_snapshot_task_delete_button(path: str) -> str:
+    """
+    This function returns the xpath text delete button of the given vm periodic snapshot task path.
+
+    :param path: The path of the periodic snapshot task.
+    :return: The xpath text delete button of the given vm periodic snapshot task path.
+    """
+    #  TODO: fix this when UI available
+    return f'//*[contains(@data-test,"button-vm-snapshot-task-{path}") and contains(@data-test,"-delete-row-action")]'
