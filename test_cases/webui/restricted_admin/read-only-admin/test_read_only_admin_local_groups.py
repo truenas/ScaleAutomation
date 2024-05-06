@@ -23,13 +23,6 @@ class Test_Read_Only_Admin_Local_Groups:
         """
         NAV.navigate_to_local_groups()
 
-    @pytest.fixture(autouse=True, scope='class')
-    def tear_down_test(self):
-        """
-        This teardown fixture delete the Local Groups and read-only admin for all test cases.
-        """
-        yield
-
     @allure.tag("Read")
     @allure.story("Read Only Admin Can See The Local Groups")
     def test_read_only_admin_can_see_the_local_groups(self):
