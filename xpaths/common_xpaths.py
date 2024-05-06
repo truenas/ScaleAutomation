@@ -117,6 +117,16 @@ def button_field_by_row(field: str, row: int) -> str:
     return f'(//*[@data-test="button-{field}"])[{row}]'
 
 
+def button_field_greyed(field: str) -> str:
+    """
+    This function sets the text for the given button name
+
+    :param field: text of the given button name
+    :return: xpath string for given button
+    """
+    return f'//*[@data-test="button-{field}" and @aria-disabled="true"]'
+
+
 def button_field_locked(field: str) -> str:
     """
     This function sets the text for the given button name
@@ -211,16 +221,6 @@ def checkbox_field_by_row_attribute(field: str, row: int) -> str:
     :return: xpath string for given checkbox attribute
     """
     return f'(//*[@data-test="checkbox-{field}"])[{row}]//input'
-
-
-def button_field_greyed(field: str) -> str:
-    """
-    This function sets the text for the given button name
-
-    :param field: text of the given button name
-    :return: xpath string for given button
-    """
-    return f'//*[@data-test="button-{field}" and @aria-disabled="true"]'
 
 
 def checkbox_field_locked(field: str) -> str:
