@@ -373,3 +373,27 @@ class API_PUT:
         assert response.status_code == 200, response.text
         return response
 
+    @classmethod
+    def set_periodic_snapshot_task_enabled(cls, path: str, state: bool = True) -> Response:
+        """
+        This method sets the given periodic snapshot task to the given enabled state.
+
+        :param path: is name of the periodic snapshot credential.
+        :param state: is the state to set the periodic snapshot task. Default is True
+        :return: the API request response.
+
+        Example:
+            - API_POST.set_periodic_snapshot_task_enabled('name')
+            - API_POST.set_periodic_snapshot_task_enabled('name', False)
+        """
+        cred_id = 0
+        response = GET(f'/pool/snapshottask?dataset={path}').json()
+        if response:
+            cred_id = response[0]['id']
+        payload = {
+          "enabled": state
+        }
+        response = PUT(f'/pool/snapshottask/id/{cred_id}', payload)
+        assert response.status_code == 200, response.text
+        return response
+
