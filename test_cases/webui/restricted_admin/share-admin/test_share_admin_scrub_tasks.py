@@ -37,8 +37,11 @@ class Test_Share_Admin_Scrub_Tasks:
     @allure.story("Share Admin Can See The Scrub Tasks")
     def test_share_admin_can_see_the_scrub_tasks(self):
         """
-        This test verifies the share admin is able to see scrub tasks.
-        """
+        Summary: This test verifies the share admin is able to see scrub tasks.
+
+        Test Steps:
+        1. Verify the share admin is able to see scrub tasks
+       """
         assert DP.assert_scrub_task_description("Scrub Task For Pool") is True
 
     @allure.tag("Read")
@@ -46,7 +49,13 @@ class Test_Share_Admin_Scrub_Tasks:
     @allure.story("Share Admin Can View the Configured Scrub Task")
     def test_share_admin_can_view_the_configured_scrub_task(self):
         """
-        This test verifies the share admin is able to view the configured scrub task.
+        Summary: This test verifies the share admin is able to view the configured scrub task.
+
+        Test Steps:
+        1. Click Edit scrub task
+        2. Verify scrub Task fields (pool, threshold, description, etc)
+        3. Verify can view Custom Schedule dialog
+        4. Close right panel
         """
         DP.click_edit_scrub_task("Scrub Task For Pool")
         assert COM.is_visible(xpaths.common_xpaths.select_field("pool")) is True
@@ -67,7 +76,10 @@ class Test_Share_Admin_Scrub_Tasks:
     @allure.story("Share Admin Is Not Able to add a scrub task")
     def test_share_admin_can_not_add_scrub_task(self):
         """
-        This test verifies the share admin is not able to add a scrub task.
+        Summary: This test verifies the share admin is not able to add a scrub task.
+
+        Test Steps:
+        1. Verify the add scrub task button is locked and not clickable
         """
         assert DP.assert_add_scrub_task_button_is_locked_and_not_clickable() is True
 
@@ -75,7 +87,10 @@ class Test_Share_Admin_Scrub_Tasks:
     @allure.story("Share Admin Is Not Able to delete a scrub task")
     def test_share_admin_can_not_delete_scrub_task(self):
         """
-        This test verifies the share admin is not able to delete a scrub task.
+        Summary: This test verifies the share admin is not able to delete a scrub task.
+
+        Test Steps:
+        1. Verify the delete scrub task button is locked and not clickable
         """
         assert DP.assert_delete_scrub_task_button_is_locked_and_not_clickable("Scrub Task For Pool") is True
 
@@ -83,7 +98,12 @@ class Test_Share_Admin_Scrub_Tasks:
     @allure.story("Share Admin Is Not Able to modify a scrub task")
     def test_share_admin_can_not_modify_scrub_task(self):
         """
-        This test verifies the share admin is not able to modify a scrub task.
+        Summary: This test verifies the share admin is not able to modify a scrub task.
+
+        Test Steps:
+        1. Click Edit scrub task
+        2. Verify the save scrub task button is locked and not clickable
+        3. Close right panel
         """
         DP.click_edit_scrub_task("Scrub Task For Pool")
         assert COM.assert_button_is_locked_and_not_clickable('save') is True
@@ -93,7 +113,13 @@ class Test_Share_Admin_Scrub_Tasks:
     @allure.story("Share Admin Is Not Able to enable and disable scrub tasks")
     def test_share_admin_can_not_enable_and_disable_scrub_task(self):
         """
-        This test verifies the share admin is not able to enable and disable scrub tasks.
+        Summary: This test verifies the share admin is not able to enable and disable scrub tasks.
+
+        Test Steps:
+        1. Verify the enabled scrub task toggle is locked and not clickable
+        2. Set scrub task to disabled through API
+        3. Refresh page (re-navigate to Data Protection page)
+        4. Verify the disabled Cloud Sync task toggle is locked and not clickable
         """
         assert DP.assert_enable_scrub_task_toggle_is_locked_and_not_clickable("Scrub Task For Pool") is True
         # Create disabled Scrub Task
@@ -106,6 +132,9 @@ class Test_Share_Admin_Scrub_Tasks:
     @allure.story("Share Admin Is Not Able To modify the Resilver Priority")
     def test_share_admin_can_not_modify_resilver_priority(self):
         """
-        This test verifies the share admin is not able to modify the Resilver Priority.
+        Summary: This test verifies the share admin is not able to modify the Resilver Priority.
+
+        Test Steps:
+        1. Verify the adjust scrub task button is locked and not clickable
         """
         assert COM.assert_button_is_locked_and_not_clickable('scrub-task-adjust-scrub') is True
