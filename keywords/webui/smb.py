@@ -71,10 +71,10 @@ class SMB:
     @classmethod
     def assert_enabled_toggle_is_locked_and_not_clickable(cls, share_name: str) -> bool:
         """
-        This method verifies that the enabled checkbox is locked and not clickable.
+        This method verifies that the enabled toggle is locked and not clickable.
 
         :param share_name: The name of the share. Example: share1 is share-1
-        :return: True if the enabled checkbox is locked and not clickable otherwise it returns False.
+        :return: True if the enabled toggle is locked and not clickable otherwise it returns False.
 
         Example:
             - SMB.assert_enabled_checkbox_is_locked_and_not_clickable('share-1')
