@@ -1,3 +1,5 @@
+from selenium.common import ElementClickInterceptedException
+
 import xpaths
 from helper.webui import WebUI
 
@@ -56,7 +58,13 @@ class Snapshots:
         Example:
             - Snapshots.assert_hold_checkbox_is_locked_and_not_clickable('test-snapshot')
         """
-        return Common.assert_checkbox_is_locked_and_not_clickable(f'hold-{snapshots_name}')
+        assert WebUI.wait_until_visible(xpaths.datasets.checkbox_locked_snapshot_hold(snapshots_name)) is True
+        WebUI.delay(0.2)
+        try:
+            Common.click_on_element(xpaths.common_xpaths.any_xpath("//*[@data-test='checkbox']"))
+        except ElementClickInterceptedException:
+            return True
+        return False
 
     @classmethod
     def assert_rollback_button_is_locked_and_not_clickable(cls, snapshots_name: str) -> bool:
