@@ -159,8 +159,8 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
         Test Steps:
         1. Verify the dry run Cloud Sync task button is locked and not clickable
         2. Click Edit Cloud Sync Snapshot task
-        2. Verify the dry run Cloud Sync task button is locked and not clickable
-        3. Close right panel
+        3. Verify the dry run Cloud Sync task button is locked and not clickable
+        4. Close right panel
         """
         assert DP.assert_dry_run_cloud_sync_task_button_is_locked_and_not_clickable(cloud_sync['description']) is True
         DP.click_edit_cloud_sync_task(cloud_sync['description'])
