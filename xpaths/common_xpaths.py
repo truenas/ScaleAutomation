@@ -424,19 +424,20 @@ def card_share_attribute(share_type: str, attribute: str, text: str) -> str:
     return f'//ix-{share_type}-card//td[{index}]/descendant::*[contains(text(),"{text}")]'
 
 
-def page_share_attribute(share_type: str, attribute: str, desc: str) -> str:
+def page_share_attribute(share_type: str, name: str, attribute: str, desc: str) -> str:
     """
     This function sets the text for the given share name.
 
     :param share_type: type of the given share
+    :param name: name (smb) or path (nfs) of the given share
     :param attribute: attribute of the given share [name/path/description]
     :param desc: description of the given share
     :return: xpath string for given share name
     """
     index = 1
-    row_xpath = 'data-test="row"'
+    row_xpath = ''
     if share_type == "smb":
-        row_xpath = 'role="row"'
+        row_xpath = f'data-test="row-smb-{name}"'
         if attribute == 'name':
             index = 1
         if attribute == 'path':
@@ -444,10 +445,15 @@ def page_share_attribute(share_type: str, attribute: str, desc: str) -> str:
         if attribute == 'description':
             index = 3
     if share_type == 'nfs':
+        row_xpath = f'data-test="row-nfs-share-{name}"'
         if attribute == 'path':
             index = 1
         if attribute == 'description':
             index = 2
+        if attribute == 'networks':
+            index = 3
+        if attribute == 'hosts':
+            index = 4
     return f'//*[@{row_xpath}]/td[{index}]/descendant::*[contains(text(),"{desc}")]'
 
 

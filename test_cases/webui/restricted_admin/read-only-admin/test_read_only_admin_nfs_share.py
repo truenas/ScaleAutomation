@@ -131,8 +131,8 @@ class Test_Read_Only_Admin_NFS_Share:
         assert Common_Shares.assert_share_card_displays('nfs') is True
         Common_Shares.click_share_card_header_link('nfs')
         assert NFS.assert_sharing_nfs_page_header() is True
-        assert NFS.assert_share_path(data['nfs_path']) is True
-        assert NFS.assert_share_description(data['nfs_description']) is True
+        assert NFS.assert_nfs_page_share_path(data['nfs_name'], data['nfs_xpath']) is True
+        assert NFS.assert_nfs_page_share_description(data['nfs_xpath'], data['nfs_description']) is True
 
     @allure.tag('Create')
     @allure.story("Read Only Admin Is Not Able To Create An NFS Share On The Sharing NFS Page")

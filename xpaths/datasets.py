@@ -1,4 +1,14 @@
 
+def checkbox_locked_snapshot_hold(name: str) -> str:
+    """
+    This function returns the xpath text of the hold checkbox for a dataset snapshot.
+
+    :param name: The name of the given dataset.
+    :return: xpath text of the hold checkbox for a dataset snapshot.
+    """
+    return f'//*[contains(text(),"{name}")]/ancestor::tbody//*[@data-test="checkbox"]/ancestor::span//ix-icon[@name="lock"]'
+
+
 def dataset_encryption_text(dataset_name: str) -> str:
     """
     This function returns the xpath text of the given dataset encryption text.
