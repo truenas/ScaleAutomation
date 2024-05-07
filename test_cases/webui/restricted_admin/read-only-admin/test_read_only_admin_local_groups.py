@@ -29,7 +29,7 @@ class Test_Read_Only_Admin_Local_Groups:
         """
         This test verifies the read-only admin is able to see Local Groups.
         """
-        assert COM.is_visible(xpaths.common_xpaths.any_data_test("row-roa")) is True
+        assert COM.is_visible(xpaths.common_xpaths.any_data_test("row-group-roa")) is True
         LG.expand_group_by_name("roa")
         assert COM.is_visible(xpaths.common_xpaths.button_field("roa-members")) is True
         assert COM.is_visible(xpaths.common_xpaths.button_field("roa-edit")) is True

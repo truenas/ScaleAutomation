@@ -29,7 +29,7 @@ class Local_Groups:
         Example:
             - Local_Groups.assert_add_local_group_button_is_locked_and_not_clickable()
         """
-        return COM.assert_button_is_locked_and_not_clickable('add')
+        return COM.assert_button_is_locked_and_not_clickable('add-group')
 
     @classmethod
     def assert_delete_local_group_button_is_locked_and_not_clickable(cls, name: str) -> bool:
@@ -388,7 +388,7 @@ class Local_Groups:
         """
         group_name = COM.convert_to_tag_format(group_name)
         if COM.is_visible(xpaths.common_xpaths.button_field(f"{group_name}-edit")) is False:
-            COM.click_on_element(f'//*[@data-test="row-{group_name}"]')
+            COM.click_on_element(f'//*[@data-test="row-group-{group_name}"]')
 
     @classmethod
     def get_group_list_allow_sudo_commands(cls, group) -> str:
