@@ -20,6 +20,32 @@ class Local_Groups:
         assert COM.is_visible(xpaths.common_xpaths.any_pill("sudo-commands-nopasswd", command))
 
     @classmethod
+    def assert_add_local_group_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method verifies if the add local group button is locked and not clickable.
+
+        :return: True if the add local group button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Local_Groups.assert_add_local_group_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('add-group')
+
+    @classmethod
+    def assert_delete_local_group_button_is_locked_and_not_clickable(cls, name: str) -> bool:
+        """
+        This method verifies if the add local group button is locked and not clickable.
+
+        :param name: is the name of the group to be deleted
+        :return: True if the add local group button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Local_Groups.assert_delete_local_group_button_is_locked_and_not_clickable()
+        """
+        name = COM.convert_to_tag_format(name)
+        return COM.assert_button_is_locked_and_not_clickable(f'{name}-delete')
+
+    @classmethod
     def assert_gid_field_is_disabled(cls) -> bool:
         """
         This method returns True if the gid text field is disabled, otherwise False
@@ -361,8 +387,8 @@ class Local_Groups:
          - Local_Groups.expand_group_by_name('group_name')
         """
         group_name = COM.convert_to_tag_format(group_name)
-        if COM.is_visible(xpaths.common_xpaths.button_field(group_name+'-edit')) is False:
-            COM.click_on_element(xpaths.local_groups.group(group_name))
+        if COM.is_visible(xpaths.common_xpaths.button_field(f"{group_name}-edit")) is False:
+            COM.click_on_element(f'//*[@data-test="row-group-{group_name}"]')
 
     @classmethod
     def get_group_list_allow_sudo_commands(cls, group) -> str:

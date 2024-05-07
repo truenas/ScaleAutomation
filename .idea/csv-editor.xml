@@ -10,111 +10,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\Reports\2024_04_10-13_35_41-webui\allure-report\data\behaviors.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_10-13_35_41-webui\allure-report\data\categories.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_10-13_35_41-webui\allure-report\data\suites.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_10-13_44_01-webui\allure-report\data\behaviors.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_10-13_44_01-webui\allure-report\data\categories.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_10-13_44_01-webui\allure-report\data\suites.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_10-13_51_45-webui\allure-report\data\behaviors.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_10-13_51_45-webui\allure-report\data\categories.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_10-13_51_45-webui\allure-report\data\suites.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_11-06_59_58-webui\allure-report\data\behaviors.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_11-06_59_58-webui\allure-report\data\categories.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_11-06_59_58-webui\allure-report\data\suites.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_11-07_53_07-webui\allure-report\data\behaviors.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_11-07_53_07-webui\allure-report\data\categories.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Reports\2024_04_11-07_53_07-webui\allure-report\data\suites.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\test_data\ad_credentials.csv">
           <value>
             <Attribute>
@@ -123,6 +18,13 @@
           </value>
         </entry>
         <entry key="\test_data\apps.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\test_data\backup_credentials.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
