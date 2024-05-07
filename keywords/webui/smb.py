@@ -370,7 +370,6 @@ class SMB:
         Example:
            - SMB.assert_smb_page_share_path('/mnt/share1')
         """
-        print("in assert_smb_page_share_path")
         return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', name, 'path', path))
 
     @classmethod

@@ -436,7 +436,6 @@ def page_share_attribute(share_type: str, name: str, attribute: str, desc: str) 
     """
     index = 1
     row_xpath = ''
-    print("Sharetype: "+share_type)
     if share_type == "smb":
         row_xpath = f'data-test="row-smb-{name}"'
         if attribute == 'name':
@@ -455,7 +454,6 @@ def page_share_attribute(share_type: str, name: str, attribute: str, desc: str) 
             index = 3
         if attribute == 'hosts':
             index = 4
-    print(f'//*[@{row_xpath}]/td[{index}]/descendant::*[contains(text(),"{desc}")]')
     return f'//*[@{row_xpath}]/td[{index}]/descendant::*[contains(text(),"{desc}")]'
 
 
