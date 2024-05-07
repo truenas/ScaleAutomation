@@ -43,7 +43,10 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
     @allure.story("Share Admin Can See The Cloud Sync Tasks")
     def test_share_admin_can_see_the_cloud_sync_tasks(self, cloud_sync):
         """
-        This test verifies the share admin is able to see Cloud Sync tasks.
+        Summary: This test verifies the share admin is able to see Cloud Sync tasks.
+
+        Test Steps:
+        1. Verify the share admin is able to see Cloud Sync tasks
         """
         assert DP.assert_cloud_sync_task_description(cloud_sync['description']) is True
 
@@ -52,7 +55,14 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
     @allure.story("Share Admin Can View the Configured Cloud Sync Task")
     def test_share_admin_can_view_the_configured_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the share admin is able to view the configured Cloud Sync task.
+        Summary: This test verifies the share admin is able to view the configured Cloud Sync task.
+
+        Test Steps:
+        1. Click Edit Cloud Sync task
+        2. Verify Cloud Sync Task fields (description, direction, bucket-input, etc)
+        3. Verify sub-sections (Transfer, Remote, Control, Advanced Options)
+        4. Verify can view Custom Schedule dialog
+        5. Close right panel
         """
         DP.click_edit_cloud_sync_task(cloud_sync['description'])
         assert COM.is_visible(xpaths.common_xpaths.input_field("description")) is True
@@ -79,7 +89,10 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
     @allure.story("Share Admin Is Not Able to add a Cloud Sync task")
     def test_share_admin_can_not_add_cloud_sync_task(self):
         """
-        This test verifies the share admin is not able to add a Cloud Sync task.
+        Summary: This test verifies the share admin is not able to add a Cloud Sync task.
+
+        Test Steps:
+        1. Verify the add Cloud Sync task button is locked and not clickable
         """
         assert DP.assert_add_cloud_sync_task_button_is_locked_and_not_clickable() is True
 
@@ -87,7 +100,10 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
     @allure.story("Share Admin Is Not Able to delete a Cloud Sync task")
     def test_share_admin_can_not_delete_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the share admin is not able to delete a Cloud Sync task.
+        Summary: This test verifies the share admin is not able to delete a Cloud Sync task.
+
+        Test Steps:
+        1. Verify the delete Cloud Sync task button is locked and not clickable
         """
         assert DP.assert_delete_cloud_sync_task_button_is_locked_and_not_clickable(cloud_sync['description']) is True
 
@@ -95,7 +111,12 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
     @allure.story("Share Admin Is Not Able to modify a Cloud Sync task")
     def test_share_admin_can_not_modify_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the share admin is not able to modify a Cloud Sync task.
+        Summary: This test verifies the share admin is not able to modify a Cloud Sync task.
+
+        Test Steps:
+        1. Click Edit Cloud Sync task
+        2. Verify the save Cloud Sync task button is locked and not clickable
+        3. Close right panel
         """
         DP.click_edit_cloud_sync_task(cloud_sync['description'])
         assert COM.assert_button_is_locked_and_not_clickable('save') is True
@@ -105,7 +126,13 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
     @allure.story("Share Admin Is Not Able to enable and disable Cloud Sync tasks")
     def test_share_admin_can_not_enable_and_disable_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the share admin is not able to enable and disable Cloud Sync tasks.
+        Summary: This test verifies the share admin is not able to enable and disable Cloud Sync tasks.
+
+        Test Steps:
+        1. Verify the enabled Cloud Sync task toggle is locked and not clickable
+        2. Set Cloud Sync to disabled through API
+        3. Refresh page (re-navigate to Data Protection page)
+        4. Verify the disabled Cloud Sync task toggle is locked and not clickable
         """
         assert DP.assert_enable_cloud_sync_task_toggle_is_locked_and_not_clickable(cloud_sync['description']) is True
         API_PUT.set_cloud_sync_task_enabled(cloud_sync['name'], False)
@@ -116,7 +143,10 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
     @allure.story("Share Admin Is Not Able To Run the Cloud Sync task")
     def test_share_admin_can_not_run_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the share admin is not able to run the Cloud Sync task.
+        Summary: This test verifies the share admin is not able to run the Cloud Sync task.
+
+        Test Steps:
+        1. Verify the run Cloud Sync task button is locked and not clickable
         """
         assert DP.assert_run_cloud_sync_task_button_is_locked_and_not_clickable(cloud_sync['description']) is True
 
@@ -124,7 +154,13 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
     @allure.story("Share Admin Is Not Able To Dry Run the Cloud Sync task")
     def test_share_admin_can_not_dry_run_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the share admin is not able to dry run the Cloud Sync task.
+        Summary: This test verifies the share admin is not able to dry run the Cloud Sync task.
+
+        Test Steps:
+        1. Verify the dry run Cloud Sync task button is locked and not clickable
+        2. Click Edit Cloud Sync Snapshot task
+        2. Verify the dry run Cloud Sync task button is locked and not clickable
+        3. Close right panel
         """
         assert DP.assert_dry_run_cloud_sync_task_button_is_locked_and_not_clickable(cloud_sync['description']) is True
         DP.click_edit_cloud_sync_task(cloud_sync['description'])
@@ -135,6 +171,9 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
     @allure.story("Share Admin Is Not Able To Restore the Cloud Sync task")
     def test_share_admin_can_not_restore_cloud_sync_task(self, cloud_sync):
         """
-        This test verifies the share admin is not able to restore the Cloud Sync task.
+        Summary: This test verifies the share admin is not able to restore the Cloud Sync task.
+
+        Test Steps:
+        1. Verify the restore Cloud Sync task button is locked and not clickable
         """
         assert DP.assert_restore_cloud_sync_task_button_is_locked_and_not_clickable(cloud_sync['description']) is True
