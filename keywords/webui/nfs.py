@@ -142,7 +142,7 @@ class NFS:
         :return: True if the share name is visible otherwise it returns False.
 
         Example:
-           - Common_Shares.assert_share_path('nfs', 'mnt-tank-nfstest-testing-nfs-share', 'path', 'mnt/tank/nfstest')
+           - Common_Shares.assert_nfs_page_share_path('nfs', 'mnt-tank-nfstest-testing-nfs-share', 'path', 'mnt/tank/nfstest')
         """
         return COM.is_visible(xpaths.common_xpaths.page_share_attribute('nfs', xpath, 'path', name))
 
@@ -159,7 +159,7 @@ class NFS:
         return COM.assert_button_is_locked_and_not_clickable(f'nfs-share-{share_xpath}-delete-row-action')
 
     @classmethod
-    def assert_share_description(cls, name: str, desc: str) -> bool:
+    def assert_nfs_page_share_description(cls, name: str, desc: str) -> bool:
         """
         This method verifies that the share description is visible on the Sharing NFS page.
 
@@ -168,7 +168,7 @@ class NFS:
         :return: True if the share description is visible otherwise it returns False.
 
         Example:
-           - Common_Shares.assert_share_description('smb', 'share1')
+           - Common_Shares.assert_nfs_page_share_description('smb', 'share1')
         """
         return COM.is_visible(xpaths.common_xpaths.page_share_attribute('nfs', name, 'description', desc))
 
@@ -183,19 +183,6 @@ class NFS:
             - NFS.assert_nfs_enabled_button_is_locked_and_not_clickable()
         """
         return COM.assert_toggle_is_locked_and_not_clickable(f'enabled-nfs-share-{share_xpath}-row-toggle')
-
-    @classmethod
-    def assert_share_path(cls, path: str) -> bool:
-        """
-        This method verifies that the path for the share row of the given share on the Sharing NFS page.
-
-        :param path: path of the given share
-        :return: True if the share name is visible otherwise it returns False.
-
-        Example:
-           - Common_Shares.assert_share_path('smb', '/mnt/share1')
-        """
-        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('nfs', path, 'path', path))
 
     @classmethod
     def assert_sharing_nfs_page_header(cls) -> bool:
