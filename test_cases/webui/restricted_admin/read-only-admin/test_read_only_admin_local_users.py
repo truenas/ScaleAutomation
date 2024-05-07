@@ -34,7 +34,7 @@ class Test_Read_Only_Admin_Local_Users:
         4. Verify Local Users delete button
         5. Verify Local Users logs button
         """
-        assert COM.is_visible(xpaths.common_xpaths.any_data_test("row-roa")) is True
+        assert COM.is_visible(xpaths.common_xpaths.any_data_test("row-user-roa")) is True
         LU.expand_user("roa")
         assert COM.is_visible(xpaths.common_xpaths.button_field("edit-roa")) is True
         assert COM.is_visible(xpaths.common_xpaths.button_field("delete-roa")) is True

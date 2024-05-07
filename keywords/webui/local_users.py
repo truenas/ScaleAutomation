@@ -547,7 +547,7 @@ class Local_Users:
         """
         name = COM.convert_to_tag_format(name)
         if COM.is_visible(xpaths.common_xpaths.button_field('edit-' + name)) is False:
-            COM.click_on_element(f'//*[@data-test="row-{name}"]')
+            COM.click_on_element(f'//*[@data-test="row-user-{name}"]')
 
     @classmethod
     def expand_user_by_full_name(cls, fullname: str) -> None:
