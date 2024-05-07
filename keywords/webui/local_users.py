@@ -22,6 +22,31 @@ class Local_Users:
         WebUI.delay(0.5)
 
     @classmethod
+    def assert_add_local_user_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method verifies if the add local user button is locked and not clickable.
+
+        :return: True if the add local user button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Local_Users.assert_add_local_user_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('add-user')
+
+    @classmethod
+    def assert_delete_local_user_button_is_locked_and_not_clickable(cls, name: str) -> bool:
+        """
+        This method verifies if the delete local user button is locked and not clickable.
+
+        :param name: is the name of the user
+        :return: True if the delete local user button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Local_Users.assert_delete_local_user_button_is_locked_and_not_clickable('username')
+        """
+        return COM.assert_button_is_locked_and_not_clickable(f'delete-{name}')
+
+    @classmethod
     def assert_error_user_home_directory_not_writable(cls) -> bool:
         """
         This method returns True if the home directory error message displays, otherwise False
@@ -509,6 +534,20 @@ class Local_Users:
          - Local_Users.delete_user_by_api('username')
         """
         API_DELETE.delete_user(username)
+
+    @classmethod
+    def expand_user(cls, name: str) -> None:
+        """
+        This method expands the given user section
+
+        :param name: is the name of the user to expand
+
+        Example
+         - Local_Users.expand_user('name')
+        """
+        name = COM.convert_to_tag_format(name)
+        if COM.is_visible(xpaths.common_xpaths.button_field('edit-' + name)) is False:
+            COM.click_on_element(f'//*[@data-test="row-{name}"]')
 
     @classmethod
     def expand_user_by_full_name(cls, fullname: str) -> None:
