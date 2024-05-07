@@ -282,8 +282,19 @@ class WebUI(object):
             - WebUI.scroll_to_element('xpath')
         """
         element = cls.xpath(xpath)
-        cls.execute_script("arguments[0].scrollIntoView();", element)
-        cls.delay(0.1)
+        cls.execute_script("arguments[0].scrollIntoView(true);", element)
+        cls.delay(1)
+
+    @classmethod
+    def scroll_to_top_of_page(cls) -> None:
+        """
+        This method scrolls to the top of the page.
+
+        Example:
+            - WebUI.scroll_to_top_of_page()
+        """
+        cls.execute_script("window.scrollTo(0, document.body.scrollTop);")
+        cls.delay(1)
 
     @classmethod
     def set_window_size(cls, width: int, height: int) -> None:

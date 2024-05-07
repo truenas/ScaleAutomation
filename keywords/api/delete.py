@@ -5,6 +5,25 @@ from keywords.api.common import API_Common as API
 
 
 class API_DELETE:
+
+    @classmethod
+    def delete_all_periodic_snapshots_tasks(cls) -> dict:
+        """
+        This method delete all periodic snapshot tasks.
+
+        :return: The dictionary response from the job.
+
+        Example:
+            - API_POST.delete_all_periodic_snapshots_tasks()
+        """
+        response = GET(f'/pool/snapshottask').json()
+        while response:
+            task_id = response[0]['id']
+            response = DELETE(f'/pool/snapshottask/id/{task_id}', {})
+            assert response.status_code == 200, response.text
+            response = GET(f'/pool/snapshottask').json()
+        return response
+
     @classmethod
     def delete_certificate(cls, cert_name: str) -> dict:
         """
