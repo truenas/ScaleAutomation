@@ -1,2 +1,2 @@
 pool_name,iscsi_name,iscsi_name_xpath,lunid,target_alias,smb_name,smb_xpath,smb_path,smb_description,nfs_name,nfs_path,nfs_xpath,nfs_description
-tank,iscsi-test1,iscsi-test-1,1,iSCSI Test1,smb-test1,smb-test-1,/mnt/tank/smb-test1,Testing read-only admin SMB share,nfs-test1,/mnt/tank/nfs-test1,mnt-tank-nfs-test-1-testing-read-only-admin-nfs-share,Testing read-only admin NFS share
+tank,iscsitest,iscsitest,1,iSCSI Test,smbtest,smbtest,/mnt/tank/smbtest,Testing read-only admin SMB share,nfstest,/mnt/tank/nfstest,mnt-tank-nfstest-testing-read-only-admin-nfs-share,Testing read-only admin NFS share

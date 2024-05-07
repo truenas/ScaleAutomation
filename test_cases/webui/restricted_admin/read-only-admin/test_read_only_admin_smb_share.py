@@ -36,7 +36,7 @@ class Test_Read_Only_Admin_SMB_Share:
     @pytest.fixture(scope='class', autouse=True)
     def tear_down_test(self, data):
         yield
-        API_DELETE.delete_share('nfs', f"{data['smb_name']}")
+        API_DELETE.delete_share('smb', f"{data['smb_name']}")
         API_DELETE.delete_dataset(f"{data['pool_name']}/{data['smb_name']}", force=True)
 
     @allure.tag('Read')
@@ -51,9 +51,9 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common_Shares.assert_share_description('smb', data['smb_description']) is True
 
     @allure.tag('Update')
-    @allure.story("Read Only Admin Is Not Able To Enable Or Disable NFS Service On The SMB Card")
-    def test_read_only_is_not_able_enable_or_disable_nfs_service_on_the_smb_card(self, data):
-        # Verify the read-only admin is not able to enable or disable the NFS service
+    @allure.story("Read Only Admin Is Not Able To Enable Or Disable SMB Service On The SMB Card")
+    def test_read_only_is_not_able_enable_or_disable_smb_service_on_the_smb_card(self, data):
+        # Verify the read-only admin is not able to enable or disable the SMB service
         assert Common_Shares.assert_share_card_displays('smb') is True
         assert Common_Shares.assert_disable_share_service_is_locked_and_not_clickable('smb') is True
         assert Common_Shares.is_share_service_running('smb') is True
@@ -139,14 +139,14 @@ class Test_Read_Only_Admin_SMB_Share:
         Common_Shares.click_share_card_header_link('smb')
         assert SMB.assert_sharing_smb_page_header() is True
         assert SMB.assert_share_name(data['smb_name']) is True
-        assert SMB.assert_share_path(data['smb_path']) is True
-        assert SMB.assert_share_description(data['smb_description']) is True
+        assert SMB.assert_share_path(data['smb_name'], data['smb_path']) is True
+        assert SMB.assert_share_description(data['smb_name'], data['smb_description']) is True
 
     @allure.tag('Create')
-    @allure.story("Read Only Admin Is Not Able To Create An NFS Share On The Sharing NFS Page")
-    def test_read_only_admin_is_not_able_to_create_an_nfs_shares_on_the_sharing_nfs_page(self, data):
+    @allure.story("Read Only Admin Is Not Able To Create An SMB Share On The Sharing SMB Page")
+    def test_read_only_admin_is_not_able_to_create_an_smb_share_on_the_sharing_smb_page(self, data):
         """
-        This test verifies the read-only admin is not able to create an NFS share on the Sharing NFS page.
+        This test verifies the read-only admin is not able to create an SMB share on the Sharing SMB page.
         """
         assert Common_Shares.assert_share_card_displays('smb') is True
         Common_Shares.click_share_card_header_link('smb')
@@ -162,7 +162,7 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common_Shares.assert_share_card_displays('smb') is True
         Common_Shares.click_share_card_header_link('smb')
         assert SMB.assert_sharing_smb_page_header() is True
-        SMB.click_edit_share(data['smb_xpath'])
+        SMB.click_smb_page_edit_share_button(data['smb_xpath'])
         assert SMB.assert_edit_smb_panel_header() is True
         assert Common.assert_header_readonly_badge() is True
 
@@ -188,7 +188,7 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common_Shares.assert_share_card_displays('smb') is True
         Common_Shares.click_share_card_header_link('smb')
         assert SMB.assert_sharing_smb_page_header() is True
-        assert SMB.assert_enabled_checkbox_is_locked_and_not_clickable(data['smb_xpath']) is True
+        assert SMB.assert_enabled_toggle_is_locked_and_not_clickable(data['smb_xpath']) is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Edit The SMB Filesystem ACL Permissions On The Sharing SMB Page")
