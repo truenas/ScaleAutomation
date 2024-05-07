@@ -2,8 +2,6 @@ import allure
 import pytest
 
 import xpaths.common_xpaths
-from keywords.api.post import API_POST
-from keywords.api.delete import API_DELETE
 from keywords.webui.common import Common as COM
 from keywords.webui.local_groups import Local_Groups as LG
 from keywords.webui.navigation import Navigation as NAV
@@ -27,7 +25,14 @@ class Test_Read_Only_Admin_Local_Groups:
     @allure.story("Read Only Admin Can See The Local Groups")
     def test_read_only_admin_can_see_the_local_groups(self):
         """
-        This test verifies the read-only admin is able to see Local Groups.
+        Summary: This test verifies the read-only admin is able to see Local Groups.
+
+        Test Steps:
+        1. Verify the read-only admin is able to see Local Groups
+        2. Expand Local Groups
+        3. Verify Local Groups members button
+        4. Verify Local Groups edit button
+        5. Verify Local Groups delete button
         """
         assert COM.is_visible(xpaths.common_xpaths.any_data_test("row-roa")) is True
         LG.expand_group_by_name("roa")
@@ -39,7 +44,14 @@ class Test_Read_Only_Admin_Local_Groups:
     @allure.story("Read Only Admin Can View the Local Groups Members")
     def test_read_only_admin_can_view_the_local_groups_members(self):
         """
-        This test verifies the read-only admin is able to view the local groups members.
+        Summary: This test verifies the read-only admin is able to view the local groups members.
+
+        Test Steps:
+        1. Expand Local Groups
+        2. Click Local Groups members button
+        3. Verify Update Members page
+        4. Verify save button
+        5. Navigate to Local Groups page
         """
         LG.expand_group_by_name("roa")
         LG.click_group_members_button("roa")
@@ -51,7 +63,14 @@ class Test_Read_Only_Admin_Local_Groups:
     @allure.story("Read Only Admin Can View the configured Local Group")
     def test_read_only_admin_can_view_the_configured_local_group(self):
         """
-        This test verifies the read-only admin is able to view the configured local group.
+        Summary: This test verifies the read-only admin is able to view the configured local group.
+
+        Test Steps:
+        1. Expand Local Groups
+        2. Click Local Groups edit button
+        3. Verify Edit Group right panel
+        4. Verify Local Group fields (gid, name, privileges, etc)
+        5. Close right panel
         """
         LG.expand_group_by_name("roa")
         LG.click_group_edit_button_by_name("roa")
@@ -71,7 +90,10 @@ class Test_Read_Only_Admin_Local_Groups:
     @allure.story("Read Only Admin Is Not Able to add a Local Groups")
     def test_read_only_admin_can_not_add_local_group(self):
         """
-        This test verifies the read-only admin is not able to add a Local Groups.
+        Summary: This test verifies the read-only admin is not able to add a Local Groups.
+
+        Test Steps:
+        1. Verify the add Local Groups button is locked and not clickable
         """
         assert LG.assert_add_local_group_button_is_locked_and_not_clickable() is True
 
@@ -79,7 +101,11 @@ class Test_Read_Only_Admin_Local_Groups:
     @allure.story("Read Only Admin Is Not Able to delete a Local Groups")
     def test_read_only_admin_can_not_delete_local_group(self):
         """
-        This test verifies the read-only admin is not able to delete a Local Groups.
+        Summary: This test verifies the read-only admin is not able to delete a Local Groups.
+
+        Test Steps:
+        1. Expand Local Groups
+        2. Verify the delete Local Groups button is locked and not clickable
         """
         LG.expand_group_by_name("roa")
         assert LG.assert_delete_local_group_button_is_locked_and_not_clickable('roa') is True
@@ -88,7 +114,13 @@ class Test_Read_Only_Admin_Local_Groups:
     @allure.story("Read Only Admin Is Not Able to modify a Local Groups")
     def test_read_only_admin_can_not_modify_local_group(self):
         """
-        This test verifies the read-only admin is not able to modify a Local Groups.
+        Summary: This test verifies the read-only admin is not able to modify a Local Groups.
+
+        Test Steps:
+        1. Expand Local Groups
+        2. Click Local Groups edit button
+        3. Verify the save Local Groups button is locked and not clickable
+        4. Close right panel
         """
         LG.expand_group_by_name("roa")
         LG.click_group_edit_button_by_name("roa")
