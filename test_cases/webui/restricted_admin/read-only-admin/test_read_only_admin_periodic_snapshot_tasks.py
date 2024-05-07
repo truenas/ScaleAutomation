@@ -42,7 +42,10 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
     @allure.story("Read Only Admin Can See The Periodic Snapshot Tasks")
     def test_read_only_admin_can_see_the_periodic_snapshot_tasks(self):
         """
-        This test verifies the read-only admin is able to see Periodic Snapshot tasks.
+        Summary: This test verifies the read-only admin is able to see Periodic Snapshot tasks.
+
+        Test Steps:
+        1. Verify the read-only admin is able to see Periodic Snapshot tasks
         """
         assert DP.assert_periodic_snapshot_task_dataset('tank/persnap_ro') is True
 
@@ -50,7 +53,14 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
     @allure.story("Read Only Admin Can View the Configured Periodic Snapshot Task")
     def test_read_only_admin_can_view_the_configured_periodic_snapshot_task(self):
         """
-        This test verifies the read-only admin is able to view the configured Periodic Snapshot task.
+        Summary: This test verifies the read-only admin is able to view the configured Periodic Snapshot task.
+
+        Test Steps:
+        1. Click Edit Periodic Snapshot task
+        2. Verify Periodic Snapshot Task fields (dataset, exclude, recursive, etc)
+        3. Verify sub-sections (dataset, Schedule)
+        4. Verify can view Custom Schedule dialog
+        5. Close right panel
         """
         DP.click_edit_periodic_snapshot_task('tank/persnap_ro')
         assert COM.is_visible(xpaths.common_xpaths.select_field("dataset")) is True
@@ -77,7 +87,10 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
     @allure.story("Read Only Admin Is Not Able to add a Periodic Snapshot task")
     def test_read_only_admin_can_not_add_periodic_snapshot_task(self):
         """
-        This test verifies the read-only admin is not able to add a Periodic Snapshot task.
+        Summary: This test verifies the read-only admin is not able to add a Periodic Snapshot task.
+
+        Test Steps:
+        1. Verify the add periodic snapshot task button is locked and not clickable
         """
         assert DP.assert_add_periodic_snapshot_task_button_is_locked_and_not_clickable() is True
 
@@ -85,7 +98,10 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
     @allure.story("Read Only Admin Is Not Able to delete a Periodic Snapshot task")
     def test_read_only_admin_can_not_delete_periodic_snapshot_task(self):
         """
-        This test verifies the read-only admin is not able to delete a Periodic Snapshot task.
+        Summary: This test verifies the read-only admin is not able to delete a Periodic Snapshot task.
+
+        Test Steps:
+        1. Verify the delete periodic snapshot task button is locked and not clickable
         """
         assert DP.assert_delete_periodic_snapshot_task_button_is_locked_and_not_clickable('tank/persnap_ro') is True
 
@@ -93,7 +109,12 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
     @allure.story("Read Only Admin Is Not Able to modify a Periodic Snapshot task")
     def test_read_only_admin_can_not_modify_periodic_snapshot_task(self):
         """
-        This test verifies the read-only admin is not able to modify a Periodic Snapshot task.
+        Summary: This test verifies the read-only admin is not able to modify a Periodic Snapshot task.
+
+        Test Steps:
+        1. Click Edit Periodic Snapshot task
+        2. Verify the save periodic snapshot task button is locked and not clickable
+        3. Close right panel
         """
         DP.click_edit_periodic_snapshot_task('tank/persnap_ro')
         assert COM.assert_button_is_locked_and_not_clickable('save') is True
@@ -103,7 +124,13 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
     @allure.story("Read Only Admin Is Not Able to enable and disable Periodic Snapshot tasks")
     def test_read_only_admin_can_not_enable_and_disable_periodic_snapshot_task(self):
         """
-        This test verifies the read-only admin is not able to enable and disable Periodic Snapshot tasks.
+        Summary: This test verifies the read-only admin is not able to enable and disable Periodic Snapshot tasks.
+
+        Test Steps:
+        1. Verify the enabled periodic snapshot task toggle is locked and not clickable
+        2. Set periodic snapshot to disabled through API
+        3. Refresh page (re-navigate to Data Protection page)
+        4. Verify the disabled periodic snapshot task toggle is locked and not clickable
         """
         assert DP.assert_enable_periodic_snapshot_task_toggle_is_locked_and_not_clickable('tank/persnap_ro') is True
         API_PUT.set_periodic_snapshot_task_enabled('tank/persnap_ro', False)
@@ -114,7 +141,12 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
     @allure.story("Read Only Admin Can See The VM Periodic Snapshot Tasks")
     def test_read_only_admin_can_see_the_vm_periodic_snapshot_tasks(self):
         """
-        This test verifies the read-only admin is not able to run the Periodic Snapshot task.
+        Summary: This test verifies the read-only admin is not able to run the Periodic Snapshot task.
+
+        Test Steps:
+        1. Click VMware Periodic Snapshot task button
+        2. Verify the vmware periodic snapshot page displays
+        3. Navigate to Data Protection page
         """
         COM.click_link('snapshot-task-vmware-snapshots')
         assert COM.assert_page_header('VMware Snapshots') is True
@@ -124,7 +156,12 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
     @allure.story("Read Only Admin Is Not Able to add a VM Periodic Snapshot")
     def test_read_only_admin_can_not_add_vm_periodic_snapshot(self):
         """
-        This test verifies the read-only admin is not able to add a VM Periodic Snapshot.
+        Summary: This test verifies the read-only admin is not able to add a VM Periodic Snapshot.
+
+        Test Steps:
+        1. Click VMware Periodic Snapshot task button
+        2. Verify the add VMware periodic snapshot task button is locked and not clickable
+        3. Navigate to Data Protection page
         """
         COM.click_link('snapshot-task-vmware-snapshots')
         assert DP.assert_add_vm_periodic_snapshot_button_is_locked_and_not_clickable() is True
@@ -135,7 +172,12 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
     @pytest.mark.skip(reason="@@@ test_read_only_admin_can_not_delete_vm_periodic_snapshot: Currently ONLY available on a VMware box.")
     def test_read_only_admin_can_not_delete_vm_periodic_snapshot(self):
         """
-        This test verifies the read-only admin is not able to delete a Periodic Snapshot task.
+        Summary: This test verifies the read-only admin is not able to delete a Periodic Snapshot task.
+
+        Test Steps:
+        1. Click VMware Periodic Snapshot task button
+        2. Verify the delete VMware periodic snapshot task button is locked and not clickable
+        3. Navigate to Data Protection page
         """
         COM.click_link('snapshot-task-vmware-snapshots')
         assert DP.assert_delete_vm_periodic_snapshot_task_button_is_locked_and_not_clickable('tank/persnap_ro') is True
@@ -146,7 +188,13 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
     @pytest.mark.skip(reason="@@@ test_read_only_admin_can_not_modify_vm_periodic_snapshot: Currently ONLY available on a VMware box.")
     def test_read_only_admin_can_not_modify_vm_periodic_snapshot(self):
         """
-        This test verifies the read-only admin is not able to modify a Periodic Snapshot task.
+        Summary: This test verifies the read-only admin is not able to modify a Periodic Snapshot task.
+
+        Test Steps:
+        1. Click VMware Periodic Snapshot task button
+        2. Click Edit VMware Periodic Snapshot task
+        3. Verify the save VMware periodic snapshot task button is locked and not clickable
+        4. Navigate to Data Protection page
         """
         COM.click_link('snapshot-task-vmware-snapshots')
         DP.click_edit_vm_periodic_snapshot_task('tank/persnap_ro')
