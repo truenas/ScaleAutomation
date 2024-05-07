@@ -133,6 +133,20 @@ class NFS:
         return COM.assert_right_panel_header('Edit NFS Share')
 
     @classmethod
+    def assert_nfs_page_share_description(cls, name: str, desc: str) -> bool:
+        """
+        This method verifies that the share description is visible on the Sharing NFS page.
+
+        :param name: path of the given share
+        :param desc: description of the given share
+        :return: True if the share description is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_nfs_page_share_description('smb', 'share1')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('nfs', name, 'description', desc))
+
+    @classmethod
     def assert_nfs_page_share_path(cls, name: str, xpath: str) -> bool:
         """
         This method asserts the path for the share row of the given share.
@@ -157,20 +171,6 @@ class NFS:
             - NFS.assert_nfs_delete_button_is_locked_and_not_clickable()
         """
         return COM.assert_button_is_locked_and_not_clickable(f'nfs-share-{share_xpath}-delete-row-action')
-
-    @classmethod
-    def assert_nfs_page_share_description(cls, name: str, desc: str) -> bool:
-        """
-        This method verifies that the share description is visible on the Sharing NFS page.
-
-        :param name: path of the given share
-        :param desc: description of the given share
-        :return: True if the share description is visible otherwise it returns False.
-
-        Example:
-           - Common_Shares.assert_nfs_page_share_description('smb', 'share1')
-        """
-        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('nfs', name, 'description', desc))
 
     @classmethod
     def assert_share_enabled_toggle_is_locked_and_not_clickable_on_nfs_page(cls, share_xpath: str) -> bool:
