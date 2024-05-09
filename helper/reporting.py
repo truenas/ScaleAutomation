@@ -45,8 +45,12 @@ def allure_environment():
         file.write(f'version={version}\n')
         file.write(f'short_version={version_short}\n')
         file.write(f'short_version={version_short}\n')
-        if shared_config['PERCY_URL']:
-            file.write(f"percy_report={shared_config['PERCY_URL']}\n")
+        for _ in range(10):
+            if "percy_threading" not in str(threading.enumerate()):
+                if shared_config['PERCY_URL']:
+                    file.write(f"percy_report={shared_config['PERCY_URL']}\n")
+                    break
+            WebUI.delay(1)
 
 
 def allure_reporting():
@@ -85,7 +89,7 @@ def start_percy_session():
         - start_percy_session()
     """
     if os.getenv('PERCY_TOKEN') is not None:
-        threading_percy = threading.Thread(target=percy_threading)
+        threading_percy = threading.Thread(target=percy_threading, name='percy_threading')
         threading_percy.start()
         WebUI.delay(1)
     else:
