@@ -103,7 +103,7 @@ class Test_Active_Directory:
 
         # Verify the message of the nameserver failed to resolve SRV record message.
         assert Active_Directory.assert_nameserver_failed_to_resolve_srv_record_message(ad_data['nameserver2']) is True
-        Common.close_right_panel()
+        Common.click_error_dialog_close_button()
 
     @pytest.fixture(scope='function')
     def tear_down_class(self, request, ad_data):
