@@ -123,7 +123,7 @@ class Test_Share_Admin_Shares:
         3. Close right panel
         """
         SMB.click_edit_share_acl(smb_data['name'])
-        assert COM.assert_right_panel_header(f'Share ACL for {smb_data['name']}')
+        assert COM.assert_right_panel_header(f'Share ACL for {smb_data["name"]}')
         assert COM.is_visible(xpaths.common_xpaths.button_field("add-item-add-entry")) is True
         assert COM.is_visible(xpaths.common_xpaths.select_field("ae-who")) is True
         assert COM.is_visible(xpaths.common_xpaths.select_field("ae-perm")) is True
