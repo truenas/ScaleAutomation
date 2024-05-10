@@ -98,7 +98,7 @@ class Test_Share_Admin_Shares:
 
         Test Steps:
         1. Click Edit SMB Share
-        2. Verify SMB Share fields (path, name, purpose, etc)
+        2. Verify SMB Share fields (path, name, purpose, etc.)
         3. Close right panel
         """
         SHARE.click_edit_share("smb", smb_data['name'])
@@ -119,7 +119,7 @@ class Test_Share_Admin_Shares:
 
         Test Steps:
         1. Click Edit SMB Share ACL permissions
-        2. Verify SMB Share fields (add button, who, permission, etc)
+        2. Verify SMB Share fields (add button, who, permission, etc.)
         3. Close right panel
         """
         SMB.click_edit_share_acl(smb_data['name'])
@@ -139,7 +139,7 @@ class Test_Share_Admin_Shares:
 
         Test Steps:
         1. Click Edit SMB Share filesystem permissions
-        2. Verify SMB Share fields (owner, owner group, apply owner, etc)
+        2. Verify SMB Share fields (owner, owner group, apply owner, etc.)
         3. Navigate to Shares
         """
         SMB.click_edit_share_filesystem_acl(smb_data['name'])
@@ -197,7 +197,7 @@ class Test_Share_Admin_Shares:
     @allure.story("Share Admin Is Able to add a SMB Share")
     def test_share_admin_can_add_smb_share(self):
         """
-        Summary: This test verifies the share admin is able to add a SMB Share.
+        Summary: This test verifies the share admin is able to add SMB Share.
 
         Test Steps:
         1. Click the add SMB Share button
@@ -220,7 +220,7 @@ class Test_Share_Admin_Shares:
     @allure.story("Share Admin Is Able to modify a SMB Share")
     def test_share_admin_can_modify_smb_share(self, smb_data):
         """
-        Summary: This test verifies the share admin is not able to modify a SMB Share.
+        Summary: This test verifies the share admin is not able to modify SMB Share.
 
         Test Steps:
         1. Click Edit SMB Share
@@ -249,7 +249,7 @@ class Test_Share_Admin_Shares:
     @allure.story("Share Admin Is Able to delete a SMB Share")
     def test_share_admin_can_delete_smb_share(self, smb_data):
         """
-        Summary: This test verifies the share admin is able to delete a SMB Share.
+        Summary: This test verifies the share admin is able to delete SMB Share.
 
         Test Steps:
         1. Click the delete SMB Share button
@@ -268,7 +268,7 @@ class Test_Share_Admin_Shares:
 
         Test Steps:
         1. Click Edit NFS Share
-        2. Verify NFS Share fields (path, comment, enabled, etc)
+        2. Verify NFS Share fields (path, comment, enabled, etc.)
         3. Close right panel
         """
         SHARE.click_edit_share("nfs", "mnt/"+nfs_data['api_path'])
@@ -392,7 +392,7 @@ class Test_Share_Admin_Shares:
 
         Test Steps:
         1. Click Edit ISCSI Share
-        2. Verify ISCSI Share fields (path, comment, enabled, etc)
+        2. Verify ISCSI Share fields (path, comment, enabled, etc.)
         3. Close right panel
         """
         SHARE.click_edit_iscsi_target("iscsi-share")
@@ -415,7 +415,7 @@ class Test_Share_Admin_Shares:
 
         Test Steps:
         1. Click the ISCSI Share Wizard button
-        2. Fill ISCSI Share fields (name, disk, dataset, etc)
+        2. Fill ISCSI Share fields (name, disk, dataset, etc.)
         3. Click Save button
         4. Verify ISCSI Share is visible
         """
