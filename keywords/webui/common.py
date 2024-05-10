@@ -1342,7 +1342,7 @@ class Common:
     @classmethod
     def set_toggle(cls, name: str) -> None:
         """
-        This method unsets the given toggle.
+        This method sets the given toggle.
 
         :param name: is the name of the toggle to set.
 
