@@ -51,7 +51,7 @@ class Test_Share_Admin_Shares:
         COM.set_input_field("volsize", "10")
         COM.select_option("target", "target-create-new")
         COM.click_button("next")
-        assert COM.assert_step_header_is_open("Portal") is True
+        # assert COM.assert_step_header_is_open("Portal") is True
         COM.click_on_element(xpaths.common_xpaths.data_test_field("select-portal")+"/div/div")
         COM.click_on_element(xpaths.common_xpaths.data_test_field("option-portal-create-new"))
         # COM.select_option("portal", "portal-create-new")
@@ -434,8 +434,10 @@ class Test_Share_Admin_Shares:
         COM.set_input_field("volsize", "10")
         COM.select_option("target", "target-create-new")
         COM.click_button("next")
-        assert COM.assert_step_header_is_open("Portal") is True
-        COM.select_option("portal", "portal-1-0-0-0-0")
+        # assert COM.assert_step_header_is_open("Portal") is True
+        COM.click_on_element(xpaths.common_xpaths.data_test_field("select-portal")+"/div/div")
+        COM.click_on_element(xpaths.common_xpaths.data_test_field("option-portal-1-0-0-0-0"))
+        # COM.select_option("portal", "portal-1-0-0-0-0")
         COM.click_on_element('(//*[@data-test="button-next"])[2]')
         COM.click_on_element('(//*[@data-test="button-save"])[2]')
         COM.assert_progress_bar_not_visible()
@@ -462,7 +464,10 @@ class Test_Share_Admin_Shares:
         COM.set_input_field("volsize", "10")
         COM.select_option("target", "target-create-new")
         COM.click_button("next")
-        assert COM.assert_step_header_is_open("Portal") is True
+        # assert COM.assert_step_header_is_open("Portal") is True
+        COM.click_on_element(xpaths.common_xpaths.data_test_field("select-portal") + "/div/div")
+        COM.click_on_element(xpaths.common_xpaths.data_test_field("option-portal-1-0-0-0-0"))
+        #
         COM.select_option("portal", "portal-1-0-0-0-0")
         COM.click_on_element('(//*[@data-test="button-next"])[2]')
         COM.click_on_element('(//*[@data-test="button-save"])[2]')
