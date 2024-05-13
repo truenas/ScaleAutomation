@@ -2,7 +2,6 @@ import xpaths
 from helper.global_config import shared_config
 from helper.webui import WebUI
 from keywords.webui.common import Common
-from keywords.webui.navigation import Navigation
 
 
 class Dashboard:
@@ -16,7 +15,7 @@ class Dashboard:
         :return: True if the given card is at the given position otherwise it returns False.
         """
         card_name = cls.get_dashboard_card_name_by_position(position)
-        return True if field == card_name else False
+        return field == card_name
 
     @classmethod
     def assert_cpu_card_load_graph_text(cls) -> bool:
@@ -28,9 +27,10 @@ class Dashboard:
         assert WebUI.wait_until_visible('//ix-view-chart-gauge', shared_config['LONG_WAIT']) is True
         assert WebUI.wait_until_visible(xpaths.dashboard.cpu_subtitle) is True
         results_list = [
-            "Avg Usage" in WebUI.get_text(xpaths.dashboard.cpu_subtitle),
-            "Thread" in WebUI.get_text(xpaths.dashboard.cpu_load_cores(1)),
-            "Usage" in WebUI.get_text(xpaths.dashboard.cpu_load_cores(2))
+            "Avg Usage" in WebUI.get_text(xpaths.dashboard.cpu_subtitle)
+            # TODO: those 2 lines bellow need to be if the "Thread" and "Usage" is not added back.
+            # "Thread" in WebUI.get_text(xpaths.dashboard.cpu_load_cores(1)),
+            # "Usage" in WebUI.get_text(xpaths.dashboard.cpu_load_cores(2))
         ]
         return all(results_list)
 
@@ -92,7 +92,7 @@ class Dashboard:
 
         # Let the browser load the new tab
         WebUI.delay(1)
-        url_exists = True if WebUI.current_url() == link else False
+        url_exists = WebUI.current_url() == link
 
         WebUI.close_window()
         WebUI.switch_to_window_index(initial_index)

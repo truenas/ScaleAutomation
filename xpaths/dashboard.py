@@ -1,6 +1,6 @@
 cpu_subtitle = '//*[@id="text-subtitle"]'
 """This variable returns the cpu subtitle xpath text"""
-cpu_cores_chart = '//*[@id="cpu-cores-chart"]'
+cpu_cores_chart = '//*[@class="chart"]'
 """This variable returns the cpu cores chart xpath text"""
 
 
@@ -22,7 +22,7 @@ def cpu_load_cores(index: int) -> str:
     :param index: the nuber of the item to get.
     :return: the cpu load cores xpath text by the given index.
     """
-    return f'//*[@id="cpu-load-cores-legend-values"]/div[{index}]/span'
+    return f'//*[contains(@class,"cpu-load-cores-legend-values")]/div[{index}]/span'
 
 
 def drag_card(field: str) -> str:
