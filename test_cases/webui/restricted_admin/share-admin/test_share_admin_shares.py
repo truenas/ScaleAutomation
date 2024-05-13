@@ -52,7 +52,7 @@ class Test_Share_Admin_Shares:
         COM.set_input_field("volsize", "10")
         COM.select_option("target", "target-create-new")
         COM.click_button("next")
-        WebUI.delay(1)
+        WebUI.delay(2)
         # assert COM.assert_step_header_is_open("Portal") is True
         # COM.click_on_element(xpaths.common_xpaths.data_test_field("select-portal")+"/div/div")
         # COM.click_on_element(xpaths.common_xpaths.data_test_field("option-portal-create-new"))
