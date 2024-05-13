@@ -1,3 +1,4 @@
+import allure
 import pytest
 
 from helper.data_config import get_data_list
@@ -9,6 +10,7 @@ from keywords.webui.directory_services import Directory_Services as DS
 class Test_Setup_LDAP:
 
     @staticmethod
+    @allure.issue("NAS-128958", "NAS-128958")
     def test_setup_ldap(ldap) -> None:
         """
         This test verifies ldap can be setup
