@@ -51,6 +51,7 @@ class Test_Share_Admin_Shares:
         COM.set_input_field("volsize", "10")
         COM.select_option("target", "target-create-new")
         COM.click_button("next")
+        assert COM.assert_step_header_is_open("Portal") is True
         COM.select_option("portal", "portal-create-new")
         COM.click_button("add-item-ip-address")
         COM.click_on_element(xpaths.common_xpaths.data_test_field("select"))
@@ -431,6 +432,7 @@ class Test_Share_Admin_Shares:
         COM.set_input_field("volsize", "10")
         COM.select_option("target", "target-create-new")
         COM.click_button("next")
+        assert COM.assert_step_header_is_open("Portal") is True
         COM.select_option("portal", "portal-1-0-0-0-0")
         COM.click_on_element('(//*[@data-test="button-next"])[2]')
         COM.click_on_element('(//*[@data-test="button-save"])[2]')
@@ -458,6 +460,7 @@ class Test_Share_Admin_Shares:
         COM.set_input_field("volsize", "10")
         COM.select_option("target", "target-create-new")
         COM.click_button("next")
+        assert COM.assert_step_header_is_open("Portal") is True
         COM.select_option("portal", "portal-1-0-0-0-0")
         COM.click_on_element('(//*[@data-test="button-next"])[2]')
         COM.click_on_element('(//*[@data-test="button-save"])[2]')
