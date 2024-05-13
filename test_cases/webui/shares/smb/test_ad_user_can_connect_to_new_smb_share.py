@@ -17,6 +17,7 @@ from keywords.webui.smb import SMB
 @allure.tag("SMB", "AD")
 @allure.epic("Shares")
 @allure.feature("SMB-AD")
+@allure.issue("NAS-128958", "NAS-128958")
 @pytest.mark.parametrize('ad_data', get_data_list('ad_credentials'), scope='class')
 class Test_SMB_AD_User:
 

@@ -1,3 +1,4 @@
+import allure
 import pytest
 
 from helper.data_config import get_data_list
@@ -31,6 +32,7 @@ class Test_Disable_LDAP:
         assert COM.get_label_value('Bind DN:') == ldap['binddn']
 
     @staticmethod
+    @allure.issue("NAS-128958", "NAS-128958")
     def verify_ldap_disabled() -> None:
         """
         This test verifies the ldap is disabled
