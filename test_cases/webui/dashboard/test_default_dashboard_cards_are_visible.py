@@ -17,10 +17,12 @@ class Test_Verify_Default_Dashboard_Cards_Are_Visible:
         assert Dashboard.assert_dashboard_page_header_is_visible() is True
 
         # verify the default dashboard cards are visible
-        assert Dashboard.is_system_information_card_visible() is True
+        # TODO: Add back System Info Card when it is reimplemented
+        # assert Dashboard.is_system_information_card_visible() is True
         assert Dashboard.is_truenas_help_card_visible() is True
-        assert Dashboard.is_cpu_card_visible() is True
-        assert Dashboard.is_memory_card_visible() is True
-        assert Dashboard.is_storage_card_visible() is True
         assert Dashboard.is_network_card_visible() is True
+        assert Dashboard.is_memory_card_visible() is True
+        assert Dashboard.is_cpu_card_visible() is True
+        # TODO: Add back Storage Card when it is reimplemented
+        # assert Dashboard.is_storage_card_visible() is True
         WebUI.take_percy_snapshot('Default Dashboard Cards Are Visible')

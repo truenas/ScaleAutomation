@@ -8,7 +8,8 @@ from keywords.webui.dashboard import Dashboard
 @allure.tag('Dashboard')
 @allure.epic('Dashboard')
 @allure.feature('Dashboard-Card-Enable/Disable')
-# @pytest.mark.parametrize('card', shared_config['DASHBOARD_CARDS_TOGGLE'].keys())
+@pytest.mark.skip('This test will need to be rework when Add implementation is completed.')
+# TODO: Card are delete or added now and it works a different way them before. This test will need to redone or removed
 class Test_Verify_Dashboard_Cards_Can_Be_Disable_And_Enable:
 
     @pytest.fixture(scope='function', autouse=True)
