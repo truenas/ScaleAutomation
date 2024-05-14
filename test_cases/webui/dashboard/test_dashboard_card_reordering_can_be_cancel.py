@@ -1,7 +1,6 @@
 import allure
 import pytest
 from helper.webui import WebUI
-from keywords.webui.common import Common
 from keywords.webui.dashboard import Dashboard
 
 
@@ -19,6 +18,8 @@ class Test_Verify_A_Dashboard_Card_Reordering_Can_be_Cancel:
         Dashboard.set_original_card_position('Network')
         Dashboard.set_original_card_position('Memory')
         Dashboard.set_original_card_position('CPU')
+
+        WebUI.refresh()
 
     @allure.tag("Update")
     @allure.story("Move Card Help to CPU Position and Cancel")

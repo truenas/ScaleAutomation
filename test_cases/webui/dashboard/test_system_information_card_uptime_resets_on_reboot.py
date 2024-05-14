@@ -8,6 +8,8 @@ from keywords.webui.dashboard import Dashboard
 @allure.tag("Dashboard")
 @allure.epic("Dashboard")
 @allure.feature("Dashboard-System-Info-Uptime")
+@pytest.mark.skip(reason="The System Information card is missing in the Dashboard UI")
+# TODO: Add back System Information Card test when it is reimplemented in the Dashboard UI
 class Test_Verify_System_Information_Card_Uptime_Resets_on_Reboot:
     @pytest.fixture(scope='class')
     def uptime(self):

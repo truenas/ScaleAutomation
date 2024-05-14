@@ -203,6 +203,7 @@ class Dashboard:
         """
         Common.click_cancel_button()
         WebUI.wait_until_visible(xpaths.common_xpaths.button_field('configure-dashboard'))
+        WebUI.delay(1)
 
     @classmethod
     def click_the_configure_button(cls) -> None:
@@ -216,7 +217,7 @@ class Dashboard:
         """
         This method click on CPU report button.
         """
-        Common.click_link('cpu-reports')
+        Common.click_button('cpu-go-to-reports')
 
     @classmethod
     def click_the_memory_report_button(cls) -> None:
@@ -230,7 +231,7 @@ class Dashboard:
         """
         This method click on Network report button.
         """
-        Common.click_link('network-reports')
+        Common.click_button('network-reports')
 
     @classmethod
     def click_the_reorder_button(cls) -> None:
@@ -253,7 +254,7 @@ class Dashboard:
         """
         This method click on storage report button.
         """
-        Common.click_link('storage-reports')
+        Common.click_button('storage-reports')
 
     @classmethod
     def disable_all_cards(cls) -> None:
@@ -458,9 +459,10 @@ class Dashboard:
         card_order = ['TrueNAS Help', 'Network', 'Memory', 'CPU', 'Backup Tasks']
         pos = card_order.index(card) + 1
         # cls.enable_card(card)
-        cls.click_the_configure_button()
-        cls.move_card_a_to_card_b_position(card, Dashboard.get_dashboard_card_name_by_position(pos))
-        cls.click_the_save_reorder_button()
+        if card != Dashboard.get_dashboard_card_name_by_position(pos):
+            cls.click_the_configure_button()
+            cls.move_card_a_to_card_b_position(card, Dashboard.get_dashboard_card_name_by_position(pos))
+            cls.click_the_save_reorder_button()
         assert cls.assert_card_position(pos, card) is True
 
     @classmethod

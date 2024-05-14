@@ -10,10 +10,6 @@ from keywords.webui.reporting import Reporting
 @allure.feature("Dashboard-Reporting")
 class Test_Verify_The_Report_Button_On_The_CPU_Card:
 
-    @pytest.fixture(scope='function', autouse=True)
-    def setup_test(self):
-        Dashboard.enable_card('cpu')
-
     @allure.tag("Read")
     @allure.story("Verify CPU Cards on Reporting")
     def verify_all_cpu_cards_on_cpu_reporting_page(self):
