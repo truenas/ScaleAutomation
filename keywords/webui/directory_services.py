@@ -169,17 +169,22 @@ class Directory_Services:
         Example:
             - Directory_Services.remove_ldap()
         """
-        if not COM.is_visible(xpaths.common_xpaths.any_text('To enable disable Active Directory first.')):
-            if COM.is_visible(xpaths.common_xpaths.button_field('configure-ldap')):
-                cls.click_configure_ldap_button()
-            if COM.is_visible(xpaths.common_xpaths.button_field('ldap-settings')):
-                cls.click_ldap_settings_button()
-            while COM.is_visible('//mat-chip-row//*[@name="cancel"]'):
-                COM.delete_pill('//mat-chip-row')
-            while COM.is_visible('//*[@name="mdi-close-circle"]'):
-                COM.click_on_element('//*[@name="mdi-close-circle"]')
-            COM.clear_input_field('bindpw')
-            COM.unset_checkbox('enable')
-            COM.click_save_button()
-            assert COM.is_card_not_visible('LDAP') is True
-            assert cls.is_ldap_configure_button_visible() is True
+        if COM.is_visible(xpaths.common_xpaths.any_text('Active Directory and LDAP are disabled.')) is False:
+            if not COM.is_visible(xpaths.common_xpaths.any_text('To enable disable Active Directory first.')):
+                if COM.is_visible(xpaths.common_xpaths.button_field('configure-ldap')):
+                    cls.click_configure_ldap_button()
+                if COM.is_visible(xpaths.common_xpaths.button_field('ldap-settings')):
+                    cls.click_ldap_settings_button()
+                while COM.is_visible('//mat-chip-row//*[@name="cancel"]'):
+                    COM.delete_pill('//mat-chip-row')
+                while COM.is_visible('//*[@name="mdi-close-circle"]'):
+                    COM.click_on_element('//*[@name="mdi-close-circle"]')
+                COM.clear_input_field('bindpw')
+                COM.unset_checkbox('enable')
+                COM.click_save_button()
+                if COM.is_visible(xpaths.common_xpaths.any_text('Error: has_samba_schema')):
+                    print("Error: has_samba_schem encountered. NAS-128958")
+                    COM.click_error_dialog_close_button()
+                    COM.close_right_panel()
+        assert COM.is_card_not_visible('LDAP') is True
+        assert cls.is_ldap_configure_button_visible() is True

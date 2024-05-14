@@ -285,6 +285,7 @@ class System_Services:
             COM.click_error_dialog_close_button()
         if COM.is_toggle_enabled(f'running-service-{service_backend}-row-toggle') is not state:
             COM.set_toggle_by_state(f'running-service-{service_backend}-row-toggle', state)
+            assert COM.assert_progress_spinner_not_visible() is True
             if state is False:
                 COM.assert_confirm_dialog()
             i = 0
