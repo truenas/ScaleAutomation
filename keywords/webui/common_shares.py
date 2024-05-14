@@ -100,16 +100,35 @@ class Common_Shares:
         return COM.assert_button_is_locked_and_not_clickable(f'card-{share_type}-share-{name.lower()}-delete-row-action')
 
     @classmethod
+    def assert_card_share_enabled_toggle_is_enabled(cls, share_type: str, name: str) -> bool:
+        """
+        This method returns True if the Enabled toggle is enabled, otherwise it returns False.
+
+        :param share_type: type of the given share [smb/nfs]
+        :param name: The name(SMB)/path(NFS) of the share
+        :return: True if the Enabled toggle is locked and not clickable, otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_card_share_enabled_toggle_is_enabled('smb', 'share-1')
+           - Common_Shares.assert_card_share_enabled_toggle_is_enabled('nfs', 'tank/nfsshare')
+        """
+        name = COM.convert_to_tag_format(name)
+        share_type = COM.convert_to_tag_format(share_type)
+        xpath = xpaths.sharing.share_enabled_toggle(share_type, name)
+        return COM.get_element_property(xpath, 'ariaChecked') == 'true'
+
+    @classmethod
     def assert_card_share_enabled_toggle_is_locked_and_disabled(cls, share_type: str, name: str) -> bool:
         """
         This method verifies that the Enabled toggle is locked and not clickable.
 
-        :param share_type: type of the given share
+        :param share_type: type of the given share [smb/nfs]
         :param name: The name(SMB)/path(NFS) of the share
         :return: True if the Enabled toggle is locked and not clickable otherwise it returns False.
 
         Example:
            - Common_Shares.assert_share_enabled_toggle_is_locked_and_disabled('smb', 'share-1')
+           - Common_Shares.assert_share_enabled_toggle_is_locked_and_disabled('nfs', 'tank/nfsshare')
         """
         return COM.assert_toggle_is_locked_and_not_clickable(f'enabled-card-{share_type}-share-{name}-row-toggle')
 
@@ -148,6 +167,19 @@ class Common_Shares:
         return result
 
     @classmethod
+    def assert_iscsi_target_is_visible(cls, target_name: str) -> bool:
+        """
+        This method returns True if the iSCSI target is visible otherwise it returns False.
+
+        :param target_name: The name of the iSCSI target Example: target1 is target-1
+        :return: True if the iSCSI target is visible otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_iscsi_target_is_visible('target-1')
+        """
+        return WebUI.wait_until_visible(xpaths.sharing.iscsi_card_target_name(target_name))
+
+    @classmethod
     def assert_share_card_actions_menu_dropdown(cls, sharetype: str) -> bool:
         """
         This method returns True if the action menu values on the specified share card are visible otherwise it returns False.
@@ -171,19 +203,6 @@ class Common_Shares:
         if sharetype.__eq__('cifs'):
             assert COM.is_visible(xpath+'logs"]') is True
         return True
-
-    @classmethod
-    def assert_iscsi_target_is_visible(cls, target_name: str) -> bool:
-        """
-        This method returns True if the iSCSI target is visible otherwise it returns False.
-
-        :param target_name: The name of the iSCSI target Example: target1 is target-1
-        :return: True if the iSCSI target is visible otherwise it returns False.
-
-        Example:
-           - Common_Shares.assert_iscsi_target_is_visible('target-1')
-        """
-        return WebUI.wait_until_visible(xpaths.sharing.iscsi_card_target_name(target_name))
 
     @classmethod
     def assert_share_card_action_button_by_name(cls, share_type: str, name: str, button: str) -> bool:
@@ -363,6 +382,36 @@ class Common_Shares:
         return COM.is_visible(xpaths.common_xpaths.card_share_attribute(share_type, 'path', path))
 
     @classmethod
+    def assert_share_row_name(cls, share_type: str, name: str) -> bool:
+        """
+        This method returns True if the given share row name is visible, otherwise it returns False.
+
+        :param share_type: type of the given share
+        :param name: name or path of the given share
+        :return: True if the given share row name is visible, otherwise it returns False.
+
+        Example:
+           - Common_Shares.assert_share_row_name('smb', 'share1')
+           - Common_Shares.assert_share_row_name('nfs', '/mnt/tank/nfs-share')
+           - Common_Shares.assert_share_row_name('iscsi', 'iscsi-share')
+        """
+        first_col = ''
+        match(share_type.lower()):
+            case 'smb':
+                share_type = share_type + "-share"
+                first_col = 'name'
+            case 'nfs':
+                share_type = share_type + "-share"
+                first_col = 'path'
+                if name.startswith("/"):
+                    name = name.replace('/', '', 1)
+            case 'iscsi':
+                share_type = share_type + "-target"
+                first_col = 'target-name'
+        xpath = xpaths.sharing.share_row_name(first_col, share_type, COM.convert_to_tag_format(name))
+        return COM.is_visible(xpath)
+
+    @classmethod
     def assert_share_service_in_expected_state(cls, xpath: str, expected_text: str, expected_state: bool) -> bool:
         """
         This method returns True if the service status button on the shares page displays and if the api service
@@ -517,6 +566,7 @@ class Common_Shares:
         Example:
            - Common_Shares.click_edit_iscsi_target('target-1')
         """
+        target_name = COM.convert_to_tag_format(target_name)
         COM.click_button(f'card-iscsi-target-{target_name}-edit-row-action')
 
     @classmethod
@@ -553,7 +603,7 @@ class Common_Shares:
         """
         This method deletes the all shares by the given share_type.
 
-        :param share_type: type of the given share
+        :param share_type: type of the given share [smb/nfs/iscsi]
 
         Example:
            - Common_Shares.delete_all_shares_by_share_type('smb')
@@ -658,6 +708,21 @@ class Common_Shares:
         COM.set_input_field('comment', desc)
 
     @classmethod
+    def set_share_enabled_toggle(cls, share_type: str, name: str) -> None:
+        """
+        This method sets the given share toggle.
+
+        :param share_type: type of the given share [smb/nfs]
+        :param name: The name(SMB)/path(NFS) of the share
+
+        Example:
+           - Common_Shares.set_share_enabled_toggle('smb', 'share-1')
+           - Common_Shares.set_share_enabled_toggle('nfs', 'tank/nfsshare')
+        """
+        name = COM.convert_to_tag_format(f'enabled-card-{share_type}-share-{name}-row-toggle')
+        COM.set_toggle_by_state(name, True)
+
+    @classmethod
     def set_share_name(cls, name: str) -> None:
         """
         This method sets the name for the share on the Edit Share right panel
@@ -736,3 +801,18 @@ class Common_Shares:
         if toggle == 'on':
             text = 'RUNNING'
         assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f"""//*[@data-test="button-service-status-{service}"]//*[contains(text(),"{text}")]""")) is True
+
+    @classmethod
+    def unset_share_enabled_toggle(cls, share_type: str, name: str) -> None:
+        """
+        This method unsets the given share toggle.
+
+        :param share_type: type of the given share [smb/nfs]
+        :param name: The name(SMB)/path(NFS) of the share
+
+        Example:
+           - Common_Shares.unset_share_enabled_toggle('smb', 'share-1')
+           - Common_Shares.unset_share_enabled_toggle('nfs', 'tank/nfsshare')
+        """
+        name = COM.convert_to_tag_format(f'enabled-card-{share_type}-share-{name}-row-toggle')
+        COM.set_toggle_by_state(name, False)
