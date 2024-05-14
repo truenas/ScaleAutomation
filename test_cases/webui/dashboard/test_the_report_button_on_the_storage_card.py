@@ -9,6 +9,7 @@ from keywords.webui.reporting import Reporting
 @allure.epic("Dashboard")
 @allure.feature("Dashboard-Reporting")
 @allure.issue("NAS-128992", "NAS-128992")
+@allure.issue('NAS-128623', 'NAS-128623')
 @pytest.mark.skip("Storage card is missing from the Dashboard UI")
 class Test_Verify_The_Report_Button_On_The_Storage_Card:
 

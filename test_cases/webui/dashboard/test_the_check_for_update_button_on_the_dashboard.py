@@ -9,6 +9,7 @@ from keywords.webui.update import Update
 @allure.feature("Dashboard-Update")
 @pytest.mark.skip(reason="The System Information card is missing in the Dashboard UI")
 # TODO: Add back System Information Card test when it is reimplemented in the UI
+@allure.issue('NAS-128451', 'NAS-128451')
 class Test_Verify_The_Check_For_Update_Button_On_The_Dashboard:
 
     @allure.tag("Read")

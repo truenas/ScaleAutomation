@@ -8,6 +8,7 @@ from keywords.webui.reporting import Reporting
 @allure.tag("Dashboard", "Reporting", "CPU")
 @allure.epic("Dashboard")
 @allure.feature("Dashboard-Reporting")
+@allure.issue("NAS-128992", "NAS-128992")
 class Test_Verify_The_Report_Button_On_The_CPU_Card:
 
     @allure.tag("Read")

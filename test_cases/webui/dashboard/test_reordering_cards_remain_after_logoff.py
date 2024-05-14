@@ -9,7 +9,6 @@ from keywords.webui.dashboard import Dashboard
 @allure.tag("Dashboard")
 @allure.epic("Dashboard")
 @allure.feature("Dashboard-Reorder")
-@allure.issue("NAS-128992", "NAS-128992")
 class Test_Verify_Reordering_Cards_Remain_After_Logoff:
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self):

@@ -8,6 +8,7 @@ from keywords.webui.dashboard import Dashboard
 @allure.feature("Dashboard-System-Info-Version")
 @pytest.mark.skip(reason="The System Information card is missing in the Dashboard UI")
 # TODO: Add back System Information Card test when it is reimplemented in the Dashboard UI
+@allure.issue('NAS-128451', 'NAS-128451')
 class Test_Verify_System_Information_Card_Copy_Version_To_Clipboard:
 
     @allure.tag("Read")
