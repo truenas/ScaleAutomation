@@ -146,6 +146,32 @@ class SMB:
         return SSHSMB.assert_user_can_put_file(file, share, 'nonexistent', 'nopassword')
 
     @classmethod
+    def assert_share_acl_configuration_field_visible(cls, field: str) -> bool:
+        """
+        This method verifies the given acl configuration field is visible for the smb share
+
+        :param field: is the name of the field
+        :return: True if the given acl configuration field is visible, otherwise it returns False.
+
+        Example:
+            - Common_Shares.assert_share_acl_configuration_field_visible('name')
+        """
+        xpath = ""
+        match (field.lower()):
+            case "add":
+                xpath = xpaths.common_xpaths.button_field("add-item-add-entry")
+            case "who":
+                xpath = xpaths.common_xpaths.select_field("ae-who")
+            case "permission":
+                xpath = xpaths.common_xpaths.select_field("ae-perm")
+            case "type":
+                xpath = xpaths.common_xpaths.select_field("ae-type")
+            case "save":
+                xpath = xpaths.common_xpaths.button_field("save")
+
+        return COM.is_visible(xpath)
+
+    @classmethod
     def assert_share_description(cls, desc: str) -> bool:
         """
         This method verifies that the share description is visible on the Sharing SMB page.
@@ -157,6 +183,42 @@ class SMB:
             - SMB.assert_share_description('myDescription')
         """
         return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', 'description', desc))
+
+    @classmethod
+    def assert_share_filesystem_acl_configuration_field_visible(cls, field: str) -> bool:
+        """
+        This method verifies the given filesystem acl configuration field is visible for the smb share
+
+        :param field: is the name of the field
+        :return: True if the given filesystem acl configuration field is visible, otherwise it returns False.
+
+        Example:
+            - Common_Shares.assert_share_filesystem_acl_configuration_field_visible('name')
+        """
+        xpath = ""
+        match (field.lower()):
+            case "owner":
+                xpath = xpaths.common_xpaths.input_field("owner")
+            case "owner group":
+                xpath = xpaths.common_xpaths.input_field("owner-group")
+            case "apply owner":
+                xpath = xpaths.common_xpaths.checkbox_field("apply-owner")
+            case "apply group":
+                xpath = xpaths.common_xpaths.checkbox_field("apply-group")
+            case "add item":
+                xpath = xpaths.common_xpaths.button_field("add-acl-item")
+            case "save acl":
+                xpath = xpaths.common_xpaths.button_field("save-acl")
+            case "strip acl":
+                xpath = xpaths.common_xpaths.button_field("strip-acl")
+            case "use preset":
+                xpath = xpaths.common_xpaths.button_field("use-preset")
+            case "save as preset":
+                xpath = xpaths.common_xpaths.button_field("save-as-preset")
+            case "access control entry":
+                xpath = xpaths.common_xpaths.any_text("Access Control Entry")
+
+        return COM.is_visible(xpath)
 
     @classmethod
     def assert_share_ignore_list(cls, name: str) -> bool:
