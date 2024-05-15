@@ -1,13 +1,12 @@
 import allure
 import pytest
 
-import xpaths.common_xpaths
 from helper.data_config import get_data_list
-from helper.webui import WebUI
 from keywords.api.post import API_POST
 from keywords.api.delete import API_DELETE
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as SHARE
+from keywords.webui.iscsi import iSCSI as ISCSI
 from keywords.webui.smb import SMB as SMB
 from keywords.webui.navigation import Navigation as NAV
 
@@ -31,13 +30,13 @@ class Test_Share_Admin_Shares:
         API_DELETE.delete_share('smb', smb_data['name'])
         API_DELETE.delete_dataset(smb_data['path'])
         API_POST.create_dataset(smb_data['path'], 'SMB')
-        API_POST.create_share('smb', smb_data['name'], "/mnt/" + smb_data['path'])
+        API_POST.create_share('smb', smb_data['name'], f'/mnt/{smb_data["path"]}')
 
         # Setup NFS Share
         API_DELETE.delete_share('nfs', nfs_data['dataset_name'])
         API_DELETE.delete_dataset(nfs_data['api_path'])
         API_POST.create_dataset(nfs_data['api_path'], 'NFS')
-        API_POST.create_share('nfs', nfs_data['dataset_name'], "/mnt/" + nfs_data['api_path'])
+        API_POST.create_share('nfs', nfs_data['dataset_name'], f'/mnt/{nfs_data["api_path"]}')
 
         # Setup ISCSI Share
         NAV.navigate_to_shares()
@@ -46,19 +45,17 @@ class Test_Share_Admin_Shares:
         API_POST.create_dataset("tank/iscsi-share")
         COM.click_button("iscsi-share-wizard")
         assert COM.assert_right_panel_header("iSCSI Wizard") is True
-        COM.set_input_field("name", "iscsi-share", True)
+        SHARE.set_share_name("iscsi-share", True)
         COM.select_option("disk", "disk-create-new")
-        COM.set_input_field("dataset", "/mnt/tank/iscsi-share")
-        COM.set_input_field("volsize", "10")
+        SHARE.set_share_dataset_path("/mnt/tank/iscsi-share")
+        SHARE.set_share_volsize("10")
         COM.select_option("target", "target-create-new")
-        COM.click_button("next")
-        WebUI.delay(1)
+        COM.click_next_button()
         COM.select_option("portal", "portal-create-new")
         COM.click_button("add-item-ip-address")
-        COM.click_on_element(xpaths.common_xpaths.data_test_field("select"))
-        COM.click_on_element(xpaths.common_xpaths.data_test_field("option-0-0-0-0"))
-        COM.click_on_element('(//*[@data-test="button-next"])[2]')
-        COM.click_on_element('(//*[@data-test="button-save"])[2]')
+        ISCSI.set_ip_address("0.0.0.0")
+        ISCSI.click_wizard_portal_next_button()
+        ISCSI.click_wizard_save_button()
         COM.assert_progress_bar_not_visible()
         COM.click_button("do-not-start")
 
@@ -79,6 +76,8 @@ class Test_Share_Admin_Shares:
 
         # Teardown ISCSI Share
         SHARE.delete_all_shares_by_share_type("iscsi")
+        ISCSI.delete_all_iscsi_portals()
+        ISCSI.delete_all_iscsi_initiators()
         API_DELETE.delete_dataset("tank/iscsi-share", True, True)
 
     @allure.tag("Read")
@@ -91,9 +90,9 @@ class Test_Share_Admin_Shares:
         1. Verify the share admin is able to see Shares (SMB, NFS, iSCSI)
         """
         assert COM.assert_page_header("Sharing") is True
-        assert COM.is_visible(xpaths.common_xpaths.any_header("Windows (SMB) Shares", 3)) is True
-        assert COM.is_visible(xpaths.common_xpaths.any_header("UNIX (NFS) Shares", 3)) is True
-        assert COM.is_visible(xpaths.common_xpaths.any_header("Block (iSCSI) Shares Targets", 3)) is True
+        assert SHARE.assert_share_card_displays("smb") is True
+        assert SHARE.assert_share_card_displays("nfs") is True
+        assert SHARE.assert_share_card_displays("iscsi") is True
 
     @allure.tag("Read", "SMB")
     @allure.story("Share Admin Can View the Configured SMB Share")
@@ -107,13 +106,13 @@ class Test_Share_Admin_Shares:
         3. Close right panel
         """
         SHARE.click_edit_share("smb", smb_data['name'])
-        assert COM.is_visible(xpaths.common_xpaths.input_field("path")) is True
-        assert COM.is_visible(xpaths.common_xpaths.input_field("name")) is True
-        assert COM.is_visible(xpaths.common_xpaths.select_field("purpose")) is True
-        assert COM.is_visible(xpaths.common_xpaths.input_field("comment")) is True
-        assert COM.is_visible(xpaths.common_xpaths.checkbox_field("enabled")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("save")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("toggle-advanced-options")) is True
+        assert SHARE.assert_share_configuration_field_visible("smb", "path") is True
+        assert SHARE.assert_share_configuration_field_visible("smb", "name") is True
+        assert SHARE.assert_share_configuration_field_visible("smb", "purpose") is True
+        assert SHARE.assert_share_configuration_field_visible("smb", "description") is True
+        assert SHARE.assert_share_configuration_field_visible("smb", "enabled") is True
+        assert SHARE.assert_share_configuration_field_visible("smb", "save") is True
+        assert SHARE.assert_share_configuration_field_visible("smb", "advanced options") is True
         COM.close_right_panel()
 
     @allure.tag("Read", "SMB")
@@ -129,11 +128,11 @@ class Test_Share_Admin_Shares:
         """
         SMB.click_edit_share_acl(smb_data['name'])
         assert COM.assert_right_panel_header(f'Share ACL for {smb_data["name"]}')
-        assert COM.is_visible(xpaths.common_xpaths.button_field("add-item-add-entry")) is True
-        assert COM.is_visible(xpaths.common_xpaths.select_field("ae-who")) is True
-        assert COM.is_visible(xpaths.common_xpaths.select_field("ae-perm")) is True
-        assert COM.is_visible(xpaths.common_xpaths.select_field("ae-type")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("save")) is True
+        assert SMB.assert_share_acl_configuration_field_visible("add") is True
+        assert SMB.assert_share_acl_configuration_field_visible("who") is True
+        assert SMB.assert_share_acl_configuration_field_visible("permission") is True
+        assert SMB.assert_share_acl_configuration_field_visible("type") is True
+        assert SMB.assert_share_acl_configuration_field_visible("save") is True
         COM.close_right_panel()
 
     @allure.tag("Read", "SMB")
@@ -148,16 +147,16 @@ class Test_Share_Admin_Shares:
         3. Navigate to Shares
         """
         SMB.click_edit_share_filesystem_acl(smb_data['name'])
-        assert COM.is_visible(xpaths.common_xpaths.input_field("owner")) is True
-        assert COM.is_visible(xpaths.common_xpaths.input_field("owner-group")) is True
-        assert COM.is_visible(xpaths.common_xpaths.checkbox_field("apply-owner")) is True
-        assert COM.is_visible(xpaths.common_xpaths.checkbox_field("apply-group")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("add-acl-item")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("save-acl")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("strip-acl")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("use-preset")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("save-as-preset")) is True
-        assert COM.is_visible(xpaths.common_xpaths.any_text("Access Control Entry")) is True
+        assert SMB.assert_share_filesystem_acl_configuration_field_visible("owner") is True
+        assert SMB.assert_share_filesystem_acl_configuration_field_visible("owner group") is True
+        assert SMB.assert_share_filesystem_acl_configuration_field_visible("apply owner") is True
+        assert SMB.assert_share_filesystem_acl_configuration_field_visible("apply group") is True
+        assert SMB.assert_share_filesystem_acl_configuration_field_visible("add item") is True
+        assert SMB.assert_share_filesystem_acl_configuration_field_visible("save acl") is True
+        assert SMB.assert_share_filesystem_acl_configuration_field_visible("strip acl") is True
+        assert SMB.assert_share_filesystem_acl_configuration_field_visible("use preset") is True
+        assert SMB.assert_share_filesystem_acl_configuration_field_visible("save as preset") is True
+        assert SMB.assert_share_filesystem_acl_configuration_field_visible("Access Control Entry") is True
         NAV.navigate_to_shares()
 
     @allure.tag("Read", "SMB")
@@ -213,7 +212,7 @@ class Test_Share_Admin_Shares:
         API_POST.create_dataset("tank/smb-create", 'SMB')
         SHARE.click_add_share_button("smb")
         assert COM.assert_right_panel_header("Add SMB") is True
-        COM.set_input_field("path", "/mnt/tank/smb-create", True)
+        SHARE.set_share_configuration_field("path", "/mnt/tank/smb-create")
         COM.click_save_button()
         COM.click_button("do-not-start")
         assert SHARE.assert_share_row_name("smb", "smb-create") is True
@@ -237,14 +236,14 @@ class Test_Share_Admin_Shares:
 
         SHARE.click_edit_share("smb", smb_data['name'])
         assert COM.assert_right_panel_header("Edit SMB") is True
-        COM.set_input_field("name", "smb-modify", True)
+        SHARE.set_share_configuration_field("name", "smb-modify")
         COM.click_save_button()
         COM.click_button("do-not-start")
         assert SHARE.assert_share_row_name("smb", "smb-modify") is True
 
         # Clean Up
         SHARE.click_edit_share("smb", "smb-modify")
-        COM.set_input_field("name", smb_data['name'], True)
+        SHARE.set_share_configuration_field("name", smb_data['name'])
         COM.click_save_button()
         COM.click_button("do-not-start")
         assert SHARE.assert_share_row_name("smb", smb_data['name']) is True
@@ -263,7 +262,7 @@ class Test_Share_Admin_Shares:
         """
         assert SHARE.assert_share_row_name("smb", smb_data['name']) is True
         SHARE.delete_all_shares_by_share_type("smb")
-        assert COM.is_visible(xpaths.common_xpaths.any_xpath('//ix-smb-card//h3[contains(text(),"No records have been added yet")]'))
+        assert SHARE.assert_card_share_has_no_shares("smb")
 
     @allure.tag("Read", "NFS")
     @allure.story("Share Admin Can View the Configured NFS Share")
@@ -276,14 +275,14 @@ class Test_Share_Admin_Shares:
         2. Verify NFS Share fields (path, comment, enabled, etc.)
         3. Close right panel
         """
-        SHARE.click_edit_share("nfs", "mnt/"+nfs_data['api_path'])
-        assert COM.is_visible(xpaths.common_xpaths.input_field("path")) is True
-        assert COM.is_visible(xpaths.common_xpaths.input_field("comment")) is True
-        assert COM.is_visible(xpaths.common_xpaths.checkbox_field("enabled")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("add-item-networks")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("add-item-hosts")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("save")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("toggle-advanced-options")) is True
+        SHARE.click_edit_share("nfs", f'/mnt/{nfs_data["api_path"]}')
+        assert SHARE.assert_share_configuration_field_visible("nfs", "path") is True
+        assert SHARE.assert_share_configuration_field_visible("nfs", "description") is True
+        assert SHARE.assert_share_configuration_field_visible("nfs", "enabled") is True
+        assert SHARE.assert_share_configuration_field_visible("nfs", "add network") is True
+        assert SHARE.assert_share_configuration_field_visible("nfs", "add hosts") is True
+        assert SHARE.assert_share_configuration_field_visible("nfs", "save") is True
+        assert SHARE.assert_share_configuration_field_visible("nfs", "advanced options") is True
         COM.close_right_panel()
 
     @allure.tag("Read", "NFS")
@@ -300,27 +299,27 @@ class Test_Share_Admin_Shares:
         5. Edit NFS Share
         6. Verify enabled checkbox is checked
         """
-        assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", "mnt/"+nfs_data['api_path']) is True
-        SHARE.unset_share_enabled_toggle("nfs", "mnt/"+nfs_data['api_path'])
-        assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", "mnt/"+nfs_data['api_path']) is False
-        SHARE.click_edit_share("nfs", "mnt/"+nfs_data['api_path'])
+        assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", f'mnt/{nfs_data["api_path"]}') is True
+        SHARE.unset_share_enabled_toggle("nfs", f'/mnt/{nfs_data["api_path"]}')
+        assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", f'mnt/{nfs_data["api_path"]}') is False
+        SHARE.click_edit_share("nfs", f'mnt/{nfs_data["api_path"]}')
         assert COM.is_checked("enabled") is False
         COM.close_right_panel()
-        SHARE.set_share_enabled_toggle("nfs", "mnt/"+nfs_data['api_path'])
-        assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", "mnt/"+nfs_data['api_path']) is True
-        SHARE.click_edit_share("nfs", "mnt/"+nfs_data['api_path'])
+        SHARE.set_share_enabled_toggle("nfs", f'/mnt/{nfs_data["api_path"]}')
+        assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", f'mnt/{nfs_data["api_path"]}') is True
+        SHARE.click_edit_share("nfs", f'mnt/{nfs_data["api_path"]}')
         assert COM.is_checked("enabled") is True
         COM.close_right_panel()
-        SHARE.click_edit_share("nfs", "mnt/"+nfs_data['api_path'])
+        SHARE.click_edit_share("nfs", f'mnt/{nfs_data["api_path"]}')
         COM.unset_checkbox("enabled")
         COM.click_save_button()
         COM.click_button("do-not-start")
-        assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", "mnt/"+nfs_data['api_path']) is False
-        SHARE.click_edit_share("nfs", "mnt/"+nfs_data['api_path'])
+        assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", f'mnt/{nfs_data["api_path"]}') is False
+        SHARE.click_edit_share("nfs", f'mnt/{nfs_data["api_path"]}')
         COM.set_checkbox("enabled")
         COM.click_save_button()
         COM.click_button("do-not-start")
-        assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", "mnt/"+nfs_data['api_path']) is True
+        assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", f'mnt/{nfs_data["api_path"]}') is True
 
     @allure.tag("Create", "NFS")
     @allure.story("Share Admin Is Able to add a NFS Share")
@@ -337,7 +336,7 @@ class Test_Share_Admin_Shares:
         API_POST.create_dataset("tank/nfs-create", 'NFS')
         SHARE.click_add_share_button("nfs")
         assert COM.assert_right_panel_header("Add NFS Share") is True
-        COM.set_input_field("path", "/mnt/tank/nfs-create", True)
+        SHARE.set_share_configuration_field("path", "/mnt/tank/nfs-create")
         COM.click_save_button()
         COM.click_button("do-not-start")
         assert SHARE.assert_share_row_name("nfs", "/mnt/tank/nfs-create") is True
@@ -359,19 +358,19 @@ class Test_Share_Admin_Shares:
         """
         API_POST.create_dataset("tank/nfs-modify", 'NFS')
 
-        SHARE.click_edit_share("nfs", "/mnt/" + nfs_data['api_path'])
+        SHARE.click_edit_share("nfs", f'mnt/{nfs_data["api_path"]}')
         assert COM.assert_right_panel_header("Edit NFS Share") is True
-        COM.set_input_field("path", "/mnt/tank/nfs-modify", True)
+        SHARE.set_share_configuration_field("path", "/mnt/tank/nfs-modify")
         COM.click_save_button()
         COM.click_button("do-not-start")
         assert SHARE.assert_share_row_name("nfs", "/mnt/tank/nfs-modify") is True
 
         # Clean Up
         SHARE.click_edit_share("nfs", "/mnt/tank/nfs-modify")
-        COM.set_input_field("path", "/mnt/" + nfs_data['api_path'], True)
+        SHARE.set_share_configuration_field("path", f'/mnt/{nfs_data["api_path"]}')
         COM.click_save_button()
         COM.click_button("do-not-start")
-        assert SHARE.assert_share_row_name("nfs", "/mnt/" + nfs_data['api_path']) is True
+        assert SHARE.assert_share_row_name("nfs", f'/mnt/{nfs_data["api_path"]}') is True
         API_DELETE.delete_dataset("tank/nfs-modify")
 
     @allure.tag("Delete", "NFS")
@@ -385,9 +384,9 @@ class Test_Share_Admin_Shares:
         2. Confirm delete dialog
         3. Verify NFS Share is no longer visible
         """
-        assert SHARE.assert_share_row_name("nfs", "/mnt/" + nfs_data['api_path']) is True
+        assert SHARE.assert_share_row_name("nfs", f'/mnt/{nfs_data["api_path"]}') is True
         SHARE.delete_all_shares_by_share_type("nfs")
-        assert COM.is_visible(xpaths.common_xpaths.any_xpath('//ix-nfs-card//h3[contains(text(),"No records have been added yet")]'))
+        assert SHARE.assert_card_share_has_no_shares("nfs")
 
     @allure.tag("Read", "iSCSI")
     @allure.story("Share Admin Can View the Configured ISCSI Share")
@@ -401,15 +400,15 @@ class Test_Share_Admin_Shares:
         3. Close right panel
         """
         SHARE.click_edit_iscsi_target("iscsi-share")
-        assert COM.is_visible(xpaths.common_xpaths.input_field("name")) is True
-        assert COM.is_visible(xpaths.common_xpaths.input_field("alias")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("add-item-authorized-networks")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("add-item-add-groups")) is True
-        assert COM.is_visible(xpaths.common_xpaths.select_field("portal")) is True
-        assert COM.is_visible(xpaths.common_xpaths.select_field("initiator")) is True
-        assert COM.is_visible(xpaths.common_xpaths.select_field("authmethod")) is True
-        assert COM.is_visible(xpaths.common_xpaths.select_field("auth")) is True
-        assert COM.is_visible(xpaths.common_xpaths.button_field("save")) is True
+        assert SHARE.assert_share_configuration_field_visible("iscsi", "target name") is True
+        assert SHARE.assert_share_configuration_field_visible("iscsi", "target alias") is True
+        assert SHARE.assert_share_configuration_field_visible("iscsi", "add networks") is True
+        assert SHARE.assert_share_configuration_field_visible("iscsi", "add groups") is True
+        assert SHARE.assert_share_configuration_field_visible("iscsi", "portal") is True
+        assert SHARE.assert_share_configuration_field_visible("iscsi", "initiator") is True
+        assert SHARE.assert_share_configuration_field_visible("iscsi", "authentication method") is True
+        assert SHARE.assert_share_configuration_field_visible("iscsi", "authentication group") is True
+        assert SHARE.assert_share_configuration_field_visible("iscsi", "save") is True
         COM.close_right_panel()
 
     @allure.tag("Create", "ISCSI")
@@ -426,15 +425,15 @@ class Test_Share_Admin_Shares:
         """
         COM.click_button("iscsi-share-wizard")
         assert COM.assert_right_panel_header("iSCSI Wizard") is True
-        COM.set_input_field("name", "iscsi-create")
-        COM.select_option("disk", "disk-create-new")
-        COM.set_input_field("dataset", "/mnt/tank/iscsi-share")
-        COM.set_input_field("volsize", "10")
-        COM.select_option("target", "target-create-new")
+        SHARE.set_share_configuration_field("name", "iscsi-create")
+        SHARE.set_share_configuration_field("disk", "disk-create-new")
+        SHARE.set_share_configuration_field("dataset", "/mnt/tank/iscsi-share")
+        SHARE.set_share_configuration_field("volsize", "10 MiB")
+        SHARE.set_share_configuration_field("target", "target-create-new")
         COM.click_button("next")
-        COM.select_option("portal", "portal-1-0-0-0-0")
-        COM.click_on_element('(//*[@data-test="button-next"])[2]')
-        COM.click_on_element('(//*[@data-test="button-save"])[2]')
+        SHARE.set_share_configuration_field("portal", "portal-1-0-0-0-0")
+        ISCSI.click_wizard_portal_next_button()
+        ISCSI.click_wizard_save_button()
         COM.assert_progress_bar_not_visible()
         COM.click_button("do-not-start")
         assert SHARE.assert_share_row_name("iscsi", "iscsi-create") is True
@@ -453,22 +452,22 @@ class Test_Share_Admin_Shares:
         """
         COM.click_button("iscsi-share-wizard")
         assert COM.assert_right_panel_header("iSCSI Wizard") is True
-        COM.set_input_field("name", "iscsi-modify")
-        COM.select_option("disk", "disk-create-new")
-        COM.set_input_field("dataset", "/mnt/tank/iscsi-share")
-        COM.set_input_field("volsize", "10")
-        COM.select_option("target", "target-create-new")
+        SHARE.set_share_configuration_field("name", "iscsi-modify")
+        SHARE.set_share_configuration_field("disk", "disk-create-new")
+        SHARE.set_share_configuration_field("dataset", "/mnt/tank/iscsi-share")
+        SHARE.set_share_configuration_field("volsize", "10 MiB")
+        SHARE.set_share_configuration_field("target", "target-create-new")
         COM.click_button("next")
-        COM.select_option("portal", "portal-1-0-0-0-0")
-        COM.click_on_element('(//*[@data-test="button-next"])[2]')
-        COM.click_on_element('(//*[@data-test="button-save"])[2]')
+        SHARE.set_share_configuration_field("portal", "portal-1-0-0-0-0")
+        ISCSI.click_wizard_portal_next_button()
+        ISCSI.click_wizard_save_button()
         COM.assert_progress_bar_not_visible()
         COM.click_button("do-not-start")
         assert SHARE.assert_share_row_name("iscsi", "iscsi-modify") is True
 
         SHARE.click_edit_iscsi_target("iscsi-modify")
         assert COM.assert_right_panel_header("Edit ISCSI Target") is True
-        COM.set_input_field("name", "iscsi-update")
+        SHARE.set_share_configuration_field("name", "iscsi-update")
         COM.click_save_button()
         assert SHARE.assert_share_row_name("iscsi", "iscsi-update") is True
 
@@ -484,4 +483,4 @@ class Test_Share_Admin_Shares:
         3. Verify ISCSI Share is no longer visible
         """
         SHARE.delete_all_shares_by_share_type("iscsi")
-        assert COM.is_visible(xpaths.common_xpaths.any_xpath('//ix-iscsi-card//h3[contains(text(),"No records have been added yet")]'))
+        assert SHARE.assert_card_share_has_no_shares("iscsi")

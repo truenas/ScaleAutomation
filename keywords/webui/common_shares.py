@@ -133,6 +133,21 @@ class Common_Shares:
         return COM.assert_toggle_is_locked_and_not_clickable(f'enabled-card-{share_type}-share-{name}-row-toggle')
 
     @classmethod
+    def assert_card_share_has_no_shares(cls, share_type: str) -> bool:
+        """
+        This method returns True if the given share has no shares, otherwise it returns False.
+
+        :return: True if the given share has no shares, otherwise it returns False.
+
+        Example:
+            - Common_Share.assert_card_share_has_no_shares('smb')
+            - Common_Share.assert_card_share_has_no_shares('nfs')
+            - Common_Share.assert_card_share_has_no_shares('iscsi')
+        """
+        return COM.is_visible(xpaths.common_xpaths.any_xpath(
+            f'//ix-{share_type}-card//h3[contains(text(),"No records have been added yet")]'))
+
+    @classmethod
     def assert_disable_share_service_is_locked_and_not_clickable(cls, share_type: str) -> bool:
         """
         This method verifies that the disable share service button is locked and not clickable.
@@ -257,7 +272,7 @@ class Common_Shares:
         """
         This method returns True if the share card is visible otherwise it returns False.
 
-        :param share_type: type of the given share
+        :param share_type: type of the given share [smb/nfs/iscsi]
         :return: True if the share card is visible otherwise it returns False.
 
         Example:
@@ -338,6 +353,76 @@ class Common_Shares:
            - Common_Shares.assert_share_card_view_all_button('smb')
         """
         return COM.is_visible(xpaths.common_xpaths.link_field(f'{share_type}-share-view-all'))
+
+    @classmethod
+    def assert_share_configuration_field_visible(cls, share_type: str, field: str) -> bool:
+        """
+        This method returns True if the given configuration field is visible for the given share type, otherwise it returns False.
+
+        :param share_type: is the type of the share [smb/nfs/iscsi]
+        :param field: is the name of the field
+        :return: True if the given configuration field is visible, otherwise it returns False.
+
+        Example:
+            - Common_Shares.assert_share_configuration_field_visible('smb', 'name')
+            - Common_Shares.assert_share_configuration_field_visible('nfs', 'path')
+            - Common_Shares.assert_share_configuration_field_visible('iscsi', 'portal')
+        """
+        xpath = ""
+        if share_type.lower() == 'smb':
+            match field.lower():
+                case "path":
+                    xpath = xpaths.common_xpaths.input_field("path")
+                case "name":
+                    xpath = xpaths.common_xpaths.input_field("name")
+                case "purpose":
+                    xpath = xpaths.common_xpaths.select_field("purpose")
+                case "description":
+                    xpath = xpaths.common_xpaths.input_field("comment")
+                case "enabled":
+                    xpath = xpaths.common_xpaths.checkbox_field("enabled")
+                case "save":
+                    xpath = xpaths.common_xpaths.button_field("save")
+                case "advanced options":
+                    xpath = xpaths.common_xpaths.button_field("toggle-advanced-options")
+        if share_type.lower() == 'nfs':
+            match field:
+                case "path":
+                    xpath = xpaths.common_xpaths.input_field("path")
+                case "description":
+                    xpath = xpaths.common_xpaths.input_field("comment")
+                case "enabled":
+                    xpath = xpaths.common_xpaths.checkbox_field("enabled")
+                case "add network":
+                    xpath = xpaths.common_xpaths.button_field("add-item-networks")
+                case "add hosts":
+                    xpath = xpaths.common_xpaths.button_field("add-item-hosts")
+                case "save":
+                    xpath = xpaths.common_xpaths.button_field("save")
+                case "advanced options":
+                    xpath = xpaths.common_xpaths.button_field("toggle-advanced-options")
+        if share_type.lower() == 'iscsi':
+            match field:
+                case "target name":
+                    xpath = xpaths.common_xpaths.input_field("name")
+                case "target alias":
+                    xpath = xpaths.common_xpaths.input_field("alias")
+                case "add networks":
+                    xpath = xpaths.common_xpaths.button_field("add-item-authorized-networks")
+                case "add groups":
+                    xpath = xpaths.common_xpaths.button_field("add-item-add-groups")
+                case "portal":
+                    xpath = xpaths.common_xpaths.select_field("portal")
+                case "initiator":
+                    xpath = xpaths.common_xpaths.select_field("initiator")
+                case "authentication method":
+                    xpath = xpaths.common_xpaths.select_field("authmethod")
+                case "authentication group":
+                    xpath = xpaths.common_xpaths.select_field("auth")
+                case "save":
+                    xpath = xpaths.common_xpaths.button_field("save")
+
+        return COM.is_visible(xpath)
 
     @classmethod
     def assert_share_description(cls, share_type: str, desc: str) -> bool:
@@ -694,6 +779,40 @@ class Common_Shares:
         return COM.is_visible(xpaths.common_xpaths.data_test_field(f'text-name-card-{share_type}-share-{name.lower()}-row-text'))
 
     @classmethod
+    def set_share_configuration_field(cls, field: str, value: str = "") -> None:
+        """
+        This method sets the given configuration field to the given share type
+
+        :param field: is the name of the given field
+        :param value: is the value of the given field is to be set to
+
+        Example:
+            - Common_Share.set_share_configuration_field_visible('smb', 'name', 'smbshare')
+            - Common_Share.set_share_configuration_field_visible('nfs', 'enabled', "true")
+            - Common_Share.set_share_configuration_field_visible('iscsi', 'ip address', '0.0.0.0')
+        """
+        match field.lower():
+            case "path" | "name" | "description" | "dataset" | "volsize":
+                COM.set_input_field(field, value, True)
+            case "purpose" | "disk" | "target" | "portal":
+                COM.select_option(field, value)
+            case "enabled":
+                COM.set_checkbox_by_state(field, eval(value.capitalize()))
+
+    @classmethod
+    def set_share_dataset_path(cls, path: str) -> None:
+        """
+        This method sets the dataset path for the share on the Edit Share right panel
+
+        :param path: The path of the given dataset
+
+        Example:
+           - Common_Shares.set_share_dataset_path('/mnt/tank/iscsi-share')
+        """
+        COM.is_visible(xpaths.common_xpaths.input_field('dataset'))
+        COM.set_input_field('dataset', path)
+
+    @classmethod
     def set_share_description(cls, desc: str) -> None:
         """
         This method sets the description for the share on the Edit Share right panel
@@ -722,17 +841,19 @@ class Common_Shares:
         COM.set_toggle_by_state(name, True)
 
     @classmethod
-    def set_share_name(cls, name: str) -> None:
+    def set_share_name(cls, name: str, tab: bool = False) -> None:
         """
         This method sets the name for the share on the Edit Share right panel
 
         :param name: The name of the given share
+        :param tab: whether to tab out of the field or not
 
         Example:
            - Common_Shares.set_share_name('share1')
+           - Common_Shares.set_share_name('share1', True)
         """
         COM.is_visible(xpaths.common_xpaths.input_field('name'))
-        COM.set_input_field('name', name)
+        COM.set_input_field('name', name, tab)
 
     @classmethod
     def set_share_path(cls, path: str) -> None:
@@ -746,6 +867,19 @@ class Common_Shares:
         """
         COM.is_visible(xpaths.common_xpaths.input_field('path'))
         COM.set_input_field('path', '/mnt/'+path, True)
+
+    @classmethod
+    def set_share_volsize(cls, size: str) -> None:
+        """
+        This method sets the size for the share on the Edit Share right panel
+
+        :param size: The size to set
+
+        Example:
+           - Common_Shares.set_share_volsize('10')
+        """
+        COM.is_visible(xpaths.common_xpaths.input_field('volsize'))
+        COM.set_input_field('volsize', size)
 
     @classmethod
     def start_share_service_by_actions_menu(cls, service: str) -> bool:
