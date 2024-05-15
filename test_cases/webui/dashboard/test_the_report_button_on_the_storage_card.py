@@ -8,11 +8,10 @@ from keywords.webui.reporting import Reporting
 @allure.tag("Dashboard", "Reporting", "Storage")
 @allure.epic("Dashboard")
 @allure.feature("Dashboard-Reporting")
+@allure.issue("NAS-128992", "NAS-128992")
+@allure.issue('NAS-128623', 'NAS-128623')
+@pytest.mark.skip("Storage card is missing from the Dashboard UI")
 class Test_Verify_The_Report_Button_On_The_Storage_Card:
-
-    @pytest.fixture(scope='function', autouse=True)
-    def setup_test(self):
-        Dashboard.enable_card('storage')
 
     @allure.story("Verify Storage Cards on Reporting")
     def test_verifying_the_report_button_on_the_storage_card_works(self):
@@ -21,6 +20,7 @@ class Test_Verify_The_Report_Button_On_The_Storage_Card:
         """
         assert Dashboard.assert_dashboard_page_header_is_visible() is True
         assert Dashboard.is_storage_card_visible() is True
+        # TODO: This will most likely need to get fixed after it is reimplemented the Dashboard
         Dashboard.click_the_storage_report_button()
 
         # Verify storage reporting page open

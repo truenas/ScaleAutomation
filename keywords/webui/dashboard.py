@@ -2,7 +2,6 @@ import xpaths
 from helper.global_config import shared_config
 from helper.webui import WebUI
 from keywords.webui.common import Common
-from keywords.webui.navigation import Navigation
 
 
 class Dashboard:
@@ -14,9 +13,12 @@ class Dashboard:
         :param position: is the number of the position that the card should be.
         :param field: is the name of the card.
         :return: True if the given card is at the given position otherwise it returns False.
+
+        Example:
+            - Dashboard.assert_card_position(1, 'TrueNAS Help')
         """
         card_name = cls.get_dashboard_card_name_by_position(position)
-        return True if field == card_name else False
+        return field == card_name
 
     @classmethod
     def assert_cpu_card_load_graph_text(cls) -> bool:
@@ -24,13 +26,17 @@ class Dashboard:
         This method returns True or False whether all cpu load graph text are visible.
 
         :return: True if all cpu load graph text are visible otherwise it returns False.
+
+        Example:
+            - Dashboard.assert_cpu_card_load_graph_text()
         """
         assert WebUI.wait_until_visible('//ix-view-chart-gauge', shared_config['LONG_WAIT']) is True
         assert WebUI.wait_until_visible(xpaths.dashboard.cpu_subtitle) is True
         results_list = [
-            "Avg Usage" in WebUI.get_text(xpaths.dashboard.cpu_subtitle),
-            "Thread" in WebUI.get_text(xpaths.dashboard.cpu_load_cores(1)),
-            "Usage" in WebUI.get_text(xpaths.dashboard.cpu_load_cores(2))
+            "Avg Usage" in WebUI.get_text(xpaths.dashboard.cpu_subtitle)
+            # TODO: those 2 lines bellow need to be if the "Thread" and "Usage" is not added back.
+            # "Thread" in WebUI.get_text(xpaths.dashboard.cpu_load_cores(1)),
+            # "Usage" in WebUI.get_text(xpaths.dashboard.cpu_load_cores(2))
         ]
         return all(results_list)
 
@@ -40,6 +46,9 @@ class Dashboard:
         This method returns True or False whether the cpu load graph ui is visible.
 
         :return: True if the cpu load graph ui is visible otherwise it returns False.
+
+        Example:
+            - Dashboard.assert_cpu_card_load_graph_ui()
         """
         # Wait until the cpu cores chart is visible
         return WebUI.wait_until_visible(xpaths.dashboard.cpu_cores_chart)
@@ -52,6 +61,9 @@ class Dashboard:
         :param index: is the number of the item in the list to get the text.
         :param text: is the text to verify that it match with the given index.
         :return: True if the given cpu load text is visible in the given index otherwise it returns False.
+
+        Example:
+            - Dashboard.assert_cpu_card_load_text(1, 'Thread')
         """
         return text in WebUI.get_text(xpaths.dashboard.card_list_item('cpu', index)+'//strong')
 
@@ -92,7 +104,7 @@ class Dashboard:
 
         # Let the browser load the new tab
         WebUI.delay(1)
-        url_exists = True if WebUI.current_url() == link else False
+        url_exists = WebUI.current_url() == link
 
         WebUI.close_window()
         WebUI.switch_to_window_index(initial_index)
@@ -189,7 +201,9 @@ class Dashboard:
         """
         This method click on the cancel reorder button.
         """
-        Common.click_button('cancel-reorder')
+        Common.click_cancel_button()
+        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('configure-dashboard'))
+        WebUI.delay(1)
 
     @classmethod
     def click_the_configure_button(cls) -> None:
@@ -203,7 +217,7 @@ class Dashboard:
         """
         This method click on CPU report button.
         """
-        Common.click_link('cpu-reports')
+        Common.click_button('cpu-go-to-reports')
 
     @classmethod
     def click_the_memory_report_button(cls) -> None:
@@ -217,7 +231,7 @@ class Dashboard:
         """
         This method click on Network report button.
         """
-        Common.click_link('network-reports')
+        Common.click_button('network-reports')
 
     @classmethod
     def click_the_reorder_button(cls) -> None:
@@ -232,15 +246,15 @@ class Dashboard:
         """
         This method click on the save reorder button.
         """
-        Common.click_button('save-new-order')
-        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('start-reorder'))
+        Common.click_save_button()
+        WebUI.wait_until_visible(xpaths.common_xpaths.button_field('configure-dashboard'))
 
     @classmethod
     def click_the_storage_report_button(cls) -> None:
         """
         This method click on storage report button.
         """
-        Common.click_link('storage-reports')
+        Common.click_button('storage-reports')
 
     @classmethod
     def disable_all_cards(cls) -> None:
@@ -294,9 +308,8 @@ class Dashboard:
         :param position: in the number of the position of the card.
         :return: the name dashboard card by name
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(f'(//mat-card)[{position}]//h3')) is True
-        card_header = WebUI.get_text(xpaths.common_xpaths.any_xpath(f'(//mat-card)[{position}]//h3'))
-        return shared_config['DASHBOARD_CARDS'][card_header]
+        assert WebUI.wait_until_visible(f'(//mat-card)[{position}]//h3') is True
+        return WebUI.get_text(f'(//mat-card)[{position}]//h3')
 
     @classmethod
     def get_dashboard_card_position(cls, name: str) -> int:
@@ -440,25 +453,30 @@ class Dashboard:
         """
         This method set all dashboard card to be visible.
         """
-        card_order = ['sysinfo', 'help', 'cpu', 'memory', 'backup', 'storage', 'pool', 'network', 'nic']
+        # Keeping line below for reference
+        # card_order = ['sysinfo', 'help', 'cpu', 'memory', 'backup', 'storage', 'pool', 'network', 'nic']
+        # TODO This list will need to be updated when all cards are reimplemented
+        card_order = ['TrueNAS Help', 'Network', 'Memory', 'CPU', 'Backup Tasks']
         pos = card_order.index(card) + 1
-        cls.enable_card(card)
-        cls.click_the_reorder_button()
-        cls.move_card_a_to_card_b_position(card, Dashboard.get_dashboard_card_name_by_position(pos))
-        cls.click_the_save_reorder_button()
-        assert Dashboard.assert_card_position(pos, card) is True
+        # cls.enable_card(card)
+        if card != Dashboard.get_dashboard_card_name_by_position(pos):
+            cls.click_the_configure_button()
+            cls.move_card_a_to_card_b_position(card, Dashboard.get_dashboard_card_name_by_position(pos))
+            cls.click_the_save_reorder_button()
+        assert cls.assert_card_position(pos, card) is True
 
     @classmethod
     def set_all_cards_original_card_positions(cls) -> None:
         """
         This method set all dashboard card to be visible.
         """
-        cls.set_original_card_position('sysinfo')
-        cls.set_original_card_position('help')
-        cls.set_original_card_position('cpu')
-        cls.set_original_card_position('memory')
-        cls.set_original_card_position('backup')
-        cls.set_original_card_position('storage')
-        cls.set_original_card_position('pool')
-        cls.set_original_card_position('network')
-        cls.set_original_card_position('nic')
+        # TODO: This will need to be updated when all cards are reimplemented
+        # cls.set_original_card_position('sysinfo')
+        cls.set_original_card_position('TrueNAS Help')
+        cls.set_original_card_position('Network')
+        cls.set_original_card_position('Memory')
+        cls.set_original_card_position('CPU')
+        cls.set_original_card_position('Backup Tasks')
+        # cls.set_original_card_position('pool')
+        # cls.set_original_card_position('network')
+        # cls.set_original_card_position('nic')

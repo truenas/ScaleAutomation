@@ -9,10 +9,6 @@ from keywords.webui.dashboard import Dashboard
 @allure.feature('CPU Card')
 class Test_Verify_CPU_Card_Text:
 
-    @pytest.fixture(scope='function', autouse=True)
-    def setup_test(self):
-        Dashboard.set_all_cards_visible()
-
     @allure.tag("Read")
     @allure.story('CPU Card Text and Graph')
     def test_verifying_cpu_load_and_cpu_load_graph_text(self):

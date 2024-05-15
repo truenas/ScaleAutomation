@@ -8,11 +8,8 @@ from keywords.webui.reporting import Reporting
 @allure.tag("Dashboard", "Reporting", "Network")
 @allure.epic("Dashboard")
 @allure.feature("Dashboard-Reporting")
+@allure.issue("NAS-128992", "NAS-128992")
 class Test_Verify_The_Report_Button_On_The_Network_Card:
-
-    @pytest.fixture(scope='function', autouse=True)
-    def setup_test(self):
-        Dashboard.enable_card('network')
 
     @allure.tag("Read")
     @allure.story("Verify Network Cards on Reporting")

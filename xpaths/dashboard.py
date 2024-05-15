@@ -1,6 +1,6 @@
 cpu_subtitle = '//*[@id="text-subtitle"]'
 """This variable returns the cpu subtitle xpath text"""
-cpu_cores_chart = '//*[@id="cpu-cores-chart"]'
+cpu_cores_chart = '//*[@class="chart"]'
 """This variable returns the cpu cores chart xpath text"""
 
 
@@ -22,7 +22,7 @@ def cpu_load_cores(index: int) -> str:
     :param index: the nuber of the item to get.
     :return: the cpu load cores xpath text by the given index.
     """
-    return f'//*[@id="cpu-load-cores-legend-values"]/div[{index}]/span'
+    return f'//*[contains(@class,"cpu-load-cores-legend-values")]/div[{index}]/span'
 
 
 def drag_card(field: str) -> str:
@@ -34,7 +34,7 @@ def drag_card(field: str) -> str:
     """
     # return f'//ix-widget-{field}//span[@class="cdk-drag-handle"]'
     # return f'//ix-widget-{field}//span[@class="grip ng-star-inserted"]'
-    return f'//ix-widget-{field}//div[@class="drag-handle"]'
+    return f'//*[contains(@class,"cdk-drag") and contains(.,"{field}")]//*[@class="cdk-drag-handle drag-handle"]'
 
 
 def drop_card(field: str) -> str:
@@ -44,7 +44,7 @@ def drop_card(field: str) -> str:
     :param field: is the url text of the link on the TrueNAS help card
     :return: the xpath text of the TrueNAS help card link
     """
-    return f'//ix-widget-{field}//mat-card'
+    return f'//mat-card[contains(.,"{field}")]'
 
 
 def truenas_help_card_link(link: str) -> str:
