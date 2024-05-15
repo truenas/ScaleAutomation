@@ -37,7 +37,7 @@ class Test_Verify_Reordering_Cards_Remain_After_Logoff:
     @allure.story("Verify Card Reorder Remains After Re-Login")
     def verify_move_the_truenas_help_card_to_cpu_card_position_and_save(self):
         """
-        This test verifies moving the sysinfo card to cpu card position and save and verify the card positions
+        This test verifies moving the TrueNAS Help card to CPU card position and save and verify the card positions
         is kept after re-login.
         """
         assert Dashboard.assert_dashboard_page_header_is_visible() is True

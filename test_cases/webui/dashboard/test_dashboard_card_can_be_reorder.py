@@ -22,10 +22,10 @@ class Test_Verify_A_Dashboard_Card_Can_Be_Reorder:
         Dashboard.set_original_card_position('Network')
 
     @allure.tag("Update")
-    @allure.story("Move System Info to Help Position")
+    @allure.story("Move TrueNAS Help card to Network card Position")
     def verify_the_truenas_help_card_move_to_truenas_network_position(self):
         """
-        This test verifies moving Cards 'System Info' and 'Help' positions is saved
+        This test verifies moving Cards 'TrueNAS Help' and 'Network' positions is saved
         - After saving the card positions
         - After going in another page and going back to the dashboard
         - After refreshing the page

@@ -22,10 +22,10 @@ class Test_Verify_A_Dashboard_Card_Reordering_Can_be_Cancel:
         WebUI.refresh()
 
     @allure.tag("Update")
-    @allure.story("Move Card Help to CPU Position and Cancel")
+    @allure.story("Move Network card to CPU card Position and Cancel")
     def verify_the_network_card_move_to_cpu_card_position_and_cancel(self):
         """
-        This test verifies moving Cards 'System Info' and 'Help' then canceling doesn't change card positions
+        This test verifies moving Cards 'Network' and 'Network' then canceling doesn't change card positions
         """
         assert Dashboard.assert_dashboard_page_header_is_visible() is True
         # TODO: the cards position below might need to be updated when all the card are implemented.
