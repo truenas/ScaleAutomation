@@ -1,6 +1,7 @@
 import xpaths
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
+from keywords.webui.navigation import Navigation as NAV
 
 
 class iSCSI:
@@ -90,17 +91,6 @@ class iSCSI:
         return WebUI.wait_until_visible(xpaths.iscsi.iscsi_target_name(target_name))
 
     @classmethod
-    def verify_iscsi_sharing_configuration_page_opens(cls) -> None:
-        """
-        This method verifies the sharing configuration page opens.
-
-        Example:
-            - iSCSI.verify_iscsi_sharing_configuration_page_opens()
-        """
-        assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-sharing')) is True
-        assert COM.assert_page_header('iSCSI') is True
-
-    @classmethod
     def assert_iscsi_wizard_button_is_locked_and_not_clickable(cls) -> bool:
         """
         This method verifies that the iSCSI wizard button is locked and not clickable on the iSCSI sharing page.
@@ -163,7 +153,7 @@ class iSCSI:
         This method clicks on the Edit button of the given item in the given tab.
 
         :param tab_name: The name of the tab.
-        :param item_name: The name of the item. Example: target1 is target-1
+        :param row_item: The name of the item. Example: target1 is target-1
 
         Example:
             - iSCSI.click_on_the_item_edit_button('Targets', 'target-1')
@@ -189,6 +179,80 @@ class iSCSI:
         """
         tab = COM.convert_to_tag_format(tab_name)
         COM.click_link(tab)
+
+    @classmethod
+    def click_wizard_portal_next_button(cls) -> None:
+        """
+        This method clicks the Next button on the Wizard Portal step.
+
+        Example:
+            - iSCSI.click_wizard_portal_next_button()
+        """
+        COM.click_on_element('(//*[@data-test="button-next"])[2]')
+        WebUI.delay(1)
+
+    @classmethod
+    def click_wizard_save_button(cls) -> None:
+        """
+        This method clicks the Save button on the Wizard Portal step.
+
+        Example:
+            - iSCSI.click_wizard_save_button()
+        """
+        COM.click_on_element('(//*[@data-test="button-save"])[2]')
+        WebUI.delay(1)
+
+    @classmethod
+    def delete_all_iscsi_initiators(cls) -> None:
+        """
+        This method deletes all iscsi portals.
+
+        Example:
+            - iSCSI.delete_all_iscsi_portals()
+        """
+        xpath = '//*[starts-with(@data-test,"button-iscsi") and contains(@data-test,"-delete-row-action")]'
+        if COM.assert_page_header("iSCSI") is False:
+            NAV.navigate_to_shares()
+            COM.click_button("iscsi-share-configure")
+            assert COM.assert_page_header("iSCSI")
+        COM.click_link("initiators-groups")
+        while COM.is_visible(xpath):
+            COM.click_on_element(xpath)
+            COM.assert_confirm_dialog()
+        assert COM.is_visible(xpath) is False
+
+    @classmethod
+    def delete_all_iscsi_portals(cls) -> None:
+        """
+        This method deletes all iscsi portals.
+
+        Example:
+            - iSCSI.delete_all_iscsi_portals()
+        """
+        xpath = '//*[starts-with(@data-test,"button-iscsi") and contains(@data-test,"-delete-row-action")]'
+        if COM.assert_page_header("iSCSI") is False:
+            NAV.navigate_to_shares()
+            COM.click_button("iscsi-share-configure")
+            assert COM.assert_page_header("iSCSI")
+        COM.click_link("portals")
+        while COM.is_visible(xpath):
+            COM.click_on_element(xpath)
+            COM.assert_confirm_dialog()
+        assert COM.is_visible(xpath) is False
+
+    @classmethod
+    def set_ip_address(cls, ip: str) -> None:
+        """
+        This method sets the alias for the given iSCSI target.
+
+        :param ip: the IP of the iSCSI target.
+
+        Example:
+            - iSCSI.set_ip_address('0.0.0.0')
+        """
+        ip = ip.replace(".", "-")
+        COM.click_on_element(xpaths.common_xpaths.data_test_field("select"))
+        COM.click_on_element(xpaths.common_xpaths.data_test_field(f'option-{ip}'))
 
     @classmethod
     def set_target_alias_input(cls, text: str) -> None:
@@ -246,3 +310,14 @@ class iSCSI:
         assert COM.is_visible(xpaths.common_xpaths.input_field('pool-avail-threshold')) is True
         assert COM.is_visible(xpaths.common_xpaths.input_field('listen-port')) is True
         assert COM.is_visible(xpaths.common_xpaths.button_field('save')) is True
+
+    @classmethod
+    def verify_iscsi_sharing_configuration_page_opens(cls) -> None:
+        """
+        This method verifies the sharing configuration page opens.
+
+        Example:
+            - iSCSI.verify_iscsi_sharing_configuration_page_opens()
+        """
+        assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-sharing')) is True
+        assert COM.assert_page_header('iSCSI') is True
