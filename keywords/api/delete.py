@@ -211,6 +211,24 @@ class API_DELETE:
         return response
 
     @classmethod
+    def delete_smart_test(cls, description: str) -> Response:
+        """
+        This method deletes the smart test.
+
+        :param description: is description of the smart test.
+        :return: the API request response.
+
+        Example:
+            - API_DELETE.delete_smart_test('smart desc')
+        """
+        response = GET(f'/smart/test?desc={description}').json()
+        if response:
+            smart_id = response[0]['id']
+            response = DELETE(f'/smart/test/id/{smart_id}')
+            assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
     def delete_snapshot(cls, snapshot_id: str, defer: bool = False, recursive: bool = False) -> Response:
         """
         This method deletes the given snapshot.
