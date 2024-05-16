@@ -421,6 +421,20 @@ class Common_Shares:
                     xpath = xpaths.common_xpaths.select_field("auth")
                 case "save":
                     xpath = xpaths.common_xpaths.button_field("save")
+        if share_type.lower() == 'smart':
+            match field.lower():
+                case "all disks":
+                    xpath = xpaths.common_xpaths.checkbox_field("all-disks")
+                case "disks":
+                    xpath = xpaths.common_xpaths.select_field("disks")
+                case "type":
+                    xpath = xpaths.common_xpaths.select_field("type")
+                case "description":
+                    xpath = xpaths.common_xpaths.input_field("desc")
+                case "schedule":
+                    xpath = xpaths.common_xpaths.select_field("schedule-presets")
+                case "save":
+                    xpath = xpaths.common_xpaths.button_field("save")
 
         return COM.is_visible(xpath)
 

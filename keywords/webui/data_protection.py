@@ -43,6 +43,18 @@ class Data_Protection:
         return COM.assert_button_is_locked_and_not_clickable('scrub-task-add')
 
     @classmethod
+    def assert_add_smart_test_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method verifies if the add smart test button is locked and not clickable.
+
+        :return: True if the add smart test button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_add_smart_test_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('smart-task-add')
+
+    @classmethod
     def assert_add_vm_periodic_snapshot_button_is_locked_and_not_clickable(cls) -> bool:
         """
         This method verifies if the add vm periodic snapshot button is locked and not clickable.
@@ -109,6 +121,19 @@ class Data_Protection:
         """
         description = COM.convert_to_tag_format(description)
         return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.scrub_task_delete_button(description))
+
+    @classmethod
+    def assert_delete_smart_test_button_is_locked_and_not_clickable(cls, description: str) -> bool:
+        """
+        This method verifies if the delete smart test button is locked and not clickable.
+
+        :param description: description of the smart test
+        :return: True if the delete smart test button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_delete_smart_test_button_is_locked_and_not_clickable('description')
+        """
+        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.smart_test_delete_button(description))
 
     @classmethod
     def assert_delete_vm_periodic_snapshot_task_button_is_locked_and_not_clickable(cls, path: str) -> bool:
@@ -249,6 +274,68 @@ class Data_Protection:
         return COM.is_visible(xpaths.data_protection.scrub_task_description(description))
 
     @classmethod
+    def assert_smart_page_add_smart_test_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method verifies if the add smart test button is locked and not clickable.
+
+        :return: True if the add smart test button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_smart_page_add_smart_test_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('periodic-s-m-a-r-t-tests-add')
+
+    @classmethod
+    def assert_smart_page_delete_smart_test_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method verifies if the delete smart test button is locked and not clickable.
+
+        :return: True if the delete smart test button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_smart_page_delete_smart_test_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('periodic-s-m-a-r-t-tests-options-delete')
+
+    @classmethod
+    def assert_smart_page_save_smart_test_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method verifies if the save smart test button is locked and not clickable.
+
+        :return: True if the save smart test button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_smart_page_save_smart_test_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('save')
+
+    @classmethod
+    def assert_smart_page_smart_test_description(cls, description: str) -> bool:
+        """
+        This method returns True if the given smart test description is visible, otherwise returns False.
+
+        :param description: description of the smart test
+        :return: True if the given smart test description is visible, otherwise returns False.
+
+        Example:
+            - Data_Protection.assert_smart_page_smart_test_description("SMART test Description")
+        """
+        return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[contains(text(),"{description}")]'))
+
+    @classmethod
+    def assert_smart_test_description(cls, description: str) -> bool:
+        """
+        This method returns True if the given smart test description is visible, otherwise returns False.
+
+        :param description: description of the smart test
+        :return: True if the given smart test description is visible, otherwise returns False.
+
+        Example:
+            - Data_Protection.assert_smart_test_description("SMART test Description")
+        """
+        return COM.is_visible(xpaths.data_protection.smart_test_description(description))
+
+    @classmethod
     def click_add_replication_button(cls) -> None:
         """
         This method clicks the Add Replication task button
@@ -267,6 +354,19 @@ class Data_Protection:
             - Data_Protection.click_add_rsync_button()
         """
         COM.click_button('rsync-task-add')
+
+    @classmethod
+    def click_card_page_link(cls, title: str) -> None:
+        """
+        This method clicks the card page link for the given card title
+
+        :param title: the title of the given card
+
+        Example:
+            - Data_Protection.click_card_page_link('myRepTask')
+        """
+        COM.click_on_element(f'//h3[contains(text(),"{title}")]')
+        COM.assert_page_header(title)
 
     @classmethod
     def click_edit_cloud_sync_task(cls, description: str) -> None:
@@ -324,6 +424,19 @@ class Data_Protection:
         description = COM.convert_to_tag_format(description)
         COM.click_on_element(xpaths.data_protection.scrub_task_edit_button(description))
         assert COM.assert_right_panel_header('Edit Scrub Task') is True
+
+    @classmethod
+    def click_edit_smart_test(cls, description: str) -> None:
+        """
+        This method clicks the edit button for the given smart test
+
+        :param description: the description of the given smart test
+
+        Example:
+            - Data_Protection.click_edit_smart_test('description')
+        """
+        COM.click_on_element(xpaths.data_protection.smart_test_edit_button(description))
+        assert COM.assert_right_panel_header('Edit S.M.A.R.T. Test') is True
 
     @classmethod
     def click_edit_snapshot_task_by_name(cls, name: str) -> None:
