@@ -283,19 +283,20 @@ class Data_Protection:
         Example:
             - Data_Protection.assert_smart_page_add_smart_test_button_is_locked_and_not_clickable()
         """
-        return COM.assert_button_is_locked_and_not_clickable('periodic-s-m-a-r-t-tests-add')
+        return COM.assert_button_is_locked_and_not_clickable('add-smart-task')
 
     @classmethod
-    def assert_smart_page_delete_smart_test_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_smart_page_delete_smart_test_button_is_locked_and_not_clickable(cls, smart_type: str) -> bool:
         """
         This method verifies if the delete smart test button is locked and not clickable.
 
+        :param smart_type: type of the smart test
         :return: True if the delete smart test button is locked and not clickable, otherwise it returns False.
 
         Example:
             - Data_Protection.assert_smart_page_delete_smart_test_button_is_locked_and_not_clickable()
         """
-        return COM.assert_button_is_locked_and_not_clickable('periodic-s-m-a-r-t-tests-options-delete')
+        return COM.assert_button_is_locked_and_not_clickable(f'smart-task-{COM.convert_to_tag_format(smart_type)}-delete-row-action')
 
     @classmethod
     def assert_smart_page_save_smart_test_button_is_locked_and_not_clickable(cls) -> bool:

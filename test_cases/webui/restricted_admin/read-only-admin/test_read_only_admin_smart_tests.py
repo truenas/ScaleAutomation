@@ -80,8 +80,7 @@ class Test_Read_Only_Admin_Smart_Tests:
 
         # Navigate to SMART Test page
         DP.click_card_page_link('Periodic S.M.A.R.T. Tests')
-        COM.click_button('periodic-s-m-a-r-t-tests-options')
-        COM.click_button('periodic-s-m-a-r-t-tests-options-edit')
+        DP.click_edit_smart_test("Short Hour")
 
         # Verify SMART Test page fields
         assert SHARE.assert_share_configuration_field_visible("smart", "all disks") is True
@@ -122,10 +121,7 @@ class Test_Read_Only_Admin_Smart_Tests:
         """
         assert DP.assert_delete_smart_test_button_is_locked_and_not_clickable("Short Hour") is True
         DP.click_card_page_link('Periodic S.M.A.R.T. Tests')
-        COM.click_button('periodic-s-m-a-r-t-tests-options')
-        assert DP.assert_smart_page_delete_smart_test_button_is_locked_and_not_clickable() is True
-        COM.click_button('periodic-s-m-a-r-t-tests-options-edit')
-        COM.close_right_panel()
+        assert DP.assert_smart_page_delete_smart_test_button_is_locked_and_not_clickable("SHORT") is True
         COM.click_link('breadcrumb-data-protection')
 
     @allure.tag("Read")
@@ -145,8 +141,7 @@ class Test_Read_Only_Admin_Smart_Tests:
         assert COM.assert_button_is_locked_and_not_clickable('save') is True
         COM.close_right_panel()
         DP.click_card_page_link('Periodic S.M.A.R.T. Tests')
-        COM.click_button('periodic-s-m-a-r-t-tests-options')
-        COM.click_button('periodic-s-m-a-r-t-tests-options-edit')
+        DP.click_edit_smart_test("Short Hour")
         assert DP.assert_smart_page_save_smart_test_button_is_locked_and_not_clickable() is True
         COM.close_right_panel()
         COM.click_link('breadcrumb-data-protection')

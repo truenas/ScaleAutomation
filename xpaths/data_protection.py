@@ -179,6 +179,16 @@ def smart_test_edit_button(description: str) -> str:
     return f'//*[contains(text(),"{description}")]/ancestor::tr/descendant::*[contains(@data-test,"-edit-row-action")]'
 
 
+def smart_test_page_delete_button_lock(description: str) -> str:
+    """
+    This function returns the xpath text of the smart test page delete button lock by the given smart test description.
+
+    :param description: The description of the smart task.
+    :return: The xpath text of the smart test page delete button lock by the given smart test description.
+    """
+    return f'//*[contains(text(),"{description}")]/ancestor::tr/descendant::*[contains(@data-test,"-delete-row-action")]/..//ix-icon[@name="lock"]'
+
+
 def smart_test_page_link(title: str) -> str:
     """
     This function returns the xpath text of the smart task page link by the given smart task title.
