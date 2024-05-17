@@ -434,7 +434,7 @@ class SMB:
             - SMB.click_edit_share_acl('share')
         """
         COM.click_button(f'card-smb-share-{COM.convert_to_tag_format(name)}-share-row-action')
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Share ACL for', 3)) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Share ACL for', 3)) is True
 
     @classmethod
     def click_edit_share_filesystem_acl(cls, name: str) -> None:
@@ -447,7 +447,7 @@ class SMB:
             - SMB.click_edit_share_filesystem_acl('share')
         """
         COM.click_button(f'card-smb-share-{name.lower()}-security-row-action')
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit ACL', 1)) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Edit ACL', 1)) is True
 
     @classmethod
     def click_edit_share(cls, share_name: str) -> None:
@@ -517,7 +517,7 @@ class SMB:
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('ignore-list'))
         COM.click_on_element(f'//*[@data-test="input-ignore-list"]')
-        name = COM.convert_to_tag_format('ignore-list-'+name)
+        name = COM.convert_to_tag_format(f'ignore-list-{name}')
         COM.click_on_element(f'//*[@data-test="option-{name}"]')
 
     @classmethod

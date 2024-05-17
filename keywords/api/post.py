@@ -87,8 +87,7 @@ class API_POST:
                 }
             }
         }
-        response = POST('/certificateauthority/', payload)
-        return response
+        return POST('/certificateauthority/', payload)
 
     @classmethod
     def create_certificate_signing_requests(cls, data: dict) -> dict:
@@ -156,10 +155,8 @@ class API_POST:
         Example:
             - API_POST.create_cloud_sync_task('description')
         """
-        cred_id = 0
         response = GET(f'/cloudsync/credentials?name={name}').json()
-        if response:
-            cred_id = response[0]['id']
+        cred_id = response[0]['id'] if response else 0
         payload = {
           "description": description,
           "path": "/mnt/tank",
@@ -284,7 +281,7 @@ class API_POST:
                 "ssh_password_enabled": True,
                 "smb": eval(smb_auth.lower().capitalize())
             }
-            response = POST(f'/user', payload)
+            response = POST('/user', payload)
             assert response.status_code == 200, response.text
         return response
 
@@ -316,7 +313,7 @@ class API_POST:
                 "ssh_password_enabled": True,
                 "smb": eval(smb_auth.lower().capitalize())
             }
-            response = POST(f'/user', payload)
+            response = POST('/user', payload)
             assert response.status_code == 200, response.text
         return response
 
@@ -437,7 +434,7 @@ class API_POST:
         }
         response = POST('/pool/scrub', payload)
         if response.status_code != 200:
-            print("@@@ CREATE SCRUB TASK: " + response.text)
+            print(f"@@@ CREATE SCRUB TASK: {response.text}")
         return response
 
     @classmethod
@@ -467,7 +464,7 @@ class API_POST:
                     "comment": comment
                 }
                 response = POST(f'/sharing/{sharetype}', payload)
-            if sharetype == 'nfs':
+            elif sharetype == 'nfs':
                 response = POST(f'/sharing/{sharetype}/', {"path": path, "comment": comment})
             assert response.status_code == 200, response.text
         return response
@@ -489,39 +486,6 @@ class API_POST:
             "smb": eval(smb_auth.lower().capitalize())
         }
         return POST('/user', payload)
-
-    @classmethod
-    def create_smart_test(cls, schedule_type: str, schedule_value: str, test_type: str, description: str = "",
-                          all_disks: bool = True, disk_list=None) -> Response:
-        """
-        This method creates the given smart test.
-
-        :param schedule_type: is type of the smart schedule [hour/dom/month/dow].
-        :param schedule_value: is value of the smart schedule.
-        :param test_type: is type of the smart test [LONG/SHORT/CONVEYANCE/OFFLINE].
-        :param description: is the description of the smart test.
-        :param all_disks: is True if all disks are to be used.
-        :param disk_list: is list of disks to be used.
-        :return: the API request response.
-
-        Example:
-            - API_POST.create_smart_test('month', '1', 'SHORT')
-            - API_POST.create_smart_test('hour', '16', 'LONG', 'Long 4pm', False, ["{serial}PCJUT7BX","{serial}PCJUAJ6X"])
-        """
-        if disk_list is None:
-            disk_list = []
-        schedule = {schedule_type: schedule_value}
-
-        payload = {
-            "schedule": schedule,
-            "desc": description,
-            "all_disks": all_disks,
-            "disks": disk_list,
-            "type": test_type.upper()
-        }
-        response = POST('/smart/test', payload)
-        assert response.status_code == 200, response.text
-        return response
 
     @classmethod
     def create_snapshot(cls, dataset: str, name: str, recursive: bool = False, suspend_vms: bool = False,
@@ -643,7 +607,6 @@ class API_POST:
     def is_service_autostart_enabled(cls, service: str) -> bool:
         """
         This method returns True if the service autostart is enabled. otherwise False.
-
         :param service: is the service name.
         :return: True if the service is autostart is enabled, otherwise False.
         """
@@ -751,7 +714,7 @@ class API_POST:
         :param payload: is the payload for the api call.
         :return: the API request response.
         """
-        response = POST(f'/filesystem/setacl', payload)
+        response = POST('/filesystem/setacl', payload)
         assert response.status_code == 200, response.text
         return response
 

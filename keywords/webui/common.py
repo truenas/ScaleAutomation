@@ -630,6 +630,7 @@ class Common:
         name = name.replace('_', '-')
         name = name.replace(' ', '-')
         name = name.replace('--', '-')
+        name = name.replace('.', '-')
         return name.lower()
 
     @classmethod
