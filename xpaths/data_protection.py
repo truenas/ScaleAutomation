@@ -44,7 +44,7 @@ def cloud_sync_task_enable_toggle(description: str) -> str:
     This function returns the xpath text of the cloud sync task enable toggle by the given cloud sync task description.
 
     :param description: The description of the cloud sync task.
-    :return: The xpath text of the cloud sync task enable toggle by the given cloud cloud sync task description.
+    :return: The xpath text of the cloud sync task enable toggle by the given cloud sync task description.
     """
     return f'//*[@data-test="toggle-enabled-card-cloudsync-task-{description}-row-toggle"]//button'
 
@@ -147,6 +147,46 @@ def scrub_task_enable_toggle(description: str) -> str:
     :return: The xpath text of the scrub task enable toggle by the given scrub task description.
     """
     return f'//*[contains(@data-test,"{description}-row-toggle")]//button'
+
+
+def smart_test_delete_button(description: str) -> str:
+    """
+    This function returns the xpath text of the smart task delete button by the given scrub task description.
+
+    :param description: The description of the smart task.
+    :return: The xpath text of the smart task delete button by the given scrub task description.
+    """
+    return f'//*[starts-with(@data-test,"text-description-smart-task") and contains(text(),"{description}")]/ancestor::tr/descendant::*[contains(@data-test,"-delete-row-action")]'
+
+
+def smart_test_description(description: str) -> str:
+    """
+    This function returns the xpath text of the smart task edit button by the given smart task description.
+
+    :param description: The description of the smart task.
+    :return: The xpath text of the smart task edit button by the given smart task description.
+    """
+    return f'//*[starts-with(@data-test,"text-description-smart-task") and contains(text(),"{description}")]'
+
+
+def smart_test_edit_button(description: str) -> str:
+    """
+    This function returns the xpath text of the smart task edit button by the given smart task description.
+
+    :param description: The description of the smart task.
+    :return: The xpath text of the smart task edit button by the given smart task description.
+    """
+    return f'//*[contains(text(),"{description}")]/ancestor::tr/descendant::*[contains(@data-test,"-edit-row-action")]'
+
+
+def smart_test_page_link(title: str) -> str:
+    """
+    This function returns the xpath text of the smart task page link by the given smart task title.
+
+    :param title: The description of the smart task.
+    :return: The xpath text of the smart task page link by the given smart task title.
+    """
+    return f'//h3[contains(text(),"{title}")]'
 
 
 def vm_periodic_snapshot_task_delete_button(path: str) -> str:

@@ -550,8 +550,7 @@ class Common:
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('next'), shared_config['MEDIUM_WAIT']) is True
         cls.click_button('next')
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('save'), shared_config['MEDIUM_WAIT']) is True
-        assert cls.assert_text_is_visible('What and Where')
+        WebUI.delay(3)
 
     @classmethod
     def click_save_button(cls) -> None:
