@@ -21,7 +21,7 @@ def pytest_sessionfinish(session, exitstatus):
     stop_percy_session()
     allure_environment()
     allure_reporting()
-    WebUI.quit()
+    # WebUI.quit()
 
 
 def pytest_sessionstart(session):
