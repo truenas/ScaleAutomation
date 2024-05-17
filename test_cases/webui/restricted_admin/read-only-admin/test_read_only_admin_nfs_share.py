@@ -61,12 +61,12 @@ class Test_Read_Only_Admin_NFS_Share:
 
         # Verify the read-only admin is not able to enable or disable the NFS service
         assert Common_Shares.assert_share_card_displays('nfs') is True
-        assert Common_Shares.assert_disable_share_service_is_locked_and_not_clickable('nfs') is True
+        assert Common_Shares.assert_disable_share_service_is_restricted('nfs') is True
         assert Common_Shares.is_share_service_running('nfs') is True
 
         API_POST.stop_service('nfs')
         assert Common_Shares.assert_share_card_displays('nfs') is True
-        assert Common_Shares.assert_enable_share_service_is_locked_and_not_clickable('nfs') is True
+        assert Common_Shares.assert_enable_share_service_is_restricted('nfs') is True
         assert Common_Shares.is_share_service_stopped('nfs') is True
 
     @allure.tag('Create')
@@ -78,7 +78,7 @@ class Test_Read_Only_Admin_NFS_Share:
 
         # Verify the read-only admin is not able to create an iSCSI share
         assert Common_Shares.assert_share_card_displays('nfs') is True
-        assert Common_Shares.assert_card_add_share_button_is_locked_and_not_clickable('nfs') is True
+        assert Common_Shares.assert_card_add_share_button_is_restricted('nfs') is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Modify An NFS Share On The NFS Card")
@@ -94,7 +94,7 @@ class Test_Read_Only_Admin_NFS_Share:
         assert Common.assert_header_readonly_badge() is True
 
         Common_Shares.set_share_description('This is a new description')
-        assert Common.assert_save_button_is_locked_and_not_clickable() is True
+        assert Common.assert_save_button_is_restricted() is True
 
         Common.close_right_panel()
 
@@ -118,7 +118,7 @@ class Test_Read_Only_Admin_NFS_Share:
 
         # Verify the read-only admin is not able to delete an NFS share
         assert Common_Shares.assert_share_card_displays('nfs') is True
-        assert Common_Shares.assert_card_share_delete_button_is_locked_and_not_clickable('nfs', data['nfs_xpath']) is True
+        assert Common_Shares.assert_card_share_delete_button_is_restricted('nfs', data['nfs_xpath']) is True
 
     @allure.tag('Read')
     @allure.story("Read Only Admin Is Able To View Pre-Configured NFS Shares On The Sharing NFS Page")
@@ -145,7 +145,7 @@ class Test_Read_Only_Admin_NFS_Share:
         assert Common_Shares.assert_share_card_displays('nfs') is True
         Common_Shares.click_share_card_header_link('nfs')
         assert NFS.assert_sharing_nfs_page_header() is True
-        assert NFS.assert_add_button_is_locked_and_not_clickable_on_nfs_page() is True
+        assert NFS.assert_add_button_is_restricted_on_nfs_page() is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Modify An NFS Share On The Sharing NFS Page")
@@ -163,7 +163,7 @@ class Test_Read_Only_Admin_NFS_Share:
         assert Common.assert_header_readonly_badge() is True
 
         Common_Shares.set_share_description('This is a new description')
-        assert Common.assert_save_button_is_locked_and_not_clickable() is True
+        assert Common.assert_save_button_is_restricted() is True
 
         Common.close_right_panel()
 
@@ -178,7 +178,7 @@ class Test_Read_Only_Admin_NFS_Share:
         assert Common_Shares.assert_share_card_displays('nfs') is True
         Common_Shares.click_share_card_header_link('nfs')
         assert NFS.assert_sharing_nfs_page_header() is True
-        assert NFS.assert_share_delete_button_is_locked_and_not_clickable_on_nfs_page(data['nfs_xpath']) is True
+        assert NFS.assert_share_delete_button_is_restricted_on_nfs_page(data['nfs_xpath']) is True
 
     @allure.tag('Updated')
     @allure.story("Read Only Admin Is Not Able To Disable Or Enable An NFS Share On The Sharing NFS Page")
@@ -191,4 +191,4 @@ class Test_Read_Only_Admin_NFS_Share:
         assert Common_Shares.assert_share_card_displays('nfs') is True
         Common_Shares.click_share_card_header_link('nfs')
         assert NFS.assert_sharing_nfs_page_header() is True
-        assert NFS.assert_share_enabled_toggle_is_locked_and_not_clickable_on_nfs_page(data['nfs_xpath']) is True
+        assert NFS.assert_share_enabled_toggle_is_restricted_on_nfs_page(data['nfs_xpath']) is True

@@ -9,7 +9,7 @@ from keywords.webui.system_services import System_Services as SS
 class Common_Shares:
 
     @classmethod
-    def assert_card_add_share_button_is_locked_and_not_clickable(cls, share_type: str):
+    def assert_card_add_share_button_is_restricted(cls, share_type: str):
         """
         This method verifies that the add share button is locked and not clickable.
 
@@ -17,12 +17,12 @@ class Common_Shares:
         :return: True if the add share button is locked and not clickable otherwise it returns False.
 
         Example:
-           - Common_Shares.assert_add_share_button_is_locked_and_not_clickable('smb')
+           - Common_Shares.assert_add_share_button_is_restricted('smb')
         """
-        return COM.assert_button_is_locked_and_not_clickable(f'{share_type}-share-add')
+        return COM.assert_button_is_restricted(f'{share_type}-share-add')
 
     @classmethod
-    def assert_card_edit_filesystem_acl_permissions_button_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+    def assert_card_edit_filesystem_acl_permissions_button_is_restricted(cls, share_name: str) -> bool:
         """
         This method returns True if the edit filesystem ACL button is locked and not clickable
         otherwise it returns False.
@@ -31,12 +31,12 @@ class Common_Shares:
         :return: True if the edit filesystem ACL button is locked and not clickable otherwise it returns False.
 
         Example:
-           - Common_Shares.assert_card_edit_filesystem_acl_permissions_button_is_locked_and_not_clickable('share-1')
+           - Common_Shares.assert_card_edit_filesystem_acl_permissions_button_is_restricted('share-1')
         """
-        return COM.assert_button_is_locked_and_not_clickable(f'card-smb-share-{share_name}-security-row-action')
+        return COM.assert_button_is_restricted(f'card-smb-share-{share_name}-security-row-action')
 
     @classmethod
-    def assert_card_edit_share_acl_permissions_button_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+    def assert_card_edit_share_acl_permissions_button_is_restricted(cls, share_name: str) -> bool:
         """
         This method returns True if the edit share ACL button is locked and not clickable otherwise it returns False.
 
@@ -44,24 +44,24 @@ class Common_Shares:
         :return: True if the edit share ACL button is locked and not clickable otherwise it returns False.
 
         Example:
-           - Common_Shares.assert_card_edit_share_acl_permissions_button_is_locked_and_not_clickable('share-1')
+           - Common_Shares.assert_card_edit_share_acl_permissions_button_is_restricted('share-1')
         """
-        return COM.assert_button_is_locked_and_not_clickable(f'card-smb-share-{share_name}-share-row-action')
+        return COM.assert_button_is_restricted(f'card-smb-share-{share_name}-share-row-action')
 
     @classmethod
-    def assert_card_iscsi_configure_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_card_iscsi_configure_button_is_restricted(cls) -> bool:
         """
         This method returns True if the configure button is locked and not clickable otherwise it returns False.
 
         :return: True if the configure button is locked and not clickable otherwise it returns False.
 
         Example:
-           - Common_Shares.assert_configure_button_is_locked_and_not_clickable()
+           - Common_Shares.assert_configure_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('iscsi-share-configure')
+        return COM.assert_button_is_restricted('iscsi-share-configure')
 
     @classmethod
-    def assert_card_iscsi_delete_button_is_locked_and_not_clickable(cls, target_name: str) -> bool:
+    def assert_card_iscsi_delete_button_is_restricted(cls, target_name: str) -> bool:
         """
         This method returns True if the delete button is locked and not clickable otherwise it returns False.
 
@@ -69,24 +69,24 @@ class Common_Shares:
         :return: True if the delete button is locked and not clickable otherwise it returns False.
 
         Example:
-           - Common_Shares.assert_iscsi_delete_button_is_locked_and_not_clickable('target-1')
+           - Common_Shares.assert_iscsi_delete_button_is_restricted('target-1')
         """
-        return COM.assert_button_is_locked_and_not_clickable(f'card-iscsi-target-{target_name}-delete-row-action')
+        return COM.assert_button_is_restricted(f'card-iscsi-target-{target_name}-delete-row-action')
 
     @classmethod
-    def assert_card_iscsi_wizard_button_is_locked_and_not_clickable(cls):
+    def assert_card_iscsi_wizard_button_is_restricted(cls):
         """
         This method returns True if the iSCSI wizard button is locked and not clickable otherwise it returns False.
 
         :return: True if the iSCSI wizard button is locked and not clickable otherwise it returns False.
 
         Example:
-           - Common_Shares.assert_iscsi_wizard_button_is_locked_and_not_clickable()
+           - Common_Shares.assert_iscsi_wizard_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('iscsi-share-wizard')
+        return COM.assert_button_is_restricted('iscsi-share-wizard')
 
     @classmethod
-    def assert_card_share_delete_button_is_locked_and_not_clickable(cls, share_type: str, name: str) -> bool:
+    def assert_card_share_delete_button_is_restricted(cls, share_type: str, name: str) -> bool:
         """
          This method verifies that the delete button is locked and not clickable.
 
@@ -95,9 +95,9 @@ class Common_Shares:
          :return: True if the delete button is locked and not clickable otherwise it returns False.
 
          Example:
-            - Common_Shares.assert_share_delete_button_is_locked_and_not_clickable('smb', 'share-1')
+            - Common_Shares.assert_share_delete_button_is_restricted('smb', 'share-1')
         """
-        return COM.assert_button_is_locked_and_not_clickable(f'card-{share_type}-share-{name.lower()}-delete-row-action')
+        return COM.assert_button_is_restricted(f'card-{share_type}-share-{name.lower()}-delete-row-action')
 
     @classmethod
     def assert_card_share_enabled_toggle_is_enabled(cls, share_type: str, name: str) -> bool:
@@ -130,7 +130,7 @@ class Common_Shares:
            - Common_Shares.assert_share_enabled_toggle_is_locked_and_disabled('smb', 'share-1')
            - Common_Shares.assert_share_enabled_toggle_is_locked_and_disabled('nfs', 'tank/nfsshare')
         """
-        return COM.assert_toggle_is_locked_and_not_clickable(f'enabled-card-{share_type}-share-{name}-row-toggle')
+        return COM.assert_toggle_is_restricted(f'enabled-card-{share_type}-share-{name}-row-toggle')
 
     @classmethod
     def assert_card_share_has_no_shares(cls, share_type: str) -> bool:
@@ -148,7 +148,7 @@ class Common_Shares:
             f'//ix-{share_type}-card//h3[contains(text(),"No records have been added yet")]'))
 
     @classmethod
-    def assert_disable_share_service_is_locked_and_not_clickable(cls, share_type: str) -> bool:
+    def assert_disable_share_service_is_restricted(cls, share_type: str) -> bool:
         """
         This method verifies that the disable share service button is locked and not clickable.
 
@@ -156,16 +156,16 @@ class Common_Shares:
         :return: True if the disable share service button is locked and not clickable otherwise it returns False.
 
         Example:
-           - Common_Shares.assert_disable_share_service_is_locked_and_not_clickable('smb')
+           - Common_Shares.assert_disable_share_service_is_restricted('smb')
         """
         COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(share_type))
         share_type = SS.return_backend_service_name(share_type, True)
-        result = COM.assert_button_is_locked_and_not_clickable(f'{share_type}-actions-menu-turn-off-service')
+        result = COM.assert_button_is_restricted(f'{share_type}-actions-menu-turn-off-service')
         WebUI.send_key('esc')
         return result
 
     @classmethod
-    def assert_enable_share_service_is_locked_and_not_clickable(cls, share_type: str) -> bool:
+    def assert_enable_share_service_is_restricted(cls, share_type: str) -> bool:
         """
         This method verifies that the enable share service button is locked and not clickable.
 
@@ -173,11 +173,11 @@ class Common_Shares:
         :return: True if the enable share service button is locked and not clickable otherwise it returns False.
 
         Example:
-           - Common_Shares.assert_enable_share_service_is_locked_and_not_clickable('smb')
+           - Common_Shares.assert_enable_share_service_is_restricted('smb')
         """
         COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(share_type))
         share_type = SS.return_backend_service_name(share_type, True)
-        result = COM.assert_button_is_locked_and_not_clickable(f'{share_type}-actions-menu-turn-on-service')
+        result = COM.assert_button_is_restricted(f'{share_type}-actions-menu-turn-on-service')
         WebUI.send_key('esc')
         return result
 

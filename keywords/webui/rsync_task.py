@@ -6,19 +6,19 @@ from keywords.webui.common import Common as COM
 
 class Rsync_Task:
     @classmethod
-    def assert_add_rsync_task_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_add_rsync_task_button_is_restricted(cls) -> bool:
         """
         This method verifies if the add rsync task button is locked and not clickable.
 
         :return: True if the add rsync task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Rsync_Task.assert_add_rsync_task_button_is_locked_and_not_clickable()
+            - Rsync_Task.assert_add_rsync_task_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('add-task')
+        return COM.assert_button_is_restricted('add-task')
 
     @classmethod
-    def assert_delete_rsync_task_button_is_locked_and_not_clickable(cls, path: str) -> bool:
+    def assert_delete_rsync_task_button_is_restricted(cls, path: str) -> bool:
         """
         This method verifies if the delete rsync task button is locked and not clickable.
 
@@ -26,12 +26,12 @@ class Rsync_Task:
         :return: True if the delete rsync task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_delete_rsync_task_button_is_locked_and_not_clickable('/my/Rep/Path')
+            - Data_Protection.assert_delete_rsync_task_button_is_restricted('/my/Rep/Path')
         """
         xpath_ip = COM.convert_to_tag_format(private_config['REP_DEST_IP'])
         xpath_path = COM.convert_to_tag_format(path)
         xpath = f'rsync-task{xpath_path}-{xpath_ip}-delete-row-action'
-        return COM.assert_button_is_locked_and_not_clickable(xpath)
+        return COM.assert_button_is_restricted(xpath)
 
     @classmethod
     def assert_edit_rsync_task_panel_header_is_visible(cls) -> bool:
@@ -72,7 +72,7 @@ class Rsync_Task:
         return COM.assert_page_header('Rsync Task')
 
     @classmethod
-    def assert_run_rsync_task_button_is_locked_and_not_clickable(cls, path: str) -> bool:
+    def assert_run_rsync_task_button_is_restricted(cls, path: str) -> bool:
         """
         This method verifies if the run now rsync task button is locked and not clickable.
 
@@ -80,12 +80,12 @@ class Rsync_Task:
         :return: True if the run now rsync task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_run_rsync_task_button_is_locked_and_not_clickable('/my/Rep/Path')
+            - Data_Protection.assert_run_rsync_task_button_is_restricted('/my/Rep/Path')
         """
         xpath_ip = COM.convert_to_tag_format(private_config['REP_DEST_IP'])
         xpath_path = COM.convert_to_tag_format(path)
         xpath = f'rsync-task{xpath_path}-{xpath_ip}-play-arrow-row-action'
-        return COM.assert_button_is_locked_and_not_clickable(xpath)
+        return COM.assert_button_is_restricted(xpath)
 
     @classmethod
     def click_edit_rsync_task_by_path(cls, path: str) -> None:

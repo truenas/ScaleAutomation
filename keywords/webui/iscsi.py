@@ -91,19 +91,19 @@ class iSCSI:
         return WebUI.wait_until_visible(xpaths.iscsi.iscsi_target_name(target_name))
 
     @classmethod
-    def assert_iscsi_wizard_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_iscsi_wizard_button_is_restricted(cls) -> bool:
         """
         This method verifies that the iSCSI wizard button is locked and not clickable on the iSCSI sharing page.
 
         :return: True if the iSCSI wizard button is locked and not clickable otherwise it returns False.
 
         Example:
-            - iSCSI.assert_iscsi_wizard_button_is_locked_and_not_clickable()
+            - iSCSI.assert_iscsi_wizard_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('wizard')
+        return COM.assert_button_is_restricted('wizard')
 
     @classmethod
-    def assert_tab_add_button_is_locked_and_not_clickable(cls, tab_name: str) -> bool:
+    def assert_tab_add_button_is_restricted(cls, tab_name: str) -> bool:
         """
         This method asserts that the Add button in the given tab is locked and not clickable.
 
@@ -111,7 +111,7 @@ class iSCSI:
         :return: True if the Add button in the given tab is locked and not clickable, otherwise it returns False.
 
         Example:
-            - iSCSI.assert_tab_add_button_is_locked_and_not_clickable('Targets')
+            - iSCSI.assert_tab_add_button_is_restricted('Targets')
         """
         match tab_name.lower():
             case 'associated targets' | 'authorized access':
@@ -124,10 +124,10 @@ class iSCSI:
                 tab = 'target'
             case _:
                 tab = tab_name.lower()
-        return COM.assert_button_is_locked_and_not_clickable(f'add-{tab}')
+        return COM.assert_button_is_restricted(f'add-{tab}')
 
     @classmethod
-    def assert_tab_row_item_delete_button_is_locked_and_not_clickable(cls, tab_name: str, row_item: str) -> bool:
+    def assert_tab_row_item_delete_button_is_restricted(cls, tab_name: str, row_item: str) -> bool:
         """
         This method asserts that the Delete button in the given tab is locked and not clickable.
 
@@ -136,7 +136,7 @@ class iSCSI:
         :return: True if the Delete button in the given tab is locked and not clickable, otherwise it returns False.
 
         Example:
-            - iSCSI.assert_tab_delete_button_is_locked_and_not_clickable('Targets', 'target-1')
+            - iSCSI.assert_tab_delete_button_is_restricted('Targets', 'target-1')
         """
         match tab_name.lower():
             case 'authorized access':
@@ -145,7 +145,7 @@ class iSCSI:
                 tab = 'initiator'
             case _:
                 tab = tab_name.replace(' ', '-').lower().rstrip('s')
-        return COM.assert_button_is_locked_and_not_clickable(f'iscsi-{tab}-{row_item}-delete-row-action')
+        return COM.assert_button_is_restricted(f'iscsi-{tab}-{row_item}-delete-row-action')
 
     @classmethod
     def click_on_the_tab_row_item_edit_button(cls, tab_name: str, row_item: str) -> None:
