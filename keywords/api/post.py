@@ -87,8 +87,7 @@ class API_POST:
                 }
             }
         }
-        response = POST('/certificateauthority/', payload)
-        return response
+        return POST('/certificateauthority/', payload)
 
     @classmethod
     def create_certificate_signing_requests(cls, data: dict) -> dict:
@@ -117,6 +116,61 @@ class API_POST:
         job_status = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
         assert job_status['state'] == 'SUCCESS', job_status['results']
         return job_status
+
+    @classmethod
+    def create_cloud_sync_credential(cls, name: str, provider: str, access_key: str, secret_key: str) -> Response:
+        """
+        This method creates the given cloud sync credential.
+
+        :param name: is the name of the cloud sync.
+        :param provider: is the provider of the cloud sync.
+        :param access_key: is the access_key of the cloud sync.
+        :param secret_key: is the secret_key of the cloud sync.
+        :return: the API request response.
+
+        Example:
+            - API_POST.create_cloud_sync_credential('name', 'provider', 'access key', 'secret key')
+        """
+        payload = {
+          "name": name,
+          "provider": provider,
+          "attributes": {
+            "access_key_id": access_key,
+            "secret_access_key": secret_key
+          }
+        }
+        response = POST('/cloudsync/credentials', payload)
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def create_cloud_sync_task(cls, name: str, description: str) -> Response:
+        """
+        This method creates the given cloud sync task.
+
+        :param name: is name of the cloud sync credential.
+        :param description: is the description of the cloud sync task.
+        :return: the API request response.
+
+        Example:
+            - API_POST.create_cloud_sync_task('description')
+        """
+        response = GET(f'/cloudsync/credentials?name={name}').json()
+        cred_id = response[0]['id'] if response else 0
+        payload = {
+          "description": description,
+          "path": "/mnt/tank",
+          "credentials": cred_id,
+          "direction": "PULL",
+          "transfer_mode": "COPY",
+          "attributes": {
+            "bucket": "qaostest",
+            "folder": "/"
+          }
+        }
+        response = POST('/cloudsync', payload)
+        assert response.status_code == 200, response.text
+        return response
 
     @classmethod
     def create_dataset(cls, name: str, sharetype: str = 'GENERIC') -> Response:
@@ -227,7 +281,7 @@ class API_POST:
                 "ssh_password_enabled": True,
                 "smb": eval(smb_auth.lower().capitalize())
             }
-            response = POST(f'/user', payload)
+            response = POST('/user', payload)
             assert response.status_code == 200, response.text
         return response
 
@@ -259,7 +313,7 @@ class API_POST:
                 "ssh_password_enabled": True,
                 "smb": eval(smb_auth.lower().capitalize())
             }
-            response = POST(f'/user', payload)
+            response = POST('/user', payload)
             assert response.status_code == 200, response.text
         return response
 
@@ -380,7 +434,7 @@ class API_POST:
         }
         response = POST('/pool/scrub', payload)
         if response.status_code != 200:
-            print("@@@ CREATE SCRUB TASK: " + response.text)
+            print(f"@@@ CREATE SCRUB TASK: {response.text}")
         return response
 
     @classmethod
@@ -410,7 +464,7 @@ class API_POST:
                     "comment": comment
                 }
                 response = POST(f'/sharing/{sharetype}', payload)
-            if sharetype == 'nfs':
+            elif sharetype == 'nfs':
                 response = POST(f'/sharing/{sharetype}/', {"path": path, "comment": comment})
             assert response.status_code == 200, response.text
         return response
@@ -660,7 +714,7 @@ class API_POST:
         :param payload: is the payload for the api call.
         :return: the API request response.
         """
-        response = POST(f'/filesystem/setacl', payload)
+        response = POST('/filesystem/setacl', payload)
         assert response.status_code == 200, response.text
         return response
 
@@ -810,60 +864,3 @@ class API_POST:
         unlock_options = {"datasets": [{"name": dataset, "passphrase": "encryption"}]}
         payload = {"id": dataset, "unlock_options": unlock_options}
         return cls.toggle_dataset_lock_by_state(payload, 'unlock', 'remote')
-
-    @classmethod
-    def create_cloud_sync_credential(cls, name: str, provider: str, access_key: str, secret_key: str) -> Response:
-        """
-        This method creates the given cloud sync credential.
-
-        :param name: is the name of the cloud sync.
-        :param provider: is the provider of the cloud sync.
-        :param access_key: is the access_key of the cloud sync.
-        :param secret_key: is the secret_key of the cloud sync.
-        :return: the API request response.
-
-        Example:
-            - API_POST.create_cloud_sync_credential('name', 'provider', 'access key', 'secret key')
-        """
-        payload = {
-          "name": name,
-          "provider": provider,
-          "attributes": {
-            "access_key_id": access_key,
-            "secret_access_key": secret_key
-          }
-        }
-        response = POST('/cloudsync/credentials', payload)
-        assert response.status_code == 200, response.text
-        return response
-
-    @classmethod
-    def create_cloud_sync_task(cls, name: str, description: str) -> Response:
-        """
-        This method creates the given cloud sync task.
-
-        :param name: is name of the cloud sync credential.
-        :param description: is the description of the cloud sync task.
-        :return: the API request response.
-
-        Example:
-            - API_POST.create_cloud_sync_task('description')
-        """
-        cred_id = 0
-        response = GET(f'/cloudsync/credentials?name={name}').json()
-        if response:
-            cred_id = response[0]['id']
-        payload = {
-          "description": description,
-          "path": "/mnt/tank",
-          "credentials": cred_id,
-          "direction": "PULL",
-          "transfer_mode": "COPY",
-          "attributes": {
-            "bucket": "qaostest",
-            "folder": "/"
-          }
-        }
-        response = POST('/cloudsync', payload)
-        assert response.status_code == 200, response.text
-        return response

@@ -1,4 +1,5 @@
 import xpaths
+from helper.global_config import shared_config, private_config
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
@@ -29,6 +30,18 @@ class Data_Protection:
             - Data_Protection.assert_add_periodic_snapshot_task_button_is_locked_and_not_clickable()
         """
         return COM.assert_button_is_locked_and_not_clickable('snapshot-task-add')
+
+    @classmethod
+    def assert_add_rsync_task_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method verifies if the add rsync task button is locked and not clickable.
+
+        :return: True if the add rsync task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_add_rsync_task_button_is_locked_and_not_clickable()
+        """
+        return COM.assert_button_is_locked_and_not_clickable('rsync-task-add')
 
     @classmethod
     def assert_add_scrub_task_button_is_locked_and_not_clickable(cls) -> bool:
@@ -95,6 +108,22 @@ class Data_Protection:
         """
         path = COM.convert_to_tag_format(path)
         return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.periodic_snapshot_task_delete_button(path))
+
+    @classmethod
+    def assert_delete_rsync_task_button_is_locked_and_not_clickable(cls, path: str) -> bool:
+        """
+        This method verifies if the delete rsync task button is locked and not clickable.
+
+        :param path: path of the rsync task
+        :return: True if the delete rsync task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_delete_rsync_task_button_is_locked_and_not_clickable('/my/Rep/Path')
+        """
+        xpath_ip = COM.convert_to_tag_format(private_config['REP_DEST_IP'])
+        xpath_path = COM.convert_to_tag_format(path)
+        xpath = f'card-rsync-task{xpath_path}-{xpath_ip}-delete-row-action'
+        return COM.assert_button_is_locked_and_not_clickable(xpath)
 
     @classmethod
     def assert_delete_scrub_task_button_is_locked_and_not_clickable(cls, description: str) -> bool:
@@ -167,6 +196,22 @@ class Data_Protection:
         return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.periodic_snapshot_task_enable_toggle(path))
 
     @classmethod
+    def assert_enable_rsync_task_toggle_is_locked_and_not_clickable(cls, path: str) -> bool:
+        """
+        This method verifies if the enable rsync task toggle is locked and not clickable.
+
+        :param path: path of the rsync task
+        :return: True if the enable rsync task toggle is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_enable_rsync_task_toggle_is_locked_and_not_clickable('/my/Rep/Path')
+        """
+        xpath_ip = COM.convert_to_tag_format(private_config['REP_DEST_IP'])
+        xpath_path = COM.convert_to_tag_format(path)
+        xpath = f'enabled-card-rsync-task{xpath_path}-{xpath_ip}-row-toggle'
+        return COM.assert_toggle_is_locked_and_not_clickable(xpath)
+
+    @classmethod
     def assert_enable_scrub_task_toggle_is_locked_and_not_clickable(cls, description: str) -> bool:
         """
         This method verifies if the enable scrub task toggle is locked and not clickable.
@@ -233,6 +278,50 @@ class Data_Protection:
         """
         description = COM.convert_to_tag_format(description)
         return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.cloud_sync_task_run_now_button(description))
+
+    @classmethod
+    def assert_run_rsync_task_button_is_locked_and_not_clickable(cls, path: str) -> bool:
+        """
+        This method verifies if the run now rsync task button is locked and not clickable.
+
+        :param path: path of the rsync task
+        :return: True if the run now rsync task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_run_rsync_task_button_is_locked_and_not_clickable('/my/Rep/Path')
+        """
+        xpath_ip = COM.convert_to_tag_format(private_config['REP_DEST_IP'])
+        xpath_path = COM.convert_to_tag_format(path)
+        xpath = f'card-rsync-task{xpath_path}-{xpath_ip}-play-arrow-row-action'
+        return COM.assert_button_is_locked_and_not_clickable(xpath)
+
+    @classmethod
+    def assert_rsync_task_card_header_is_visible(cls) -> bool:
+        """
+        This method verifies if the rsync task card header is visible.
+
+        :return: True if the rsync task card header is visible, otherwise False.
+
+        Example:
+            - Rsync_Task.assert_rsync_task_card_header_is_visible()
+        """
+        return COM.is_card_visible('Rsync Task')
+
+    @classmethod
+    def assert_rsync_task_is_visible_on_card(cls, path: str) -> bool:
+        """
+        This method verifies if the given rsync path is visible.
+
+        :param path: is the name of the given rsync path.
+        :return: True if the given rsync task is visible, otherwise False.
+
+        Example:
+            - Rsync_Task.assert_rsync_task_is_visible('/my/Rep/Path')
+        """
+        xpath_ip = private_config['REP_DEST_IP'].replace('.', '-')
+        xpath_path = COM.convert_to_tag_format(path)
+        task_xpath = f'//*[@data-test="text-path-card-rsync-task{xpath_path}-{xpath_ip}-row-text"]'
+        return WebUI.wait_until_visible(task_xpath, shared_config['MEDIUM_WAIT'])
 
     @classmethod
     def assert_scrub_task_description(cls, description: str) -> bool:
@@ -312,6 +401,20 @@ class Data_Protection:
         COM.assert_right_panel_header('Edit Replication Task')
 
     @classmethod
+    def click_edit_rsync_task_by_path(cls, path: str) -> None:
+        """
+        This method clicks the edit button for the given rsync task
+
+        :param path: the path of the given rsync task
+
+        Example:
+            - Data_Protection.click_edit_rsync_task_by_dataset('/mnt/tank/dataset')
+        """
+        xpath_ip = COM.convert_to_tag_format(private_config['REP_DEST_IP'])
+        xpath_path = COM.convert_to_tag_format(path)
+        COM.click_button(f'card-rsync-task{xpath_path}-{xpath_ip}-edit-row-action')
+
+    @classmethod
     def click_edit_scrub_task(cls, description: str) -> None:
         """
         This method clicks the edit button for the given scrub task
@@ -352,6 +455,16 @@ class Data_Protection:
         path = COM.convert_to_tag_format(path)
         COM.click_on_element(xpaths.data_protection.vm_periodic_snapshot_task_edit_button(path))
         COM.assert_right_panel_header('Edit VM Periodic Snapshot Task')
+
+    @classmethod
+    def click_the_rsync_task_header_link(cls):
+        """
+        This method clicks the rsync task card title link.
+
+        Example:
+            - Rsync_Task.click_the_rsync_task_title_link()
+        """
+        COM.click_link("rsync-task-open-in-new")
 
     @classmethod
     def click_snapshots_button(cls) -> None:
@@ -438,4 +551,7 @@ class Data_Protection:
         Example:
             - Data_Protection.set_schedule('weekly')
         """
-        COM.select_option('schedule-presets', 'schedule-presets-' + COM.convert_to_tag_format(schedule))
+        COM.select_option(
+            'schedule-presets',
+            f'schedule-presets-{COM.convert_to_tag_format(schedule)}',
+        )
