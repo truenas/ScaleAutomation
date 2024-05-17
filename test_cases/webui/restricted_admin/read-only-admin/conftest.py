@@ -8,7 +8,7 @@ from keywords.webui.common import Common
 @pytest.fixture(autouse=True, scope='package')
 def setup_user():
     """
-    This setup fixture create the  read-only admin for the session.
+    This setup fixture create the read-only admin for the session.
     """
     print(f'Username: {shared_config["ROA_USER"]}')
     API_POST.create_read_only_admin(shared_config['ROA_USER'], shared_config['ROA_FULLNAME'], shared_config['ROA_PASSWORD'])

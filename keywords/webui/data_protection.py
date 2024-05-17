@@ -8,76 +8,76 @@ from keywords.webui.navigation import Navigation as NAV
 class Data_Protection:
 
     @classmethod
-    def assert_add_cloud_sync_task_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_add_cloud_sync_task_button_is_restricted(cls) -> bool:
         """
         This method verifies if the add cloud sync task button is locked and not clickable.
 
         :return: True if the add cloud sync task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_add_cloud_sync_task_button_is_locked_and_not_clickable()
+            - Data_Protection.assert_add_cloud_sync_task_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('cloudsync-task-add')
+        return COM.assert_button_is_restricted('cloudsync-task-add')
 
     @classmethod
-    def assert_add_periodic_snapshot_task_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_add_periodic_snapshot_task_button_is_restricted(cls) -> bool:
         """
         This method verifies if the add periodic snapshot task button is locked and not clickable.
 
         :return: True if the add periodic snapshot task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_add_periodic_snapshot_task_button_is_locked_and_not_clickable()
+            - Data_Protection.assert_add_periodic_snapshot_task_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('snapshot-task-add')
+        return COM.assert_button_is_restricted('snapshot-task-add')
 
     @classmethod
-    def assert_add_rsync_task_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_add_rsync_task_button_is_restricted(cls) -> bool:
         """
         This method verifies if the add rsync task button is locked and not clickable.
 
         :return: True if the add rsync task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_add_rsync_task_button_is_locked_and_not_clickable()
+            - Data_Protection.assert_add_rsync_task_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('rsync-task-add')
+        return COM.assert_button_is_restricted('rsync-task-add')
 
     @classmethod
-    def assert_add_scrub_task_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_add_scrub_task_button_is_restricted(cls) -> bool:
         """
         This method verifies if the add scrub task button is locked and not clickable.
 
         :return: True if the add scrub task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_add_scrub_task_button_is_locked_and_not_clickable()
+            - Data_Protection.assert_add_scrub_task_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('scrub-task-add')
+        return COM.assert_button_is_restricted('scrub-task-add')
 
     @classmethod
-    def assert_add_smart_test_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_add_smart_test_button_is_restricted(cls) -> bool:
         """
         This method verifies if the add smart test button is locked and not clickable.
 
         :return: True if the add smart test button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_add_smart_test_button_is_locked_and_not_clickable()
+            - Data_Protection.assert_add_smart_test_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('smart-task-add')
+        return COM.assert_button_is_restricted('smart-task-add')
 
     @classmethod
-    def assert_add_vm_periodic_snapshot_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_add_vm_periodic_snapshot_button_is_restricted(cls) -> bool:
         """
         This method verifies if the add vm periodic snapshot button is locked and not clickable.
 
         :return: True if the add vm periodic snapshot button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_add_vm_periodic_snapshot_button_is_locked_and_not_clickable()
+            - Data_Protection.assert_add_vm_periodic_snapshot_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('add-vmware-snapshot')
+        return COM.assert_button_is_restricted('add-vmware-snapshot')
 
     @classmethod
     def assert_cloud_sync_task_description(cls, description: str) -> bool:
@@ -94,7 +94,7 @@ class Data_Protection:
         return COM.is_visible(xpaths.data_protection.cloud_sync_task_description(description))
 
     @classmethod
-    def assert_delete_cloud_sync_task_button_is_locked_and_not_clickable(cls, description: str) -> bool:
+    def assert_delete_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
         """
         This method verifies if the delete cloud sync task button is locked and not clickable.
 
@@ -102,13 +102,13 @@ class Data_Protection:
         :return: True if the delete cloud sync task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_delete_cloud_sync_task_button_is_locked_and_not_clickable('description')
+            - Data_Protection.assert_delete_cloud_sync_task_button_is_restricted('description')
         """
         description = COM.convert_to_tag_format(description)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.cloud_sync_task_delete_button(description))
+        return COM.assert_element_is_restricted(xpaths.data_protection.cloud_sync_task_delete_button(description))
 
     @classmethod
-    def assert_delete_periodic_snapshot_task_button_is_locked_and_not_clickable(cls, path: str) -> bool:
+    def assert_delete_periodic_snapshot_task_button_is_restricted(cls, path: str) -> bool:
         """
         This method verifies if the delete periodic snapshot task button is locked and not clickable.
 
@@ -116,13 +116,13 @@ class Data_Protection:
         :return: True if the delete periodic snapshot task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_delete_periodic_snapshot_task_button_is_locked_and_not_clickable('tank/dataset')
+            - Data_Protection.assert_delete_periodic_snapshot_task_button_is_restricted('tank/dataset')
         """
         path = COM.convert_to_tag_format(path)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.periodic_snapshot_task_delete_button(path))
+        return COM.assert_element_is_restricted(xpaths.data_protection.periodic_snapshot_task_delete_button(path))
 
     @classmethod
-    def assert_delete_rsync_task_button_is_locked_and_not_clickable(cls, path: str) -> bool:
+    def assert_delete_rsync_task_button_is_restricted(cls, path: str) -> bool:
         """
         This method verifies if the delete rsync task button is locked and not clickable.
 
@@ -130,15 +130,15 @@ class Data_Protection:
         :return: True if the delete rsync task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_delete_rsync_task_button_is_locked_and_not_clickable('/my/Rep/Path')
+            - Data_Protection.assert_delete_rsync_task_button_is_restricted('/my/Rep/Path')
         """
         xpath_ip = COM.convert_to_tag_format(private_config['REP_DEST_IP'])
         xpath_path = COM.convert_to_tag_format(path)
         xpath = f'card-rsync-task{xpath_path}-{xpath_ip}-delete-row-action'
-        return COM.assert_button_is_locked_and_not_clickable(xpath)
+        return COM.assert_button_is_restricted(xpath)
 
     @classmethod
-    def assert_delete_scrub_task_button_is_locked_and_not_clickable(cls, description: str) -> bool:
+    def assert_delete_scrub_task_button_is_restricted(cls, description: str) -> bool:
         """
         This method verifies if the delete scrub task button is locked and not clickable.
 
@@ -146,13 +146,13 @@ class Data_Protection:
         :return: True if the delete scrub task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_delete_scrub_task_button_is_locked_and_not_clickable('description')
+            - Data_Protection.assert_delete_scrub_task_button_is_restricted('description')
         """
         description = COM.convert_to_tag_format(description)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.scrub_task_delete_button(description))
+        return COM.assert_element_is_restricted(xpaths.data_protection.scrub_task_delete_button(description))
 
     @classmethod
-    def assert_delete_smart_test_button_is_locked_and_not_clickable(cls, description: str) -> bool:
+    def assert_delete_smart_test_button_is_restricted(cls, description: str) -> bool:
         """
         This method verifies if the delete smart test button is locked and not clickable.
 
@@ -160,12 +160,12 @@ class Data_Protection:
         :return: True if the delete smart test button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_delete_smart_test_button_is_locked_and_not_clickable('description')
+            - Data_Protection.assert_delete_smart_test_button_is_restricted('description')
         """
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.smart_test_delete_button(description))
+        return COM.assert_element_is_restricted(xpaths.data_protection.smart_test_delete_button(description))
 
     @classmethod
-    def assert_delete_vm_periodic_snapshot_task_button_is_locked_and_not_clickable(cls, path: str) -> bool:
+    def assert_delete_vm_periodic_snapshot_task_button_is_restricted(cls, path: str) -> bool:
         """
         This method verifies if the delete vm periodic snapshot task button is locked and not clickable.
 
@@ -173,13 +173,13 @@ class Data_Protection:
         :return: True if the delete vm periodic snapshot task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_delete_vm_periodic_snapshot_task_button_is_locked_and_not_clickable('tank/dataset')
+            - Data_Protection.assert_delete_vm_periodic_snapshot_task_button_is_restricted('tank/dataset')
         """
         path = COM.convert_to_tag_format(path)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.vm_periodic_snapshot_task_delete_button(path))
+        return COM.assert_element_is_restricted(xpaths.data_protection.vm_periodic_snapshot_task_delete_button(path))
 
     @classmethod
-    def assert_dry_run_cloud_sync_task_button_is_locked_and_not_clickable(cls, description: str) -> bool:
+    def assert_dry_run_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
         """
         This method verifies if the dry run cloud sync task button is locked and not clickable.
 
@@ -187,13 +187,13 @@ class Data_Protection:
         :return: True if the dry run cloud sync task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_dry_run_cloud_sync_task_button_is_locked_and_not_clickable('description')
+            - Data_Protection.assert_dry_run_cloud_sync_task_button_is_restricted('description')
         """
         description = COM.convert_to_tag_format(description)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.cloud_sync_task_dry_run_button(description))
+        return COM.assert_element_is_restricted(xpaths.data_protection.cloud_sync_task_dry_run_button(description))
 
     @classmethod
-    def assert_enable_cloud_sync_task_toggle_is_locked_and_not_clickable(cls, description: str) -> bool:
+    def assert_enable_cloud_sync_task_toggle_is_restricted(cls, description: str) -> bool:
         """
         This method verifies if the enable cloud sync task toggle is locked and not clickable.
 
@@ -201,13 +201,13 @@ class Data_Protection:
         :return: True if the enable cloud sync task toggle is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_enable_cloud_sync_task_toggle_is_locked_and_not_clickable('description')
+            - Data_Protection.assert_enable_cloud_sync_task_toggle_is_restricted('description')
         """
         description = COM.convert_to_tag_format(description)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.cloud_sync_task_enable_toggle(description))
+        return COM.assert_element_is_restricted(xpaths.data_protection.cloud_sync_task_enable_toggle(description))
 
     @classmethod
-    def assert_enable_periodic_snapshot_task_toggle_is_locked_and_not_clickable(cls, path: str) -> bool:
+    def assert_enable_periodic_snapshot_task_toggle_is_restricted(cls, path: str) -> bool:
         """
         This method verifies if the enable periodic snapshot task toggle is locked and not clickable.
 
@@ -215,13 +215,13 @@ class Data_Protection:
         :return: True if the enable periodic snapshot task toggle is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_enable_periodic_snapshot_task_toggle_is_locked_and_not_clickable('tank/dataset')
+            - Data_Protection.assert_enable_periodic_snapshot_task_toggle_is_restricted('tank/dataset')
         """
         path = COM.convert_to_tag_format(path)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.periodic_snapshot_task_enable_toggle(path))
+        return COM.assert_element_is_restricted(xpaths.data_protection.periodic_snapshot_task_enable_toggle(path))
 
     @classmethod
-    def assert_enable_rsync_task_toggle_is_locked_and_not_clickable(cls, path: str) -> bool:
+    def assert_enable_rsync_task_toggle_is_restricted(cls, path: str) -> bool:
         """
         This method verifies if the enable rsync task toggle is locked and not clickable.
 
@@ -229,15 +229,15 @@ class Data_Protection:
         :return: True if the enable rsync task toggle is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_enable_rsync_task_toggle_is_locked_and_not_clickable('/my/Rep/Path')
+            - Data_Protection.assert_enable_rsync_task_toggle_is_restricted('/my/Rep/Path')
         """
         xpath_ip = COM.convert_to_tag_format(private_config['REP_DEST_IP'])
         xpath_path = COM.convert_to_tag_format(path)
         xpath = f'enabled-card-rsync-task{xpath_path}-{xpath_ip}-row-toggle'
-        return COM.assert_toggle_is_locked_and_not_clickable(xpath)
+        return COM.assert_toggle_is_restricted(xpath)
 
     @classmethod
-    def assert_enable_scrub_task_toggle_is_locked_and_not_clickable(cls, description: str) -> bool:
+    def assert_enable_scrub_task_toggle_is_restricted(cls, description: str) -> bool:
         """
         This method verifies if the enable scrub task toggle is locked and not clickable.
 
@@ -245,10 +245,10 @@ class Data_Protection:
         :return: True if the enable scrub task toggle is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_enable_scrub_task_toggle_is_locked_and_not_clickable('description')
+            - Data_Protection.assert_enable_scrub_task_toggle_is_restricted('description')
         """
         description = COM.convert_to_tag_format(description)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.scrub_task_enable_toggle(description))
+        return COM.assert_element_is_restricted(xpaths.data_protection.scrub_task_enable_toggle(description))
 
     @classmethod
     def assert_periodic_snapshot_task_dataset(cls, path: str) -> bool:
@@ -277,7 +277,7 @@ class Data_Protection:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_header("Presets", 4))
 
     @classmethod
-    def assert_restore_cloud_sync_task_button_is_locked_and_not_clickable(cls, description: str) -> bool:
+    def assert_restore_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
         """
         This method verifies if the restore cloud sync task button is locked and not clickable.
 
@@ -285,13 +285,13 @@ class Data_Protection:
         :return: True if the restore cloud sync task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_restore_cloud_sync_task_button_is_locked_and_not_clickable('description')
+            - Data_Protection.assert_restore_cloud_sync_task_button_is_restricted('description')
         """
         description = COM.convert_to_tag_format(description)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.cloud_sync_task_restore_button(description))
+        return COM.assert_element_is_restricted(xpaths.data_protection.cloud_sync_task_restore_button(description))
 
     @classmethod
-    def assert_run_cloud_sync_task_button_is_locked_and_not_clickable(cls, description: str) -> bool:
+    def assert_run_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
         """
         This method verifies if the run now cloud sync task button is locked and not clickable.
 
@@ -299,13 +299,13 @@ class Data_Protection:
         :return: True if the run now cloud sync task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_run_cloud_sync_task_button_is_locked_and_not_clickable('description')
+            - Data_Protection.assert_run_cloud_sync_task_button_is_restricted('description')
         """
         description = COM.convert_to_tag_format(description)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.cloud_sync_task_run_now_button(description))
+        return COM.assert_element_is_restricted(xpaths.data_protection.cloud_sync_task_run_now_button(description))
 
     @classmethod
-    def assert_run_rsync_task_button_is_locked_and_not_clickable(cls, path: str) -> bool:
+    def assert_run_rsync_task_button_is_restricted(cls, path: str) -> bool:
         """
         This method verifies if the run now rsync task button is locked and not clickable.
 
@@ -313,12 +313,12 @@ class Data_Protection:
         :return: True if the run now rsync task button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_run_rsync_task_button_is_locked_and_not_clickable('/my/Rep/Path')
+            - Data_Protection.assert_run_rsync_task_button_is_restricted('/my/Rep/Path')
         """
         xpath_ip = COM.convert_to_tag_format(private_config['REP_DEST_IP'])
         xpath_path = COM.convert_to_tag_format(path)
         xpath = f'card-rsync-task{xpath_path}-{xpath_ip}-play-arrow-row-action'
-        return COM.assert_button_is_locked_and_not_clickable(xpath)
+        return COM.assert_button_is_restricted(xpath)
 
     @classmethod
     def assert_rsync_task_card_header_is_visible(cls) -> bool:
@@ -363,40 +363,40 @@ class Data_Protection:
         return COM.is_visible(xpaths.data_protection.scrub_task_description(description))
 
     @classmethod
-    def assert_smart_page_add_smart_test_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_smart_page_add_smart_test_button_is_restricted(cls) -> bool:
         """
         This method verifies if the add smart test button is locked and not clickable.
 
         :return: True if the add smart test button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_smart_page_add_smart_test_button_is_locked_and_not_clickable()
+            - Data_Protection.assert_smart_page_add_smart_test_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('periodic-s-m-a-r-t-tests-add')
+        return COM.assert_button_is_restricted('periodic-s-m-a-r-t-tests-add')
 
     @classmethod
-    def assert_smart_page_delete_smart_test_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_smart_page_delete_smart_test_button_is_restricted(cls) -> bool:
         """
         This method verifies if the delete smart test button is locked and not clickable.
 
         :return: True if the delete smart test button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_smart_page_delete_smart_test_button_is_locked_and_not_clickable()
+            - Data_Protection.assert_smart_page_delete_smart_test_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('periodic-s-m-a-r-t-tests-options-delete')
+        return COM.assert_button_is_restricted('periodic-s-m-a-r-t-tests-options-delete')
 
     @classmethod
-    def assert_smart_page_save_smart_test_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_smart_page_save_smart_test_button_is_restricted(cls) -> bool:
         """
         This method verifies if the save smart test button is locked and not clickable.
 
         :return: True if the save smart test button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Data_Protection.assert_smart_page_save_smart_test_button_is_locked_and_not_clickable()
+            - Data_Protection.assert_smart_page_save_smart_test_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('save')
+        return COM.assert_button_is_restricted('save')
 
     @classmethod
     def assert_smart_page_smart_test_description(cls, description: str) -> bool:

@@ -104,7 +104,7 @@ class Test_Read_Only_Admin_Local_Users:
         Test Steps:
         1. Verify the add Local Users button is locked and not clickable
         """
-        assert LU.assert_add_local_user_button_is_locked_and_not_clickable() is True
+        assert LU.assert_add_local_user_button_is_restricted() is True
 
     @allure.tag("Read")
     @allure.story("Read Only Admin Is Not Able to delete a Local Users")
@@ -117,7 +117,7 @@ class Test_Read_Only_Admin_Local_Users:
         2. Verify the delete Local Users button is locked and not clickable
         """
         LU.expand_user("roa")
-        assert LU.assert_delete_local_user_button_is_locked_and_not_clickable('roa') is True
+        assert LU.assert_delete_local_user_button_is_restricted('roa') is True
 
     @allure.tag("Read")
     @allure.story("Read Only Admin Is Not Able to modify a Local Users")
@@ -133,5 +133,5 @@ class Test_Read_Only_Admin_Local_Users:
         """
         LU.expand_user("roa")
         LU.click_user_edit_button()
-        assert COM.assert_button_is_locked_and_not_clickable('save') is True
+        assert COM.assert_button_is_restricted('save') is True
         COM.close_right_panel()
