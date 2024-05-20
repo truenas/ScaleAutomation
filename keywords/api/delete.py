@@ -178,7 +178,7 @@ class API_DELETE:
         """
         This method deletes replication task by the given name.
 
-        :param name: is the replication nome.
+        :param name: is the replication name.
         :return: the API request response.
 
         Example:
@@ -196,7 +196,7 @@ class API_DELETE:
         """
         This method deletes scrub task by the given pool_name.
 
-        :param pool_name: is the pool nome.
+        :param pool_name: is the pool name.
         :return: the API request response.
 
         Example:
@@ -215,7 +215,7 @@ class API_DELETE:
         This method deletes the given share by given share type.
 
         :param sharetype: is the type of the given share.
-        :param name: is the share nome.
+        :param name: is the share name.
         :return: the API request response.
         """
         search = 'name='

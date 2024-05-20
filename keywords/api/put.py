@@ -18,7 +18,7 @@ class API_PUT:
         """
         This method disable starting the specified service at boot.
 
-        :param service: is the service nome.
+        :param service: is the service name.
         :return: the API request response.
         """
         return cls.update_service_at_boot(service, False)
@@ -420,4 +420,3 @@ class API_PUT:
         response = PUT(f'/replication/id/{rep_id}', payload)
         assert response.status_code == 200, response.text
         return response
-
