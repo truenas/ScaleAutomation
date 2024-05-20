@@ -33,7 +33,7 @@ class Test_Read_Only_Admin_Cloud_Sync_Tasks:
     @pytest.fixture(autouse=True, scope='class')
     def tear_down_test(self, cloud_sync):
         """
-        Summary: This teardown fixture delete the Scrub Tasks and read-only admin for all test cases.
+        Summary: This teardown fixture delete the Cloud Sync Tasks and read-only admin for all test cases.
         """
         yield
         API_DELETE.delete_cloud_sync_task(cloud_sync['description'])
