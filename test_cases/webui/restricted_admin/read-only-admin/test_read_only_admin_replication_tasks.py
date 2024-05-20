@@ -3,7 +3,7 @@ import pytest
 
 import xpaths.common_xpaths
 from helper.data_config import get_data_list
-from helper.global_config import private_config
+from helper.global_config import private_config, shared_config
 from keywords.api.post import API_POST
 from keywords.api.delete import API_DELETE
 from keywords.api.put import API_PUT
@@ -27,6 +27,8 @@ class Test_Read_Only_Admin_Replication_Tasks:
         Summary: This setup fixture create the dataset and read-only admin for all test cases.
         """
         # Setup SSH connections.
+        COM.logoff_truenas()
+        COM.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_backup_credentials()
         SSHCON.assert_ssh_connection_exists(rep['connection-name'])
         API_PUT.enable_user_all_sudo_commands_no_password(private_config['USERNAME'])
@@ -48,6 +50,8 @@ class Test_Read_Only_Admin_Replication_Tasks:
         API_POST.delete_all_dataset_snapshots(rep['source'])
         API_POST.delete_all_dataset_snapshots(rep['destination'])
         API_POST.create_replication_task(rep['task-name'], rep['source'], rep['destination'])
+        COM.logoff_truenas()
+        COM.login_to_truenas(shared_config['ROA_USER'], shared_config['ROA_PASSWORD'])
         NAV.navigate_to_data_protection()
 
     @pytest.fixture(autouse=True, scope='class')
