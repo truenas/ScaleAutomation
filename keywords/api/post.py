@@ -428,6 +428,7 @@ class API_POST:
         :param direction: is the direction of the replication task. [PUSH/PULL] Defaults to "PUSH"
         :param transport: is the transport of the replication task. [SSH/SSH+NETCAT/LOCAL] Defaults to "LOCAL"
         :param retention: is the transport of the replication task. [SOURCE/CUSTOM/NONE] Defaults to "NONE"
+        :return: the API request response.
 
         Example:
             - API_POST.create_replication_task("Rep_task", "/mnt/tank/source", "/mnt/tank/destination")
