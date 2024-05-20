@@ -359,8 +359,8 @@ class API_PUT:
         :return: the API request response.
 
         Example:
-            - API_POST.set_cloud_sync_task_enabled('name')
-            - API_POST.set_cloud_sync_task_enabled('name', False)
+            - API_PUT.set_cloud_sync_task_enabled('name')
+            - API_PUT.set_cloud_sync_task_enabled('name', False)
         """
         cred_id = 0
         response = GET(f'/cloudsync/credentials?name={name}').json()
@@ -383,8 +383,8 @@ class API_PUT:
         :return: the API request response.
 
         Example:
-            - API_POST.set_periodic_snapshot_task_enabled('name')
-            - API_POST.set_periodic_snapshot_task_enabled('name', False)
+            - API_PUT.set_periodic_snapshot_task_enabled('name')
+            - API_PUT.set_periodic_snapshot_task_enabled('name', False)
         """
         cred_id = 0
         response = GET(f'/pool/snapshottask?dataset={path}').json()
@@ -394,6 +394,30 @@ class API_PUT:
           "enabled": state
         }
         response = PUT(f'/pool/snapshottask/id/{cred_id}', payload)
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def set_replication_task_enabled(cls, name: str, state: bool = True) -> Response:
+        """
+        This method sets the given replication task to the given enabled state.
+
+        :param name: is name of the replication credential.
+        :param state: is the state to set the replication task. Default is True
+        :return: the API request response.
+
+        Example:
+            - API_PUT.set_replication_task_enabled('name')
+            - API_PUT.set_replication_task_enabled('name', False)
+        """
+        rep_id = 0
+        response = GET(f'/replication?name={name}').json()
+        if response:
+            rep_id = response[0]['id']
+        payload = {
+          "enabled": state
+        }
+        response = PUT(f'/replication/id/{rep_id}', payload)
         assert response.status_code == 200, response.text
         return response
 

@@ -174,6 +174,24 @@ class API_DELETE:
         return response
 
     @classmethod
+    def delete_replication_task(cls, name: str) -> Response:
+        """
+        This method deletes replication task by the given name.
+
+        :param name: is the replication nome.
+        :return: the API request response.
+
+        Example:
+            - API_DELETE.delete_replication_task('name')
+        """
+        response = GET(f'/replication?name={name}').json()
+        if response:
+            rep_id = response[0]['id']
+            response = DELETE(f'/replication/id/{rep_id}')
+            assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
     def delete_scrub_task(cls, pool_name: str) -> Response:
         """
         This method deletes scrub task by the given pool_name.
