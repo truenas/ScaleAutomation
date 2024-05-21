@@ -19,7 +19,7 @@ class Snapshots:
         Example:
             - Snapshots.assert_clone_to_new_snapshot_button_is_restricted('test-snapshot')
         """
-        return Common.assert_button_is_restricted(f'clone-{snapshots_name}')
+        return Common.assert_button_is_restricted(f'clone-{Common.convert_to_tag_format(snapshots_name)}')
 
     @classmethod
     def assert_dataset_snapshot_page_header(cls, dataset) -> bool:

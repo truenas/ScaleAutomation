@@ -9,9 +9,9 @@ from selenium.common.exceptions import ElementClickInterceptedException, Timeout
 
 class SMB:
     @classmethod
-    def assert_add_button_is_restricted_on_smb_page(cls):
+    def assert_add_smb_share_button_is_restricted(cls):
         """
-        This method verifies that the add button is locked and not clickable on the SMB page.
+        This method returns True if add SMB share button is locked and not clickable, otherwise it returns False.
 
         :return: True if add SMB share button is locked and not clickable, otherwise it returns False.
 
@@ -171,17 +171,18 @@ class SMB:
         return COM.is_visible(xpath)
 
     @classmethod
-    def assert_share_description(cls, desc: str) -> bool:
+    def assert_share_description(cls, share_name: str, desc: str) -> bool:
         """
         This method verifies that the share description is visible on the Sharing SMB page.
 
         :param desc: is the description of the share
+        :param share_name: is the name of the share
         :return: True if the share description is visible otherwise it returns False.
 
         Example:
             - SMB.assert_share_description('myDescription')
         """
-        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', 'description', desc))
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', share_name, 'description', desc))
 
     @classmethod
     def assert_share_filesystem_acl_configuration_field_visible(cls, field: str) -> bool:
@@ -231,6 +232,33 @@ class SMB:
             - SMB.assert_share_ignore_list('ignore-me')
         """
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@formcontrolname="ignore_list"]//*[contains(text(),"{name}")]'))
+
+    @classmethod
+    def assert_share_name(cls, name: str) -> bool:
+        """
+        This method verifies that the share name is visible on the Sharing SMB page.
+
+        :param name: is the name of the share
+        :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+            - SMB.assert_share_name('myShare')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', name, 'name', name))
+
+    @classmethod
+    def assert_share_path(cls, share_name: str, path: str) -> bool:
+        """
+        This method verifies that the path for the share row of the given share on the Sharing SMB page.
+
+        :param path: path of the given share
+        :param share_name: name of the given share
+        :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+           - SMB.assert_share_path('/mnt/share1')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', share_name, 'path', path))
 
     @classmethod
     def assert_share_watch_list(cls, name: str) -> bool:
@@ -516,7 +544,7 @@ class SMB:
             - SMB.set_ignore_list()
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('ignore-list'))
-        COM.click_on_element(f'//*[@data-test="input-ignore-list"]')
+        COM.click_on_element('//*[@data-test="input-ignore-list"]')
         name = COM.convert_to_tag_format(f'ignore-list-{name}')
         COM.click_on_element(f'//*[@data-test="option-{name}"]')
 
@@ -531,7 +559,7 @@ class SMB:
             - SMB.set_share_purpose('no purpose')
        """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.select_field('purpose')) is True
-        COM.click_on_element(f'//*[@data-test="select-purpose"]')
+        COM.click_on_element('//*[@data-test="select-purpose"]')
         purpose = COM.convert_to_tag_format(purpose)
         COM.click_on_element(f'//*[@data-test="option-purpose-{purpose}"]')
 
@@ -546,9 +574,9 @@ class SMB:
             - SMB.set_watch_list('watch-me')
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('watch-list'))
-        COM.click_on_element(f'//*[@data-test="input-watch-list"]')
+        COM.click_on_element('//*[@data-test="input-watch-list"]')
 
-        name = COM.convert_to_tag_format('watch-list-'+name)
+        name = COM.convert_to_tag_format(f'watch-list-{name}')
         COM.click_on_element(f'//*[@data-test="option-{name}"]')
 
     @classmethod
@@ -560,7 +588,7 @@ class SMB:
             - SMB.verify_smb_audit_page_opens()
         """
         if COM.assert_page_header('Services'):
-            COM.click_link('cifs-logs')
+            COM.click_button('service-smb-receipt-long-row-action')
         elif COM.assert_page_header('Sharing'):
             COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('SMB'))
             COM.click_button('cifs-actions-menu-logs')
@@ -614,7 +642,7 @@ class SMB:
             - SMB.verify_smb_sessions_page_opens()
         """
         if COM.assert_page_header('Services'):
-            COM.click_link('cifs-sessions')
+            COM.click_button('service-smb-list-row-action')
         elif COM.assert_page_header('Sharing'):
             COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('SMB'))
             COM.click_button('cifs-actions-menu-sessions')

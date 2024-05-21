@@ -22,7 +22,7 @@ class Local_Groups:
     @classmethod
     def assert_add_local_group_button_is_restricted(cls) -> bool:
         """
-        This method verifies if the add local group button is locked and not clickable.
+        This method returns True if the add local group button is locked and not clickable
 
         :return: True if the add local group button is locked and not clickable, otherwise it returns False.
 
@@ -34,7 +34,7 @@ class Local_Groups:
     @classmethod
     def assert_delete_local_group_button_is_restricted(cls, name: str) -> bool:
         """
-        This method verifies if the add local group button is locked and not clickable.
+        This method returns True if the add local group button is locked and not clickable.
 
         :param name: is the name of the group to be deleted
         :return: True if the add local group button is locked and not clickable, otherwise it returns False.
