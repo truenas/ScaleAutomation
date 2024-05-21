@@ -95,7 +95,7 @@ class Test_Read_Only_Admin_Local_Groups:
         Test Steps:
         1. Verify the add Local Groups button is locked and not clickable
         """
-        assert LG.assert_add_local_group_button_is_locked_and_not_clickable() is True
+        assert LG.assert_add_local_group_button_is_restricted() is True
 
     @allure.tag("Read")
     @allure.story("Read Only Admin Is Not Able to delete a Local Groups")
@@ -108,7 +108,7 @@ class Test_Read_Only_Admin_Local_Groups:
         2. Verify the delete Local Groups button is locked and not clickable
         """
         LG.expand_group_by_name("roa")
-        assert LG.assert_delete_local_group_button_is_locked_and_not_clickable('roa') is True
+        assert LG.assert_delete_local_group_button_is_restricted('roa') is True
 
     @allure.tag("Read")
     @allure.story("Read Only Admin Is Not Able to modify a Local Groups")
@@ -124,5 +124,5 @@ class Test_Read_Only_Admin_Local_Groups:
         """
         LG.expand_group_by_name("roa")
         LG.click_group_edit_button_by_name("roa")
-        assert COM.assert_button_is_locked_and_not_clickable('save') is True
+        assert COM.assert_button_is_restricted('save') is True
         COM.close_right_panel()

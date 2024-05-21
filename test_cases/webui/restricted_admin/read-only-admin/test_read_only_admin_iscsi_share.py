@@ -57,13 +57,13 @@ class Test_Read_Only_Admin_iSCSI_Share:
 
         # Verify the read-only admin is not able to disable the NFS service
         assert Common_Shares.assert_share_card_displays('iscsi') is True
-        assert Common_Shares.assert_disable_share_service_is_locked_and_not_clickable('iscsi') is True
+        assert Common_Shares.assert_disable_share_service_is_restricted('iscsi') is True
         assert Common_Shares.is_share_service_running('iscsitarget') is True
 
         # Verify the read-only admin is not able to enable the NFS service
         API_POST.stop_service('iscsitarget')
         assert Common_Shares.assert_share_card_displays('iscsi') is True
-        assert Common_Shares.assert_enable_share_service_is_locked_and_not_clickable('iscsi') is True
+        assert Common_Shares.assert_enable_share_service_is_restricted('iscsi') is True
         assert Common_Shares.is_share_service_stopped('iscsitarget') is True
 
     @allure.tag('Create')
@@ -76,8 +76,8 @@ class Test_Read_Only_Admin_iSCSI_Share:
         assert Common_Shares.assert_share_card_displays('iscsi') is True
 
         # Verify the read-only admin is not able to create an iSCSI share
-        assert Common_Shares.assert_card_iscsi_configure_button_is_locked_and_not_clickable() is True
-        assert Common_Shares.assert_card_iscsi_wizard_button_is_locked_and_not_clickable() is True
+        assert Common_Shares.assert_card_iscsi_configure_button_is_restricted() is True
+        assert Common_Shares.assert_card_iscsi_wizard_button_is_restricted() is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Modify An iSCSI Share On The iSCSI Card")
@@ -93,7 +93,7 @@ class Test_Read_Only_Admin_iSCSI_Share:
         assert Common.assert_header_readonly_badge() is True
 
         iSCSI.set_target_alias_input(data['target_alias'])
-        assert Common.assert_save_button_is_locked_and_not_clickable() is True
+        assert Common.assert_save_button_is_restricted() is True
 
         Common.close_right_panel()
 
@@ -106,7 +106,7 @@ class Test_Read_Only_Admin_iSCSI_Share:
 
         assert Common_Shares.assert_share_card_displays('iscsi') is True
         # Verify the read-only admin is not able to delete an iSCSI share
-        assert Common_Shares.assert_card_iscsi_delete_button_is_locked_and_not_clickable(data['iscsi_name_xpath']) is True
+        assert Common_Shares.assert_card_iscsi_delete_button_is_restricted(data['iscsi_name_xpath']) is True
 
     @allure.tag('Read')
     @allure.story("Read Only Admin Is Able To View Pre-Configured iSCSI Shares On The iSCSI Page")
@@ -134,7 +134,7 @@ class Test_Read_Only_Admin_iSCSI_Share:
         assert Common_Shares.assert_share_card_displays('iscsi') is True
         Common_Shares.click_share_card_header_link('iscsi')
         assert iSCSI.assert_sharing_iscsi_page_header() is True
-        assert iSCSI.assert_iscsi_wizard_button_is_locked_and_not_clickable() is True
+        assert iSCSI.assert_iscsi_wizard_button_is_restricted() is True
 
     @allure.tag('Create')
     @allure.story("Read Only Admin Is Not Able To Use The Add Button On a Tab Of The Sharing iSCSI Page")
@@ -150,7 +150,7 @@ class Test_Read_Only_Admin_iSCSI_Share:
         assert iSCSI.assert_sharing_iscsi_page_header() is True
         iSCSI.click_on_iscsi_tab(tab)
         assert iSCSI.assert_iscsi_tab_header_is_visible(tab) is True
-        assert iSCSI.assert_tab_add_button_is_locked_and_not_clickable(tab) is True
+        assert iSCSI.assert_tab_add_button_is_restricted(tab) is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Modify An Item On A Tab Of The Sharing iSCSI Page")
@@ -172,7 +172,7 @@ class Test_Read_Only_Admin_iSCSI_Share:
         assert iSCSI.assert_edit_panel_header_is_visible_opened_from_iscsi_tab(tab) is True
         assert Common.assert_header_readonly_badge() is True
 
-        assert Common.assert_save_button_is_locked_and_not_clickable() is True
+        assert Common.assert_save_button_is_restricted() is True
 
         Common.close_right_panel()
 
@@ -192,7 +192,7 @@ class Test_Read_Only_Admin_iSCSI_Share:
         iSCSI.click_on_iscsi_tab(tab)
         assert iSCSI.assert_iscsi_tab_header_is_visible(tab) is True
         # Verify the read-only admin is not able to delete an iSCSI target
-        iSCSI.assert_tab_row_item_delete_button_is_locked_and_not_clickable(tab, data['iscsi_name_xpath'])
+        iSCSI.assert_tab_row_item_delete_button_is_restricted(tab, data['iscsi_name_xpath'])
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Save A Target Global Configuration On The Sharing iSCSI Page")
@@ -209,4 +209,4 @@ class Test_Read_Only_Admin_iSCSI_Share:
         # Verify the read-only admin is not able to save a Target Global Configuration
         iSCSI.click_on_iscsi_tab('Target Global Configuration')
         assert iSCSI.assert_global_configuration_tab_is_visible() is True
-        assert Common.assert_save_button_is_locked_and_not_clickable() is True
+        assert Common.assert_save_button_is_restricted() is True

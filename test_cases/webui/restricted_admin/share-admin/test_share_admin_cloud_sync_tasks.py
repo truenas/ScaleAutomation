@@ -94,7 +94,7 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
         Test Steps:
         1. Verify the add Cloud Sync task button is locked and not clickable
         """
-        assert DP.assert_add_cloud_sync_task_button_is_locked_and_not_clickable() is True
+        assert DP.assert_add_cloud_sync_task_button_is_restricted() is True
 
     @allure.tag("Read")
     @allure.story("Share Admin Is Not Able to delete a Cloud Sync task")
@@ -105,7 +105,7 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
         Test Steps:
         1. Verify the delete Cloud Sync task button is locked and not clickable
         """
-        assert DP.assert_delete_cloud_sync_task_button_is_locked_and_not_clickable(cloud_sync['description']) is True
+        assert DP.assert_delete_cloud_sync_task_button_is_restricted(cloud_sync['description']) is True
 
     @allure.tag("Read")
     @allure.story("Share Admin Is Not Able to modify a Cloud Sync task")
@@ -119,7 +119,7 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
         3. Close right panel
         """
         DP.click_edit_cloud_sync_task(cloud_sync['description'])
-        assert COM.assert_button_is_locked_and_not_clickable('save') is True
+        assert COM.assert_button_is_restricted('save') is True
         COM.close_right_panel()
 
     @allure.tag("Read")
@@ -134,10 +134,10 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
         3. Refresh page (re-navigate to Data Protection page)
         4. Verify the disabled Cloud Sync task toggle is locked and not clickable
         """
-        assert DP.assert_enable_cloud_sync_task_toggle_is_locked_and_not_clickable(cloud_sync['description']) is True
+        assert DP.assert_enable_cloud_sync_task_toggle_is_restricted(cloud_sync['description']) is True
         API_PUT.set_cloud_sync_task_enabled(cloud_sync['name'], False)
         NAV.navigate_to_data_protection()
-        assert DP.assert_enable_cloud_sync_task_toggle_is_locked_and_not_clickable(cloud_sync['description']) is True
+        assert DP.assert_enable_cloud_sync_task_toggle_is_restricted(cloud_sync['description']) is True
 
     @allure.tag("Read")
     @allure.story("Share Admin Is Not Able To Run the Cloud Sync task")
@@ -148,7 +148,7 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
         Test Steps:
         1. Verify the run Cloud Sync task button is locked and not clickable
         """
-        assert DP.assert_run_cloud_sync_task_button_is_locked_and_not_clickable(cloud_sync['description']) is True
+        assert DP.assert_run_cloud_sync_task_button_is_restricted(cloud_sync['description']) is True
 
     @allure.tag("Read")
     @allure.story("Share Admin Is Not Able To Dry Run the Cloud Sync task")
@@ -162,9 +162,9 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
         3. Verify the dry run Cloud Sync task button is locked and not clickable
         4. Close right panel
         """
-        assert DP.assert_dry_run_cloud_sync_task_button_is_locked_and_not_clickable(cloud_sync['description']) is True
+        assert DP.assert_dry_run_cloud_sync_task_button_is_restricted(cloud_sync['description']) is True
         DP.click_edit_cloud_sync_task(cloud_sync['description'])
-        assert COM.assert_button_is_locked_and_not_clickable('dry-run') is True
+        assert COM.assert_button_is_restricted('dry-run') is True
         COM.close_right_panel()
 
     @allure.tag("Read")
@@ -176,4 +176,4 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
         Test Steps:
         1. Verify the restore Cloud Sync task button is locked and not clickable
         """
-        assert DP.assert_restore_cloud_sync_task_button_is_locked_and_not_clickable(cloud_sync['description']) is True
+        assert DP.assert_restore_cloud_sync_task_button_is_restricted(cloud_sync['description']) is True
