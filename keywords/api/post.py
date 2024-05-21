@@ -87,8 +87,7 @@ class API_POST:
                 }
             }
         }
-        response = POST('/certificateauthority/', payload)
-        return response
+        return POST('/certificateauthority/', payload)
 
     @classmethod
     def create_certificate_signing_requests(cls, data: dict) -> dict:
@@ -284,7 +283,7 @@ class API_POST:
                 "ssh_password_enabled": True,
                 "smb": eval(smb_auth.lower().capitalize())
             }
-            response = POST(f'/user', payload)
+            response = POST('/user', payload)
             assert response.status_code == 200, response.text
         return response
 
@@ -316,7 +315,7 @@ class API_POST:
                 "ssh_password_enabled": True,
                 "smb": eval(smb_auth.lower().capitalize())
             }
-            response = POST(f'/user', payload)
+            response = POST('/user', payload)
             assert response.status_code == 200, response.text
         return response
 
@@ -437,7 +436,7 @@ class API_POST:
         }
         response = POST('/pool/scrub', payload)
         if response.status_code != 200:
-            print("@@@ CREATE SCRUB TASK: " + response.text)
+            print(f"@@@ CREATE SCRUB TASK: {response.text}")
         return response
 
     @classmethod
@@ -467,7 +466,7 @@ class API_POST:
                     "comment": comment
                 }
                 response = POST(f'/sharing/{sharetype}', payload)
-            if sharetype == 'nfs':
+            elif sharetype == 'nfs':
                 response = POST(f'/sharing/{sharetype}/', {"path": path, "comment": comment})
             assert response.status_code == 200, response.text
         return response
@@ -750,7 +749,7 @@ class API_POST:
         :param payload: is the payload for the api call.
         :return: the API request response.
         """
-        response = POST(f'/filesystem/setacl', payload)
+        response = POST('/filesystem/setacl', payload)
         assert response.status_code == 200, response.text
         return response
 

@@ -20,30 +20,30 @@ class Local_Groups:
         assert COM.is_visible(xpaths.common_xpaths.any_pill("sudo-commands-nopasswd", command))
 
     @classmethod
-    def assert_add_local_group_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_add_local_group_button_is_restricted(cls) -> bool:
         """
-        This method verifies if the add local group button is locked and not clickable.
+        This method returns True if the add local group button is locked and not clickable
 
         :return: True if the add local group button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Local_Groups.assert_add_local_group_button_is_locked_and_not_clickable()
+            - Local_Groups.assert_add_local_group_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('add')
+        return COM.assert_button_is_restricted('add')
 
     @classmethod
-    def assert_delete_local_group_button_is_locked_and_not_clickable(cls, name: str) -> bool:
+    def assert_delete_local_group_button_is_restricted(cls, name: str) -> bool:
         """
-        This method verifies if the add local group button is locked and not clickable.
+        This method returns True if the add local group button is locked and not clickable.
 
         :param name: is the name of the group to be deleted
         :return: True if the add local group button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Local_Groups.assert_delete_local_group_button_is_locked_and_not_clickable()
+            - Local_Groups.assert_delete_local_group_button_is_restricted()
         """
         name = COM.convert_to_tag_format(name)
-        return COM.assert_button_is_locked_and_not_clickable(f'{name}-delete')
+        return COM.assert_button_is_restricted(f'{name}-delete')
 
     @classmethod
     def assert_gid_field_is_disabled(cls) -> bool:
