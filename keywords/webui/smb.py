@@ -9,19 +9,19 @@ from selenium.common.exceptions import ElementClickInterceptedException, Timeout
 
 class SMB:
     @classmethod
-    def assert_add_button_is_locked_and_not_clickable_on_smb_page(cls):
+    def assert_add_smb_share_button_is_restricted(cls):
         """
-        This method verifies that the add button is locked and not clickable on the SMB page.
+        This method returns True if add SMB share button is locked and not clickable, otherwise it returns False.
 
         :return: True if add SMB share button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - SMB.assert_add_smb_share_button_is_locked_and_not_clickable()
+            - SMB.assert_add_smb_share_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('samba-add')
+        return COM.assert_button_is_restricted('samba-add')
 
     @classmethod
-    def assert_delete_share_button_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+    def assert_delete_share_button_is_restricted(cls, share_name: str) -> bool:
         """
         This method verifies that the delete button is locked and not clickable.
 
@@ -29,7 +29,7 @@ class SMB:
         :return: True if the delete button is locked and not clickable otherwise it returns False.
 
         Example:
-           - SMB.assert_card_share_delete_button_is_locked_and_not_clickable('share-1')
+           - SMB.assert_card_share_delete_button_is_restricted('share-1')
         """
         COM.click_on_element(xpaths.smb.smb_share_options(share_name))
         result = COM.assert_button_is_greyed_and_not_clickable('samba-options-delete')
@@ -37,7 +37,7 @@ class SMB:
         return result
 
     @classmethod
-    def assert_edit_filesystem_acl_button_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+    def assert_edit_filesystem_acl_button_is_restricted(cls, share_name: str) -> bool:
         """
         This method verifies that the edit filesystem ACL button is locked and not clickable.
 
@@ -45,7 +45,7 @@ class SMB:
         :return: True if the edit filesystem ACL button is locked and not clickable otherwise it returns False.
 
         Example:
-            - SMB.assert_edit_filesystem_acl_button_is_locked_and_not_clickable('share-1')
+            - SMB.assert_edit_filesystem_acl_button_is_restricted('share-1')
         """
         COM.click_on_element(xpaths.smb.smb_share_options(share_name))
         result = COM.assert_button_is_greyed_and_not_clickable('samba-options-edit-filesystem-acl')
@@ -53,7 +53,7 @@ class SMB:
         return result
 
     @classmethod
-    def assert_edit_share_acl_button_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+    def assert_edit_share_acl_button_is_restricted(cls, share_name: str) -> bool:
         """
         This method verifies that the edit share ACL button is locked and not clickable.
 
@@ -61,7 +61,7 @@ class SMB:
         :return: True if the edit share ACL button is locked and not clickable otherwise it returns False.
 
         Example:
-            - SMB.assert_edit_share_acl_button_is_locked_and_not_clickable('share-1')
+            - SMB.assert_edit_share_acl_button_is_restricted('share-1')
         """
         COM.click_on_element(xpaths.smb.smb_share_options(share_name))
         result = COM.assert_button_is_greyed_and_not_clickable('samba-options-edit-share-acl')
@@ -69,7 +69,7 @@ class SMB:
         return result
 
     @classmethod
-    def assert_enabled_checkbox_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+    def assert_enabled_checkbox_is_restricted(cls, share_name: str) -> bool:
         """
         This method verifies that the enabled checkbox is locked and not clickable.
 
@@ -77,7 +77,7 @@ class SMB:
         :return: True if the enabled checkbox is locked and not clickable otherwise it returns False.
 
         Example:
-            - SMB.assert_enabled_checkbox_is_locked_and_not_clickable('share-1')
+            - SMB.assert_enabled_checkbox_is_restricted('share-1')
         """
         # TODO: replace the code below when the webui is updated
         # The checkbox has the old format.
@@ -461,7 +461,7 @@ class SMB:
             - SMB.click_edit_share_acl('share')
         """
         COM.click_button(f'card-smb-share-{COM.convert_to_tag_format(name)}-share-row-action')
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Share ACL for', 3)) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Share ACL for', 3)) is True
 
     @classmethod
     def click_edit_share_filesystem_acl(cls, name: str) -> None:
@@ -474,7 +474,7 @@ class SMB:
             - SMB.click_edit_share_filesystem_acl('share')
         """
         COM.click_button(f'card-smb-share-{name.lower()}-security-row-action')
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit ACL', 1)) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Edit ACL', 1)) is True
 
     @classmethod
     def click_edit_share(cls, share_name: str) -> None:
@@ -544,7 +544,7 @@ class SMB:
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('ignore-list'))
         COM.click_on_element(f'//*[@data-test="input-ignore-list"]')
-        name = COM.convert_to_tag_format('ignore-list-'+name)
+        name = COM.convert_to_tag_format(f'ignore-list-{name}')
         COM.click_on_element(f'//*[@data-test="option-{name}"]')
 
     @classmethod

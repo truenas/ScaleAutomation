@@ -55,12 +55,12 @@ class Test_Read_Only_Admin_SMB_Share:
     def test_read_only_is_not_able_enable_or_disable_nfs_service_on_the_smb_card(self, data):
         # Verify the read-only admin is not able to enable or disable the NFS service
         assert Common_Shares.assert_share_card_displays('smb') is True
-        assert Common_Shares.assert_disable_share_service_is_locked_and_not_clickable('smb') is True
+        assert Common_Shares.assert_disable_share_service_is_restricted('smb') is True
         assert Common_Shares.is_share_service_running('smb') is True
 
         API_POST.stop_service('cifs')
         assert Common_Shares.assert_share_card_displays('smb') is True
-        assert Common_Shares.assert_enable_share_service_is_locked_and_not_clickable('smb') is True
+        assert Common_Shares.assert_enable_share_service_is_restricted('smb') is True
         assert Common_Shares.is_share_service_stopped('smb') is True
 
     @allure.tag('Create')
@@ -71,7 +71,7 @@ class Test_Read_Only_Admin_SMB_Share:
         """
         # Verify the read-only admin is not able to create an SMB share
         assert Common_Shares.assert_share_card_displays('smb') is True
-        assert Common_Shares.assert_card_add_share_button_is_locked_and_not_clickable('smb') is True
+        assert Common_Shares.assert_card_add_share_button_is_restricted('smb') is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Disable Or Enable An SMB Share On The SMB Card")
@@ -97,7 +97,7 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common.assert_header_readonly_badge() is True
 
         Common_Shares.set_share_description('This is a new description')
-        assert Common.assert_save_button_is_locked_and_not_clickable() is True
+        assert Common.assert_save_button_is_restricted() is True
 
         Common.close_right_panel()
 
@@ -109,7 +109,7 @@ class Test_Read_Only_Admin_SMB_Share:
         """
         # Verify the read-only admin is not able to delete an SMB share
         assert Common_Shares.assert_share_card_displays('smb') is True
-        assert Common_Shares.assert_card_share_delete_button_is_locked_and_not_clickable('smb', data['smb_xpath']) is True
+        assert Common_Shares.assert_card_share_delete_button_is_restricted('smb', data['smb_xpath']) is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Edit The SMB Filesystem ACL Permissions On The SMB Card")
@@ -118,7 +118,7 @@ class Test_Read_Only_Admin_SMB_Share:
         This test verifies the read-only admin is not able to edit the SMB filesystem ACL permissions on the SMB card.
         """
         assert Common_Shares.assert_share_card_displays('smb') is True
-        assert Common_Shares.assert_card_edit_filesystem_acl_permissions_button_is_locked_and_not_clickable(data['smb_xpath']) is True
+        assert Common_Shares.assert_card_edit_filesystem_acl_permissions_button_is_restricted(data['smb_xpath']) is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Edit The SMB Share ACL Permissions On The SMB Card")
@@ -127,7 +127,7 @@ class Test_Read_Only_Admin_SMB_Share:
         This test verifies the read-only admin is not able to edit the SMB share ACL permissions on the SMB card.
         """
         assert Common_Shares.assert_share_card_displays('smb') is True
-        assert Common_Shares.assert_card_edit_share_acl_permissions_button_is_locked_and_not_clickable(data['smb_xpath']) is True
+        assert Common_Shares.assert_card_edit_share_acl_permissions_button_is_restricted(data['smb_xpath']) is True
 
     @allure.tag('Read')
     @allure.story("Read Only Admin Is Able To View Pre-Configured SMB Shares On The Sharing SMB Page")
@@ -151,7 +151,7 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common_Shares.assert_share_card_displays('smb') is True
         Common_Shares.click_share_card_header_link('smb')
         assert SMB.assert_sharing_smb_page_header() is True
-        assert SMB.assert_add_button_is_locked_and_not_clickable_on_smb_page() is True
+        assert SMB.assert_add_smb_share_button_is_restricted() is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Modify An SMB Share On The Sharing SMB Page")
@@ -177,7 +177,7 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common_Shares.assert_share_card_displays('smb') is True
         Common_Shares.click_share_card_header_link('smb')
         assert SMB.assert_sharing_smb_page_header() is True
-        assert SMB.assert_delete_share_button_is_locked_and_not_clickable(data['smb_xpath']) is True
+        assert SMB.assert_delete_share_button_is_restricted(data['smb_xpath']) is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Disable Or Enable An SMB Share On The Sharing SMB Page")
@@ -188,7 +188,7 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common_Shares.assert_share_card_displays('smb') is True
         Common_Shares.click_share_card_header_link('smb')
         assert SMB.assert_sharing_smb_page_header() is True
-        assert SMB.assert_enabled_checkbox_is_locked_and_not_clickable(data['smb_xpath']) is True
+        assert SMB.assert_enabled_checkbox_is_restricted(data['smb_xpath']) is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Edit The SMB Filesystem ACL Permissions On The Sharing SMB Page")
@@ -199,7 +199,7 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common_Shares.assert_share_card_displays('smb') is True
         Common_Shares.click_share_card_header_link('smb')
         assert SMB.assert_sharing_smb_page_header() is True
-        assert SMB.assert_edit_filesystem_acl_button_is_locked_and_not_clickable(data['smb_xpath']) is True
+        assert SMB.assert_edit_filesystem_acl_button_is_restricted(data['smb_xpath']) is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Edit The SMB Share ACL Permissions On The Sharing SMB Page")
@@ -210,4 +210,4 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common_Shares.assert_share_card_displays('smb') is True
         Common_Shares.click_share_card_header_link('smb')
         assert SMB.assert_sharing_smb_page_header() is True
-        assert SMB.assert_edit_share_acl_button_is_locked_and_not_clickable(data['smb_xpath']) is True
+        assert SMB.assert_edit_share_acl_button_is_restricted(data['smb_xpath']) is True

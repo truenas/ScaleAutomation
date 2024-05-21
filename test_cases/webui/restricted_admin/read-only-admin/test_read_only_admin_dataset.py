@@ -135,7 +135,7 @@ class Test_Read_Only_Admin_Dataset:
         Navigation.navigate_to_datasets()
         Datasets.select_dataset(data["acl_parent_dataset"])
         assert Datasets.is_permissions_card_visible()
-        assert Datasets.assert_edit_dataset_permissions_button_is_locked_and_not_clickable() is True
+        assert Datasets.assert_edit_dataset_permissions_button_is_restricted() is True
 
     @allure.tag("Read")
     @allure.story("Read Only Admin Is Not Able To Dataset Access Unix Permissions")
@@ -150,7 +150,7 @@ class Test_Read_Only_Admin_Dataset:
         Navigation.navigate_to_datasets()
         Datasets.select_dataset(data["generic_parent_dataset"])
         assert Datasets.is_permissions_card_visible()
-        assert Datasets.assert_edit_dataset_permissions_button_is_locked_and_not_clickable() is True
+        assert Datasets.assert_edit_dataset_permissions_button_is_restricted() is True
 
     @allure.tag("Create", "Delete")
     @allure.story("Read Only Admin Is Not Able To Add And Delete Dataset")
@@ -166,12 +166,12 @@ class Test_Read_Only_Admin_Dataset:
 
         # Verify the read-only admin is not able to add a dataset from the pool dataset
         assert Datasets.assert_selected_dataset_name(data["pool"]) is True
-        assert Datasets.assert_add_dataset_button_is_locked_and_not_clickable() is True
+        assert Datasets.assert_add_dataset_button_is_restricted() is True
 
         # Verify the read-only admin is not able to add a dataset from a dataset in the pool
         Datasets.select_dataset(data["acl_parent_dataset"])
         assert Datasets.assert_selected_dataset_name(data["acl_parent_dataset"]) is True
-        assert Datasets.assert_add_dataset_button_is_locked_and_not_clickable() is True
+        assert Datasets.assert_add_dataset_button_is_restricted() is True
 
     @allure.tag("Create")
     @allure.story("Read Only Admin Is Not Able To Add A Zvol")
@@ -184,7 +184,7 @@ class Test_Read_Only_Admin_Dataset:
 
         # Verify the read-only admin is not able to add a zvol
         assert Datasets.assert_selected_dataset_name(data["pool"]) is True
-        assert Datasets.assert_add_zvol_button_is_locked_and_not_clickable() is True
+        assert Datasets.assert_add_zvol_button_is_restricted() is True
 
     @allure.tag("Update")
     @allure.story("Read Only Admin Is Not Able To Modify A Dataset")
@@ -198,7 +198,7 @@ class Test_Read_Only_Admin_Dataset:
         # Verify the read-only admin is not able to modify a dataset
         Datasets.select_dataset(data["acl_parent_dataset"])
         assert Datasets.assert_selected_dataset_name(data["acl_parent_dataset"]) is True
-        assert Datasets.assert_edit_dataset_button_is_locked_and_not_clickable() is True
+        assert Datasets.assert_edit_dataset_button_is_restricted() is True
 
     @allure.tag("Update")
     @allure.story("Read Only Admin Is Not Able To Modify Dataset Space Management Capacity Settings")
@@ -213,7 +213,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Datasets.is_space_management_card_visible()
         Datasets.select_dataset(data["acl_parent_dataset"])
         assert Datasets.assert_selected_dataset_name(data["acl_parent_dataset"]) is True
-        assert Datasets.assert_edit_dataset_space_management_button_is_locked_and_not_clickable() is True
+        assert Datasets.assert_edit_dataset_space_management_button_is_restricted() is True
 
     @allure.tag("Update")
     @allure.story("Read Only Admin Is Not Able To Modify Dataset Groups And Users Quotas")
@@ -230,7 +230,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Datasets.assert_selected_dataset_name(data["acl_parent_dataset"]) is True
         Datasets.click_manage_group_quotas_link(data['pool'], data["acl_parent_dataset"])
         assert Datasets.is_group_quotas_page_visible()
-        assert Datasets.assert_add_quota_button_is_locked_and_not_clickable() is True
+        assert Datasets.assert_add_quota_button_is_restricted() is True
 
         Navigation.navigate_to_datasets()
         assert Datasets.is_space_management_card_visible()
@@ -238,7 +238,7 @@ class Test_Read_Only_Admin_Dataset:
         assert Datasets.assert_selected_dataset_name(data["acl_parent_dataset"]) is True
         Datasets.click_manage_user_quotas_link(data['pool'], data["acl_parent_dataset"])
         assert Datasets.is_user_quotas_page_visible()
-        assert Datasets.assert_add_quota_button_is_locked_and_not_clickable() is True
+        assert Datasets.assert_add_quota_button_is_restricted() is True
 
     @allure.tag("Update")
     @allure.story("Read Only Admin Is Not Able To Create Dataset Snapshots")
@@ -252,7 +252,7 @@ class Test_Read_Only_Admin_Dataset:
         # Verify the read-only admin is not able to create snapshots
         Datasets.select_dataset(data["acl_parent_dataset"])
         assert Datasets.assert_selected_dataset_name(data["acl_parent_dataset"]) is True
-        assert Datasets.assert_create_snapshot_button_is_locked_and_not_clickable() is True
+        assert Datasets.assert_create_snapshot_button_is_restricted() is True
 
     @allure.tag("Update")
     @allure.story("Read Only Admin Is Not Able To Delete Clone Rollback And Hold A Dataset Snapshot")
@@ -274,13 +274,13 @@ class Test_Read_Only_Admin_Dataset:
         Snapshots.expand_snapshot_by_name(data['snapshot_name'])
 
         # verify the read-only admin is not able to delete snapshots
-        assert Snapshots.assert_delete_button_is_locked_and_not_clickable(data['snapshot_name']) is True
+        assert Snapshots.assert_delete_button_is_restricted(data['snapshot_name']) is True
 
         # verify the read-only admin is not able to clone a snapshots
-        assert Snapshots.assert_clone_to_new_snapshot_button_is_locked_and_not_clickable(data['snapshot_name']) is True
+        assert Snapshots.assert_clone_to_new_snapshot_button_is_restricted(data['snapshot_name']) is True
 
         # verify the read-only admin is not able to roll back a snapshots
-        assert Snapshots.assert_rollback_button_is_locked_and_not_clickable(data['snapshot_name']) is True
+        assert Snapshots.assert_rollback_button_is_restricted(data['snapshot_name']) is True
 
         # verify the read-only admin is not able to change the hold checkbox
-        assert Snapshots.assert_hold_checkbox_is_locked_and_not_clickable(data['snapshot_name']) is True
+        assert Snapshots.assert_hold_checkbox_is_restricted(data['snapshot_name']) is True

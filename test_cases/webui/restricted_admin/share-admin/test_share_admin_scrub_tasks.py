@@ -81,7 +81,7 @@ class Test_Share_Admin_Scrub_Tasks:
         Test Steps:
         1. Verify the add scrub task button is locked and not clickable
         """
-        assert DP.assert_add_scrub_task_button_is_locked_and_not_clickable() is True
+        assert DP.assert_add_scrub_task_button_is_restricted() is True
 
     @allure.tag("Read")
     @allure.story("Share Admin Is Not Able to delete a scrub task")
@@ -92,7 +92,7 @@ class Test_Share_Admin_Scrub_Tasks:
         Test Steps:
         1. Verify the delete scrub task button is locked and not clickable
         """
-        assert DP.assert_delete_scrub_task_button_is_locked_and_not_clickable("Scrub Task For Pool") is True
+        assert DP.assert_delete_scrub_task_button_is_restricted("Scrub Task For Pool") is True
 
     @allure.tag("Read")
     @allure.story("Share Admin Is Not Able to modify a scrub task")
@@ -106,7 +106,7 @@ class Test_Share_Admin_Scrub_Tasks:
         3. Close right panel
         """
         DP.click_edit_scrub_task("Scrub Task For Pool")
-        assert COM.assert_button_is_locked_and_not_clickable('save') is True
+        assert COM.assert_button_is_restricted('save') is True
         COM.close_right_panel()
 
     @allure.tag("Read")
@@ -121,12 +121,12 @@ class Test_Share_Admin_Scrub_Tasks:
         3. Refresh page (re-navigate to Data Protection page)
         4. Verify the disabled Cloud Sync task toggle is locked and not clickable
         """
-        assert DP.assert_enable_scrub_task_toggle_is_locked_and_not_clickable("Scrub Task For Pool") is True
+        assert DP.assert_enable_scrub_task_toggle_is_restricted("Scrub Task For Pool") is True
         # Create disabled Scrub Task
         API_DELETE.delete_scrub_task("tank")
         API_POST.create_scrub_task(enable=False)
         NAV.navigate_to_data_protection()
-        assert DP.assert_enable_scrub_task_toggle_is_locked_and_not_clickable("Scrub Task For Pool") is True
+        assert DP.assert_enable_scrub_task_toggle_is_restricted("Scrub Task For Pool") is True
 
     @allure.tag("Read")
     @allure.story("Share Admin Is Not Able To modify the Resilver Priority")
@@ -137,4 +137,4 @@ class Test_Share_Admin_Scrub_Tasks:
         Test Steps:
         1. Verify the adjust scrub task button is locked and not clickable
         """
-        assert COM.assert_button_is_locked_and_not_clickable('scrub-task-adjust-scrub') is True
+        assert COM.assert_button_is_restricted('scrub-task-adjust-scrub') is True

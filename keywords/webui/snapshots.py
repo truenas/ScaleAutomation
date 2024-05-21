@@ -7,7 +7,7 @@ from keywords.webui.common import Common
 class Snapshots:
 
     @classmethod
-    def assert_clone_to_new_snapshot_button_is_locked_and_not_clickable(cls, snapshots_name) -> bool:
+    def assert_clone_to_new_snapshot_button_is_restricted(cls, snapshots_name) -> bool:
         """
         This method asserts that the Clone to New Snapshot button is locked and not clickable
 
@@ -15,9 +15,9 @@ class Snapshots:
         :return: True if the Clone to New Snapshot button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Snapshots.assert_clone_to_new_snapshot_button_is_locked_and_not_clickable('test-snapshot')
+            - Snapshots.assert_clone_to_new_snapshot_button_is_restricted('test-snapshot')
         """
-        return Common.assert_button_is_locked_and_not_clickable(f'clone-{snapshots_name}')
+        return Common.assert_button_is_restricted(f'clone-{Common.convert_to_tag_format(snapshots_name)}')
 
     @classmethod
     def assert_dataset_snapshot_page_header(cls, dataset) -> bool:
@@ -33,7 +33,7 @@ class Snapshots:
         return Common.assert_page_header(f'Snapshots: {dataset}')
 
     @classmethod
-    def assert_delete_button_is_locked_and_not_clickable(cls, snapshots_name: str) -> bool:
+    def assert_delete_button_is_restricted(cls, snapshots_name: str) -> bool:
         """
         This method asserts that the Delete Snapshot button is locked and not clickable
 
@@ -41,12 +41,12 @@ class Snapshots:
         :return: True if the Delete Snapshot button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Snapshots.assert_delete_snapshot_button_is_locked_and_not_clickable('test-snapshot')
+            - Snapshots.assert_delete_snapshot_button_is_restricted('test-snapshot')
         """
-        return Common.assert_button_is_locked_and_not_clickable(f'delete-{snapshots_name}')
+        return Common.assert_button_is_restricted(f'delete-{snapshots_name}')
 
     @classmethod
-    def assert_hold_checkbox_is_locked_and_not_clickable(cls, snapshots_name: str) -> bool:
+    def assert_hold_checkbox_is_restricted(cls, snapshots_name: str) -> bool:
         """
         This method asserts that the Hold checkbox is locked and not clickable
 
@@ -54,12 +54,12 @@ class Snapshots:
         :return: True if the Hold checkbox is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Snapshots.assert_hold_checkbox_is_locked_and_not_clickable('test-snapshot')
+            - Snapshots.assert_hold_checkbox_is_restricted('test-snapshot')
         """
-        return Common.assert_checkbox_is_locked_and_not_clickable(f'hold-{snapshots_name}')
+        return Common.assert_checkbox_is_restricted(f'hold-{snapshots_name}')
 
     @classmethod
-    def assert_rollback_button_is_locked_and_not_clickable(cls, snapshots_name: str) -> bool:
+    def assert_rollback_button_is_restricted(cls, snapshots_name: str) -> bool:
         """
         This method asserts that the Rollback Snapshot button is locked and not clickable
 
@@ -67,9 +67,9 @@ class Snapshots:
         :return: True if the Rollback Snapshot button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Snapshots.assert_rollback_snapshot_button_is_locked_and_not_clickable('test-snapshot')
+            - Snapshots.assert_rollback_snapshot_button_is_restricted('test-snapshot')
         """
-        return Common.assert_button_is_locked_and_not_clickable(f'rollback-{snapshots_name}')
+        return Common.assert_button_is_restricted(f'rollback-{snapshots_name}')
 
     @classmethod
     def assert_snapshot_is_visible(cls, snapshot_name: str) -> bool:
