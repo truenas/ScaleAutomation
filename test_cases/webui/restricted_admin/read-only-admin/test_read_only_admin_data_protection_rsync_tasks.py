@@ -145,7 +145,6 @@ class Test_Read_Only_Admin_Data_Protection_Rsync_Tasks:
         assert Data_Protection.assert_rsync_task_card_header_is_visible() is True
         assert Data_Protection.assert_enable_rsync_task_toggle_is_restricted('/mnt/tank') is True
 
-
     @allure.tag("Update")
     @allure.story('Verify That The Read-Only Admin Cannot Run A Rsync Task From The Card')
     def test_read_only_admin_cannot_run_a_rsync_task_from_the_card(self):
