@@ -281,7 +281,7 @@ class Data_Protection:
         Example:
             - Data_Protection.assert_add_replication_task_button_is_locked_and_not_clickable()
         """
-        return COM.assert_button_is_locked_and_not_clickable('replication-tasks-add')
+        return COM.assert_button_is_locked_and_not_clickable('replication-task-add')
 
     @classmethod
     def assert_replication_page_delete_replication_task_button_is_locked_and_not_clickable(cls, name: str) -> bool:
@@ -295,23 +295,7 @@ class Data_Protection:
             - Data_Protection.assert_replication_page_delete_replication_task_button_is_locked_and_not_clickable("rep_name")
         """
         name = COM.convert_to_tag_format(name)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.common_xpaths.button_field(f'{name}-delete'))
-
-    @classmethod
-    def assert_replication_page_enabled_replication_task_checkbox_is_locked_and_not_clickable(cls, name: str) -> bool:
-        """
-        This method returns True if the delete replication task button is locked and not clickable, otherwise returns False.
-
-        :param name: name of the replication task
-        :return: True if the delete replication task button is locked and not clickable, otherwise returns False.
-
-        Example:
-            - Data_Protection.assert_replication_page_enabled_replication_task_checkbox_is_locked_and_not_clickable("rep_name")
-        """
-        name = COM.convert_to_tag_format(name)
-        # TODO: Update when NAS-129103 is fixed
-        # return COM.assert_element_is_locked_and_not_clickable(xpaths.common_xpaths.checkbox_field(f'{name}-enabled'))
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.common_xpaths.any_xpath(f'//*[starts-with(@data-test,"checkbox-")]'))
+        return COM.assert_element_is_locked_and_not_clickable(f'//button[contains(@data-test,"-delete")]')
 
     @classmethod
     def assert_replication_page_replication_task_name(cls, name: str) -> bool:
@@ -325,35 +309,35 @@ class Data_Protection:
             - Data_Protection.assert_replication_page_replication_task_name("rep_name")
         """
         name = COM.convert_to_tag_format(name)
-        return COM.is_visible(xpaths.common_xpaths.data_test_field(f'row-{name}'))
+        return COM.is_visible(xpaths.common_xpaths.data_test_field(f'text-name-replication-task-{name}-row-text'))
 
     @classmethod
     def assert_replication_page_restore_replication_task_button_is_locked_and_not_clickable(cls, name: str) -> bool:
         """
-        This method returns True if the given replication task name is visible, otherwise returns False.
+        This method returns True if the restore replication task button is locked and not clickable, otherwise returns False.
 
         :param name: name of the replication task
-        :return: True if the given replication task name is visible, otherwise returns False.
+        :return: True if the restore replication task button is locked and not clickable, otherwise returns False.
 
         Example:
             - Data_Protection.assert_replication_page_restore_replication_task_button_is_locked_and_not_clickable("rep_name")
         """
         name = COM.convert_to_tag_format(name)
-        return COM.is_visible(xpaths.common_xpaths.button_field(f'{name}-restore'))
+        return COM.assert_element_is_locked_and_not_clickable(f'//button[contains(@data-test,"-restore")]')
 
     @classmethod
     def assert_replication_page_run_replication_task_button_is_locked_and_not_clickable(cls, name: str) -> bool:
         """
-        This method returns True if the given replication task name is visible, otherwise returns False.
+        This method returns True if the run now replication task button is locked and not clickable, otherwise returns False.
 
         :param name: name of the replication task
-        :return: True if the given replication task name is visible, otherwise returns False.
+        :return: True if the run now replication task button is locked and not clickable, otherwise returns False.
 
         Example:
             - Data_Protection.assert_replication_page_run_replication_task_button_is_locked_and_not_clickable("rep_name")
         """
         name = COM.convert_to_tag_format(name)
-        return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[starts-with(@data-test,"checkbox-")]'))
+        return COM.assert_element_is_locked_and_not_clickable(f'//button[contains(@data-test,"-run-now")]')
 
     @classmethod
     def assert_replication_task_name(cls, name: str) -> bool:
@@ -567,19 +551,6 @@ class Data_Protection:
         COM.assert_right_panel_header('Edit Periodic Snapshot Task')
 
     @classmethod
-    def click_edit_replication_page_replication_task_by_name(cls, name: str) -> None:
-        """
-        This method clicks the edit button for the given replication task
-
-        :param name: the name of the given replication task
-
-        Example:
-            - Data_Protection.click_edit_replication_task_by_name('myRepTask')
-        """
-        COM.click_button(f'{COM.convert_to_tag_format(name)}-edit')
-        COM.assert_right_panel_header('Edit Replication Task')
-
-    @classmethod
     def click_edit_replication_task_by_name(cls, name: str) -> None:
         """
         This method clicks the edit button for the given replication task
@@ -591,6 +562,7 @@ class Data_Protection:
         """
         COM.click_button(f'replication-task-{COM.convert_to_tag_format(name)}-edit-row-action')
         COM.assert_right_panel_header('Edit Replication Task')
+        WebUI.delay(2)
 
     @classmethod
     def click_edit_scrub_task(cls, description: str) -> None:
@@ -646,6 +618,18 @@ class Data_Protection:
         path = COM.convert_to_tag_format(path)
         COM.click_on_element(xpaths.data_protection.vm_periodic_snapshot_task_edit_button(path))
         COM.assert_right_panel_header('Edit VM Periodic Snapshot Task')
+
+    @classmethod
+    def click_replication_page_edit_replication_task_button(cls) -> None:
+        """
+        This method clicks the edit button for the currently expanded replication task
+
+        Example:
+            - Data_Protection.click_replication_page_edit_replication_task_button()
+        """
+        COM.click_on_element(f'//button[contains(@data-test, "-edit")]')
+        COM.assert_right_panel_header('Edit Replication Task')
+        WebUI.delay(2)
 
     @classmethod
     def click_snapshots_button(cls) -> None:
@@ -716,7 +700,7 @@ class Data_Protection:
             - Data_Protection.expand_replication_task_by_name('myRepTask')
         """
         name = COM.convert_to_tag_format(name)
-        COM.click_on_element(f'//*[@data-test="row-{name}"]//button[starts-with(@data-test,"button-expand-row")]')
+        COM.click_on_element(f'//*[@data-test="row-replication-task-{name}"]//button[starts-with(@data-test,"button-toggle-row")]')
         WebUI.delay(2)
 
     @classmethod

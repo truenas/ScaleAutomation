@@ -92,7 +92,7 @@ class Test_Read_Only_Admin_Replication_Tasks:
 
         Test Steps:
         1. Click Edit Replication task
-        2. Verify Replication Task fields (description, direction, bucket-input, etc)
+        2. Verify Replication Task fields (description, direction, bucket-input, etc.)
         3. Verify subsections (Transfer, Remote, Control, Advanced Options)
         4. Verify can view Custom Schedule dialog
         5. Close right panel
@@ -123,7 +123,7 @@ class Test_Read_Only_Admin_Replication_Tasks:
         # Navigate to Replication tasks page
         DP.click_card_page_link('Replication Tasks')
         DP.expand_replication_task_by_name(rep['task-name'])
-        COM.click_button(rep["task-name"]+"-edit")
+        DP.click_replication_page_edit_replication_task_button()
 
         # Verify Replication tasks page fields
         assert COM.is_visible(xpaths.common_xpaths.input_field("name")) is True
@@ -148,7 +148,7 @@ class Test_Read_Only_Admin_Replication_Tasks:
         """
         assert DP.assert_add_replication_task_button_is_locked_and_not_clickable() is True
         DP.click_card_page_link('Replication Tasks')
-        assert DP.assert_replication_page_add_replication_task_button_is_locked_and_not_clickable() is True
+        assert DP.assert_add_replication_task_button_is_locked_and_not_clickable() is True
         COM.click_link('breadcrumb-data-protection')
 
     @allure.tag("Read")
@@ -186,7 +186,7 @@ class Test_Read_Only_Admin_Replication_Tasks:
         COM.close_right_panel()
         DP.click_card_page_link('Replication Tasks')
         DP.expand_replication_task_by_name(rep['task-name'])
-        DP.click_edit_replication_page_replication_task_by_name(rep['task-name'])
+        DP.click_replication_page_edit_replication_task_button()
         assert COM.assert_button_is_locked_and_not_clickable('save') is True
         COM.close_right_panel()
         COM.click_link('breadcrumb-data-protection')
@@ -209,13 +209,13 @@ class Test_Read_Only_Admin_Replication_Tasks:
         assert DP.assert_enable_replication_task_toggle_is_locked_and_not_clickable(rep['task-name']) is True
         DP.click_card_page_link('Replication Tasks')
         # TODO: fix this when NAS-129103 is updated
-        assert DP.assert_replication_page_enabled_replication_task_checkbox_is_locked_and_not_clickable(rep['task-name']) is True
+        assert DP.assert_enable_replication_task_toggle_is_locked_and_not_clickable(rep['task-name']) is True
         COM.click_link('breadcrumb-data-protection')
         API_PUT.set_replication_task_enabled(rep['task-name'], False)
         NAV.navigate_to_data_protection()
         assert DP.assert_enable_replication_task_toggle_is_locked_and_not_clickable(rep['task-name']) is True
         DP.click_card_page_link('Replication Tasks')
-        assert DP.assert_replication_page_enabled_replication_task_checkbox_is_locked_and_not_clickable(rep['task-name']) is True
+        assert DP.assert_enable_replication_task_toggle_is_locked_and_not_clickable(rep['task-name']) is True
         COM.click_link('breadcrumb-data-protection')
 
     @allure.tag("Read")
@@ -231,6 +231,7 @@ class Test_Read_Only_Admin_Replication_Tasks:
         """
         assert DP.assert_run_replication_task_button_is_locked_and_not_clickable(rep['task-name']) is True
         DP.click_card_page_link('Replication Tasks')
+        DP.expand_replication_task_by_name(rep['task-name'])
         assert DP.assert_replication_page_run_replication_task_button_is_locked_and_not_clickable(rep['task-name']) is True
         COM.click_link('breadcrumb-data-protection')
 
