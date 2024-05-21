@@ -7,9 +7,9 @@ from keywords.webui.common import Common as COM
 class NFS:
 
     @classmethod
-    def assert_add_button_is_restricted_on_nfs_page(cls):
+    def assert_add_nfs_share_button_is_restricted(cls) -> bool:
         """
-        This method verifies that the add button is locked and not clickable on the Sharing NFS page.
+        This method returns True if add NFS share button is locked and not clickable, otherwise it returns False.
 
         :return: True if add NFS share button is locked and not clickable, otherwise it returns False.
 
@@ -136,7 +136,7 @@ class NFS:
     @classmethod
     def assert_share_delete_button_is_restricted_on_nfs_page(cls, share_xpath: str) -> bool:
         """
-        This method verifies that the delete button is locked and not clickable on the Sharing NFS page.
+        This method returns True if delete NFS share button is locked and not clickable on the Sharing NFS page.
 
         :return: True if delete NFS share button is locked and not clickable, otherwise it returns False.
 
@@ -161,7 +161,7 @@ class NFS:
     @classmethod
     def assert_share_enabled_toggle_is_restricted_on_nfs_page(cls, share_xpath: str) -> bool:
         """
-        This method verifies that the enabled button is locked and not clickable on the Sharing NFS page.
+        This method returns True if enabled NFS share button is locked and not clickable on the Sharing NFS page.
 
         :return: True if enabled NFS share button is locked and not clickable, otherwise it returns False.
 

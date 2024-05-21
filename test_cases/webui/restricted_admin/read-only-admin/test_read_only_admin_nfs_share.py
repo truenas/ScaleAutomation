@@ -145,7 +145,7 @@ class Test_Read_Only_Admin_NFS_Share:
         assert Common_Shares.assert_share_card_displays('nfs') is True
         Common_Shares.click_share_card_header_link('nfs')
         assert NFS.assert_sharing_nfs_page_header() is True
-        assert NFS.assert_add_button_is_restricted_on_nfs_page() is True
+        assert NFS.assert_add_nfs_share_button_is_restricted() is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Modify An NFS Share On The Sharing NFS Page")

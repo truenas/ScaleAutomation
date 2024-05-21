@@ -9,7 +9,7 @@ class iSCSI:
     @classmethod
     def assert_edit_iscsi_target_panel_header(cls) -> bool:
         """
-        This method asserts the header of the Edit iSCSI Target panel.
+        This method returns True if the header of the Edit iSCSI Target panel is displayed.
 
         :return: True if the header of the Edit iSCSI Target panel is displayed, otherwise it returns False.
 
@@ -21,7 +21,7 @@ class iSCSI:
     @classmethod
     def assert_edit_panel_header_is_visible_opened_from_iscsi_tab(cls, tab_name: str) -> bool:
         """
-        This method asserts that the Edit panel header is visible from the given tab.
+        This method returns True if the Edit panel header is visible from the given tab.
 
         :param tab_name: The name of the tab.
         :return: True if the Edit panel header is visible from the given tab, otherwise it returns False.
@@ -43,7 +43,7 @@ class iSCSI:
     @classmethod
     def assert_sharing_iscsi_page_header(cls) -> bool:
         """
-        This method asserts the header of the sharing iSCSI page.
+        This method returns True if the header of the sharing iSCSI page is displayed.
 
         :return: True if the header of the sharing iSCSI page is displayed, otherwise it returns False.
 
@@ -55,7 +55,7 @@ class iSCSI:
     @classmethod
     def assert_iscsi_tab_header_is_visible(cls, tab_name: str) -> bool:
         """
-        This method asserts that the iSCSI target tab is visible.
+        This method returns True if the iSCSI target tab is visible.
 
         :param tab_name: The name of the tab.
         :return: True if the iSCSI target tab is visible, otherwise it returns False.
@@ -68,7 +68,7 @@ class iSCSI:
     @classmethod
     def assert_global_configuration_tab_is_visible(cls) -> bool:
         """
-        This method asserts that the global configuration tab is visible.
+        This method returns True if the global configuration tab is visible.
 
         :return: True if the global configuration tab is visible, otherwise it returns False.
 
@@ -80,7 +80,7 @@ class iSCSI:
     @classmethod
     def assert_iscsi_target_name_exists(cls, target_name: str) -> bool:
         """
-        This method verifies that the given iSCSI target name exists.
+        This method returns True if the given iSCSI target name exists.
 
         :param target_name: The name of the iSCSI target. Example: target1 is target-1
         :return: True if the given iSCSI target name exists, otherwise it returns False.
@@ -93,7 +93,7 @@ class iSCSI:
     @classmethod
     def assert_iscsi_wizard_button_is_restricted(cls) -> bool:
         """
-        This method verifies that the iSCSI wizard button is locked and not clickable on the iSCSI sharing page.
+        This method returns True if the iSCSI wizard button is locked and not clickable.
 
         :return: True if the iSCSI wizard button is locked and not clickable otherwise it returns False.
 
@@ -105,7 +105,7 @@ class iSCSI:
     @classmethod
     def assert_tab_add_button_is_restricted(cls, tab_name: str) -> bool:
         """
-        This method asserts that the Add button in the given tab is locked and not clickable.
+        This method returns True if the Add button in the given tab is locked and not clickable.
 
         :param tab_name: The name of the tab.
         :return: True if the Add button in the given tab is locked and not clickable, otherwise it returns False.
@@ -129,7 +129,7 @@ class iSCSI:
     @classmethod
     def assert_tab_row_item_delete_button_is_restricted(cls, tab_name: str, row_item: str) -> bool:
         """
-        This method asserts that the Delete button in the given tab is locked and not clickable.
+        This method returns True if the Delete button in the given tab is locked and not clickable.
 
         :param tab_name: The name of the tab.
         :param row_item: The name of the item. Example: target1 is target-1

@@ -21,7 +21,7 @@ class Datasets:
         return WebUI.wait_until_visible(xpaths.common_xpaths.button_field('add-dataset'))
 
     @classmethod
-    def assert_add_dataset_button_is_restricted(cls):
+    def assert_add_dataset_button_is_restricted(cls) -> bool:
         """
         This method returns True or False whether the add dataset button is locked and not clickable.
         :return: True if the add dataset button is locked and not clickable, otherwise it returns False.
@@ -32,7 +32,7 @@ class Datasets:
         return Common.assert_button_is_restricted('add-dataset')
 
     @classmethod
-    def assert_add_quota_button_is_restricted(cls):
+    def assert_add_quota_button_is_restricted(cls) -> bool:
         """
         This method returns True or False whether the add quota button is locked and not clickable.
         :return: True if the add quota button is locked and not clickable, otherwise it returns False.
@@ -497,9 +497,9 @@ class Datasets:
         return Common.assert_right_panel_header('Edit Dataset')
 
     @classmethod
-    def assert_edit_dataset_button_is_restricted(cls):
+    def assert_edit_dataset_button_is_restricted(cls) -> bool:
         """
-        This method verifies if the delete dataset permissions button is locked and not clickable.
+        This returns True or False if the edit dataset button is locked and not clickable.
 
         :return: True if the delete dataset permissions button is locked and not clickable, otherwise it returns False.
 
@@ -509,7 +509,7 @@ class Datasets:
         return Common.assert_button_is_restricted('edit-dataset')
 
     @classmethod
-    def assert_edit_dataset_permissions_button_is_restricted(cls):
+    def assert_edit_dataset_permissions_button_is_restricted(cls) -> bool:
         """
         This method verifies if the delete dataset permissions button is locked and not clickable.
 
@@ -521,7 +521,7 @@ class Datasets:
         return Common.assert_button_is_restricted('edit-permissions')
 
     @classmethod
-    def assert_edit_dataset_space_management_button_is_restricted(cls):
+    def assert_edit_dataset_space_management_button_is_restricted(cls) -> bool:
         """
         This method verifies if the delete dataset permissions button is locked and not clickable.
 
