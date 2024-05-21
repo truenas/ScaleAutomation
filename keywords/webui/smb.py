@@ -560,7 +560,7 @@ class SMB:
             - SMB.verify_smb_audit_page_opens()
         """
         if COM.assert_page_header('Services'):
-            COM.click_link('cifs-logs')
+            COM.click_button('service-smb-receipt-long-row-action')
         elif COM.assert_page_header('Sharing'):
             COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('SMB'))
             COM.click_button('cifs-actions-menu-logs')
@@ -614,7 +614,7 @@ class SMB:
             - SMB.verify_smb_sessions_page_opens()
         """
         if COM.assert_page_header('Services'):
-            COM.click_link('cifs-sessions')
+            COM.click_button('service-smb-list-row-action')
         elif COM.assert_page_header('Sharing'):
             COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('SMB'))
             COM.click_button('cifs-actions-menu-sessions')
