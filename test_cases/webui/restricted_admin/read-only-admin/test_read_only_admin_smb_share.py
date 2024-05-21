@@ -162,7 +162,7 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common_Shares.assert_share_card_displays('smb') is True
         Common_Shares.click_share_card_header_link('smb')
         assert SMB.assert_sharing_smb_page_header() is True
-        SMB.click_smb_page_edit_share_button(data['smb_xpath'])
+        SMB.click_edit_share(data['smb_xpath'])
         assert SMB.assert_edit_smb_panel_header() is True
         assert Common.assert_header_readonly_badge() is True
 
