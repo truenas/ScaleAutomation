@@ -10,7 +10,7 @@ class Data_Protection:
     @classmethod
     def assert_add_cloud_sync_task_button_is_restricted(cls) -> bool:
         """
-        This method returns if the add cloud sync task button is locked and not clickable.
+        This method returns True if the add cloud sync task button is locked and not clickable.
 
         :return: True if the add cloud sync task button is locked and not clickable, otherwise it returns False.
 
@@ -22,7 +22,7 @@ class Data_Protection:
     @classmethod
     def assert_add_periodic_snapshot_task_button_is_restricted(cls) -> bool:
         """
-        This method returns if the add periodic snapshot task button is locked and not clickable.
+        This method returns True if the add periodic snapshot task button is locked and not clickable.
 
         :return: True if the add periodic snapshot task button is locked and not clickable, otherwise it returns False.
 
@@ -46,7 +46,7 @@ class Data_Protection:
     @classmethod
     def assert_add_scrub_task_button_is_restricted(cls) -> bool:
         """
-        This method returns if the add scrub task button is locked and not clickable.
+        This method returns True if the add scrub task button is locked and not clickable.
 
         :return: True if the add scrub task button is locked and not clickable, otherwise it returns False.
 
@@ -58,7 +58,7 @@ class Data_Protection:
     @classmethod
     def assert_add_smart_test_button_is_restricted(cls) -> bool:
         """
-        This method returns if the add smart test button is locked and not clickable.
+        This method returns True if the add smart test button is locked and not clickable.
 
         :return: True if the add smart test button is locked and not clickable, otherwise it returns False.
 
@@ -70,7 +70,7 @@ class Data_Protection:
     @classmethod
     def assert_add_vm_periodic_snapshot_button_is_restricted(cls) -> bool:
         """
-        This method returns if the add vm periodic snapshot button is locked and not clickable.
+        This method returns True if the add vm periodic snapshot button is locked and not clickable.
 
         :return: True if the add vm periodic snapshot button is locked and not clickable, otherwise it returns False.
 
@@ -96,7 +96,7 @@ class Data_Protection:
     @classmethod
     def assert_delete_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
         """
-        This method returns if the delete cloud sync task button is locked and not clickable.
+        This method returns True if the delete cloud sync task button is locked and not clickable.
 
         :param description: description of the cloud sync task
         :return: True if the delete cloud sync task button is locked and not clickable, otherwise it returns False.
@@ -110,7 +110,7 @@ class Data_Protection:
     @classmethod
     def assert_delete_periodic_snapshot_task_button_is_restricted(cls, path: str) -> bool:
         """
-        This method returns if the delete periodic snapshot task button is locked and not clickable.
+        This method returns True if the delete periodic snapshot task button is locked and not clickable.
 
         :param path: path of the periodic snapshot task
         :return: True if the delete periodic snapshot task button is locked and not clickable, otherwise it returns False.
@@ -181,7 +181,7 @@ class Data_Protection:
     @classmethod
     def assert_dry_run_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
         """
-        This method asserts if the dry run cloud sync task button is locked and not clickable.
+        This method returns Rrue if the dry run cloud sync task button is locked and not clickable.
 
         :param description: description of the cloud sync task
         :return: True if the dry run cloud sync task button is locked and not clickable, otherwise it returns False.
@@ -365,7 +365,7 @@ class Data_Protection:
     @classmethod
     def assert_smart_page_add_smart_test_button_is_restricted(cls) -> bool:
         """
-        This method returns if the add smart test button is locked and not clickable.
+        This method returns True if the add smart test button is locked and not clickable.
 
         :return: True if the add smart test button is locked and not clickable, otherwise it returns False.
 
@@ -377,7 +377,7 @@ class Data_Protection:
     @classmethod
     def assert_smart_page_delete_smart_test_button_is_restricted(cls, smart_type: str) -> bool:
         """
-        This method returns if the delete smart test button is locked and not clickable.
+        This method returns True if the delete smart test button is locked and not clickable.
 
         :param smart_type: type of the smart test
         :return: True if the delete smart test button is locked and not clickable, otherwise it returns False.
@@ -390,7 +390,7 @@ class Data_Protection:
     @classmethod
     def assert_smart_page_save_smart_test_button_is_restricted(cls) -> bool:
         """
-        This method returns if the save smart test button is locked and not clickable.
+        This method returns True if the save smart test button is locked and not clickable.
 
         :return: True if the save smart test button is locked and not clickable, otherwise it returns False.
 
