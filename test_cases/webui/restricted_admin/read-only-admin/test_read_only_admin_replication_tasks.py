@@ -146,9 +146,9 @@ class Test_Read_Only_Admin_Replication_Tasks:
         2. Navigate to Replication tasks page
         3. Verify the Replication tasks page add SMART test button is locked and not clickable
         """
-        assert DP.assert_add_replication_task_button_is_locked_and_not_clickable() is True
+        assert DP.assert_add_replication_task_button_is_restricted() is True
         DP.click_card_page_link('Replication Tasks')
-        assert DP.assert_add_replication_task_button_is_locked_and_not_clickable() is True
+        assert DP.assert_add_replication_task_button_is_restricted() is True
         COM.click_link('breadcrumb-data-protection')
 
     @allure.tag("Read")
@@ -162,10 +162,10 @@ class Test_Read_Only_Admin_Replication_Tasks:
         2. Navigate to Replication tasks page
         3. Verify the Replication tasks page delete Replication task button is locked and not clickable
         """
-        assert DP.assert_delete_replication_task_button_is_locked_and_not_clickable(rep['task-name']) is True
+        assert DP.assert_delete_replication_task_button_is_restricted(rep['task-name']) is True
         DP.click_card_page_link('Replication Tasks')
         DP.expand_replication_task_by_name(rep['task-name'])
-        assert DP.assert_replication_page_delete_replication_task_button_is_locked_and_not_clickable(rep['task-name']) is True
+        assert DP.assert_replication_page_delete_replication_task_button_is_restricted(rep['task-name']) is True
         COM.click_link('breadcrumb-data-protection')
 
     @allure.tag("Read")
@@ -206,16 +206,16 @@ class Test_Read_Only_Admin_Replication_Tasks:
         5. Navigate to Replication tasks page
         6. Verify the Replication tasks page enabled Replication task toggle is locked and not clickable
         """
-        assert DP.assert_enable_replication_task_toggle_is_locked_and_not_clickable(rep['task-name']) is True
+        assert DP.assert_enable_replication_task_toggle_is_restricted(rep['task-name']) is True
         DP.click_card_page_link('Replication Tasks')
         # TODO: fix this when NAS-129103 is updated
-        assert DP.assert_enable_replication_task_toggle_is_locked_and_not_clickable(rep['task-name']) is True
+        assert DP.assert_enable_replication_task_toggle_is_restricted(rep['task-name']) is True
         COM.click_link('breadcrumb-data-protection')
         API_PUT.set_replication_task_enabled(rep['task-name'], False)
         NAV.navigate_to_data_protection()
-        assert DP.assert_enable_replication_task_toggle_is_locked_and_not_clickable(rep['task-name']) is True
+        assert DP.assert_enable_replication_task_toggle_is_restricted(rep['task-name']) is True
         DP.click_card_page_link('Replication Tasks')
-        assert DP.assert_enable_replication_task_toggle_is_locked_and_not_clickable(rep['task-name']) is True
+        assert DP.assert_enable_replication_task_toggle_is_restricted(rep['task-name']) is True
         COM.click_link('breadcrumb-data-protection')
 
     @allure.tag("Read")
@@ -229,10 +229,10 @@ class Test_Read_Only_Admin_Replication_Tasks:
         2. Navigate to Replication tasks page
         3. Verify the Replication tasks page run Replication task button is locked and not clickable
         """
-        assert DP.assert_run_replication_task_button_is_locked_and_not_clickable(rep['task-name']) is True
+        assert DP.assert_run_replication_task_button_is_restricted(rep['task-name']) is True
         DP.click_card_page_link('Replication Tasks')
         DP.expand_replication_task_by_name(rep['task-name'])
-        assert DP.assert_replication_page_run_replication_task_button_is_locked_and_not_clickable(rep['task-name']) is True
+        assert DP.assert_replication_page_run_replication_task_button_is_restricted(rep['task-name']) is True
         COM.click_link('breadcrumb-data-protection')
 
     @allure.tag("Read")
@@ -246,8 +246,8 @@ class Test_Read_Only_Admin_Replication_Tasks:
         5. Navigate to Replication tasks page
         6. Verify the Replication tasks page restore Replication task button is locked and not clickable
         """
-        assert DP.assert_restore_replication_task_button_is_locked_and_not_clickable(rep['task-name']) is True
+        assert DP.assert_restore_replication_task_button_is_restricted(rep['task-name']) is True
         DP.click_card_page_link('Replication Tasks')
         DP.expand_replication_task_by_name(rep['task-name'])
-        assert DP.assert_replication_page_restore_replication_task_button_is_locked_and_not_clickable(rep['task-name']) is True
+        assert DP.assert_replication_page_restore_replication_task_button_is_restricted(rep['task-name']) is True
         COM.click_link('breadcrumb-data-protection')
