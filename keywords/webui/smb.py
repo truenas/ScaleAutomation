@@ -171,17 +171,18 @@ class SMB:
         return COM.is_visible(xpath)
 
     @classmethod
-    def assert_share_description(cls, desc: str) -> bool:
+    def assert_share_description(cls, share_name: str, desc: str) -> bool:
         """
         This method verifies that the share description is visible on the Sharing SMB page.
 
         :param desc: is the description of the share
+        :param share_name: is the name of the share
         :return: True if the share description is visible otherwise it returns False.
 
         Example:
             - SMB.assert_share_description('myDescription')
         """
-        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', 'description', desc))
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', share_name, 'description', desc))
 
     @classmethod
     def assert_share_filesystem_acl_configuration_field_visible(cls, field: str) -> bool:
@@ -231,6 +232,33 @@ class SMB:
             - SMB.assert_share_ignore_list('ignore-me')
         """
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@formcontrolname="ignore_list"]//*[contains(text(),"{name}")]'))
+
+    @classmethod
+    def assert_share_name(cls, name: str) -> bool:
+        """
+        This method verifies that the share name is visible on the Sharing SMB page.
+
+        :param name: is the name of the share
+        :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+            - SMB.assert_share_name('myShare')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', name, 'name', name))
+
+    @classmethod
+    def assert_share_path(cls, share_name: str, path: str) -> bool:
+        """
+        This method verifies that the path for the share row of the given share on the Sharing SMB page.
+
+        :param path: path of the given share
+        :param share_name: name of the given share
+        :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+           - SMB.assert_share_path('/mnt/share1')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', share_name, 'path', path))
 
     @classmethod
     def assert_share_watch_list(cls, name: str) -> bool:

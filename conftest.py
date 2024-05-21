@@ -21,7 +21,7 @@ def pytest_sessionfinish(session, exitstatus):
     stop_percy_session()
     allure_environment()
     allure_reporting()
-    # WebUI.quit()
+    WebUI.quit()
 
 
 def pytest_sessionstart(session):
@@ -42,7 +42,7 @@ def pytest_runtest_makereport(item):
     """
     outcome = yield
     report = outcome.get_result()
-    if report.when == 'call' or report.when == "setup" or report.when == "teardown":
+    if report.when in ['call', "setup", "teardown"]:
         setattr(item, 'report', report)
         xfail = hasattr(report, 'wasxfail')
         if (report.skipped and xfail) or (report.failed and not xfail):

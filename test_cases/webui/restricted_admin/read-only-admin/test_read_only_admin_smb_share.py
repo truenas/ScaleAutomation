@@ -138,9 +138,9 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common_Shares.assert_share_card_displays('smb') is True
         Common_Shares.click_share_card_header_link('smb')
         assert SMB.assert_sharing_smb_page_header() is True
-        assert SMB.assert_smb_page_share_name(data['smb_name']) is True
-        assert SMB.assert_smb_page_share_path(data['smb_name'], data['smb_path']) is True
-        assert SMB.assert_smb_page_share_description(data['smb_name'], data['smb_description']) is True
+        assert SMB.assert_share_name(data['smb_name']) is True
+        assert SMB.assert_share_path(data['smb_name'], data['smb_path']) is True
+        assert SMB.assert_share_description(data['smb_name'], data['smb_description']) is True
 
     @allure.tag('Create')
     @allure.story("Read Only Admin Is Not Able To Create An SMB Share On The Sharing SMB Page")
