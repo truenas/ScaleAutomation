@@ -544,7 +544,7 @@ class SMB:
             - SMB.set_ignore_list()
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('ignore-list'))
-        COM.click_on_element(f'//*[@data-test="input-ignore-list"]')
+        COM.click_on_element('//*[@data-test="input-ignore-list"]')
         name = COM.convert_to_tag_format(f'ignore-list-{name}')
         COM.click_on_element(f'//*[@data-test="option-{name}"]')
 
@@ -559,7 +559,7 @@ class SMB:
             - SMB.set_share_purpose('no purpose')
        """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.select_field('purpose')) is True
-        COM.click_on_element(f'//*[@data-test="select-purpose"]')
+        COM.click_on_element('//*[@data-test="select-purpose"]')
         purpose = COM.convert_to_tag_format(purpose)
         COM.click_on_element(f'//*[@data-test="option-purpose-{purpose}"]')
 
@@ -574,9 +574,9 @@ class SMB:
             - SMB.set_watch_list('watch-me')
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('watch-list'))
-        COM.click_on_element(f'//*[@data-test="input-watch-list"]')
+        COM.click_on_element('//*[@data-test="input-watch-list"]')
 
-        name = COM.convert_to_tag_format('watch-list-'+name)
+        name = COM.convert_to_tag_format(f'watch-list-{name}')
         COM.click_on_element(f'//*[@data-test="option-{name}"]')
 
     @classmethod
