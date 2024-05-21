@@ -151,7 +151,7 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common_Shares.assert_share_card_displays('smb') is True
         Common_Shares.click_share_card_header_link('smb')
         assert SMB.assert_sharing_smb_page_header() is True
-        assert SMB.assert_add_button_is_restricted_on_smb_page() is True
+        assert SMB.assert_add_smb_share_button_is_restricted() is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Modify An SMB Share On The Sharing SMB Page")

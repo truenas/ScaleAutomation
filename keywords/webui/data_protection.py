@@ -10,7 +10,7 @@ class Data_Protection:
     @classmethod
     def assert_add_cloud_sync_task_button_is_restricted(cls) -> bool:
         """
-        This method verifies if the add cloud sync task button is locked and not clickable.
+        This method returns if the add cloud sync task button is locked and not clickable.
 
         :return: True if the add cloud sync task button is locked and not clickable, otherwise it returns False.
 
@@ -22,7 +22,7 @@ class Data_Protection:
     @classmethod
     def assert_add_periodic_snapshot_task_button_is_restricted(cls) -> bool:
         """
-        This method verifies if the add periodic snapshot task button is locked and not clickable.
+        This method returns if the add periodic snapshot task button is locked and not clickable.
 
         :return: True if the add periodic snapshot task button is locked and not clickable, otherwise it returns False.
 
@@ -34,7 +34,7 @@ class Data_Protection:
     @classmethod
     def assert_add_rsync_task_button_is_restricted(cls) -> bool:
         """
-        This method verifies if the add rsync task button is locked and not clickable.
+        This method returns if the add rsync task button is locked and not clickable.
 
         :return: True if the add rsync task button is locked and not clickable, otherwise it returns False.
 
@@ -46,7 +46,7 @@ class Data_Protection:
     @classmethod
     def assert_add_scrub_task_button_is_restricted(cls) -> bool:
         """
-        This method verifies if the add scrub task button is locked and not clickable.
+        This method returns if the add scrub task button is locked and not clickable.
 
         :return: True if the add scrub task button is locked and not clickable, otherwise it returns False.
 
@@ -58,7 +58,7 @@ class Data_Protection:
     @classmethod
     def assert_add_smart_test_button_is_restricted(cls) -> bool:
         """
-        This method verifies if the add smart test button is locked and not clickable.
+        This method returns if the add smart test button is locked and not clickable.
 
         :return: True if the add smart test button is locked and not clickable, otherwise it returns False.
 
@@ -70,7 +70,7 @@ class Data_Protection:
     @classmethod
     def assert_add_vm_periodic_snapshot_button_is_restricted(cls) -> bool:
         """
-        This method verifies if the add vm periodic snapshot button is locked and not clickable.
+        This method returns if the add vm periodic snapshot button is locked and not clickable.
 
         :return: True if the add vm periodic snapshot button is locked and not clickable, otherwise it returns False.
 
@@ -96,7 +96,7 @@ class Data_Protection:
     @classmethod
     def assert_delete_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
         """
-        This method verifies if the delete cloud sync task button is locked and not clickable.
+        This method returns if the delete cloud sync task button is locked and not clickable.
 
         :param description: description of the cloud sync task
         :return: True if the delete cloud sync task button is locked and not clickable, otherwise it returns False.
@@ -110,7 +110,7 @@ class Data_Protection:
     @classmethod
     def assert_delete_periodic_snapshot_task_button_is_restricted(cls, path: str) -> bool:
         """
-        This method verifies if the delete periodic snapshot task button is locked and not clickable.
+        This method returns if the delete periodic snapshot task button is locked and not clickable.
 
         :param path: path of the periodic snapshot task
         :return: True if the delete periodic snapshot task button is locked and not clickable, otherwise it returns False.
@@ -124,7 +124,7 @@ class Data_Protection:
     @classmethod
     def assert_delete_rsync_task_button_is_restricted(cls, path: str) -> bool:
         """
-        This method verifies if the delete rsync task button is locked and not clickable.
+        This method returns if the delete rsync task button is locked and not clickable.
 
         :param path: path of the rsync task
         :return: True if the delete rsync task button is locked and not clickable, otherwise it returns False.
@@ -140,7 +140,7 @@ class Data_Protection:
     @classmethod
     def assert_delete_scrub_task_button_is_restricted(cls, description: str) -> bool:
         """
-        This method verifies if the delete scrub task button is locked and not clickable.
+        This method returns if the delete scrub task button is locked and not clickable.
 
         :param description: description of the scrub task
         :return: True if the delete scrub task button is locked and not clickable, otherwise it returns False.
@@ -154,7 +154,7 @@ class Data_Protection:
     @classmethod
     def assert_delete_smart_test_button_is_restricted(cls, description: str) -> bool:
         """
-        This method verifies if the delete smart test button is locked and not clickable.
+        This method returns if the delete smart test button is locked and not clickable.
 
         :param description: description of the smart test
         :return: True if the delete smart test button is locked and not clickable, otherwise it returns False.
@@ -167,7 +167,7 @@ class Data_Protection:
     @classmethod
     def assert_delete_vm_periodic_snapshot_task_button_is_restricted(cls, path: str) -> bool:
         """
-        This method verifies if the delete vm periodic snapshot task button is locked and not clickable.
+        This method returns if the delete vm periodic snapshot task button is locked and not clickable.
 
         :param path: path of the periodic snapshot task
         :return: True if the delete vm periodic snapshot task button is locked and not clickable, otherwise it returns False.
@@ -181,7 +181,7 @@ class Data_Protection:
     @classmethod
     def assert_dry_run_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
         """
-        This method verifies if the dry run cloud sync task button is locked and not clickable.
+        This method asserts if the dry run cloud sync task button is locked and not clickable.
 
         :param description: description of the cloud sync task
         :return: True if the dry run cloud sync task button is locked and not clickable, otherwise it returns False.
@@ -195,7 +195,7 @@ class Data_Protection:
     @classmethod
     def assert_enable_cloud_sync_task_toggle_is_restricted(cls, description: str) -> bool:
         """
-        This method verifies if the enable cloud sync task toggle is locked and not clickable.
+        This method asserts if the enable cloud sync task toggle is locked and not clickable.
 
         :param description: description of the cloud sync task
         :return: True if the enable cloud sync task toggle is locked and not clickable, otherwise it returns False.
@@ -209,7 +209,7 @@ class Data_Protection:
     @classmethod
     def assert_enable_periodic_snapshot_task_toggle_is_restricted(cls, path: str) -> bool:
         """
-        This method verifies if the enable periodic snapshot task toggle is locked and not clickable.
+        This method asserts if the enable periodic snapshot task toggle is locked and not clickable.
 
         :param path: path of the cloud sync task
         :return: True if the enable periodic snapshot task toggle is locked and not clickable, otherwise it returns False.
@@ -223,7 +223,7 @@ class Data_Protection:
     @classmethod
     def assert_enable_rsync_task_toggle_is_restricted(cls, path: str) -> bool:
         """
-        This method verifies if the enable rsync task toggle is locked and not clickable.
+        This method asserts if the enable rsync task toggle is locked and not clickable.
 
         :param path: path of the rsync task
         :return: True if the enable rsync task toggle is locked and not clickable, otherwise it returns False.
@@ -239,7 +239,7 @@ class Data_Protection:
     @classmethod
     def assert_enable_scrub_task_toggle_is_restricted(cls, description: str) -> bool:
         """
-        This method verifies if the enable scrub task toggle is locked and not clickable.
+        This method returns if the enable scrub task toggle is locked and not clickable.
 
         :param description: description of the scrub task
         :return: True if the enable scrub task toggle is locked and not clickable, otherwise it returns False.
@@ -279,7 +279,7 @@ class Data_Protection:
     @classmethod
     def assert_restore_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
         """
-        This method verifies if the restore cloud sync task button is locked and not clickable.
+        This method returns if the restore cloud sync task button is locked and not clickable.
 
         :param description: description of the cloud sync task
         :return: True if the restore cloud sync task button is locked and not clickable, otherwise it returns False.
@@ -293,7 +293,7 @@ class Data_Protection:
     @classmethod
     def assert_run_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
         """
-        This method verifies if the run now cloud sync task button is locked and not clickable.
+        This method returns if the run now cloud sync task button is locked and not clickable.
 
         :param description: description of the cloud sync task
         :return: True if the run now cloud sync task button is locked and not clickable, otherwise it returns False.
@@ -307,7 +307,7 @@ class Data_Protection:
     @classmethod
     def assert_run_rsync_task_button_is_restricted(cls, path: str) -> bool:
         """
-        This method verifies if the run now rsync task button is locked and not clickable.
+        This returns if the run now rsync task button is locked and not clickable.
 
         :param path: path of the rsync task
         :return: True if the run now rsync task button is locked and not clickable, otherwise it returns False.
@@ -323,27 +323,27 @@ class Data_Protection:
     @classmethod
     def assert_rsync_task_card_header_is_visible(cls) -> bool:
         """
-        This method verifies if the rsync task card header is visible.
+        This method returns if the rsync task card header is visible.
 
         :return: True if the rsync task card header is visible, otherwise False.
 
         Example:
-            - Rsync_Task.assert_rsync_task_card_header_is_visible()
+            - Data_Protection.assert_rsync_task_card_header_is_visible()
         """
         return COM.is_card_visible('Rsync Task')
 
     @classmethod
     def assert_rsync_task_is_visible_on_card(cls, path: str) -> bool:
         """
-        This method verifies if the given rsync path is visible.
+        This method returns True if the given rsync task is visible, otherwise False.
 
         :param path: is the name of the given rsync path.
         :return: True if the given rsync task is visible, otherwise False.
 
         Example:
-            - Rsync_Task.assert_rsync_task_is_visible('/my/Rep/Path')
+            - Data_Protection.assert_rsync_task_is_visible('/my/Rep/Path')
         """
-        xpath_ip = private_config['REP_DEST_IP'].replace('.', '-')
+        xpath_ip = COM.convert_to_tag_format(private_config['REP_DEST_IP'])
         xpath_path = COM.convert_to_tag_format(path)
         task_xpath = f'//*[@data-test="text-path-card-rsync-task{xpath_path}-{xpath_ip}-row-text"]'
         return WebUI.wait_until_visible(task_xpath, shared_config['MEDIUM_WAIT'])
@@ -365,7 +365,7 @@ class Data_Protection:
     @classmethod
     def assert_smart_page_add_smart_test_button_is_restricted(cls) -> bool:
         """
-        This method verifies if the add smart test button is locked and not clickable.
+        This method returns if the add smart test button is locked and not clickable.
 
         :return: True if the add smart test button is locked and not clickable, otherwise it returns False.
 
@@ -377,7 +377,7 @@ class Data_Protection:
     @classmethod
     def assert_smart_page_delete_smart_test_button_is_restricted(cls, smart_type: str) -> bool:
         """
-        This method verifies if the delete smart test button is locked and not clickable.
+        This method returns if the delete smart test button is locked and not clickable.
 
         :param smart_type: type of the smart test
         :return: True if the delete smart test button is locked and not clickable, otherwise it returns False.
@@ -390,7 +390,7 @@ class Data_Protection:
     @classmethod
     def assert_smart_page_save_smart_test_button_is_restricted(cls) -> bool:
         """
-        This method verifies if the save smart test button is locked and not clickable.
+        This method returns if the save smart test button is locked and not clickable.
 
         :return: True if the save smart test button is locked and not clickable, otherwise it returns False.
 

@@ -17,9 +17,9 @@ class Common_Shares:
         :return: True if the add share button is locked and not clickable otherwise it returns False.
 
         Example:
-           - Common_Shares.assert_add_share_button_is_restricted('smb')
+           - Common_Shares.assert_card_add_share_button_is_restricted('smb')
         """
-        return COM.assert_button_is_restricted(f'{share_type}-share-add')
+        return COM.assert_button_is_restricted(f'{COM.convert_to_tag_format(share_type)}-share-add')
 
     @classmethod
     def assert_card_edit_filesystem_acl_permissions_button_is_restricted(cls, share_name: str) -> bool:
@@ -33,7 +33,8 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_card_edit_filesystem_acl_permissions_button_is_restricted('share-1')
         """
-        return COM.assert_button_is_restricted(f'card-smb-share-{share_name}-security-row-action')
+        name = COM.convert_to_tag_format(share_name)
+        return COM.assert_button_is_restricted(f'card-smb-share-{name}-security-row-action')
 
     @classmethod
     def assert_card_edit_share_acl_permissions_button_is_restricted(cls, share_name: str) -> bool:

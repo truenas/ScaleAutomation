@@ -9,9 +9,9 @@ from selenium.common.exceptions import ElementClickInterceptedException, Timeout
 
 class SMB:
     @classmethod
-    def assert_add_button_is_restricted_on_smb_page(cls):
+    def assert_add_smb_share_button_is_restricted(cls):
         """
-        This method verifies that the add button is locked and not clickable on the SMB page.
+        This method returns True if add SMB share button is locked and not clickable, otherwise it returns False.
 
         :return: True if add SMB share button is locked and not clickable, otherwise it returns False.
 
