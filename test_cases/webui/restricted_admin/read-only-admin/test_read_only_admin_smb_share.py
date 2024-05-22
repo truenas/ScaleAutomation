@@ -158,6 +158,12 @@ class Test_Read_Only_Admin_SMB_Share:
     def test_read_only_admin_is_not_able_to_modify_an_smb_shares_on_the_sharing_smb_page(self, data):
         """
         This test verifies the read-only admin is not able to modify an SMB share on the Sharing SMB page.
+        1. Navigate to the shares page
+        2. Click on the SMB card header link
+        3. Click on the SMB share edit button
+        4. Verify there is a read-only badge
+        5. Verify you can't save changes.
+
         """
         assert Common_Shares.assert_share_card_displays('smb') is True
         Common_Shares.click_share_card_header_link('smb')
@@ -165,6 +171,9 @@ class Test_Read_Only_Admin_SMB_Share:
         SMB.click_edit_share(data['smb_xpath'])
         assert SMB.assert_edit_smb_panel_header() is True
         assert Common.assert_header_readonly_badge() is True
+
+        Common_Shares.set_share_description('This is a new description')
+        assert Common.assert_save_button_is_restricted() is True
 
         Common.close_right_panel()
 

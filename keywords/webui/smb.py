@@ -485,8 +485,7 @@ class SMB:
         Example:
             - SMB.click_edit_share()
         """
-        COM.click_on_element(xpaths.smb.smb_share_options(share_name))
-        COM.click_button('samba-options-edit')
+        COM.click_button(f'smb-{share_name}-edit-row-action')
 
     @classmethod
     def delete_share_by_name(cls, sharetype: str, name: str, action: str) -> None:
