@@ -55,7 +55,6 @@ class Replication:
         assert COM.assert_progress_bar_not_visible(shared_config['EXTRA_LONG_WAIT']) is True
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.close_right_panel())
 
-
     @classmethod
     def close_destination_box(cls) -> None:
         """
