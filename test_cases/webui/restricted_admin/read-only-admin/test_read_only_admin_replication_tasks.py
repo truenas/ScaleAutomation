@@ -182,12 +182,12 @@ class Test_Read_Only_Admin_Replication_Tasks:
         5. Verify the Replication tasks page save Replication task button is locked and not clickable
         """
         DP.click_edit_replication_task_by_name(rep['task-name'])
-        assert COM.assert_button_is_locked_and_not_clickable('save') is True
+        assert COM.assert_button_is_restricted('save') is True
         COM.close_right_panel()
         DP.click_card_page_link('Replication Tasks')
         DP.expand_replication_task_by_name(rep['task-name'])
         DP.click_replication_page_edit_replication_task_button()
-        assert COM.assert_button_is_locked_and_not_clickable('save') is True
+        assert COM.assert_button_is_restricted('save') is True
         COM.close_right_panel()
         COM.click_link('breadcrumb-data-protection')
 
