@@ -53,7 +53,7 @@ class Data_Protection:
         Example:
             - Data_Protection.assert_add_replication_task_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('replication-task-add')
+        return COM.assert_button_is_restricted('replication-task-add')
 
     @classmethod
     def assert_add_scrub_task_button_is_restricted(cls) -> bool:
@@ -161,7 +161,7 @@ class Data_Protection:
             - Data_Protection.assert_delete_replication_task_button_is_restricted('name')
         """
         name = COM.convert_to_tag_format(name)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.replication_task_delete_button(name))
+        return COM.assert_element_is_restricted(xpaths.data_protection.replication_task_delete_button(name))
 
     @classmethod
     def assert_delete_scrub_task_button_is_restricted(cls, description: str) -> bool:
@@ -207,7 +207,7 @@ class Data_Protection:
     @classmethod
     def assert_dry_run_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
         """
-        This method returns Rrue if the dry run cloud sync task button is locked and not clickable.
+        This method returns True if the dry run cloud sync task button is locked and not clickable.
 
         :param description: description of the cloud sync task
         :return: True if the dry run cloud sync task button is locked and not clickable, otherwise it returns False.
@@ -274,7 +274,7 @@ class Data_Protection:
             - Data_Protection.assert_enable_replication_task_toggle_is_restricted('name')
         """
         name = COM.convert_to_tag_format(name)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.replication_task_enable_toggle(name))
+        return COM.assert_element_is_restricted(xpaths.data_protection.replication_task_enable_toggle(name))
 
     @classmethod
     def assert_enable_scrub_task_toggle_is_restricted(cls, description: str) -> bool:
@@ -326,7 +326,7 @@ class Data_Protection:
         Example:
             - Data_Protection.assert_add_replication_task_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('replication-task-add')
+        return COM.assert_button_is_restricted('replication-task-add')
 
     @classmethod
     def assert_replication_page_delete_replication_task_button_is_restricted(cls, name: str) -> bool:
@@ -339,8 +339,8 @@ class Data_Protection:
         Example:
             - Data_Protection.assert_replication_page_delete_replication_task_button_is_restricted("rep_name")
         """
-        name = COM.convert_to_tag_format(name)
-        return COM.assert_element_is_locked_and_not_clickable(f'//button[contains(@data-test,"-delete")]')
+        # name = COM.convert_to_tag_format(name)
+        return COM.assert_element_is_restricted(f'//button[contains(@data-test,"-delete")]')
 
     @classmethod
     def assert_replication_page_replication_task_name(cls, name: str) -> bool:
@@ -367,8 +367,8 @@ class Data_Protection:
         Example:
             - Data_Protection.assert_replication_page_restore_replication_task_button_is_restricted("rep_name")
         """
-        name = COM.convert_to_tag_format(name)
-        return COM.assert_element_is_locked_and_not_clickable(f'//button[contains(@data-test,"-restore")]')
+        # name = COM.convert_to_tag_format(name)
+        return COM.assert_element_is_restricted(f'//button[contains(@data-test,"-restore")]')
 
     @classmethod
     def assert_replication_page_run_replication_task_button_is_restricted(cls, name: str) -> bool:
@@ -381,8 +381,8 @@ class Data_Protection:
         Example:
             - Data_Protection.assert_replication_page_run_replication_task_button_is_restricted("rep_name")
         """
-        name = COM.convert_to_tag_format(name)
-        return COM.assert_element_is_locked_and_not_clickable(f'//button[contains(@data-test,"-run-now")]')
+        # name = COM.convert_to_tag_format(name)
+        return COM.assert_element_is_restricted(f'//button[contains(@data-test,"-run-now")]')
 
     @classmethod
     def assert_replication_task_name(cls, name: str) -> bool:
@@ -424,7 +424,7 @@ class Data_Protection:
             - Data_Protection.assert_restore_replication_task_button_is_restricted('name')
         """
         name = COM.convert_to_tag_format(name)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.replication_task_restore_button(name))
+        return COM.assert_element_is_restricted(xpaths.data_protection.replication_task_restore_button(name))
 
     @classmethod
     def assert_run_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
@@ -496,7 +496,7 @@ class Data_Protection:
             - Data_Protection.assert_run_replication_task_button_is_restricted('name')
         """
         name = COM.convert_to_tag_format(name)
-        return COM.assert_element_is_locked_and_not_clickable(xpaths.data_protection.replication_task_enable_toggle(name))
+        return COM.assert_element_is_restricted(xpaths.data_protection.replication_task_enable_toggle(name))
 
     @classmethod
     def assert_scrub_task_description(cls, description: str) -> bool:
