@@ -103,9 +103,9 @@ class Test_Read_Only_Admin_Smart_Tests:
         2. Navigate to SMART test page
         3. Verify the SMART test page add SMART test button is locked and not clickable
         """
-        assert DP.assert_add_smart_test_button_is_locked_and_not_clickable() is True
+        assert DP.assert_add_smart_test_button_is_restricted() is True
         DP.click_card_page_link('Periodic S.M.A.R.T. Tests')
-        assert DP.assert_smart_page_add_smart_test_button_is_locked_and_not_clickable() is True
+        assert DP.assert_smart_page_add_smart_test_button_is_restricted() is True
         COM.click_link('breadcrumb-data-protection')
 
     @allure.tag("Read")
@@ -119,9 +119,9 @@ class Test_Read_Only_Admin_Smart_Tests:
         2. Navigate to SMART test page
         3. Verify the SMART test page delete SMART test button is locked and not clickable
         """
-        assert DP.assert_delete_smart_test_button_is_locked_and_not_clickable("Short Hour") is True
+        assert DP.assert_delete_smart_test_button_is_restricted("Short Hour") is True
         DP.click_card_page_link('Periodic S.M.A.R.T. Tests')
-        assert DP.assert_smart_page_delete_smart_test_button_is_locked_and_not_clickable("SHORT") is True
+        assert DP.assert_smart_page_delete_smart_test_button_is_restricted("SHORT") is True
         COM.click_link('breadcrumb-data-protection')
 
     @allure.tag("Read")
@@ -138,10 +138,10 @@ class Test_Read_Only_Admin_Smart_Tests:
         5. Verify the SMART test page save SMART test button is locked and not clickable
         """
         DP.click_edit_smart_test("Short Hour")
-        assert COM.assert_button_is_locked_and_not_clickable('save') is True
+        assert COM.assert_button_is_restricted('save') is True
         COM.close_right_panel()
         DP.click_card_page_link('Periodic S.M.A.R.T. Tests')
         DP.click_edit_smart_test("Short Hour")
-        assert DP.assert_smart_page_save_smart_test_button_is_locked_and_not_clickable() is True
+        assert DP.assert_smart_page_save_smart_test_button_is_restricted() is True
         COM.close_right_panel()
         COM.click_link('breadcrumb-data-protection')

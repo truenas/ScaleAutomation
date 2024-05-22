@@ -92,7 +92,7 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
         Test Steps:
         1. Verify the add periodic snapshot task button is locked and not clickable
         """
-        assert DP.assert_add_periodic_snapshot_task_button_is_locked_and_not_clickable() is True
+        assert DP.assert_add_periodic_snapshot_task_button_is_restricted() is True
 
     @allure.tag("Read")
     @allure.story("Read Only Admin Is Not Able to delete a Periodic Snapshot task")
@@ -103,7 +103,7 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
         Test Steps:
         1. Verify the delete periodic snapshot task button is locked and not clickable
         """
-        assert DP.assert_delete_periodic_snapshot_task_button_is_locked_and_not_clickable('tank/persnap_ro') is True
+        assert DP.assert_delete_periodic_snapshot_task_button_is_restricted('tank/persnap_ro') is True
 
     @allure.tag("Read")
     @allure.story("Read Only Admin Is Not Able to modify a Periodic Snapshot task")
@@ -117,7 +117,7 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
         3. Close right panel
         """
         DP.click_edit_periodic_snapshot_task('tank/persnap_ro')
-        assert COM.assert_button_is_locked_and_not_clickable('save') is True
+        assert COM.assert_button_is_restricted('save') is True
         COM.close_right_panel()
 
     @allure.tag("Read")
@@ -132,10 +132,10 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
         3. Refresh page (re-navigate to Data Protection page)
         4. Verify the disabled periodic snapshot task toggle is locked and not clickable
         """
-        assert DP.assert_enable_periodic_snapshot_task_toggle_is_locked_and_not_clickable('tank/persnap_ro') is True
+        assert DP.assert_enable_periodic_snapshot_task_toggle_is_restricted('tank/persnap_ro') is True
         API_PUT.set_periodic_snapshot_task_enabled('tank/persnap_ro', False)
         NAV.navigate_to_data_protection()
-        assert DP.assert_enable_periodic_snapshot_task_toggle_is_locked_and_not_clickable('tank/persnap_ro') is True
+        assert DP.assert_enable_periodic_snapshot_task_toggle_is_restricted('tank/persnap_ro') is True
 
     @allure.tag("Read")
     @allure.story("Read Only Admin Can See The VM Periodic Snapshot Tasks")
@@ -164,7 +164,7 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
         3. Navigate to Data Protection page
         """
         COM.click_link('snapshot-task-vmware-snapshots')
-        assert DP.assert_add_vm_periodic_snapshot_button_is_locked_and_not_clickable() is True
+        assert DP.assert_add_vm_periodic_snapshot_button_is_restricted() is True
         NAV.navigate_to_data_protection()
 
     @allure.tag("Read")
@@ -180,7 +180,7 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
         3. Navigate to Data Protection page
         """
         COM.click_link('snapshot-task-vmware-snapshots')
-        assert DP.assert_delete_vm_periodic_snapshot_task_button_is_locked_and_not_clickable('tank/persnap_ro') is True
+        assert DP.assert_delete_vm_periodic_snapshot_task_button_is_restricted('tank/persnap_ro') is True
         NAV.navigate_to_data_protection()
 
     @allure.tag("Read")
@@ -198,5 +198,5 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
         """
         COM.click_link('snapshot-task-vmware-snapshots')
         DP.click_edit_vm_periodic_snapshot_task('tank/persnap_ro')
-        assert COM.assert_button_is_locked_and_not_clickable('save') is True
+        assert COM.assert_button_is_restricted('save') is True
         NAV.navigate_to_data_protection()

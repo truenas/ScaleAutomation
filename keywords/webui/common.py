@@ -75,7 +75,7 @@ class Common:
         return False
 
     @classmethod
-    def assert_button_is_locked_and_not_clickable(cls, name: str) -> bool:
+    def assert_button_is_restricted(cls, name: str) -> bool:
         """
         This method asserts that the given button is locked and not clickable
 
@@ -83,7 +83,7 @@ class Common:
         :return: True if the button is locked and not clickable otherwise it returns False
 
         Example:
-            - Common.assert_button_is_locked_and_not_clickable('delete')
+            - Common.assert_button_is_restricted('delete')
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field_locked(name)) is True
         try:
@@ -94,7 +94,7 @@ class Common:
         return False
 
     @classmethod
-    def assert_checkbox_is_locked_and_not_clickable(cls, name: str) -> bool:
+    def assert_checkbox_is_restricted(cls, name: str) -> bool:
         """
         This method asserts that the given checkbox is locked and not clickable
 
@@ -102,7 +102,7 @@ class Common:
         :return: True if the checkbox is locked and not clickable otherwise it returns False
 
         Example:
-            - Common.assert_checkbox_is_locked_and_not_clickable('myCheckbox')
+            - Common.assert_checkbox_is_restricted('myCheckbox')
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(name)) is True
         try:
@@ -169,7 +169,7 @@ class Common:
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(dialog_title, 1), wait)
 
     @classmethod
-    def assert_element_is_locked_and_not_clickable(cls, xpath: str) -> bool:
+    def assert_element_is_restricted(cls, xpath: str) -> bool:
         """
         This method asserts that the given element is locked and not clickable
 
@@ -177,7 +177,7 @@ class Common:
         :return: True if the element is locked and not clickable otherwise it returns False
 
         Example:
-            - Common.assert_button_is_locked_and_not_clickable('delete')
+            - Common.assert_element_is_restricted('delete')
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(xpath)) is True
         try:
@@ -338,16 +338,16 @@ class Common:
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header(header_text, 3))
 
     @classmethod
-    def assert_save_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_save_button_is_restricted(cls) -> bool:
         """
         This method returns True or False if the save button is locked and not clickable.
 
         :return: True if the save button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Dataset.assert_save_button_is_locked_and_not_clickable()
+            - Common.assert_save_button_is_restricted()
         """
-        return Common.assert_button_is_locked_and_not_clickable('save')
+        return cls.assert_button_is_restricted('save')
 
     @classmethod
     def assert_step_header_is_open(cls, step_header: str) -> bool:
@@ -377,14 +377,14 @@ class Common:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_text(text))
 
     @classmethod
-    def assert_toggle_is_locked_and_not_clickable(cls, name) -> bool:
+    def assert_toggle_is_restricted(cls, name) -> bool:
         """
         This method returns True or False if the toggle is locked and not clickable.
 
         :return: True if the toggle is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Common.test_toggle_is_locked_and_not_clickable()
+            - Common.assert_toggle_is_restricted()
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field_locked(name)) is True
         try:
@@ -630,6 +630,7 @@ class Common:
         name = name.replace('_', '-')
         name = name.replace(' ', '-')
         name = name.replace('--', '-')
+        name = name.replace('.', '-')
         return name.lower()
 
     @classmethod
