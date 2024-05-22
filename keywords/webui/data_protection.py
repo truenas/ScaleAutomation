@@ -44,6 +44,18 @@ class Data_Protection:
         return COM.assert_button_is_restricted('rsync-task-add')
 
     @classmethod
+    def assert_add_replication_task_button_is_restricted(cls) -> bool:
+        """
+        This method returns True if the add replication task button is locked and not clickable, otherwise it returns False.
+
+        :return: True if the add replication task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_add_replication_task_button_is_restricted()
+        """
+        return COM.assert_button_is_restricted('replication-task-add')
+
+    @classmethod
     def assert_add_scrub_task_button_is_restricted(cls) -> bool:
         """
         This method returns True if the add scrub task button is locked and not clickable.
@@ -138,6 +150,20 @@ class Data_Protection:
         return COM.assert_button_is_restricted(xpath)
 
     @classmethod
+    def assert_delete_replication_task_button_is_restricted(cls, name: str) -> bool:
+        """
+        This method returns True if the delete replication task button is locked and not clickable, otherwise it returns False.
+
+        :param name: name of the replication task
+        :return: True if the delete replication task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_delete_replication_task_button_is_restricted('name')
+        """
+        name = COM.convert_to_tag_format(name)
+        return COM.assert_element_is_restricted(xpaths.data_protection.replication_task_delete_button(name))
+
+    @classmethod
     def assert_delete_scrub_task_button_is_restricted(cls, description: str) -> bool:
         """
         This method returns if the delete scrub task button is locked and not clickable.
@@ -181,7 +207,7 @@ class Data_Protection:
     @classmethod
     def assert_dry_run_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
         """
-        This method returns Rrue if the dry run cloud sync task button is locked and not clickable.
+        This method returns True if the dry run cloud sync task button is locked and not clickable.
 
         :param description: description of the cloud sync task
         :return: True if the dry run cloud sync task button is locked and not clickable, otherwise it returns False.
@@ -237,6 +263,20 @@ class Data_Protection:
         return COM.assert_toggle_is_restricted(xpath)
 
     @classmethod
+    def assert_enable_replication_task_toggle_is_restricted(cls, name: str) -> bool:
+        """
+        This method returns True if the enable replication task toggle is locked and not clickable, otherwise it returns False.
+
+        :param name: name of the replication task
+        :return: True if the enable replication task toggle is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_enable_replication_task_toggle_is_restricted('name')
+        """
+        name = COM.convert_to_tag_format(name)
+        return COM.assert_element_is_restricted(xpaths.data_protection.replication_task_enable_toggle(name))
+
+    @classmethod
     def assert_enable_scrub_task_toggle_is_restricted(cls, description: str) -> bool:
         """
         This method returns if the enable scrub task toggle is locked and not clickable.
@@ -277,6 +317,88 @@ class Data_Protection:
         return WebUI.wait_until_visible(xpaths.common_xpaths.any_header("Presets", 4))
 
     @classmethod
+    def assert_replication_page_add_replication_task_button_is_locked_and_not_clickable(cls) -> bool:
+        """
+        This method returns True if the add replication task button is locked and not clickable, otherwise it returns False.
+
+        :return: True if the add replication task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_add_replication_task_button_is_restricted()
+        """
+        return COM.assert_button_is_restricted('replication-task-add')
+
+    @classmethod
+    def assert_replication_page_delete_replication_task_button_is_restricted(cls, name: str) -> bool:
+        """
+        This method returns True if the delete replication task button is locked and not clickable, otherwise returns False.
+
+        :param name: name of the replication task
+        :return: True if the delete replication task button is locked and not clickable, otherwise returns False.
+
+        Example:
+            - Data_Protection.assert_replication_page_delete_replication_task_button_is_restricted("rep_name")
+        """
+        # name = COM.convert_to_tag_format(name)
+        return COM.assert_element_is_restricted(f'//button[contains(@data-test,"-delete")]')
+
+    @classmethod
+    def assert_replication_page_replication_task_name(cls, name: str) -> bool:
+        """
+        This method returns True if the given replication task name is visible, otherwise returns False.
+
+        :param name: name of the replication task
+        :return: True if the given replication task name is visible, otherwise returns False.
+
+        Example:
+            - Data_Protection.assert_replication_page_replication_task_name("rep_name")
+        """
+        name = COM.convert_to_tag_format(name)
+        return COM.is_visible(xpaths.common_xpaths.data_test_field(f'text-name-replication-task-{name}-row-text'))
+
+    @classmethod
+    def assert_replication_page_restore_replication_task_button_is_restricted(cls, name: str) -> bool:
+        """
+        This method returns True if the restore replication task button is locked and not clickable, otherwise returns False.
+
+        :param name: name of the replication task
+        :return: True if the restore replication task button is locked and not clickable, otherwise returns False.
+
+        Example:
+            - Data_Protection.assert_replication_page_restore_replication_task_button_is_restricted("rep_name")
+        """
+        # name = COM.convert_to_tag_format(name)
+        return COM.assert_element_is_restricted(f'//button[contains(@data-test,"-restore")]')
+
+    @classmethod
+    def assert_replication_page_run_replication_task_button_is_restricted(cls, name: str) -> bool:
+        """
+        This method returns True if the run now replication task button is locked and not clickable, otherwise returns False.
+
+        :param name: name of the replication task
+        :return: True if the run now replication task button is locked and not clickable, otherwise returns False.
+
+        Example:
+            - Data_Protection.assert_replication_page_run_replication_task_button_is_restricted("rep_name")
+        """
+        # name = COM.convert_to_tag_format(name)
+        return COM.assert_element_is_restricted(f'//button[contains(@data-test,"-run-now")]')
+
+    @classmethod
+    def assert_replication_task_name(cls, name: str) -> bool:
+        """
+        This method returns True if the given replication task name is visible, otherwise returns False.
+
+        :param name: name of the replication task
+        :return: True if the given replication task name is visible, otherwise returns False.
+
+        Example:
+            - Data_Protection.assert_replication_task_name("rep_name")
+        """
+        name = COM.convert_to_tag_format(name)
+        return COM.is_visible(xpaths.data_protection.replication_task_name(name))
+
+    @classmethod
     def assert_restore_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
         """
         This method returns if the restore cloud sync task button is locked and not clickable.
@@ -289,6 +411,20 @@ class Data_Protection:
         """
         description = COM.convert_to_tag_format(description)
         return COM.assert_element_is_restricted(xpaths.data_protection.cloud_sync_task_restore_button(description))
+
+    @classmethod
+    def assert_restore_replication_task_button_is_restricted(cls, name: str) -> bool:
+        """
+        This method returns True if the restore replication task button is locked and not clickable, otherwise it returns False.
+
+        :param name: name of the replication task
+        :return: True if the restore replication task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_restore_replication_task_button_is_restricted('name')
+        """
+        name = COM.convert_to_tag_format(name)
+        return COM.assert_element_is_restricted(xpaths.data_protection.replication_task_restore_button(name))
 
     @classmethod
     def assert_run_cloud_sync_task_button_is_restricted(cls, description: str) -> bool:
@@ -347,6 +483,20 @@ class Data_Protection:
         xpath_path = COM.convert_to_tag_format(path)
         task_xpath = f'//*[@data-test="text-path-card-rsync-task{xpath_path}-{xpath_ip}-row-text"]'
         return WebUI.wait_until_visible(task_xpath, shared_config['MEDIUM_WAIT'])
+
+    @classmethod
+    def assert_run_replication_task_button_is_restricted(cls, name: str) -> bool:
+        """
+        This method returns True if the run now replication task button is locked and not clickable, otherwise it returns False.
+
+        :param name: name of the replication task
+        :return: True if the run now replication task button is locked and not clickable, otherwise it returns False.
+
+        Example:
+            - Data_Protection.assert_run_replication_task_button_is_restricted('name')
+        """
+        name = COM.convert_to_tag_format(name)
+        return COM.assert_element_is_restricted(xpaths.data_protection.replication_task_enable_toggle(name))
 
     @classmethod
     def assert_scrub_task_description(cls, description: str) -> bool:
@@ -457,6 +607,7 @@ class Data_Protection:
         """
         COM.click_on_element(f'//h3[contains(text(),"{title}")]')
         COM.assert_page_header(title)
+        WebUI.delay(2)
 
     @classmethod
     def click_edit_cloud_sync_task(cls, description: str) -> None:
@@ -500,6 +651,7 @@ class Data_Protection:
         """
         COM.click_button(f'replication-task-{COM.convert_to_tag_format(name)}-edit-row-action')
         COM.assert_right_panel_header('Edit Replication Task')
+        WebUI.delay(2)
 
     @classmethod
     def click_edit_rsync_task_by_path(cls, path: str) -> None:
@@ -571,6 +723,18 @@ class Data_Protection:
         COM.assert_right_panel_header('Edit VM Periodic Snapshot Task')
 
     @classmethod
+    def click_replication_page_edit_replication_task_button(cls) -> None:
+        """
+        This method clicks the edit button for the currently expanded replication task
+
+        Example:
+            - Data_Protection.click_replication_page_edit_replication_task_button()
+        """
+        COM.click_on_element(f'//button[contains(@data-test, "-edit")]')
+        COM.assert_right_panel_header('Edit Replication Task')
+        WebUI.delay(2)
+
+    @classmethod
     def click_the_rsync_task_header_link(cls):
         """
         This method clicks the rsync task card title link.
@@ -637,6 +801,20 @@ class Data_Protection:
                 COM.click_button('close')
                 COM.assert_text_is_visible('No records have been added yet')
             assert COM.assert_text_is_visible('No records have been added yet')
+
+    @classmethod
+    def expand_replication_task_by_name(cls, name: str) -> None:
+        """
+        This method expands the replication task for the given name on the Replication task page
+
+        :param name: the name of the given replication task
+
+        Example:
+            - Data_Protection.expand_replication_task_by_name('myRepTask')
+        """
+        name = COM.convert_to_tag_format(name)
+        COM.click_on_element(f'//*[@data-test="row-replication-task-{name}"]//button[starts-with(@data-test,"button-toggle-row")]')
+        WebUI.delay(2)
 
     @classmethod
     def get_task_status(cls, name: str, task_type: str) -> str:

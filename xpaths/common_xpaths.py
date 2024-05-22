@@ -189,7 +189,8 @@ def checkbox_field(field: str) -> str:
     :return: xpath string for given checkbox
     """
     # return f'//*[@data-test="checkbox-{field}"]//*[@class="mdc-form-field"]'
-    return f'//*[@data-test="checkbox-{field}"]//*[@class="mdc-form-field mat-internal-form-field"]'
+    # return f'//*[@data-test="checkbox-{field}"]//*[@class="mdc-form-field mat-internal-form-field"]'
+    return f'//*[@data-test="checkbox-{field}"]//*[contains(@class,"mdc-form-field")]'
 
 
 def checkbox_field_attribute(field: str) -> str:

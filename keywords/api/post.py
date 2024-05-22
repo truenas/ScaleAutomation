@@ -418,6 +418,40 @@ class API_POST:
         return response
 
     @classmethod
+    def create_replication_task(cls, name: str, source: str, destination: str, direction: str = "PUSH", transport: str = "LOCAL", retention: str = "NONE") -> Response:
+        """
+        This method creates a scrub task on given pool if it doesn't exist.
+
+        :param name: is the name of the replication task.
+        :param source: is the path of the replication task source dataset.
+        :param destination: is the path of the replication task destination dataset.
+        :param direction: is the direction of the replication task. [PUSH/PULL] Defaults to "PUSH"
+        :param transport: is the transport of the replication task. [SSH/SSH+NETCAT/LOCAL] Defaults to "LOCAL"
+        :param retention: is the transport of the replication task. [SOURCE/CUSTOM/NONE] Defaults to "NONE"
+        :return: the API request response.
+
+        Example:
+            - API_POST.create_replication_task("Rep_task", "/mnt/tank/source", "/mnt/tank/destination")
+        """
+        payload = {
+          "name": name,
+          "direction": direction.upper(),
+          "transport": transport.upper(),
+          "source_datasets": [source],
+          "target_dataset": destination,
+          "also_include_naming_schema": ["auto-%Y-%m-%d_%H-%M"],
+          "recursive": False,
+          "auto": True,
+          "schedule": {},
+          "retention_policy": retention.upper()
+        }
+
+        response = POST('/replication', payload)
+        if response.status_code != 200:
+            print("@@@ CREATE REPLICATION TASK: " + response.text)
+        return response
+
+    @classmethod
     def create_scrub_task(cls, pool: int = 1, enable: bool = True) -> Response:
         """
         This method creates a scrub task on given pool if it doesn't exist.
