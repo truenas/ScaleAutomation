@@ -46,7 +46,14 @@ class Test_Create_Replicate_Task_Different_Box:
         """
         # reset the change
         yield
-        # clean source box
+        # clean remote box
+        REP.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
+        NAV.navigate_to_datasets()
+        DATASET.delete_dataset("tank", "receive")
+        DATASET.delete_dataset("tank", "replicate")
+        REP.close_destination_box()
+
+        # clean local box
         NAV.navigate_to_datasets()
         DATASET.delete_dataset("tank", "receive")
         DATASET.delete_dataset("tank", "replicate")
@@ -162,7 +169,6 @@ class Test_Create_Replicate_Task_Different_Box:
         COM.wait_for_system_time('minute', current_minute + 1)
         DP.click_snapshots_button()
         DP.assert_snapshot_by_hour_and_minute(current_hour, current_minute)
-        # WebUI.delay(3)
         NAV.navigate_to_data_protection()
 
         DP.click_edit_replication_task_by_name(rep['task-name'])
@@ -245,6 +251,13 @@ class Test_Create_Replicate_Task_Different_Box:
 
         # Take new snapshot
         API_POST.create_remote_snapshot_with_naming_schema(rep['source'])
+        REP.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
+        NAV.navigate_to_data_protection()
+        DP.click_snapshots_button()
+        current_hour = COM.get_current_hour()
+        current_minute = COM.get_current_minute()
+        DP.assert_snapshot_by_hour_and_minute(current_hour, current_minute)
+        REP.close_destination_box()
 
         DP.click_edit_replication_task_by_name(rep['task-name'])
         REP.select_schedule_preset('custom')
