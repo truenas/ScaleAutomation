@@ -3,7 +3,6 @@ import pytest
 
 from helper.data_config import get_data_list
 from helper.global_config import private_config
-from helper.webui import WebUI
 from keywords.api.post import API_POST
 from keywords.ssh.common import Common_SSH as SSHCOM
 from keywords.webui.common import Common as COM
@@ -145,9 +144,6 @@ class Test_Create_Replicate_Task_Different_Box:
 
         COM.wait_for_system_time('minute', current_minute + 1)
         assert REP.get_replication_status(rep['task-name']) == rep['status']
-        # DP.click_snapshots_button()
-        # WebUI.delay(3)
-        # NAV.navigate_to_data_protection()
 
         # Verify file on destination
         assert COM.assert_file_exists('rep_one.txt', rep['destination'], private_config['REP_DEST_IP']) is True
@@ -166,7 +162,7 @@ class Test_Create_Replicate_Task_Different_Box:
         COM.wait_for_system_time('minute', current_minute + 1)
         DP.click_snapshots_button()
         DP.assert_snapshot_by_hour_and_minute(current_hour, current_minute)
-        WebUI.delay(3)
+        # WebUI.delay(3)
         NAV.navigate_to_data_protection()
 
         DP.click_edit_replication_task_by_name(rep['task-name'])
@@ -240,9 +236,6 @@ class Test_Create_Replicate_Task_Different_Box:
 
         COM.wait_for_system_time('minute', current_minute + 1)
         assert REP.get_replication_status(rep['task-name']) == rep['status']
-        # DP.click_snapshots_button()
-        # WebUI.delay(3)
-        # NAV.navigate_to_data_protection()
 
         # Verify file on destination
         assert COM.assert_file_exists('rep_one.txt', rep['destination']) is True

@@ -580,14 +580,16 @@ class Data_Protection:
         """
         This method returns True if a snapshot with the given hour and minute is visible, otherwise returns False.
 
-        :param hour: hour of the snapshot to validate
-        :param minute: minute of the snapshot to validate
+        :param hour: hour of the snapshot to validate [0-23]
+        :param minute: minute of the snapshot to validate [0-59]
         :return: True if a snapshot with the given hour and minute is visible, otherwise returns False.
 
         Example:
-            - Data_Protection.assert_smart_test_description("SMART test Description")
+            - Data_Protection.assert_snapshot_by_hour_and_minute(10, 37)
         """
         snaptime = '-{:02d}-{:02d}'.format(hour - 3, minute + 1)
+        shotname = COM.get_element_property('//*[starts-with(@data-test,"row-")]/td[3]', "innerText")
+        print(f'@@@ SNAP:  {shotname}')
         print(f'@@@ XPATH: //*[contains(@data-test,"{snaptime}")]')
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[contains(@data-test,"{snaptime}")]'))
 
