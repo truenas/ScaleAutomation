@@ -30,7 +30,7 @@ class Test_Edit_NFS_Share:
         API_POST.start_service('nfs')
         API_POST.create_dataset(nfs_data['api_path'], 'NFS')
         API_POST.create_dataset(nfs_data['api_path_alt'], 'NFS')
-        API_POST.create_share('nfs', '', "/mnt/"+nfs_data['api_path'
+        API_POST.create_share('nfs', '', "/mnt/"+nfs_data['api_path'])
 
         # Navigate to the Shares page
         NAV.navigate_to_shares()
