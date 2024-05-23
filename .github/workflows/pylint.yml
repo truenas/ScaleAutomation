@@ -27,4 +27,4 @@ jobs:
         pip install requests
     - name: Analysing the code with pylint
       run: |
-        pylint --fail-under=9.5 --fail-on E --disable=R,C --disable=C0301,R0904,R0903,C0114,C0115,C2801,C0305,C0411,R1732,W1514,C0207,W0123,W1510 $(git ls-files '*.py')
+        pylint --fail-under=9.5 --fail-on E --ignored-modules=allure --disable=R,C --disable=C0301,R0904,R0903,C0114,C0115,C2801,C0305,C0411,R1732,W1514,C0207,W0123,W1510 $(git ls-files '*.py')
