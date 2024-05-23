@@ -109,6 +109,46 @@ def periodic_snapshot_task_path(path: str) -> str:
     return f'//*[contains(@data-test,"text-pool-dataset-snapshot-task-{path}")]'
 
 
+def replication_task_delete_button(name: str) -> str:
+    """
+    This function returns the xpath text of the given replication task name.
+
+    :param name: The description of the replication task.
+    :return: The xpath text of the given replication task name.
+    """
+    return f'//*[@data-test="button-replication-task-{name}-delete-row-action"]'
+
+
+def replication_task_enable_toggle(name: str) -> str:
+    """
+    This function returns the xpath text of the replication task enable toggle by the given periodic snapshot task path.
+
+    :param name: The name of the replication task.
+    :return: The xpath text of the replication task enable toggle by the given replication task path.
+    """
+    return f'//*[contains(@data-test,"toggle-enabled-replication-task-{name}-row-toggle")]//button'
+
+
+def replication_task_name(name: str) -> str:
+    """
+    This function returns the xpath text of the given replication task name.
+
+    :param name: The description of the replication task.
+    :return: The xpath text of the given replication task name.
+    """
+    return f'//*[@data-test="text-name-replication-task-{name}-row-text"]'
+
+
+def replication_task_restore_button(name: str) -> str:
+    """
+    This function returns the xpath text of the given replication task name.
+
+    :param name: The description of the replication task.
+    :return: The xpath text of the given replication task name.
+    """
+    return f'//*[@data-test="button-replication-task-{name}-restore-row-action"]'
+
+
 def scrub_task_description(description: str) -> str:
     """
     This function returns the xpath text of the given scrub task description.

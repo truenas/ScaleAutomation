@@ -8,7 +8,7 @@ from keywords.webui.common import Common as COM
 from keywords.webui.common_replication import Common_Replication as COMREP
 from keywords.webui.data_protection import Data_Protection as DP
 from keywords.webui.navigation import Navigation as NAV
-from keywords.webui.rsync import Rsync as RSYNC
+from keywords.webui.rsync_task import Rsync_Task as RSYNC
 from keywords.webui.ssh_connection import SSH_Connection as SSH
 
 

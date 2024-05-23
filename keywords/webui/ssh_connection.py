@@ -28,7 +28,8 @@ class SSH_Connection:
             if connection.__contains__('admin'):
                 ssh_username = 'admin'
             cls.set_username(ssh_username)
-            cls.set_passwordless_sudo_checkbox()
+            if connection.__contains__('admin'):
+                cls.set_passwordless_sudo_checkbox()
             cls.click_generate_new_private_key()
             COM.click_save_button_and_wait_for_right_panel()
             NAV.navigate_to_backup_credentials()

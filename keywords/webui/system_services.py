@@ -114,8 +114,8 @@ class System_Services:
                     pass
         else:
             match service.lower():
-                case 'smart' | 's.m.a.r.t.':
-                    returned_name = 's-m-a-r-t'
+                case 's.m.a.r.t.':
+                    returned_name = 'smart'
                 case _:
                     pass
         return returned_name

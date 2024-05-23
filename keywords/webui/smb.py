@@ -9,19 +9,19 @@ from selenium.common.exceptions import ElementClickInterceptedException, Timeout
 
 class SMB:
     @classmethod
-    def assert_add_button_is_locked_and_not_clickable_on_smb_page(cls):
+    def assert_add_smb_share_button_is_restricted(cls):
         """
-        This method verifies that the add button is locked and not clickable on the SMB page.
+        This method returns True if add SMB share button is locked and not clickable, otherwise it returns False.
 
         :return: True if add SMB share button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - SMB.assert_add_smb_share_button_is_locked_and_not_clickable()
+            - SMB.assert_add_smb_share_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('add-smb-share')
+        return COM.assert_button_is_restricted('add-smb-share')
 
     @classmethod
-    def assert_delete_share_button_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+    def assert_delete_share_button_is_restricted(cls, share_name: str) -> bool:
         """
         This method verifies that the delete button is locked and not clickable.
 
@@ -29,15 +29,15 @@ class SMB:
         :return: True if the delete button is locked and not clickable otherwise it returns False.
 
         Example:
-           - SMB.assert_card_share_delete_button_is_locked_and_not_clickable('share-1')
+           - SMB.assert_card_share_delete_button_is_restricted('share-1')
         """
         share_name = COM.convert_to_tag_format(share_name)
-        result = COM.assert_button_is_locked_and_not_clickable(f'smb-{share_name}-delete-row-action')
+        result = COM.assert_button_is_restricted(f'smb-{share_name}-delete-row-action')
         WebUI.send_key('esc')
         return result
 
     @classmethod
-    def assert_edit_filesystem_acl_button_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+    def assert_edit_filesystem_acl_button_is_restricted(cls, share_name: str) -> bool:
         """
         This method verifies that the edit filesystem ACL button is locked and not clickable.
 
@@ -45,15 +45,15 @@ class SMB:
         :return: True if the edit filesystem ACL button is locked and not clickable otherwise it returns False.
 
         Example:
-            - SMB.assert_edit_filesystem_acl_button_is_locked_and_not_clickable('share-1')
+            - SMB.assert_edit_filesystem_acl_button_is_restricted('share-1')
         """
         share_name = COM.convert_to_tag_format(share_name)
-        result = COM.assert_button_is_locked_and_not_clickable(f'smb-{share_name}-security-row-action')
+        result = COM.assert_button_is_restricted(f'smb-{share_name}-security-row-action')
         WebUI.send_key('esc')
         return result
 
     @classmethod
-    def assert_edit_share_acl_button_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+    def assert_edit_share_acl_button_is_restricted(cls, share_name: str) -> bool:
         """
         This method verifies that the edit share ACL button is locked and not clickable.
 
@@ -61,15 +61,15 @@ class SMB:
         :return: True if the edit share ACL button is locked and not clickable otherwise it returns False.
 
         Example:
-            - SMB.assert_edit_share_acl_button_is_locked_and_not_clickable('share-1')
+            - SMB.assert_edit_share_acl_button_is_restricted('share-1')
         """
         share_name = COM.convert_to_tag_format(share_name)
-        result = COM.assert_button_is_locked_and_not_clickable(f'smb-{share_name}-share-row-action')
+        result = COM.assert_button_is_restricted(f'smb-{share_name}-share-row-action')
         WebUI.send_key('esc')
         return result
 
     @classmethod
-    def assert_enabled_toggle_is_locked_and_not_clickable(cls, share_name: str) -> bool:
+    def assert_enabled_toggle_is_restricted(cls, share_name: str) -> bool:
         """
         This method verifies that the enabled toggle is locked and not clickable.
 
@@ -77,7 +77,7 @@ class SMB:
         :return: True if the enabled toggle is locked and not clickable otherwise it returns False.
 
         Example:
-            - SMB.assert_enabled_checkbox_is_locked_and_not_clickable('share-1')
+            - SMB.assert_enabled_checkbox_is_restricted('share-1')
         """
         try:
             toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(f'enabled-smb-{share_name}-row-toggle'))
@@ -171,17 +171,18 @@ class SMB:
         return COM.is_visible(xpath)
 
     @classmethod
-    def assert_share_description(cls, desc: str) -> bool:
+    def assert_share_description(cls, share_name: str, desc: str) -> bool:
         """
         This method verifies that the share description is visible on the Sharing SMB page.
 
         :param desc: is the description of the share
+        :param share_name: is the name of the share
         :return: True if the share description is visible otherwise it returns False.
 
         Example:
             - SMB.assert_share_description('myDescription')
         """
-        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', 'description', desc))
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', share_name, 'description', desc))
 
     @classmethod
     def assert_share_filesystem_acl_configuration_field_visible(cls, field: str) -> bool:
@@ -231,6 +232,33 @@ class SMB:
             - SMB.assert_share_ignore_list('ignore-me')
         """
         return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[@formcontrolname="ignore_list"]//*[contains(text(),"{name}")]'))
+
+    @classmethod
+    def assert_share_name(cls, name: str) -> bool:
+        """
+        This method verifies that the share name is visible on the Sharing SMB page.
+
+        :param name: is the name of the share
+        :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+            - SMB.assert_share_name('myShare')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', name, 'name', name))
+
+    @classmethod
+    def assert_share_path(cls, share_name: str, path: str) -> bool:
+        """
+        This method verifies that the path for the share row of the given share on the Sharing SMB page.
+
+        :param path: path of the given share
+        :param share_name: name of the given share
+        :return: True if the share name is visible otherwise it returns False.
+
+        Example:
+           - SMB.assert_share_path('/mnt/share1')
+        """
+        return COM.is_visible(xpaths.common_xpaths.page_share_attribute('smb', share_name, 'path', path))
 
     @classmethod
     def assert_share_watch_list(cls, name: str) -> bool:
@@ -434,7 +462,7 @@ class SMB:
             - SMB.click_edit_share_acl('share')
         """
         COM.click_button(f'card-smb-share-{COM.convert_to_tag_format(name)}-share-row-action')
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Share ACL for', 3)) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Share ACL for', 3)) is True
 
     @classmethod
     def click_edit_share_filesystem_acl(cls, name: str) -> None:
@@ -447,7 +475,7 @@ class SMB:
             - SMB.click_edit_share_filesystem_acl('share')
         """
         COM.click_button(f'card-smb-share-{name.lower()}-security-row-action')
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header(f'Edit ACL', 1)) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Edit ACL', 1)) is True
 
     @classmethod
     def click_edit_share(cls, share_name: str) -> None:
@@ -457,8 +485,7 @@ class SMB:
         Example:
             - SMB.click_edit_share()
         """
-        COM.click_on_element(xpaths.smb.smb_share_options(share_name))
-        COM.click_button('samba-options-edit')
+        COM.click_button(f'smb-{share_name}-edit-row-action')
 
     @classmethod
     def delete_share_by_name(cls, sharetype: str, name: str, action: str) -> None:
@@ -516,8 +543,8 @@ class SMB:
             - SMB.set_ignore_list()
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('ignore-list'))
-        COM.click_on_element(f'//*[@data-test="input-ignore-list"]')
-        name = COM.convert_to_tag_format('ignore-list-'+name)
+        COM.click_on_element('//*[@data-test="input-ignore-list"]')
+        name = COM.convert_to_tag_format(f'ignore-list-{name}')
         COM.click_on_element(f'//*[@data-test="option-{name}"]')
 
     @classmethod
@@ -531,7 +558,7 @@ class SMB:
             - SMB.set_share_purpose('no purpose')
        """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.select_field('purpose')) is True
-        COM.click_on_element(f'//*[@data-test="select-purpose"]')
+        COM.click_on_element('//*[@data-test="select-purpose"]')
         purpose = COM.convert_to_tag_format(purpose)
         COM.click_on_element(f'//*[@data-test="option-purpose-{purpose}"]')
 
@@ -546,9 +573,9 @@ class SMB:
             - SMB.set_watch_list('watch-me')
         """
         assert COM.is_visible(xpaths.common_xpaths.input_field('watch-list'))
-        COM.click_on_element(f'//*[@data-test="input-watch-list"]')
+        COM.click_on_element('//*[@data-test="input-watch-list"]')
 
-        name = COM.convert_to_tag_format('watch-list-'+name)
+        name = COM.convert_to_tag_format(f'watch-list-{name}')
         COM.click_on_element(f'//*[@data-test="option-{name}"]')
 
     @classmethod
@@ -560,7 +587,7 @@ class SMB:
             - SMB.verify_smb_audit_page_opens()
         """
         if COM.assert_page_header('Services'):
-            COM.click_link('cifs-logs')
+            COM.click_button('service-smb-receipt-long-row-action')
         elif COM.assert_page_header('Sharing'):
             COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('SMB'))
             COM.click_button('cifs-actions-menu-logs')
@@ -614,7 +641,7 @@ class SMB:
             - SMB.verify_smb_sessions_page_opens()
         """
         if COM.assert_page_header('Services'):
-            COM.click_link('cifs-sessions')
+            COM.click_button('service-smb-list-row-action')
         elif COM.assert_page_header('Sharing'):
             COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('SMB'))
             COM.click_button('cifs-actions-menu-sessions')

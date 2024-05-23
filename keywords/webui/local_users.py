@@ -22,19 +22,19 @@ class Local_Users:
         WebUI.delay(0.5)
 
     @classmethod
-    def assert_add_local_user_button_is_locked_and_not_clickable(cls) -> bool:
+    def assert_add_local_user_button_is_restricted(cls) -> bool:
         """
         This method verifies if the add local user button is locked and not clickable.
 
         :return: True if the add local user button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Local_Users.assert_add_local_user_button_is_locked_and_not_clickable()
+            - Local_Users.assert_add_local_user_button_is_restricted()
         """
-        return COM.assert_button_is_locked_and_not_clickable('add-user')
+        return COM.assert_button_is_restricted('add-user')
 
     @classmethod
-    def assert_delete_local_user_button_is_locked_and_not_clickable(cls, name: str) -> bool:
+    def assert_delete_local_user_button_is_restricted(cls, name: str) -> bool:
         """
         This method verifies if the delete local user button is locked and not clickable.
 
@@ -42,9 +42,9 @@ class Local_Users:
         :return: True if the delete local user button is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Local_Users.assert_delete_local_user_button_is_locked_and_not_clickable('username')
+            - Local_Users.assert_delete_local_user_button_is_restricted('username')
         """
-        return COM.assert_button_is_locked_and_not_clickable(f'delete-{name}')
+        return COM.assert_button_is_restricted(f'delete-{name}')
 
     @classmethod
     def assert_error_user_home_directory_not_writable(cls) -> bool:
