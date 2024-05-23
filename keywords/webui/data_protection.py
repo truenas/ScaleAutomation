@@ -576,6 +576,22 @@ class Data_Protection:
         return COM.is_visible(xpaths.data_protection.smart_test_description(description))
 
     @classmethod
+    def assert_snapshot_by_hour_and_minute(cls, hour: int, minute: int) -> bool:
+        """
+        This method returns True if a snapshot with the given hour and minute is visible, otherwise returns False.
+
+        :param hour: hour of the snapshot to validate
+        :param minute: minute of the snapshot to validate
+        :return: True if a snapshot with the given hour and minute is visible, otherwise returns False.
+
+        Example:
+            - Data_Protection.assert_smart_test_description("SMART test Description")
+        """
+        snaptime = '-{:02d}-{:02d}'.format(hour - 3, minute + 1)
+        print(f'@@@ XPATH: //*[contains(@data-test,"{snaptime}")]')
+        return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[contains(@data-test,"{snaptime}")]'))
+
+    @classmethod
     def click_add_replication_button(cls) -> None:
         """
         This method clicks the Add Replication task button
