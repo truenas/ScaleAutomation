@@ -678,7 +678,7 @@ class Common:
         Example:
             - Common.delete_file('C:/path', 'myfile.txt')
         """
-        file = Path(path + '/' + filename)
+        file = Path(f'{path}/{filename}')
         file.unlink(True)
 
     @classmethod
