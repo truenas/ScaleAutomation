@@ -734,6 +734,7 @@ class Common_Shares:
         elif COM.is_visible(xpaths.common_xpaths.button_field('restart-service')):
             COM.click_button('restart-service')
             assert COM.assert_progress_spinner_not_visible() is True
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.close_right_panel()) is True
         # WebUI.delay(2)
 
     @classmethod
