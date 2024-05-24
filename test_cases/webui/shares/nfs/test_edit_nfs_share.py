@@ -74,7 +74,7 @@ class Test_Edit_NFS_Share:
         COM.click_save_button()
 
         # Handle start/restart service popup
-        COMSHARE.handle_share_service_dialog('nfs')
+        COMSHARE.handle_share_service_dialog('nfs', 5)
 
         # Verify share attachment to new dataset and no attachment to old dataset
         NAV.navigate_to_datasets()
@@ -129,7 +129,7 @@ class Test_Edit_NFS_Share:
         COM.click_save_button()
 
         # Handle start/restart service popup
-        COMSHARE.handle_share_service_dialog('nfs')
+        COMSHARE.handle_share_service_dialog('nfs', 5)
 
         # Verify share attachment to new dataset and no attachment to old dataset
         NAV.navigate_to_datasets()
@@ -267,7 +267,7 @@ class Test_Edit_NFS_Share:
         COM.click_save_button()
 
         # Handle start/restart service popup
-        COMSHARE.handle_share_service_dialog('nfs')
+        COMSHARE.handle_share_service_dialog('nfs', 5)
         assert COMSHARE.is_share_enabled('nfs', nfs_data['share_page_path']) is False
 
         # Verify share attachment to dataset
