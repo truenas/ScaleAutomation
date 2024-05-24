@@ -30,12 +30,12 @@ def test_create_new_smb_share_without_acl(smb_data) -> None:
     COM.set_checkbox('enabled')
     COM.click_save_button()
     # dismiss acl configuration dialog
-    if running:
-        COMSHARE.handle_share_service_dialog('smb')
-        COM.cancel_confirm_dialog()
-    else:
-        COM.cancel_confirm_dialog()
-        COMSHARE.handle_share_service_dialog('smb')
+    # if running:
+    COM.cancel_confirm_dialog()
+    COMSHARE.handle_share_service_dialog('smb')
+    # else:
+    #     COM.cancel_confirm_dialog()
+    #     COMSHARE.handle_share_service_dialog('smb')
 
     # Verify Share attached to Dataset
     NAV.navigate_to_datasets()
