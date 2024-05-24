@@ -16,6 +16,7 @@ def test_edit_smb_share(smb_data) -> None:
     API_DELETE.delete_share('smb', smb_data['name_alt'])
     API_DELETE.delete_dataset(smb_data['path'])
     API_DELETE.delete_dataset(smb_data['path_alt'])
+    API_POST.start_service('cifs')
     API_POST.create_dataset(smb_data['path'], 'SMB')
     API_POST.create_dataset(smb_data['path_alt'], 'SMB')
     API_POST.create_share('smb', smb_data['name'], "/mnt/"+smb_data['path'])
