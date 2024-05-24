@@ -31,6 +31,7 @@ def test_edit_smb_share(smb_data) -> None:
     COMSHARE.set_share_description(smb_data['description_alt'])
     COM.unset_checkbox('enabled')
     COM.click_save_button()
+    COMSHARE.handle_share_service_dialog('smb')
 
     # Verify Share attached to Dataset
     NAV.navigate_to_datasets()
