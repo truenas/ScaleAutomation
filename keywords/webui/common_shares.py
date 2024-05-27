@@ -657,6 +657,17 @@ class Common_Shares:
         COM.click_button(path)
 
     @classmethod
+    def click_do_not_start_if_exist(cls) -> None:
+        """
+        This method clicks the do not start if exist button
+
+        Example:
+           - Common_Shares.click_do_not_start_if_exist()
+        """
+        if WebUI.wait_until_visible(xpaths.common_xpaths.button_field('do-not-start'), 5) is True:
+            COM.click_button('do-not-start')
+
+    @classmethod
     def click_edit_iscsi_target(cls, target_name: str) -> None:
         """
         This method clicks the edit button of the iSCSI target
