@@ -1,5 +1,3 @@
-import time
-
 from helper.api import GET, PUT, Response
 from helper.global_config import shared_config
 from keywords.api.common import API_Common
@@ -117,8 +115,6 @@ class API_LDAP:
         """
         response = PUT('/ldap', payload)
         assert response.status_code == 200, response.text
-        # This is to avoid a race condition seen with ldap update.
-        time.sleep(1)
-        job_result = API_Common.wait_on_job(response.json(), shared_config['EXTRA_LONG_WAIT'])
+        job_result = API_Common.wait_on_job(response.json()['job_id'], shared_config['EXTRA_LONG_WAIT'])
         assert job_result['state'] == 'SUCCESS', job_result['results']
         return job_result['results']
