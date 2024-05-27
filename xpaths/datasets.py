@@ -109,7 +109,7 @@ def selected_dataset_group() -> str:
 
     :return: xpath string for given dataset.
     """
-    return f'//*[contains(text(),"Group:")]//ancestor::div/*[@class="value ng-star-inserted"]'
+    return '//*[contains(text(),"Group:")]//ancestor::div/*[@class="value ng-star-inserted"]'
 
 
 def selected_dataset_owner() -> str:
@@ -118,5 +118,5 @@ def selected_dataset_owner() -> str:
 
     :return: xpath string for given dataset.
     """
-    return f'//*[contains(text(),"Owner:")]//ancestor::div/*[@class="value ng-star-inserted"]'
+    return '//*[contains(text(),"Owner:")]//ancestor::div/*[@class="value ng-star-inserted"]'
 

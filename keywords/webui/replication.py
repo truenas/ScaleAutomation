@@ -82,7 +82,7 @@ class Replication:
             xpath = xpaths.common_xpaths.any_child_parent_target(
                     f'//*[contains(text(),"{name}")]',
                     'tr',
-                    f'button[contains(@data-test,"-delete")]')
+                    'button[contains(@data-test,"-delete")]')
             COM.click_on_element(xpath)
             COM.assert_confirm_dialog()
 
@@ -126,7 +126,7 @@ class Replication:
         return COM.is_visible(xpaths.common_xpaths.any_child_parent_target(
                     f'//*[contains(text(),"{name}")]',
                     'tr',
-                    f'button[contains(@data-test,"-delete")]'))
+                    'button[contains(@data-test,"-delete")]'))
 
     @classmethod
     def is_run_now_dialog_visible(cls) -> bool:

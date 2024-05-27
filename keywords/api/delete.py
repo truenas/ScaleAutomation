@@ -16,12 +16,12 @@ class API_DELETE:
         Example:
             - API_POST.delete_all_periodic_snapshots_tasks()
         """
-        response = GET(f'/pool/snapshottask').json()
+        response = GET('/pool/snapshottask').json()
         while response:
             task_id = response[0]['id']
             response = DELETE(f'/pool/snapshottask/id/{task_id}', {})
             assert response.status_code == 200, response.text
-            response = GET(f'/pool/snapshottask').json()
+            response = GET('/pool/snapshottask').json()
         return response
 
     @classmethod

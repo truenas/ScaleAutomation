@@ -72,8 +72,8 @@ class SSH_NFS:
         :param mount_dir: the path from 'nfsshares' to the directory to mount the share to.
         :return: true if execute actions are successful.
         """
-        file = f"test_exec_file.sh"
-        cr_dir = f"test_exec_dir_internal"
+        file = "test_exec_file.sh"
+        cr_dir = "test_exec_dir_internal"
         command = f'cd ~/nfsshares/test_execute_dir_external ; chmod 777 . ; touch {file} ;  echo -n "mkdir ~/nfsshares/{mount_dir}/{cr_dir}" | cat > {file} ; chmod 777 {file}'
         SSH_Command_Line(command, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
         command2 = f"cd ~/nfsshares/test_execute_dir_external ; ./{file}"
@@ -146,7 +146,7 @@ class SSH_NFS:
         :param mount_dir: the path from 'nfsshares' to the directory to mount the share to.
         :return: true if write actions are successful.
         """
-        file = f"test_write_file.txt"
+        file = "test_write_file.txt"
         command = f"cd ~/nfsshares ; touch {mount_dir}/{file}"
         SSH_Command_Line(command, private_config['NFS_CLIENT_IP'], private_config['NFS_CLIENT_USERNAME'], private_config['NFS_CLIENT_PASSWORD'])
         command2 = f"cd ~/nfsshares ; sudo ls -al {mount_dir}"
