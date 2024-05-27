@@ -1,7 +1,6 @@
 import allure
 import pytest
 from helper.data_config import get_data_list
-from helper.global_config import private_config
 from keywords.api.post import API_POST
 from keywords.api.delete import API_DELETE
 from keywords.webui.common import Common
@@ -38,7 +37,6 @@ class Test_Read_Only_Admin_NFS_Share:
         yield
         API_DELETE.delete_share('nfs', f"{data['pool_name']}/{data['nfs_name']}")
         API_DELETE.delete_dataset(f"{data['pool_name']}/{data['nfs_name']}", force=True)
-
 
     @allure.tag('Read')
     @allure.story("Read Only Admin Is Able To View Pre-Configured NFS Shares On The NFS Card")

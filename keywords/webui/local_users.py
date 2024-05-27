@@ -508,7 +508,7 @@ class Local_Users:
             cls.click_user_delete_button(cls.get_username_from_full_name(fullname))
             if primary_group:
                 if COM.is_visible(xpaths.common_xpaths.checkbox_field('delete-primary-group')):
-                    COM.click_on_element(f'//*[@data-test="checkbox-delete-primary-group"]')
+                    COM.click_on_element('//*[@data-test="checkbox-delete-primary-group"]')
             COM.click_button('delete')
             COM.assert_page_header('Users')
             WebUI.delay(0.5)

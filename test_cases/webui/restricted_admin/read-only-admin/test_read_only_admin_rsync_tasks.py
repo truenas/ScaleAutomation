@@ -1,7 +1,6 @@
 import allure
 import pytest
 from helper.global_config import shared_config
-from helper.webui import WebUI
 from keywords.api.rsynctask import API_Rsync_Task
 from keywords.webui.common import Common
 from keywords.webui.data_protection import Data_Protection

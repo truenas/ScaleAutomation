@@ -213,7 +213,7 @@ class Pool_Creation_Wizard:
                 row = 4
             case _:
                 row = None
-        Common.select_option_by_row(f'layout', row, f'layout-{option}')
+        Common.select_option_by_row('layout', row, f'layout-{option}')
 
     @classmethod
     def select_number_of_vdevs_option(cls, step: str, option: int):
