@@ -214,7 +214,7 @@ class Test_Share_Admin_Shares:
         assert COM.assert_right_panel_header("Add SMB") is True
         SHARE.set_share_configuration_field("path", "/mnt/tank/smb-create")
         COM.click_save_button()
-        COM.click_button("do-not-start")
+        SHARE.click_do_not_start_if_exist()
         assert SHARE.assert_share_row_name("smb", "smb-create") is True
 
         API_DELETE.delete_share("smb", "smb-create")
@@ -238,14 +238,14 @@ class Test_Share_Admin_Shares:
         assert COM.assert_right_panel_header("Edit SMB") is True
         SHARE.set_share_configuration_field("name", "smb-modify")
         COM.click_save_button()
-        COM.click_button("do-not-start")
+        SHARE.click_do_not_start_if_exist()
         assert SHARE.assert_share_row_name("smb", "smb-modify") is True
 
         # Clean Up
         SHARE.click_edit_share("smb", "smb-modify")
         SHARE.set_share_configuration_field("name", smb_data['name'])
         COM.click_save_button()
-        COM.click_button("do-not-start")
+        SHARE.click_do_not_start_if_exist()
         assert SHARE.assert_share_row_name("smb", smb_data['name']) is True
         API_DELETE.delete_dataset("tank/smb-modify")
 
@@ -313,12 +313,12 @@ class Test_Share_Admin_Shares:
         SHARE.click_edit_share("nfs", f'mnt/{nfs_data["api_path"]}')
         COM.unset_checkbox("enabled")
         COM.click_save_button()
-        COM.click_button("do-not-start")
+        SHARE.click_do_not_start_if_exist()
         assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", f'mnt/{nfs_data["api_path"]}') is False
         SHARE.click_edit_share("nfs", f'mnt/{nfs_data["api_path"]}')
         COM.set_checkbox("enabled")
         COM.click_save_button()
-        COM.click_button("do-not-start")
+        SHARE.click_do_not_start_if_exist()
         assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", f'mnt/{nfs_data["api_path"]}') is True
 
     @allure.tag("Create", "NFS")
@@ -338,7 +338,7 @@ class Test_Share_Admin_Shares:
         assert COM.assert_right_panel_header("Add NFS Share") is True
         SHARE.set_share_configuration_field("path", "/mnt/tank/nfs-create")
         COM.click_save_button()
-        COM.click_button("do-not-start")
+        SHARE.click_do_not_start_if_exist()
         assert SHARE.assert_share_row_name("nfs", "/mnt/tank/nfs-create") is True
 
         API_DELETE.delete_share("nfs", "/mnt/tank/nfs-create")
@@ -362,14 +362,14 @@ class Test_Share_Admin_Shares:
         assert COM.assert_right_panel_header("Edit NFS Share") is True
         SHARE.set_share_configuration_field("path", "/mnt/tank/nfs-modify")
         COM.click_save_button()
-        COM.click_button("do-not-start")
+        SHARE.click_do_not_start_if_exist()
         assert SHARE.assert_share_row_name("nfs", "/mnt/tank/nfs-modify") is True
 
         # Clean Up
         SHARE.click_edit_share("nfs", "/mnt/tank/nfs-modify")
         SHARE.set_share_configuration_field("path", f'/mnt/{nfs_data["api_path"]}')
         COM.click_save_button()
-        COM.click_button("do-not-start")
+        SHARE.click_do_not_start_if_exist()
         assert SHARE.assert_share_row_name("nfs", f'/mnt/{nfs_data["api_path"]}') is True
         API_DELETE.delete_dataset("tank/nfs-modify")
 
@@ -435,7 +435,7 @@ class Test_Share_Admin_Shares:
         ISCSI.click_wizard_portal_next_button()
         ISCSI.click_wizard_save_button()
         COM.assert_progress_bar_not_visible()
-        COM.click_button("do-not-start")
+        SHARE.click_do_not_start_if_exist()
         assert SHARE.assert_share_row_name("iscsi", "iscsi-create") is True
 
     @allure.tag("Update")
@@ -462,7 +462,7 @@ class Test_Share_Admin_Shares:
         ISCSI.click_wizard_portal_next_button()
         ISCSI.click_wizard_save_button()
         COM.assert_progress_bar_not_visible()
-        COM.click_button("do-not-start")
+        SHARE.click_do_not_start_if_exist()
         assert SHARE.assert_share_row_name("iscsi", "iscsi-modify") is True
 
         SHARE.click_edit_iscsi_target("iscsi-modify")
