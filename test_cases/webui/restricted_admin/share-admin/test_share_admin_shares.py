@@ -57,7 +57,7 @@ class Test_Share_Admin_Shares:
         ISCSI.click_wizard_portal_next_button()
         ISCSI.click_wizard_save_button()
         COM.assert_progress_bar_not_visible()
-        COM.click_button("do-not-start")
+        SHARE.click_do_not_start_if_exist()
 
     @pytest.fixture(autouse=True, scope='class')
     def teardown_class(self, smb_data, nfs_data):
@@ -189,12 +189,12 @@ class Test_Share_Admin_Shares:
         SHARE.click_edit_share("smb", smb_data['name'])
         COM.unset_checkbox("enabled")
         COM.click_save_button()
-        COM.click_button("do-not-start")
+        SHARE.click_do_not_start_if_exist()
         assert SHARE.assert_card_share_enabled_toggle_is_enabled("smb", smb_data['name']) is False
         SHARE.click_edit_share("smb", smb_data['name'])
         COM.set_checkbox("enabled")
         COM.click_save_button()
-        COM.click_button("do-not-start")
+        SHARE.click_do_not_start_if_exist()
         assert SHARE.assert_card_share_enabled_toggle_is_enabled("smb", smb_data['name']) is True
 
     @allure.tag("Create", "SMB")
