@@ -746,6 +746,8 @@ class Data_Protection:
             - Data_Protection.click_edit_vm_periodic_snapshot_task('tank/dataset')
         """
         path = COM.convert_to_tag_format(path)
+        # Remove ignore when test no-longer skipped.
+        # pylint: disable-next=E1101
         COM.click_on_element(xpaths.data_protection.vm_periodic_snapshot_task_edit_button(path))
         COM.assert_right_panel_header('Edit VM Periodic Snapshot Task')
 
