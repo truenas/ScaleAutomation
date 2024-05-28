@@ -1,4 +1,3 @@
-import xpaths
 from keywords.webui.common import Common as COM
 
 

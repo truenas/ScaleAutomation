@@ -197,8 +197,6 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
         4. Navigate to Data Protection page
         """
         COM.click_link('snapshot-task-vmware-snapshots')
-        # pylint: disable-next=E1101
-        # ^^^ Remove when test no-longer skipped.
         DP.click_edit_vm_periodic_snapshot_task('tank/persnap_ro')
         assert COM.assert_button_is_restricted('save') is True
         NAV.navigate_to_data_protection()

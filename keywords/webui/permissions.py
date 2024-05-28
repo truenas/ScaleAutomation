@@ -1,5 +1,5 @@
 import xpaths
-from helper.global_config import private_config, shared_config
+from helper.global_config import shared_config
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
@@ -749,5 +749,3 @@ class Permissions:
             assert PERM_SSH.assert_dataset_execute_access(pool, dataset, username, password) is True
         else:
             assert PERM_SSH.assert_dataset_execute_access(pool, dataset, username, password) is False
-
-
