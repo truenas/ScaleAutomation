@@ -725,8 +725,8 @@ class Common_Shares:
         :param timeout: Optional, timeout in seconds, defaults to shared_config['MEDIUM_WAIT']
 
         Example:
-           - Common_Shares.handle_share_service_dialog('smb')
-           - Common_Shares.handle_share_service_dialog('nfs', 5)
+           - Common_Shares.handle_share_service_dialog('smb' 'start')
+           - Common_Shares.handle_share_service_dialog('nfs', 'restart', 5)
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.any_text(f'{state.capitalize()} {share_type.upper()} Service'), timeout) is True
         if COM.is_visible(xpaths.common_xpaths.button_field('enable-service')):
