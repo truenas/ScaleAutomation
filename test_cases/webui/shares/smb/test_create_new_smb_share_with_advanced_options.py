@@ -37,11 +37,11 @@ def test_create_new_smb_share_with_advanced_options(smb_data) -> None:
     COM.click_save_button()
     # dismiss acl configuration dialog
     if running:
-        COMSHARE.handle_share_service_dialog('smb')
+        COMSHARE.handle_share_service_dialog('smb', 'restart')
         COM.cancel_confirm_dialog()
     else:
         COM.cancel_confirm_dialog()
-        COMSHARE.handle_share_service_dialog('smb')
+        COMSHARE.handle_share_service_dialog('smb', 'start')
 
     # Verify Advanced Options
     COMSHARE.click_edit_share('smb', smb_data['name'])

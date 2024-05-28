@@ -32,11 +32,11 @@ def test_create_new_smb_share_with_acl(smb_data) -> None:
     COM.click_save_button()
     # accept acl configuration dialog
     if running:
-        COMSHARE.handle_share_service_dialog('smb')
+        COMSHARE.handle_share_service_dialog('smb', 'restart')
         COM.assert_confirm_dialog()
     else:
         COM.assert_confirm_dialog()
-        COMSHARE.handle_share_service_dialog('smb')
+        COMSHARE.handle_share_service_dialog('smb', 'start')
 
     # Edit ACL Permissions
     COM.assert_page_header('Edit ACL')
