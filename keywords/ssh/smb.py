@@ -13,7 +13,7 @@ class SSH_SMB:
         :param dataset_path: is the path if the smb share
         :param ip: the IP of the smb share box
         """
-        SSH_Command_Line(f'cd ~; touch putfile', private_config['SMB_ACL_IP'], user, 'testing')
+        SSH_Command_Line('cd ~; touch putfile', private_config['SMB_ACL_IP'], user, 'testing')
         SSH_Command_Line(f'cd /mnt/{dataset_path}/; touch getfile', ip, user, 'testing')
         SSH_Command_Line(f'cd /mnt/{dataset_path}/; touch deletefile', ip, user, 'testing')
         SSH_Command_Line(f'cd /mnt/{dataset_path}/; echo "touch execfile2.txt" >> /mnt/{dataset_path}/execfile.sh', ip, user, 'testing')
@@ -196,7 +196,7 @@ class SSH_SMB:
 
         :param user: is the user to be sending files to the smb share
         """
-        SSH_Command_Line(f'rm * | grep file', private_config['SMB_ACL_IP'], user, 'testing')
+        SSH_Command_Line('rm * | grep file', private_config['SMB_ACL_IP'], user, 'testing')
 
     @classmethod
     def smbclient_command(cls, share: str, use_ad: str, user: str, password: str, command: str) -> SSH_Command_Line:

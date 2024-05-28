@@ -1,6 +1,7 @@
 import pyperclip
 import time
 from helper.global_config import shared_config
+# pylint: disable-next=E0611
 from percy import percy_snapshot
 from selenium import webdriver
 from selenium.webdriver import ActionChains

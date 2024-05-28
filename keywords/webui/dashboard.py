@@ -2,7 +2,6 @@ import xpaths
 from helper.global_config import shared_config
 from helper.webui import WebUI
 from keywords.webui.common import Common
-from keywords.webui.navigation import Navigation
 
 
 class Dashboard:

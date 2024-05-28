@@ -718,11 +718,9 @@ class Certificates:
             - Certificates.delete_certificate_by_name('acme-dns-authenticator', 'test')
         """
         cls.click_the_field_button_by_card_certificate_name(card, certificate_name, 'delete')
-        if WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field('force'), shared_config['SHORT_WAIT']):
-            Common.set_checkbox('force')
-            Common.click_button('delete')
-        elif WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field('confirm')):
-            Common.assert_confirm_dialog()
+        if WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field('secondary-confirmation'), shared_config['SHORT_WAIT']):
+            Common.set_checkbox('secondary-confirmation')
+        Common.assert_confirm_dialog()
         WebUI.delay(1)
         Common.assert_progress_bar_not_visible()
 

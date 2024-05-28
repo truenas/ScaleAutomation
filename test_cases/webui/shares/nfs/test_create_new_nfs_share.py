@@ -54,7 +54,7 @@ class Test_Create_NFS_Share:
         COM.click_save_button()
 
         # Handle start/restart service popup
-        COMSHARE.handle_share_service_dialog('nfs')
+        COMSHARE.handle_share_service_dialog('nfs', 'start')
 
         # Verify share attachment to dataset
         NAV.navigate_to_datasets()

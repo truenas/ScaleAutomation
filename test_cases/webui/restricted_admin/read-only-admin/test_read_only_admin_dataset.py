@@ -1,13 +1,11 @@
 import allure
 import pytest
 from helper.data_config import get_data_list
-from helper.global_config import private_config
 from keywords.api.post import API_POST
 from keywords.api.delete import API_DELETE
 from keywords.webui.common import Common
 from keywords.webui.datasets import Datasets
 from keywords.webui.navigation import Navigation
-from keywords.webui.permissions import Permissions
 from keywords.webui.snapshots import Snapshots
 
 

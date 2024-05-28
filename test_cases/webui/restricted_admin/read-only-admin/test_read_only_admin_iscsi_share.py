@@ -1,10 +1,8 @@
 import allure
 import pytest
 from helper.data_config import get_data_list
-from helper.global_config import private_config
 from keywords.api.iscsi import API_ISCSI
 from keywords.api.post import API_POST
-from keywords.api.delete import API_DELETE
 from keywords.webui.common import Common
 from keywords.webui.common_shares import Common_Shares
 from keywords.webui.iscsi import iSCSI
@@ -154,7 +152,7 @@ class Test_Read_Only_Admin_iSCSI_Share:
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Modify An Item On A Tab Of The Sharing iSCSI Page")
-    @pytest.mark.parametrize('tab', ['Portals','Targets', 'Extents'])
+    @pytest.mark.parametrize('tab', ['Portals', 'Targets', 'Extents'])
     def test_read_only_admin_is_not_able_to_modify_an_item_on_a_tab_of_sharing_iscsi_page(self, data, tab):
         """
         This test verifies a read-only admin is not able to modify an item on a tab of the Sharing iSCSI page.

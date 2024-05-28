@@ -727,26 +727,27 @@ class Common_Shares:
             COM.assert_confirm_dialog()
 
     @classmethod
-    def handle_share_service_dialog(cls, share_type: str):
+    def handle_share_service_dialog(cls, share_type: str, state: str, timeout: int = shared_config['MEDIUM_WAIT']) -> None:
         """
         This method handles the service dialog to start or restart a share service when a share is created or edited
 
         :param share_type: type of the given share
+        :param state: Whether to handle the start or restart dialog. Possible values: Start, Restart
+        :param timeout: Optional, timeout in seconds, defaults to shared_config['MEDIUM_WAIT']
 
         Example:
-           - Common_Shares.handle_share_service_dialog('smb')
+           - Common_Shares.handle_share_service_dialog('smb' 'start')
+           - Common_Shares.handle_share_service_dialog('nfs', 'restart', 5)
         """
-        name = ''
-        if share_type == 'smb':
-            assert WebUI.wait_until_visible(xpaths.common_xpaths.any_text('SMB Service')) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_text(f'{state.capitalize()} {share_type.upper()} Service'), timeout) is True
         if COM.is_visible(xpaths.common_xpaths.button_field('enable-service')):
-            name = 'enable-service'
-        if COM.is_visible(xpaths.common_xpaths.button_field('restart-service')):
-            name = 'restart-service'
-        if name != '':
-            COM.click_button(name)
+            COM.click_button('enable-service')
+            assert COM.assert_progress_bar_not_visible() is True
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.close_right_panel()) is True
+        elif COM.is_visible(xpaths.common_xpaths.button_field('restart-service')):
+            COM.click_button('restart-service')
+            assert COM.assert_progress_spinner_not_visible() is True
         # WebUI.delay(2)
-        assert COM.assert_progress_bar_not_visible() is True
 
     @classmethod
     def is_share_enabled(cls, share_type: str, name: str) -> bool:
