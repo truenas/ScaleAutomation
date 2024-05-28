@@ -658,19 +658,6 @@ class Common_Shares:
         COM.click_button(path)
 
     @classmethod
-    def click_do_not_start_or_do_not_restart(cls) -> None:
-        """
-        This method clicks the do not start or do not restart button.
-
-        Example:
-           - Common_Shares.click_do_not_start_or_do_not_restart()
-        """
-        if WebUI.wait_until_visible(xpaths.common_xpaths.button_field('do-not-start'), shared_config['SHORT_WAIT']) is True:
-            COM.click_button('do-not-start')
-        elif WebUI.wait_until_visible(xpaths.common_xpaths.button_field('do-not-restart'), shared_config['SHORT_WAIT']) is True:
-            COM.click_button('do-not-restart')
-
-    @classmethod
     def click_edit_iscsi_target(cls, target_name: str) -> None:
         """
         This method clicks the edit button of the iSCSI target

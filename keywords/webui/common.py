@@ -1108,6 +1108,7 @@ class Common:
         Example:
             - Common.select_option('mySelect', 'myOption')
         """
+        WebUI.delay(0.1)
         cls.click_on_element(xpaths.common_xpaths.select_field(name))
         WebUI.delay(0.1)
         cls.click_on_element(xpaths.common_xpaths.option_field(option))
