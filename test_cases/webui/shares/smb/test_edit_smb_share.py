@@ -16,6 +16,7 @@ def test_edit_smb_share(smb_data) -> None:
     API_DELETE.delete_share('smb', smb_data['name_alt'])
     API_DELETE.delete_dataset(smb_data['path'])
     API_DELETE.delete_dataset(smb_data['path_alt'])
+    API_POST.start_service('cifs')
     API_POST.create_dataset(smb_data['path'], 'SMB')
     API_POST.create_dataset(smb_data['path_alt'], 'SMB')
     API_POST.create_share('smb', smb_data['name'], "/mnt/"+smb_data['path'])
@@ -31,7 +32,7 @@ def test_edit_smb_share(smb_data) -> None:
     COMSHARE.set_share_description(smb_data['description_alt'])
     COM.unset_checkbox('enabled')
     COM.click_save_button()
-    COMSHARE.handle_share_service_dialog('smb')
+    COMSHARE.handle_share_service_dialog('smb', 'restart')
 
     # Verify Share attached to Dataset
     NAV.navigate_to_datasets()
