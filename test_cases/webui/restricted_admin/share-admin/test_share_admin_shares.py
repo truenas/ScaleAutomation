@@ -2,8 +2,9 @@ import allure
 import pytest
 
 from helper.data_config import get_data_list
-from keywords.api.post import API_POST
 from keywords.api.delete import API_DELETE
+from keywords.api.post import API_POST
+from keywords.api.put import API_PUT
 from keywords.webui.common import Common as COM
 from keywords.webui.common_shares import Common_Shares as SHARE
 from keywords.webui.iscsi import iSCSI as ISCSI
@@ -31,12 +32,16 @@ class Test_Share_Admin_Shares:
         API_DELETE.delete_dataset(smb_data['path'])
         API_POST.create_dataset(smb_data['path'], 'SMB')
         API_POST.create_share('smb', smb_data['name'], f'/mnt/{smb_data["path"]}')
+        API_POST.start_service('cifs')
+        API_PUT.enable_service_at_boot('cifs')
 
         # Setup NFS Share
         API_DELETE.delete_share('nfs', nfs_data['dataset_name'])
         API_DELETE.delete_dataset(nfs_data['api_path'])
         API_POST.create_dataset(nfs_data['api_path'], 'NFS')
         API_POST.create_share('nfs', nfs_data['dataset_name'], f'/mnt/{nfs_data["api_path"]}')
+        API_POST.start_service('nfs')
+        API_PUT.enable_service_at_boot('nfs')
 
         # Setup ISCSI Share
         NAV.navigate_to_shares()
@@ -51,13 +56,17 @@ class Test_Share_Admin_Shares:
         SHARE.set_share_volsize("10")
         COM.select_option("target", "target-create-new")
         COM.click_next_button()
+        # Wait that the Portal step is open to avoid a race condition
+        assert COM.assert_step_header_is_open("Portal") is True
         COM.select_option("portal", "portal-create-new")
         COM.click_button("add-item-ip-address")
         ISCSI.set_ip_address("0.0.0.0")
         ISCSI.click_wizard_portal_next_button()
+        # Wait that the Initiator step is open to avoid a race condition
+        assert COM.assert_step_header_is_open("Initiator") is True
         ISCSI.click_wizard_save_button()
         COM.assert_progress_bar_not_visible()
-        SHARE.click_do_not_start_or_do_not_restart()
+        COM.click_button('do-not-start')
 
     @pytest.fixture(autouse=True, scope='class')
     def teardown_class(self, smb_data, nfs_data):
@@ -173,6 +182,7 @@ class Test_Share_Admin_Shares:
         5. Edit SMB Share
         6. Verify enabled checkbox is checked
         """
+        assert SHARE.assert_share_row_name('smb', smb_data['name']) is True
         assert SHARE.assert_card_share_enabled_toggle_is_enabled("smb", smb_data['name']) is True
         SHARE.unset_share_enabled_toggle("smb", smb_data['name'])
         assert SHARE.assert_card_share_enabled_toggle_is_enabled("smb", smb_data['name']) is False
@@ -180,6 +190,7 @@ class Test_Share_Admin_Shares:
         assert COM.assert_right_panel_header("Edit SMB") is True
         assert COM.is_checked("enabled") is False
         COM.close_right_panel()
+        assert SHARE.assert_share_row_name('smb', smb_data['name']) is True
         SHARE.set_share_enabled_toggle("smb", smb_data['name'])
         assert SHARE.assert_card_share_enabled_toggle_is_enabled("smb", smb_data['name']) is True
         SHARE.click_edit_share("smb", smb_data['name'])
@@ -189,12 +200,10 @@ class Test_Share_Admin_Shares:
         SHARE.click_edit_share("smb", smb_data['name'])
         COM.unset_checkbox("enabled")
         COM.click_save_button()
-        SHARE.click_do_not_start_or_do_not_restart()
         assert SHARE.assert_card_share_enabled_toggle_is_enabled("smb", smb_data['name']) is False
         SHARE.click_edit_share("smb", smb_data['name'])
         COM.set_checkbox("enabled")
         COM.click_save_button()
-        SHARE.click_do_not_start_or_do_not_restart()
         assert SHARE.assert_card_share_enabled_toggle_is_enabled("smb", smb_data['name']) is True
 
     @allure.tag("Create", "SMB")
@@ -214,7 +223,7 @@ class Test_Share_Admin_Shares:
         assert COM.assert_right_panel_header("Add SMB") is True
         SHARE.set_share_configuration_field("path", "/mnt/tank/smb-create")
         COM.click_save_button()
-        SHARE.click_do_not_start_or_do_not_restart()
+        COM.click_button('do-not-restart')
         assert SHARE.assert_share_row_name("smb", "smb-create") is True
 
         API_DELETE.delete_share("smb", "smb-create")
@@ -238,14 +247,12 @@ class Test_Share_Admin_Shares:
         assert COM.assert_right_panel_header("Edit SMB") is True
         SHARE.set_share_configuration_field("name", "smb-modify")
         COM.click_save_button()
-        SHARE.click_do_not_start_or_do_not_restart()
         assert SHARE.assert_share_row_name("smb", "smb-modify") is True
 
         # Clean Up
         SHARE.click_edit_share("smb", "smb-modify")
         SHARE.set_share_configuration_field("name", smb_data['name'])
         COM.click_save_button()
-        SHARE.click_do_not_start_or_do_not_restart()
         assert SHARE.assert_share_row_name("smb", smb_data['name']) is True
         API_DELETE.delete_dataset("tank/smb-modify")
 
@@ -313,12 +320,10 @@ class Test_Share_Admin_Shares:
         SHARE.click_edit_share("nfs", f'mnt/{nfs_data["api_path"]}')
         COM.unset_checkbox("enabled")
         COM.click_save_button()
-        SHARE.click_do_not_start_or_do_not_restart()
         assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", f'mnt/{nfs_data["api_path"]}') is False
         SHARE.click_edit_share("nfs", f'mnt/{nfs_data["api_path"]}')
         COM.set_checkbox("enabled")
         COM.click_save_button()
-        SHARE.click_do_not_start_or_do_not_restart()
         assert SHARE.assert_card_share_enabled_toggle_is_enabled("nfs", f'mnt/{nfs_data["api_path"]}') is True
 
     @allure.tag("Create", "NFS")
@@ -338,7 +343,6 @@ class Test_Share_Admin_Shares:
         assert COM.assert_right_panel_header("Add NFS Share") is True
         SHARE.set_share_configuration_field("path", "/mnt/tank/nfs-create")
         COM.click_save_button()
-        SHARE.click_do_not_start_or_do_not_restart()
         assert SHARE.assert_share_row_name("nfs", "/mnt/tank/nfs-create") is True
 
         API_DELETE.delete_share("nfs", "/mnt/tank/nfs-create")
@@ -362,14 +366,12 @@ class Test_Share_Admin_Shares:
         assert COM.assert_right_panel_header("Edit NFS Share") is True
         SHARE.set_share_configuration_field("path", "/mnt/tank/nfs-modify")
         COM.click_save_button()
-        SHARE.click_do_not_start_or_do_not_restart()
         assert SHARE.assert_share_row_name("nfs", "/mnt/tank/nfs-modify") is True
 
         # Clean Up
         SHARE.click_edit_share("nfs", "/mnt/tank/nfs-modify")
         SHARE.set_share_configuration_field("path", f'/mnt/{nfs_data["api_path"]}')
         COM.click_save_button()
-        SHARE.click_do_not_start_or_do_not_restart()
         assert SHARE.assert_share_row_name("nfs", f'/mnt/{nfs_data["api_path"]}') is True
         API_DELETE.delete_dataset("tank/nfs-modify")
 
@@ -431,11 +433,13 @@ class Test_Share_Admin_Shares:
         SHARE.set_share_configuration_field("volsize", "10 MiB")
         SHARE.set_share_configuration_field("target", "target-create-new")
         COM.click_button("next")
+        # Wait that the Portal step is open to avoid a race condition
+        assert COM.assert_step_header_is_open("Portal") is True
         SHARE.set_share_configuration_field("portal", "portal-1-0-0-0-0")
         ISCSI.click_wizard_portal_next_button()
         ISCSI.click_wizard_save_button()
         COM.assert_progress_bar_not_visible()
-        SHARE.click_do_not_start_or_do_not_restart()
+        COM.click_button('do-not-start')
         assert SHARE.assert_share_row_name("iscsi", "iscsi-create") is True
 
     @allure.tag("Update")
@@ -458,11 +462,15 @@ class Test_Share_Admin_Shares:
         SHARE.set_share_configuration_field("volsize", "10 MiB")
         SHARE.set_share_configuration_field("target", "target-create-new")
         COM.click_button("next")
+        # Wait that the Portal step is open to avoid a race condition
+        assert COM.assert_step_header_is_open("Portal") is True
         SHARE.set_share_configuration_field("portal", "portal-1-0-0-0-0")
         ISCSI.click_wizard_portal_next_button()
+        # Wait that the Initiator step is open to avoid a race condition
+        assert COM.assert_step_header_is_open("Initiator") is True
         ISCSI.click_wizard_save_button()
         COM.assert_progress_bar_not_visible()
-        SHARE.click_do_not_start_or_do_not_restart()
+        COM.click_button('do-not-start')
         assert SHARE.assert_share_row_name("iscsi", "iscsi-modify") is True
 
         SHARE.click_edit_iscsi_target("iscsi-modify")
