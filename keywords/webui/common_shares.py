@@ -721,7 +721,8 @@ class Common_Shares:
         This method handles the service dialog to start or restart a share service when a share is created or edited
 
         :param share_type: type of the given share
-        :param timeout: Optional, timeout in seconds, defaults to shared_config['WAIT']
+        :param state: Whether to handle the start or restart dialog. Possible values: Start, Restart
+        :param timeout: Optional, timeout in seconds, defaults to shared_config['MEDIUM_WAIT']
 
         Example:
            - Common_Shares.handle_share_service_dialog('smb')
