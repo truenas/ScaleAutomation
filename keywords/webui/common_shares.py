@@ -1,4 +1,5 @@
 import xpaths
+from helper.global_config import shared_config
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
@@ -659,12 +660,12 @@ class Common_Shares:
     @classmethod
     def click_do_not_start_if_exist(cls) -> None:
         """
-        This method clicks the do not start if exist button
+        This method clicks the do not start button if exist button
 
         Example:
            - Common_Shares.click_do_not_start_if_exist()
         """
-        if WebUI.wait_until_visible(xpaths.common_xpaths.button_field('do-not-start'), 5) is True:
+        if WebUI.wait_until_visible(xpaths.common_xpaths.button_field('do-not-start'), shared_config['MEDIUM_WAIT']) is True:
             COM.click_button('do-not-start')
 
     @classmethod
