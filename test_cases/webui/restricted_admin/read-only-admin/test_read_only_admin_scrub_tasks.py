@@ -53,7 +53,7 @@ class Test_Read_Only_Admin_Scrub_Tasks:
 
         Test Steps:
         1. Click Edit scrub task
-        2. Verify scrub Task fields (pool, threshold, description, etc)
+        2. Verify scrub Task fields (pool, threshold, description, etc.)
         3. Verify can view Custom Schedule dialog
         4. Close right panel
         """

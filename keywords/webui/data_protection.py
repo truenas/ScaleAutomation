@@ -356,7 +356,7 @@ class Data_Protection:
         # name = COM.convert_to_tag_format(name)
         # TODO: Update when NAS-129103 is fixed
         # return COM.assert_element_is_locked_and_not_clickable(xpaths.common_xpaths.checkbox_field(f'{name}-enabled'))
-        return COM.assert_element_is_restricted(xpaths.common_xpaths.any_xpath(f'//*[starts-with(@data-test,"checkbox-")]'))
+        return COM.assert_element_is_restricted(xpaths.common_xpaths.any_xpath('//*[starts-with(@data-test,"checkbox-")]'))
 
     @classmethod
     def assert_replication_page_replication_task_name(cls, name: str) -> bool:
@@ -398,7 +398,7 @@ class Data_Protection:
             - Data_Protection.assert_replication_page_run_replication_task_button_is_restricted("rep_name")
         """
         # name = COM.convert_to_tag_format(name)
-        return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[starts-with(@data-test,"checkbox-")]'))
+        return COM.is_visible(xpaths.common_xpaths.any_xpath('//*[starts-with(@data-test,"checkbox-")]'))
 
     @classmethod
     def assert_replication_task_name(cls, name: str) -> bool:
@@ -746,6 +746,8 @@ class Data_Protection:
             - Data_Protection.click_edit_vm_periodic_snapshot_task('tank/dataset')
         """
         path = COM.convert_to_tag_format(path)
+        # Remove ignore when test no-longer skipped.
+        # pylint: disable-next=E1101
         COM.click_on_element(xpaths.data_protection.vm_periodic_snapshot_task_edit_button(path))
         COM.assert_right_panel_header('Edit VM Periodic Snapshot Task')
 
