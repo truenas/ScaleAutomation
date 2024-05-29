@@ -4,6 +4,7 @@ import xpaths.common_xpaths
 import xpaths.dashboard
 import xpaths.data_protection
 import xpaths.datasets
+import xpaths.directory_services
 import xpaths.iscsi
 import xpaths.local_groups
 import xpaths.local_users
