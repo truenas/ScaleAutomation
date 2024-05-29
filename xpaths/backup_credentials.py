@@ -18,14 +18,15 @@ def cloud_credential_delete_button(name: str) -> str:
     return f'cloud-cred-{name}-delete-row-action'
 
 
-def cloud_credential_description(description: str) -> str:
+def cloud_credential_description(name: str, description: str) -> str:
     """
     This function returns the xpath text of the cloud credential description by the given description.
 
+    :param name: The name of the cloud credential.
     :param description: The description of the cloud credential.
     :return: The xpath text of the cloud credential description by the given description.
     """
-    return f'//*[@data-test="text-provider-cloud-cred-{description}-row-text"]'
+    return f'//*[@data-test="text-provider-cloud-cred-{name}-row-text" and contains(text(), "{description}")]'
 
 
 def cloud_credential_edit_button(name: str) -> str:

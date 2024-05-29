@@ -64,7 +64,7 @@ class Test_Share_Admin_Backup_Credential:
         1. Verify the share admin is able to see Cloud Credentials
         """
         assert COM.is_card_visible('Cloud Credentials')
-        assert COM.is_visible(xpaths.backup_credentials.cloud_credential_description(COM.convert_to_tag_format(cloud_cred['description']))) is True
+        assert COM.is_visible(xpaths.backup_credentials.cloud_credential_description(COM.convert_to_tag_format(cloud_cred['name']), cloud_cred['description'])) is True
 
     @allure.tag("Read")
     @allure.story("Share Admin Can See the SSH Connections")
