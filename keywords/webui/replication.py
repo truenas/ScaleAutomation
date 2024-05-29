@@ -97,7 +97,7 @@ class Replication:
         Example:
             - Replication.get_replication_status('myRepTask')
     """
-        WebUI.refresh()
+        NAV.navigate_to_data_protection()
         return COM.get_element_property(xpaths.common_xpaths.button_field(f'state-replication-task-{COM.convert_to_tag_format(name)}-row-state'), 'innerText').strip(' ')
 
     @classmethod
@@ -110,7 +110,7 @@ class Replication:
         Example:
             - Replication.is_destination_snapshots_dialog_visible()
         """
-        return WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Destination Snapshots Are Not Related to Replicated Snapshots'))
+        return WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Destination Snapshots Are Not Related to Replicated Snapshots'), shared_config['SHORT_WAIT'])
 
     @classmethod
     def is_replication_task_visible(cls, name: str) -> bool:
@@ -138,7 +138,7 @@ class Replication:
         Example:
             - Replication.is_run_now_dialog_visible()
         """
-        return WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Run Now'))
+        return WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Run Now'), shared_config['SHORT_WAIT'])
 
     @classmethod
     def is_sudo_enabled_dialog_visible(cls) -> bool:
@@ -162,7 +162,7 @@ class Replication:
         Example:
             - Replication.is_task_started_dialog_visible()
         """
-        return WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Task started'))
+        return WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Task started'), shared_config['SHORT_WAIT'])
 
     @classmethod
     def login_to_destination_box(cls, username, password):

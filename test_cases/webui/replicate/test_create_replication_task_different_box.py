@@ -3,11 +3,11 @@ import pytest
 
 from helper.data_config import get_data_list
 from helper.global_config import private_config
-from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.ssh.common import Common_SSH as SSHCOM
 from keywords.webui.common import Common as COM
 from keywords.webui.data_protection import Data_Protection as DP
+from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.replication import Replication as REP
 from keywords.webui.snapshots import Snapshots as SNAP
@@ -21,7 +21,7 @@ from keywords.webui.ssh_connection import SSH_Connection as SSHCON
 class Test_Create_Replicate_Task_Different_Box:
 
     @pytest.fixture(scope='function', autouse=True)
-    def setup_test(self, rep) -> None:
+    def setup_test(self, rep, clean_remote_box) -> None:
         """
         This method sets up each test to start with test replication tasks deleted
         """
@@ -40,26 +40,35 @@ class Test_Create_Replicate_Task_Different_Box:
             REP.delete_replication_task_by_name(rep['task-name'])
 
     @pytest.fixture(scope='function', autouse=True)
-    def teardown_test(self, rep) -> None:
+    def teardown_test(self, clean_remote_box) -> None:
         """
         This method removes the replicate task, snapshots, and cleans up the system
         """
         # reset the change
         yield
-        # # clean destination box
-        API_POST.delete_all_remote_dataset_snapshots(rep['source'])
-        API_POST.delete_all_remote_dataset_snapshots(rep['destination'])
-        API_DELETE.delete_remote_dataset(rep['source'])
-        API_DELETE.delete_remote_dataset(rep['destination'])
+        # clean remote box
+        REP.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
+        NAV.navigate_to_datasets()
+        DATASET.delete_dataset("tank", "receive")
+        DATASET.delete_dataset("tank", "replicate")
+        REP.close_destination_box()
 
-        # clean source box
-        NAV.navigate_to_data_protection()
-        DP.delete_all_replication_tasks()
-        DP.delete_all_periodic_snapshot_tasks()
-        API_POST.delete_all_dataset_snapshots(rep['source'])
-        API_POST.delete_all_dataset_snapshots(rep['destination'])
-        API_DELETE.delete_dataset(rep['source'])
-        API_DELETE.delete_dataset(rep['destination'])
+        # clean local box
+        NAV.navigate_to_datasets()
+        DATASET.delete_dataset("tank", "receive")
+        DATASET.delete_dataset("tank", "replicate")
+
+    @pytest.fixture(scope='function')
+    def clean_remote_box(self) -> None:
+        """
+        This method cleans up the remote system
+        """
+        # clean destination box
+        REP.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
+        NAV.navigate_to_datasets()
+        DATASET.delete_dataset("tank", "receive")
+        DATASET.delete_dataset("tank", "replicate")
+        REP.close_destination_box()
 
     @allure.tag("Create")
     @allure.story("Setup and Run Replication Task to Remote Box")
@@ -152,13 +161,19 @@ class Test_Create_Replicate_Task_Different_Box:
         # Take new snapshot
         DP.click_edit_snapshot_task_by_name(rep['source'])
         SNAP.select_schedule_preset('custom')
+        current_hour = COM.get_current_hour()
         current_minute = COM.get_current_minute()
         REP.set_preset_custom_time(minutes=str(current_minute + 1))
         COM.click_button('done')
         COM.click_save_button_and_wait_for_right_panel()
+        COM.wait_for_system_time('minute', current_minute + 1)
+        DP.click_snapshots_button()
+        DP.assert_snapshot_by_hour_and_minute(current_hour, current_minute)
+        NAV.navigate_to_data_protection()
 
         DP.click_edit_replication_task_by_name(rep['task-name'])
         REP.select_schedule_preset('custom')
+        current_hour = COM.get_current_hour()
         current_minute = COM.get_current_minute()
         REP.set_preset_custom_time(minutes=str(current_minute + 1))
         COM.click_button('done')
@@ -166,13 +181,18 @@ class Test_Create_Replicate_Task_Different_Box:
 
         COM.wait_for_system_time('minute', current_minute + 1)
         assert REP.get_replication_status(rep['task-name']) == rep['status']
+        DP.click_snapshots_button()
+        DP.assert_snapshot_by_hour_and_minute(current_hour, current_minute)
 
         # log onto destination box and verify Snapshot exists
         REP.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_data_protection()
         DP.click_snapshots_button()
-        assert COM.assert_text_is_visible(rep['destination']) is True
         assert COM.assert_file_exists('rep_trigger.txt', rep['destination'], private_config['REP_DEST_IP']) is True
+
+        # Clean Destination box
+        NAV.navigate_to_datasets()
+        DATASET.delete_dataset("tank", "receive")
         REP.close_destination_box()
 
     @allure.tag("Create", "NAS-T1269")
@@ -231,9 +251,17 @@ class Test_Create_Replicate_Task_Different_Box:
 
         # Take new snapshot
         API_POST.create_remote_snapshot_with_naming_schema(rep['source'])
+        REP.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
+        NAV.navigate_to_data_protection()
+        DP.click_snapshots_button()
+        current_hour = COM.get_current_hour()
+        current_minute = COM.get_current_minute()
+        DP.assert_snapshot_by_hour_and_minute(current_hour, current_minute)
+        REP.close_destination_box()
 
         DP.click_edit_replication_task_by_name(rep['task-name'])
         REP.select_schedule_preset('custom')
+        current_hour = COM.get_current_hour()
         current_minute = COM.get_current_minute()
         REP.set_preset_custom_time(minutes=str(current_minute + 1))
         COM.click_button('done')
@@ -244,5 +272,5 @@ class Test_Create_Replicate_Task_Different_Box:
 
         # Verify Snapshot exists
         DP.click_snapshots_button()
-        assert COM.assert_text_is_visible(rep['destination']) is True
+        DP.assert_snapshot_by_hour_and_minute(current_hour, current_minute)
         assert COM.assert_file_exists('rep_trigger.txt', rep['destination']) is True
