@@ -771,6 +771,18 @@ class Data_Protection:
         COM.assert_right_panel_header('Edit VM Periodic Snapshot Task')
 
     @classmethod
+    def click_replication_page_edit_replication_task_button(cls) -> None:
+        """
+        This method clicks the edit button for the currently expanded replication task
+
+        Example:
+            - Data_Protection.click_replication_page_edit_replication_task_button()
+        """
+        COM.click_on_element('//button[contains(@data-test, "-edit")]')
+        COM.assert_right_panel_header('Edit Replication Task')
+        WebUI.delay(2)
+
+    @classmethod
     def click_the_rsync_task_header_link(cls):
         """
         This method clicks the rsync task card title link.
