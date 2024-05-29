@@ -13,8 +13,7 @@ from subprocess import Popen, PIPE, run
 
 def create_timestamp() -> str:
     now = datetime.now()
-    timestamp = now.strftime("%Y_%m_%d-%H_%M_%S")
-    return timestamp
+    return now.strftime("%Y_%m_%d-%H_%M_%S")
 
 
 real_workdir = workdir.replace("\\", "/").replace("C:", "/mnt/c")
@@ -46,10 +45,9 @@ def allure_environment():
         file.write(f'short_version={version_short}\n')
         file.write(f'short_version={version_short}\n')
         for _ in range(10):
-            if "percy_threading" not in str(threading.enumerate()):
-                if shared_config['PERCY_URL']:
-                    file.write(f"percy_report={shared_config['PERCY_URL']}\n")
-                    break
+            if "percy_threading" not in str(threading.enumerate()) and shared_config['PERCY_URL']:
+                file.write(f"percy_report={shared_config['PERCY_URL']}\n")
+                break
             WebUI.delay(1)
 
 
