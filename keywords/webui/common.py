@@ -678,7 +678,7 @@ class Common:
         Example:
             - Common.delete_file('C:/path', 'myfile.txt')
         """
-        file = Path(path + '/' + filename)
+        file = Path(f'{path}/{filename}')
         file.unlink(True)
 
     @classmethod
@@ -886,6 +886,8 @@ class Common:
         Example:
             - Common.is_checked('myCheckbox')
         """
+        # wait the checkbox to be clickable before looking if checked
+        assert cls.is_clickable(xpaths.common_xpaths.checkbox_field(name)) is True
         return cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked')
 
     @classmethod
@@ -1033,6 +1035,8 @@ class Common:
         cls.click_button('log-out')
         assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('power-menu'))
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('log-in'))
+        # Let the login page settle
+        WebUI.delay(2)
 
     @classmethod
     def navigate_to_login_screen(cls, ip: str) -> None:
@@ -1104,6 +1108,7 @@ class Common:
         Example:
             - Common.select_option('mySelect', 'myOption')
         """
+        WebUI.delay(0.1)
         cls.click_on_element(xpaths.common_xpaths.select_field(name))
         WebUI.delay(0.1)
         cls.click_on_element(xpaths.common_xpaths.option_field(option))
