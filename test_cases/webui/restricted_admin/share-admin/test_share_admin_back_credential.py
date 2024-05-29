@@ -12,12 +12,12 @@ from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.ssh_connection import SSH_Connection as SSHCON
 
 
-@allure.tag('Read Only Admin', 'Backup Credentials', "Users", 'Permissions')
+@allure.tag('Share Admin', 'Backup Credentials', "Users", 'Permissions')
 @allure.epic('Permissions')
-@allure.feature('Read Only Admin')
+@allure.feature('Share Admin')
 @pytest.mark.parametrize('cloud_cred', get_data_list('backup_credentials'), scope='class')
 @pytest.mark.parametrize('rep', get_data_list('replication')[:1], scope='class')
-class Test_Read_Only_Admin_Backup_Credential:
+class Test_Share_Admin_Backup_Credential:
 
     @pytest.fixture(autouse=True, scope='class')
     def setup_backup_credential(self, cloud_cred, rep, add_ssh_connection):
@@ -30,7 +30,7 @@ class Test_Read_Only_Admin_Backup_Credential:
         NAV.navigate_to_backup_credentials()
         SSHCON.assert_ssh_connection_exists(rep['connection-name'])
         COM.logoff_truenas()
-        COM.login_to_truenas(shared_config['ROA_USER'], shared_config['ROA_PASSWORD'])
+        COM.login_to_truenas(shared_config['SHARE_ADMIN_USER'], shared_config['SHARE_ADMIN_PASSWORD'])
         NAV.navigate_to_backup_credentials()
 
     @pytest.fixture(autouse=True, scope='class')
@@ -51,50 +51,50 @@ class Test_Read_Only_Admin_Backup_Credential:
         NAV.navigate_to_backup_credentials()
         SSHCON.assert_ssh_connection_exists(rep['connection-name'])
         COM.logoff_truenas()
-        COM.login_to_truenas(shared_config['ROA_USER'], shared_config['ROA_PASSWORD'])
+        COM.login_to_truenas(shared_config['SHARE_ADMIN_USER'], shared_config['SHARE_ADMIN_PASSWORD'])
         NAV.navigate_to_backup_credentials()
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Can See the Cloud Credentials")
-    def test_read_only_admin_can_see_the_cloud_credentials(self, cloud_cred):
+    @allure.story("Share Admin Can See the Cloud Credentials")
+    def test_share_admin_can_see_the_cloud_credentials(self, cloud_cred):
         """
-        Summary: This test verifies the read-only admin is able to see Cloud Credentials.
+        Summary: This test verifies the share admin is able to see Cloud Credentials.
 
         Test Steps:
-        1. Verify the read-only admin is able to see Cloud Credentials
+        1. Verify the share admin is able to see Cloud Credentials
         """
         assert COM.is_card_visible('Cloud Credentials')
         assert COM.is_visible(xpaths.backup_credentials.cloud_credential_description(COM.convert_to_tag_format(cloud_cred['description']))) is True
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Can See the SSH Connections")
-    def test_read_only_admin_can_see_the_ssh_connections(self, rep):
+    @allure.story("Share Admin Can See the SSH Connections")
+    def test_share_admin_can_see_the_ssh_connections(self, rep):
         """
-        Summary: This test verifies the read-only admin is able to see SSH Connections.
+        Summary: This test verifies the share admin is able to see SSH Connections.
 
         Test Steps:
-        1. Verify the read-only admin is able to see SSH Connections
+        1. Verify the share admin is able to see SSH Connections
         """
         assert COM.is_card_visible('SSH Connections')
         assert COM.is_visible(xpaths.backup_credentials.ssh_connection_name(COM.convert_to_tag_format(rep['connection-name']))) is True
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Can See the SSH Keypairs")
-    def test_read_only_admin_can_see_the_ssh_Keypairs(self, rep):
+    @allure.story("Share Admin Can See the SSH Keypairs")
+    def test_share_admin_can_see_the_ssh_Keypairs(self, rep):
         """
-        Summary: This test verifies the read-only admin is able to see SSH Keypairs.
+        Summary: This test verifies the share admin is able to see SSH Keypairs.
 
         Test Steps:
-        1. Verify the read-only admin is able to see SSH Keypairs
+        1. Verify the share admin is able to see SSH Keypairs
         """
         assert COM.is_card_visible('SSH Keypairs')
         assert COM.is_visible(xpaths.backup_credentials.ssh_keypairs_name(COM.convert_to_tag_format(rep['connection-name']))) is True
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Not Able to View the Configured Cloud Credentials Details")
-    def test_read_only_admin_not_able_to_view_the_configured_cloud_credentials_details(self, cloud_cred):
+    @allure.story("Share Admin Not Able to View the Configured Cloud Credentials Details")
+    def test_share_admin_not_able_to_view_the_configured_cloud_credentials_details(self, cloud_cred):
         """
-        Summary: This test verifies the read-only admin is not able to view the Configured Cloud Credentials details.
+        Summary: This test verifies the share admin is not able to view the Configured Cloud Credentials details.
 
         Test Steps:
         1. Click Edit Cloud Credentials
@@ -107,10 +107,10 @@ class Test_Read_Only_Admin_Backup_Credential:
         COM.close_right_panel()
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Not Able to View the Configured SSH Connections Details")
-    def test_read_only_admin_not_able_to_view_the_configured_ssh_connections_details(self, rep):
+    @allure.story("Share Admin Not Able to View the Configured SSH Connections Details")
+    def test_share_admin_not_able_to_view_the_configured_ssh_connections_details(self, rep):
         """
-        Summary: This test verifies the read-only admin is not able to view the Configured SSH Connections details.
+        Summary: This test verifies the share admin is not able to view the Configured SSH Connections details.
 
         Test Steps:
         1. Click Edit SSH Connections
@@ -124,10 +124,10 @@ class Test_Read_Only_Admin_Backup_Credential:
         COM.close_right_panel()
 
     @allure.tag("Read")
-    @allure.story("Read Only Admin Not Able to View the Configured SSH Keypairs Details")
-    def test_read_only_admin_not_able_to_view_the_configured_ssh_keypairs_details(self, rep):
+    @allure.story("Share Admin Not Able to View the Configured SSH Keypairs Details")
+    def test_share_admin_not_able_to_view_the_configured_ssh_keypairs_details(self, rep):
         """
-        Summary: This test verifies the read-only admin is not able to view the Configured SSH Keypair details.
+        Summary: This test verifies the share admin is not able to view the Configured SSH Keypair details.
 
         Test Steps:
         1. Click Edit SSH Keypair
