@@ -887,6 +887,8 @@ class Common:
         Example:
             - Common.is_checked('myCheckbox')
         """
+        # wait the checkbox to be clickable before looking if checked
+        assert cls.is_clickable(xpaths.common_xpaths.checkbox_field(name)) is True
         return cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'checked')
 
     @classmethod
@@ -1107,6 +1109,7 @@ class Common:
         Example:
             - Common.select_option('mySelect', 'myOption')
         """
+        WebUI.delay(0.1)
         cls.click_on_element(xpaths.common_xpaths.select_field(name))
         WebUI.delay(0.1)
         cls.click_on_element(xpaths.common_xpaths.option_field(option))

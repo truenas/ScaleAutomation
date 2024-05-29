@@ -37,7 +37,7 @@ class Test_Read_Only_Admin_Directory_Services:
         assert Directory_Services.assert_directory_services_page_header() is True
 
     @pytest.fixture(scope='function')
-    def tear_down_ad(self, ad_data):
+    def teardown_ad(self, ad_data):
         """
         This teardown fixture tears down the active directory for test that need it.
         """
@@ -46,7 +46,7 @@ class Test_Read_Only_Admin_Directory_Services:
         API_PUT.set_nameservers(ad_data['nameserver1'], ad_data['nameserver2'])
 
     @pytest.fixture(scope='function')
-    def tear_down_ldap(self, ldap_data):
+    def teardown_ldap(self, ldap_data):
         """
         This teardown fixture tears down the LDAP for test that need it.
         """
@@ -99,7 +99,7 @@ class Test_Read_Only_Admin_Directory_Services:
     @allure.tag('Read', 'Active Directory')
     @allure.story('Read Only Admin Is Able to View Pre-Configured Active Directory')
     @pytest.mark.parametrize('ad_data', get_data_list('ad_credentials'), scope='class')
-    def test_read_only_admin_is_able_to_view_pre_configured_active_directory(self, ad_data, setup_ad, tear_down_ad):
+    def test_read_only_admin_is_able_to_view_pre_configured_active_directory(self, ad_data, setup_ad, teardown_ad):
         """
         This test verifies the read-only admin is able to view pre-configured active directory.
         1. Configure active directory as admin
@@ -114,7 +114,7 @@ class Test_Read_Only_Admin_Directory_Services:
     @allure.tag('Read', 'LDAP')
     @allure.story('Read Only Admin Is Able to View Pre-Configured LDAP')
     @pytest.mark.parametrize('ldap_data', get_data_list('ldap_credentials'), scope='class')
-    def test_read_only_admin_is_able_to_view_pre_configured_ldap(self, ldap_data, setup_ldap, tear_down_ldap):
+    def test_read_only_admin_is_able_to_view_pre_configured_ldap(self, ldap_data, setup_ldap, teardown_ldap):
         """
         This test verifies the read-only admin is able to view pre-configured LDAP.
         1. Configure LDAP as admin
@@ -130,7 +130,7 @@ class Test_Read_Only_Admin_Directory_Services:
     @allure.tag('Read', 'Advanced Settings')
     @allure.story('Read Only Admin Is Able to View Directory Services Advanced Settings')
     @pytest.mark.parametrize('ad_data', get_data_list('ad_credentials'), scope='class')
-    def test_read_only_admin_is_able_to_view_directory_services_advanced_settings(self, ad_data, setup_ad, tear_down_ad):
+    def test_read_only_admin_is_able_to_view_directory_services_advanced_settings(self, ad_data, setup_ad, teardown_ad):
         """
         This test verifies the read-only admin is able to view Directory services advanced settings.
         1. Configure active directory as admin
@@ -165,7 +165,7 @@ class Test_Read_Only_Admin_Directory_Services:
     @allure.tag('Update', 'Active Directory')
     @allure.story('Read Only Admin Is Not Able to Modify Pre-Configured Active Directory')
     @pytest.mark.parametrize('ad_data', get_data_list('ad_credentials'), scope='class')
-    def test_read_only_admin_is_not_able_to_modify_pre_configured_active_directory(self, ad_data, setup_ad, tear_down_ad):
+    def test_read_only_admin_is_not_able_to_modify_pre_configured_active_directory(self, ad_data, setup_ad, teardown_ad):
         """
         This test verifies the read-only admin is not able to modify pre-configured active directory.
         1. Configure Active Directory as admin
@@ -183,7 +183,7 @@ class Test_Read_Only_Admin_Directory_Services:
     @allure.tag('Update', 'LDAP')
     @allure.story('Read Only Admin Is Not Able to Modify Pre-Configured LDAP')
     @pytest.mark.parametrize('ldap_data', get_data_list('ldap_credentials'), scope='class')
-    def test_read_only_admin_is_not_able_to_modify_pre_configured_ldap(self, ldap_data, setup_ldap, tear_down_ldap):
+    def test_read_only_admin_is_not_able_to_modify_pre_configured_ldap(self, ldap_data, setup_ldap, teardown_ldap):
         """
         This test verifies the read-only admin is not able to modify pre-configured LDAP.
         1. Configure LDAP as admin
@@ -202,7 +202,7 @@ class Test_Read_Only_Admin_Directory_Services:
     @allure.tag('Update', 'Advanced Settings')
     @allure.story('Read Only Admin Is Not Able to Modify Directory Services Advanced Settings')
     @pytest.mark.parametrize('ad_data', get_data_list('ad_credentials'), scope='class')
-    def test_read_only_admin_is_not_able_to_modify_directory_services_advanced_settings(self, ad_data, setup_ad, tear_down_ad):
+    def test_read_only_admin_is_not_able_to_modify_directory_services_advanced_settings(self, ad_data, setup_ad, teardown_ad):
         """
         This test verifies the read-only admin is not able to modify any directory service advanced settings.
         1. Configure Active Directory as admin
