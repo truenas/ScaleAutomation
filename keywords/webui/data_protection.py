@@ -384,7 +384,7 @@ class Data_Protection:
             - Data_Protection.assert_replication_page_restore_replication_task_button_is_restricted("rep_name")
         """
         # name = COM.convert_to_tag_format(name)
-        return COM.assert_element_is_restricted(f'//button[contains(@data-test,"-restore")]')
+        return COM.assert_element_is_restricted('//button[contains(@data-test,"-restore")]')
 
     @classmethod
     def assert_replication_page_run_replication_task_button_is_restricted(cls, name: str) -> bool:
@@ -398,7 +398,7 @@ class Data_Protection:
             - Data_Protection.assert_replication_page_run_replication_task_button_is_restricted("rep_name")
         """
         # name = COM.convert_to_tag_format(name)
-        return COM.assert_element_is_restricted(f'//button[contains(@data-test,"-run-now")]')
+        return COM.assert_element_is_restricted('//button[contains(@data-test,"-run-now")]')
 
     @classmethod
     def assert_replication_task_name(cls, name: str) -> bool:

@@ -18,7 +18,7 @@ class Test_Verify_Links_On_The_TrueNAS_Help_Card:
         """
         # TODO: rework set_all_cards_visible
         # Dashboard.set_all_cards_visible()
-        pass
+        # pass
 
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self):
