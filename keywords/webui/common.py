@@ -1,4 +1,5 @@
 import datetime
+import xpaths
 from pathlib import Path
 
 from selenium.common.exceptions import (
@@ -17,7 +18,7 @@ from helper.global_config import shared_config
 from keywords.api.common import API_Common
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
-import xpaths
+
 
 
 class Common:
