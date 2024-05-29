@@ -2,7 +2,6 @@ import xpaths
 from helper.api import Response
 from helper.global_config import shared_config
 from helper.webui import WebUI
-from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common
 

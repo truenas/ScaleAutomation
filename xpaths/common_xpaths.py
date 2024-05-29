@@ -381,7 +381,7 @@ def selected_dataset() -> str:
 
     :return: xpath string for given dataset
     """
-    return f'//*[contains(@class," selected")]'
+    return '//*[contains(@class," selected")]'
 
 
 def share_attached(name: str, sharetype: str) -> str:
@@ -392,11 +392,11 @@ def share_attached(name: str, sharetype: str) -> str:
     :param sharetype: the type of attached share
     :return: xpath string for given attached share
     """
-    xpath = f"""//*[contains(text(),"Share Attached:")]/following-sibling::*[contains(text(), "Dataset is shared via """
+    xpath = """//*[contains(text(),"Share Attached:")]/following-sibling::*[contains(text(), "Dataset is shared via """
     if sharetype == 'smb':
         return xpath+f"""SMB as '{name}'")]"""
     if sharetype == 'nfs':
-        return xpath+f'NFS")]'
+        return xpath+'NFS")]'
 
 
 def card_share_attribute(share_type: str, attribute: str, text: str) -> str:

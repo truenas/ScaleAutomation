@@ -21,7 +21,7 @@ jobs:
         pip install pytest
         pip install allure-pytest
         pip install pyperclip
-        pip install percy
+        pip install percy-selenium
         pip install selenium
         pip install toml
         pip install requests

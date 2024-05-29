@@ -9,7 +9,6 @@ from keywords.webui.common import Common as COM
 from keywords.webui.datasets import Datasets as DAT
 from keywords.webui.permissions import Permissions as PERM
 from keywords.webui.navigation import Navigation as NAV
-from keywords.ssh.common import Common_SSH as COM_SSH
 from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 
 
@@ -102,4 +101,3 @@ class Test_POSIX_Presets:
             assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_preset['full_path'], posix_acl_preset['default_mask_cli']) is True
             assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_preset['full_path'], posix_acl_preset['group_builtin_administrators_cli']) is True
             assert PERM_SSH.verify_getfacl_contains_permissions(posix_acl_preset['full_path'], posix_acl_preset['default_group_builtin_administrators_cli']) is True
-

@@ -284,7 +284,7 @@ class API_POST:
                 "ssh_password_enabled": True,
                 "smb": eval(smb_auth.lower().capitalize())
             }
-            response = POST(f'/user', payload)
+            response = POST('/user', payload)
             assert response.status_code == 200, response.text
         return response
 
@@ -316,7 +316,7 @@ class API_POST:
                 "ssh_password_enabled": True,
                 "smb": eval(smb_auth.lower().capitalize())
             }
-            response = POST(f'/user', payload)
+            response = POST('/user', payload)
             assert response.status_code == 200, response.text
         return response
 
@@ -785,7 +785,7 @@ class API_POST:
         :param payload: is the payload for the api call.
         :return: the API request response.
         """
-        response = POST(f'/filesystem/setacl', payload)
+        response = POST('/filesystem/setacl', payload)
         assert response.status_code == 200, response.text
         return response
 

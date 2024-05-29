@@ -1,6 +1,5 @@
 from helper.cli import SSH_Command_Line
 from helper.global_config import private_config
-from keywords.ssh.common import Common_SSH
 
 
 class Zpool_SSH:

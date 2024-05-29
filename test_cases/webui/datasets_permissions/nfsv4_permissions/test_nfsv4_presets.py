@@ -9,7 +9,6 @@ from keywords.webui.common import Common as COM
 from keywords.webui.datasets import Datasets as DAT
 from keywords.webui.permissions import Permissions as PERM
 from keywords.webui.navigation import Navigation as NAV
-from keywords.ssh.common import Common_SSH as COM_SSH
 from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 
 

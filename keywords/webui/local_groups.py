@@ -538,7 +538,7 @@ class Local_Groups:
         Example:
             - Local_Groups.select_group_privileges('Read-Only Administrator')
         """
-        COM.click_on_element(f'//*[@data-test="input-privileges"]')
+        COM.click_on_element('//*[@data-test="input-privileges"]')
         COM.click_on_element(f'//mat-option[contains(.,"{privilege}")]')
 
     @classmethod

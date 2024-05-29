@@ -127,7 +127,7 @@ class Apps:
             assert WebUI.wait_until_not_visible(xpaths.common_xpaths.any_child_parent_target(
                 child,
                 parent,
-                f'*[contains(text(),"Starting")]'), shared_config['LONG_WAIT']) is True
+                '*[contains(text(),"Starting")]'), shared_config['LONG_WAIT']) is True
             assert cls.is_app_deployed(name)
             assert cls.is_app_running(name)
             WebUI.refresh()
@@ -467,7 +467,7 @@ class Apps:
         Example:
             - Apps.set_wg_easy_fields()
         """
-        print(f'App WG-Easy no configuration needed for install.')
+        print('App WG-Easy no configuration needed for install.')
 
     @classmethod
     def verify_app_installed(cls, name: str) -> bool:
