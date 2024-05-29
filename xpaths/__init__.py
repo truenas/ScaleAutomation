@@ -1,4 +1,5 @@
 import xpaths.apps
+import xpaths.backup_credentials
 import xpaths.common_xpaths
 import xpaths.dashboard
 import xpaths.data_protection

@@ -4,6 +4,7 @@ from helper.global_config import private_config
 from keywords.api.post import API_POST
 from keywords.api.put import API_PUT
 from keywords.webui.data_protection import Data_Protection as DP
+from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation
 from keywords.webui.ssh_connection import SSH_Connection as SSHCON
 
@@ -25,6 +26,11 @@ def setup_class(rep):
     API_PUT.enable_user_ssh_password(private_config['USERNAME'])
     API_POST.start_service('ssh')
     private_config['API_IP'] = private_config['IP']
+
+    # Remove Datasets if Exist
+    Navigation.navigate_to_datasets()
+    DATASET.delete_dataset("tank", "receive")
+    DATASET.delete_dataset("tank", "replicate")
 
     # Remove Snapshots if exists
     Navigation.navigate_to_data_protection()
