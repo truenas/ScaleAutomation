@@ -55,7 +55,7 @@ class Test_Share_Admin_System_Settings_General:
         assert COM.is_card_visible('NTP Servers') is True
         assert COM.is_visible(xpaths.common_xpaths.button_field('add-ntp')) is True
         assert COM.is_visible(xpaths.common_xpaths.any_text('0.debian.pool.ntp.org'))
-        assert COM.is_visible(xpaths.common_xpaths.button_field('delete-0-debian-pool-ntp-org')) is True
+        assert COM.is_visible(xpaths.system_general.delete_ntp_server('0-debian-pool-ntp-org')) is True
 
         # Email Card
         assert COM.is_card_visible('Email') is True
@@ -162,7 +162,7 @@ class Test_Share_Admin_System_Settings_General:
         Test Steps:
         1. Verify the Delete NTP server button is locked and not clickable
         """
-        assert COM.assert_button_is_restricted('delete-0-debian-pool-ntp-org') is True
+        assert COM.assert_element_is_restricted(xpaths.system_general.delete_ntp_server('0-debian-pool-ntp-org')) is True
 
     @allure.tag("Update")
     @allure.story("Share Admin Is Not Able to Modify Email Options")
