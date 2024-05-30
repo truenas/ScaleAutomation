@@ -177,7 +177,7 @@ class Navigation:
         Example
          - Navigation.navigate_to_system_settings_services()
         """
-        cls.navigate_to('system-settings', 'Advanced', 'advanced')
+        cls.navigate_to('system', 'Advanced', 'advanced')
 
     @classmethod
     def navigate_to_system_settings_general(cls) -> None:
@@ -187,7 +187,7 @@ class Navigation:
         Example
          - Navigation.navigate_to_system_settings_general()
         """
-        cls.navigate_to('system-settings', 'General', 'general')
+        cls.navigate_to('system', 'General', 'general')
 
     @classmethod
     def navigate_to_system_settings_services(cls) -> None:
