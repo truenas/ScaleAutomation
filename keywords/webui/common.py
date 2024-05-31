@@ -1,4 +1,5 @@
 import datetime
+import re
 import xpaths
 from pathlib import Path
 
@@ -18,7 +19,6 @@ from helper.global_config import shared_config
 from keywords.api.common import API_Common
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
-
 
 
 class Common:
@@ -142,7 +142,7 @@ class Common:
     @classmethod
     def assert_dialog_visible(cls, dialog_title: str, wait: int = shared_config['WAIT']) -> bool:
         """
-        This method returns true or false weather the dialog is visible before timeout.
+        This method returns true or false whether the dialog is visible before timeout.
 
         :param dialog_title: The name of the title of the dialog
         :param wait: The number of seconds to wait before timeout
@@ -157,7 +157,7 @@ class Common:
     @classmethod
     def assert_dialog_not_visible(cls, dialog_title: str, wait: int = shared_config['WAIT']) -> bool:
         """
-        This method returns True or False weather the dialog is not visible before timeout.
+        This method returns True or False whether the dialog is not visible before timeout.
 
         :param dialog_title: The name of the title of the dialog
         :param wait: The number of seconds to wait before timeout
@@ -228,7 +228,7 @@ class Common:
     @classmethod
     def assert_label_and_value_exist(cls, label: str, value: str) -> bool:
         """
-        This method returns True or False weather the given label and value is visible.
+        This method returns True or False whether the given label and value is visible.
 
         :param label: The name of the label
         :param value: The value of the label
@@ -239,6 +239,25 @@ class Common:
         """
         return WebUI.wait_until_visible(xpaths.xpaths.common_xpaths.label_and_value(label, value),
                                         shared_config['SHORT_WAIT'])
+
+    @classmethod
+    def assert_link_is_restricted(cls, name: str) -> bool:
+        """
+        This method returns True or False whether the button is locked and not clickable.
+
+        :param name: name of the button
+        :return: True if the button is locked and not clickable otherwise it returns False
+
+        Example:
+            - Common.assert_button_is_restricted('delete')
+        """
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.link_field_locked(name)) is True
+        try:
+            # At this point the link is visible a Timeout or ElementClickIntercepted exception will be thrown.
+            cls.click_link(name)
+        except (ElementClickInterceptedException, TimeoutException):
+            return True
+        return False
 
     @classmethod
     def assert_page_header(cls, header_text: str, timeout: int = shared_config['WAIT']) -> bool:
@@ -259,7 +278,7 @@ class Common:
     @classmethod
     def assert_please_wait_not_visible(cls, wait: int = shared_config['LONG_WAIT']) -> bool:
         """
-        This method returns True or False weather the please wait is not visible before timeout.
+        This method returns True or False whether the please wait is not visible before timeout.
 
         :param wait: The number of seconds to wait before timeout
         :return: True if the please wait is not visible before timeout otherwise it returns False.
@@ -274,7 +293,7 @@ class Common:
     @classmethod
     def assert_progress_bar_not_visible(cls, wait: int = shared_config['LONG_WAIT']) -> bool:
         """
-        This method returns True or False weather the progress bar is not visible before timeout.
+        This method returns True or False whether the progress bar is not visible before timeout.
 
         :param wait: The number of seconds to wait before timeout
         :return: True if the progress bar is not visible before timeout otherwise it returns False.
@@ -288,7 +307,7 @@ class Common:
     @classmethod
     def assert_progress_spinner_not_visible(cls, wait: int = shared_config['LONG_WAIT']) -> bool:
         """
-        This method returns True or False weather the progress spinner is not visible before timeout.
+        This method returns True or False whether the progress spinner is not visible before timeout.
 
         :param wait: The number of seconds to wait before timeout
         :return: True if the progress spinner is not visible before timeout otherwise it returns False.
@@ -621,17 +640,22 @@ class Common:
         """
         if name.__contains__("Amazon S3"):
             name = "Amazon-S-3"
-        if name.__contains__('AD03\\'):
+        elif name.__contains__('AD03\\'):
             name = name.replace('AD03\\', 'AD-03-')
-        if name.__contains__('iperf3'):
+        elif name.__contains__('iperf3'):
             name = name.replace('iperf3', 'iperf-3')
+        else:
+            # this split the name with numbers
+            name_list = list(filter(None, re.split(r'(\d+)', name)))
+            name = '-'.join(name_list)
         if name.startswith('_'):
             name = name.replace('_', '', 1)
         name = name.replace('/', '-')
+        name = name.replace('.', '-')
         name = name.replace('_', '-')
         name = name.replace(' ', '-')
+        name = name.replace('---', '-')
         name = name.replace('--', '-')
-        name = name.replace('.', '-')
         return name.lower()
 
     @classmethod
