@@ -14,9 +14,9 @@ class API_Boot:
     def create_bootenv(cls, name: str, source: str = None) -> Response:
         """
         This method creates bootenv with the given data.
-        :param name: is the name of the bootenv,
-        :param source: is the be id/name of to create the bootenv from,
-        :return: the API request response,
+        :param name: is the name of the bootenv.
+        :param source: is the be id/name of to create the bootenv from.
+        :return: the API request response.
 
         Example:
             - API_BootEnv.create_bootenv('name', 'source')
@@ -34,6 +34,9 @@ class API_Boot:
         This method deletes the bootenv.
         :param name: is the name of the bootenv.
         :return: the API request response.
+
+        Example:
+            - API_BootEnv.delete_bootenv('name')
         """
         response = DELETE(f'/bootenv/id/{name}')
         assert response.status_code == 200, response.text
@@ -44,6 +47,9 @@ class API_Boot:
         """
         This method gets the boot device.
         :return: the boot device.
+
+        Example:
+            - API_Boot.get_boot_device()
         """
         return cls.get_boot_state().json()['topology']['data'][0]['device']
 
@@ -52,6 +58,9 @@ class API_Boot:
         """
         This method gets the boot disks list.
         :return: the list of boot disks.
+
+        Example:
+            - API_Boot.get_boot_disks()
         """
         response = GET('/boot/get_disks')
         assert response.status_code == 200, response.text
@@ -62,6 +71,9 @@ class API_Boot:
         """
         This method gets the bootenvs list.
         :return: the list of bootenvs.
+
+        Example:
+            - API_Boot.get_boot_state()
         """
         response = GET('/boot/get_state')
         assert response.status_code == 200, response.text
@@ -72,6 +84,9 @@ class API_Boot:
         """
         This method gets the bootenv.
         :return: the API request response.
+
+        Example:
+            - API_Boot.get_bootenv()
         """
         response = GET('/bootenv')
         assert response.status_code == 200, response.text
@@ -82,6 +97,9 @@ class API_Boot:
         """
         This method gets the default id/name of the bootenv.
         :return: the default id/name of the bootenv.
+
+        Example:
+            - API_Boot.get_default_bootenv_id()
         """
         # The default bootenv id is the same ad the system short version
         return API_GET.get_system_version_short().json()
