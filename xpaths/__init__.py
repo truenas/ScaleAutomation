@@ -14,3 +14,4 @@ import xpaths.smb
 import xpaths.ssh
 import xpaths.storage
 import xpaths.system_general
+import xpaths.system
