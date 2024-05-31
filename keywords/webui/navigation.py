@@ -180,6 +180,16 @@ class Navigation:
         cls.navigate_to('system', 'Advanced', 'advanced')
 
     @classmethod
+    def navigate_to_system_settings_boot(cls) -> None:
+        """
+        This method navigates to the Boot page
+
+        Example
+         - Navigation.navigate_to_system_settings_boot()
+        """
+        cls.navigate_to('system-settings', 'Boot Environments', 'boot')
+
+    @classmethod
     def navigate_to_system_settings_general(cls) -> None:
         """
         This method navigates to the General page under the System Settings panel.

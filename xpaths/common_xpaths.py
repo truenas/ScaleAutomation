@@ -315,6 +315,16 @@ def link_field(field: str) -> str:
     return f'//*[@data-test="link-{field}"]'
 
 
+def link_field_locked(field: str) -> str:
+    """
+    This function sets the text for the given link name
+
+    :param field: text of the given link name
+    :return: xpath string for given link
+    """
+    return f'//*[@data-test="link-{field}"]/..//ix-icon[@name="lock"]'
+
+
 def option_field(field: str) -> str:
     """
     This function sets the text for the given option name
