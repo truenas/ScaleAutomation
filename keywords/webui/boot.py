@@ -17,7 +17,7 @@ class Boot:
             - Boot.assert_boot_environment_row_exist('test-bootenv')
         """
         be_xpath = COM.convert_to_tag_format(be_name)
-        return WebUI.wait_until_visible(f'//*[@data-test="row-{be_xpath}"]')
+        return WebUI.wait_until_visible(f'//*[@data-test="row-bootenv-{be_xpath}"]')
 
     @classmethod
     def assert_boot_pool_status(cls, status: str) -> bool:
@@ -44,10 +44,7 @@ class Boot:
             - Boot.assert_activate_boot_environment_is_restricted('test-bootenv')
         """
         be_xpath = COM.convert_to_tag_format(be_name)
-        COM.click_on_element(xpaths.boot.bootenv_actions_button(be_xpath))
-        result = COM.assert_link_is_restricted(f'{be_xpath}-activate')
-        WebUI.send_key('esc')
-        return result
+        return COM.assert_button_is_restricted(f'bootenv-{be_xpath}-mdi-check-decagram-row-action')
 
     @classmethod
     def assert_attach_disk_is_restricted(cls, boot_disk):
@@ -77,10 +74,7 @@ class Boot:
             - Boot.assert_clone_boot_environment_is_restricted('test-bootenv')
         """
         be_xpath = COM.convert_to_tag_format(be_name)
-        COM.click_on_element(xpaths.boot.bootenv_actions_button(be_xpath))
-        result = COM.assert_link_is_restricted(f'{be_xpath}-clone')
-        WebUI.send_key('esc')
-        return result
+        return COM.assert_button_is_restricted(f'bootenv-{be_xpath}-mdi-content-copy-row-action')
 
     @classmethod
     def assert_delete_boot_environment_is_restricted(cls, be_name: str) -> bool:
@@ -94,10 +88,7 @@ class Boot:
             - Boot.assert_delete_boot_environment_is_restricted('test-bootenv')
         """
         be_xpath = COM.convert_to_tag_format(be_name)
-        COM.click_on_element(xpaths.boot.bootenv_actions_button(be_xpath))
-        result = COM.assert_link_is_restricted(f'{be_xpath}-delete')
-        WebUI.send_key('esc')
-        return result
+        return COM.assert_button_is_restricted(f'bootenv-{be_xpath}-mdi-delete-row-action')
 
     @classmethod
     def assert_keep_boot_environment_is_restricted(cls, be_name: str) -> bool:
@@ -111,10 +102,7 @@ class Boot:
             - Boot.assert_keep_boot_environment_is_restricted('test-bootenv')
         """
         be_xpath = COM.convert_to_tag_format(be_name)
-        COM.click_on_element(xpaths.boot.bootenv_actions_button(be_xpath))
-        result = COM.assert_link_is_restricted(f'{be_xpath}-toggle-keep')
-        WebUI.send_key('esc')
-        return result
+        return COM.assert_button_is_restricted(f'bootenv-{be_xpath}-bookmark-row-action')
 
     @classmethod
     def assert_rename_boot_environment_is_restricted(cls, be_name: str) -> bool:
@@ -128,10 +116,7 @@ class Boot:
             - Boot.assert_rename_boot_environment_is_restricted('test-bootenv')
         """
         be_xpath = COM.convert_to_tag_format(be_name)
-        COM.click_on_element(xpaths.boot.bootenv_actions_button(be_xpath))
-        result = COM.assert_link_is_restricted(f'{be_xpath}-rename')
-        WebUI.send_key('esc')
-        return result
+        return COM.assert_button_is_restricted(f'bootenv-{be_xpath}-mdi-rename-box-row-action')
 
     @classmethod
     def assert_replace_disk_is_restricted(cls, boot_disk):
