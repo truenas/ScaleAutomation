@@ -245,7 +245,7 @@ class Common:
         """
         This method returns True or False whether the button is locked and not clickable.
 
-        :param name: name of the button
+        :param name: name of the link
         :return: True if the button is locked and not clickable otherwise it returns False
 
         Example:
@@ -638,12 +638,8 @@ class Common:
         Example:
             - Common.convert_to_tag_format('Element Name')
         """
-        if name.__contains__("Amazon S3"):
-            name = "Amazon-S-3"
-        elif name.__contains__('AD03\\'):
+        if name.__contains__('AD03\\'):
             name = name.replace('AD03\\', 'AD-03-')
-        elif name.__contains__('iperf3'):
-            name = name.replace('iperf3', 'iperf-3')
         else:
             # this split the name with numbers
             name_list = list(filter(None, re.split(r'(\d+)', name)))

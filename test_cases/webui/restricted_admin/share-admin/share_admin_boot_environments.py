@@ -52,8 +52,8 @@ class Test_Share_Admin_Boot_Environments:
         """
         This test verifies the share admin can not change the keep status, clone, delete or rename boot environments.
         1. Navigate to Boot Environment page.
-        2. Verify default boot environment keep status, clone rename is restricted.
-        3. Verify other boot environment keep status, activate, clone, delete and rename is restricted.
+        2. Verify default boot environment is restricted. (keep status, clone rename)
+        3. Verify other boot environment is restricted. (keep status, activate, clone, delete, rename)
         """
         assert Boot.assert_clone_boot_environment_is_restricted(shared_config['DEFAULT_BE']) is True
         assert Boot.assert_rename_boot_environment_is_restricted(shared_config['DEFAULT_BE']) is True
