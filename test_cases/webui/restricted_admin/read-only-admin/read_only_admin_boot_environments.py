@@ -47,41 +47,41 @@ class Test_Read_Only_Admin_Boot_Environments:
         assert Boot.assert_boot_environment_row_exist(shared_config['DEFAULT_BE']) is True
         assert Boot.assert_boot_environment_row_exist('test-bootenv') is True
 
-    @allure.story("Read Only Admin Can Not Change the Keep Status, Activate, Clone, Delete and Rename Boot Environments")
-    def test_read_only_admin_cannot_to_change_the_keep_status_active_clone_delete_and_rename_boot_environments(self):
+    @allure.story("Read Only Admin Can Not Modify Boot Environments")
+    def test_read_only_admin_cannot_modify_boot_environments(self):
         """
-        This test verifies the read-only admin can not change the keep status, clone, delete or rename boot environments.
+        This test verifies the read-only admin cannot modify boot environments.
         1. Navigate to Boot Environment page.
-        2. Verify default boot environment keep status, clone rename is restricted.
-        3. Verify other boot environment keep status, activate, clone, delete and rename is restricted.
+        2. Verify default boot environment is restricted. (keep status, clone rename)
+        3. Verify other boot environment is restricted. (keep status, activate, clone, delete, rename)
         """
-        assert Boot.assert_clone_boot_environment_is_restricted(shared_config['DEFAULT_BE']) is True
-        assert Boot.assert_rename_boot_environment_is_restricted(shared_config['DEFAULT_BE']) is True
-        assert Boot.assert_keep_boot_environment_is_restricted(shared_config['DEFAULT_BE']) is True
+        assert Boot.assert_boot_environment_element_restricted(shared_config['DEFAULT_BE'], 'clone') is True
+        assert Boot.assert_boot_environment_element_restricted(shared_config['DEFAULT_BE'], 'rename') is True
+        assert Boot.assert_boot_environment_element_restricted(shared_config['DEFAULT_BE'], 'toggle-keep') is True
 
-        assert Boot.assert_activate_boot_environment_is_restricted('test-bootenv') is True
-        assert Boot.assert_clone_boot_environment_is_restricted('test-bootenv') is True
-        assert Boot.assert_delete_boot_environment_is_restricted('test-bootenv') is True
-        assert Boot.assert_rename_boot_environment_is_restricted('test-bootenv') is True
-        assert Boot.assert_keep_boot_environment_is_restricted('test-bootenv') is True
+        assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'activate') is True
+        assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'clone') is True
+        assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'delete') is True
+        assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'rename') is True
+        assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'toggle-keep') is True
 
     @allure.story("Read Only Admin Can Not Scrub the Boot Pool")
-    def test_read_only_admin_cannot_to_scrub_the_boot_pool(self):
+    def test_read_only_admin_cannot_scrub_the_boot_pool(self):
         """
         This test verifies the read-only admin can not scrub the boot pool.
         1. Navigate to Boot Environment page.
         2. Verify scrub button is restricted.
         """
-        assert Boot.asser_scrub_boot_environment_button_is_restricted() is True
+        assert COM.assert_button_is_restricted('bootenv-scrub') is True
 
     @allure.story("Read Only Admin Can Not View the Stats Settings for the Boot Pool")
     def test_read_only_admin_cannot_view_the_stats_settings_for_the_boot_pool(self):
         """
-        This test verifies the read-only admin can not view the stats settings for the boot pool.
+        This test verifies the read-only admin cannot view the stats settings for the boot pool.
         1. Navigate to Boot Environment page.
         2. Verify stats settings button is restricted.
         """
-        assert Boot.asser_stats_settings_button_is_not_restricted() is True
+        assert COM.assert_button_is_restricted('bootenv-stats') is True
 
     @allure.story("Read Only Admin Can View the Boot Pool Status")
     def test_read_only_admin_can_view_the_boot_pool_status(self):
@@ -91,7 +91,7 @@ class Test_Read_Only_Admin_Boot_Environments:
         2. Click on Boot Pool Status button.
         3. Verify boot pool status is visible and is ONLINE.
         """
-        Boot.click_boot_pool_status_button()
+        COM.click_button('bootenv-status')
         assert COM.assert_page_header('Boot Pool Status') is True
         assert Boot.assert_boot_pool_status('ONLINE') is True
 
@@ -103,7 +103,7 @@ class Test_Read_Only_Admin_Boot_Environments:
         2. Click on Boot Pool Status button.
         3. Verify replace disk and attach disk buttons are restricted.
         """
-        Boot.click_boot_pool_status_button()
+        COM.click_button('bootenv-status')
         assert COM.assert_page_header('Boot Pool Status') is True
-        assert Boot.assert_replace_disk_is_restricted(shared_config['BOOT_DISK']) is True
-        assert Boot.assert_attach_disk_is_restricted(shared_config['BOOT_DISK']) is True
+        assert Boot.assert_boot_disk_actions_is_restricted(shared_config['BOOT_DISK'], 'attach') is True
+        assert Boot.assert_boot_disk_actions_is_restricted(shared_config['BOOT_DISK'], 'replace') is True

@@ -69,8 +69,8 @@ class API_Boot:
     @classmethod
     def get_boot_state(cls) -> Response:
         """
-        This method gets the bootenvs list.
-        :return: the list of bootenvs.
+        This method gets the bootenvs state.
+        :return: the API request response.
 
         Example:
             - API_Boot.get_boot_state()
@@ -101,5 +101,5 @@ class API_Boot:
         Example:
             - API_Boot.get_default_bootenv_id()
         """
-        # The default bootenv id is the same ad the system short version
+        # The default bootenv id is the same as the system short version
         return API_GET.get_system_version_short().json()
