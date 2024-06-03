@@ -52,7 +52,7 @@ class Test_Read_Only_Admin_Boot_Environments:
         """
         This test verifies the read-only admin cannot modify boot environments.
         1. Navigate to Boot Environment page.
-        2. Verify default boot environment is restricted. (keep status, clone rename)
+        2. Verify default boot environment is restricted. (keep status, clone, rename)
         3. Verify other boot environment is restricted. (keep status, activate, clone, delete, rename)
         """
         assert Boot.assert_clone_boot_environment_is_restricted(shared_config['DEFAULT_BE']) is True
