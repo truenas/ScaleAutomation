@@ -38,7 +38,7 @@ class Boot:
         return WebUI.wait_until_visible(f'//*[@data-test="row-{be_xpath}"]')
 
     @classmethod
-    def assert_boot_environment_element_restricted(cls, be_name, link_action) -> bool:
+    def assert_boot_environment_element_restricted(cls, be_name: str, link_action: str) -> bool:
         """
         This method returns True or False whether the link is restricted or not.
 
