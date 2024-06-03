@@ -47,23 +47,23 @@ class Test_Share_Admin_Boot_Environments:
         assert Boot.assert_boot_environment_row_exist(shared_config['DEFAULT_BE']) is True
         assert Boot.assert_boot_environment_row_exist('test-bootenv') is True
 
-    @allure.story("Share Admin Can Not Change the Keep Status, Activate, Clone, Delete and Rename Boot Environments")
-    def test_share_admin_cannot_to_change_the_keep_status_active_clone_delete_and_rename_boot_environments(self):
+    @allure.story("Share Admin Can Not Modify Boot Environments")
+    def test_share_admin_cannot_modify_boot_environments(self):
         """
-        This test verifies the share admin can not change the keep status, clone, delete or rename boot environments.
+        This test verifies the share admin cannot modify boot environments.
         1. Navigate to Boot Environment page.
-        2. Verify default boot environment is restricted. (keep status, clone rename)
+        2. Verify default boot environment is restricted. (keep status, clone, rename)
         3. Verify other boot environment is restricted. (keep status, activate, clone, delete, rename)
         """
-        assert Boot.assert_clone_boot_environment_is_restricted(shared_config['DEFAULT_BE']) is True
-        assert Boot.assert_rename_boot_environment_is_restricted(shared_config['DEFAULT_BE']) is True
-        assert Boot.assert_keep_boot_environment_is_restricted(shared_config['DEFAULT_BE']) is True
+        assert Boot.assert_boot_environment_element_restricted(shared_config['DEFAULT_BE'], 'clone') is True
+        assert Boot.assert_boot_environment_element_restricted(shared_config['DEFAULT_BE'], 'rename') is True
+        assert Boot.assert_boot_environment_element_restricted(shared_config['DEFAULT_BE'], 'toggle-keep') is True
 
-        assert Boot.assert_activate_boot_environment_is_restricted('test-bootenv') is True
-        assert Boot.assert_clone_boot_environment_is_restricted('test-bootenv') is True
-        assert Boot.assert_delete_boot_environment_is_restricted('test-bootenv') is True
-        assert Boot.assert_rename_boot_environment_is_restricted('test-bootenv') is True
-        assert Boot.assert_keep_boot_environment_is_restricted('test-bootenv') is True
+        assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'activate') is True
+        assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'clone') is True
+        assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'delete') is True
+        assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'rename') is True
+        assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'toggle-keep') is True
 
     @allure.story("Share Admin Can Not Scrub the Boot Pool")
     def test_share_admin_cannot_to_scrub_the_boot_pool(self):
