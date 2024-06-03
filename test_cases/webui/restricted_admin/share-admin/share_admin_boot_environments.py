@@ -47,13 +47,13 @@ class Test_Share_Admin_Boot_Environments:
         assert Boot.assert_boot_environment_row_exist(shared_config['DEFAULT_BE']) is True
         assert Boot.assert_boot_environment_row_exist('test-bootenv') is True
 
-    @allure.story("Share Admin Can Not Change the Keep Status, Activate, Clone, Delete and Rename Boot Environments")
-    def test_share_admin_cannot_to_change_the_keep_status_active_clone_delete_and_rename_boot_environments(self):
+    @allure.story("Share Admin Can Not Modify Boot Environments")
+    def test_share_admin_cannot_modify_boot_environments(self):
         """
-        This test verifies the share admin can not change the keep status, clone, delete or rename boot environments.
+        This test verifies the share admin cannot modify boot environments.
         1. Navigate to Boot Environment page.
-        2. Verify default boot environment keep status, clone rename is restricted.
-        3. Verify other boot environment keep status, activate, clone, delete and rename is restricted.
+        2. Verify default boot environment is restricted. (keep status, clone, rename)
+        3. Verify other boot environment is restricted. (keep status, activate, clone, delete, rename)
         """
         assert Boot.assert_boot_environment_element_restricted(shared_config['DEFAULT_BE'], 'clone') is True
         assert Boot.assert_boot_environment_element_restricted(shared_config['DEFAULT_BE'], 'rename') is True
