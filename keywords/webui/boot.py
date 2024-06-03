@@ -18,8 +18,7 @@ class Boot:
         Example:
             - Boot.assert_boot_disk_actions_is_restricted('sda3')
         """
-        xpath_disk = COM.convert_to_tag_format(boot_disk)
-        COM.click_button(f'{xpath_disk}-actions')
+        COM.click_button(f'{COM.convert_to_tag_format(boot_disk)}-actions')
         result = COM.assert_button_is_restricted(action)
         WebUI.send_key('esc')
         return result
