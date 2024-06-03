@@ -871,6 +871,19 @@ class Common:
         return API_Common.get_user_uid(username)
 
     @classmethod
+    def is_button_visible(cls, name) -> bool:
+        """
+        This method returns True if the given button is visible, otherwise False.
+
+        :param name: name of the button.
+        :return: True if the given button is visible, otherwise False.
+
+        Example:
+            - Common.is_button_visible('save')
+        """
+        return cls.is_visible(xpaths.common_xpaths.button_field(cls.convert_to_tag_format(name)))
+
+    @classmethod
     def is_card_not_visible(cls, card_title: str) -> bool:
         """
         This method return True if the card is not visible, otherwise it returns False.
@@ -895,6 +908,19 @@ class Common:
             - Common.is_card_visible('myCard')
         """
         return WebUI.wait_until_visible(xpaths.common_xpaths.card_title(card_title))
+
+    @classmethod
+    def is_checkbox_visible(cls, name) -> bool:
+        """
+        This method returns True if the given checkbox is visible, otherwise False.
+
+        :param name: name of the checkbox.
+        :return: True if the given checkbox is visible, otherwise False.
+
+        Example:
+            - Common.is_checkbox_visible('enabled')
+        """
+        return cls.is_visible(xpaths.common_xpaths.checkbox_field(cls.convert_to_tag_format(name)))
 
     @classmethod
     def is_checked(cls, name: str) -> bool:
@@ -985,6 +1011,32 @@ class Common:
         return file.is_file()
 
     @classmethod
+    def is_input_visible(cls, name) -> bool:
+        """
+        This method returns True if the given input is visible, otherwise False.
+
+        :param name: name of the input.
+        :return: True if the given input is visible, otherwise False.
+
+        Example:
+            - Common.is_input_visible('save')
+        """
+        return cls.is_visible(xpaths.common_xpaths.input_field(cls.convert_to_tag_format(name)))
+
+    @classmethod
+    def is_link_visible(cls, name) -> bool:
+        """
+        This method returns True if the given link is visible, otherwise False.
+
+        :param name: name of the link.
+        :return: True if the given link is visible, otherwise False.
+
+        Example:
+            - Common.is_link_visible('save')
+        """
+        return cls.is_visible(xpaths.common_xpaths.link_field(cls.convert_to_tag_format(name)))
+
+    @classmethod
     def is_save_button_disabled(cls) -> bool:
         """
         This method returns True if the Save button is disabled, otherwise it returns False.
@@ -995,6 +1047,45 @@ class Common:
             - Common.is_save_button_disabled()
         """
         return cls.get_element_property(xpaths.common_xpaths.button_field('save'), 'disabled')
+
+    @classmethod
+    def is_select_visible(cls, name) -> bool:
+        """
+        This method returns True if the given select is visible, otherwise False.
+
+        :param name: name of the select.
+        :return: True if the given select is visible, otherwise False.
+
+        Example:
+            - Common.is_select_visible('save')
+        """
+        return cls.is_visible(xpaths.common_xpaths.select_field(cls.convert_to_tag_format(name)))
+
+    @classmethod
+    def is_text_visible(cls, text) -> bool:
+        """
+        This method returns True if the given text is visible, otherwise False.
+
+        :param text: the text.
+        :return: True if the given text is visible, otherwise False.
+
+        Example:
+            - Common.is_text_visible('save')
+        """
+        return cls.is_visible(xpaths.common_xpaths.any_text(text))
+
+    @classmethod
+    def is_textarea_visible(cls, name) -> bool:
+        """
+        This method returns True if the given textarea is visible, otherwise False.
+
+        :param name: name of the textarea.
+        :return: True if the given textarea is visible, otherwise False.
+
+        Example:
+            - Common.is_textarea_visible('public-key')
+        """
+        return cls.is_visible(xpaths.common_xpaths.textarea_field(cls.convert_to_tag_format(name)))
 
     @classmethod
     def is_toggle_enabled(cls, name: str) -> bool:
@@ -1008,6 +1099,19 @@ class Common:
             - Common.is_toggle_enabled('ftp-service')
         """
         return eval(cls.get_element_property(xpaths.common_xpaths.toggle_field(name), 'ariaChecked').capitalize())
+
+    @classmethod
+    def is_toggle_visible(cls, name) -> bool:
+        """
+        This method returns True if the given toggle is visible, otherwise False.
+
+        :param name: name of the toggle.
+        :return: True if the given toggle is visible, otherwise False.
+
+        Example:
+            - Common.is_toggle_visible('builtin-users')
+        """
+        return cls.is_visible(xpaths.common_xpaths.toggle_field(cls.convert_to_tag_format(name)))
 
     @classmethod
     def is_visible(cls, xpath: str) -> bool:

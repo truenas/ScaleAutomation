@@ -12,3 +12,4 @@ import xpaths.sharing
 import xpaths.smb
 import xpaths.ssh
 import xpaths.storage
+import xpaths.system
