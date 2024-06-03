@@ -169,6 +169,7 @@ class Test_Share_Admin_Shares:
         NAV.navigate_to_shares()
 
     @allure.tag("Read", "SMB")
+    @allure.issue('NAS-129198', 'NAS-129198')
     @allure.story("Share Admin Is Able to enable and disable SMB Share")
     def test_share_admin_can_enable_and_disable_smb_share(self, smb_data):
         """
