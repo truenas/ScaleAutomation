@@ -68,7 +68,7 @@ class Test_Share_Admin_Boot_Environments:
     @allure.story("Share Admin Can Not Scrub the Boot Pool")
     def test_share_admin_cannot_to_scrub_the_boot_pool(self):
         """
-        This test verifies the share admin can not scrub the boot pool.
+        This test verifies the share admin cannot scrub the boot pool.
         1. Navigate to Boot Environment page.
         2. Verify scrub button is restricted.
         """
@@ -77,7 +77,7 @@ class Test_Share_Admin_Boot_Environments:
     @allure.story("Share Admin Can Not View the Stats Settings for the Boot Pool")
     def test_share_admin_cannot_view_the_stats_settings_for_the_boot_pool(self):
         """
-        This test verifies the share admin can not view the stats settings for the boot pool.
+        This test verifies the share admin cannot view the stats settings for the boot pool.
         1. Navigate to Boot Environment page.
         2. Verify stats settings button is restricted.
         """
@@ -98,7 +98,7 @@ class Test_Share_Admin_Boot_Environments:
     @allure.story("Share Admin Can Not Replace or Attach Disks in the Boot Pool")
     def test_share_admin_cannot_replace_or_attach_disks_in_the_boot_pool(self):
         """
-        This test verifies the share admin can not replace or attach disks in the boot pool.
+        This test verifies the share admin cannot replace or attach disks in the boot pool.
         1. Navigate to Boot Environment page.
         2. Click on Boot Pool Status button.
         3. Verify replace disk and attach disk buttons are restricted.
