@@ -13,7 +13,7 @@ from keywords.webui.navigation import Navigation as NAV
 @allure.epic("Shares")
 @allure.feature("NFS")
 @pytest.mark.parametrize('nfs_data', get_data_list('shares/nfs'))
-class Test_Create_NFS_Share:
+class Test_Create_NFSv3_Share:
     """
     This test class covers the NFS share create test cases.
     """
@@ -39,13 +39,13 @@ class Test_Create_NFS_Share:
         API_DELETE.delete_dataset(nfs_data['api_path'], recursive=True, force=True)
 
     @allure.tag("Create")
-    @allure.story("Create New NFS Share")
-    def test_create_new_nfs_share(self, nfs_data):
+    @allure.story("Create New NFSv3 Share")
+    def test_create_new_nfsv3_share(self, nfs_data):
         """
-        Summary: This test creates an NFS and verifies that it is attached to the dataset in the UI.
+        Summary: This test creates an NFSv3 and verifies that it is attached to the dataset in the UI.
 
         Test Steps:
-        1. Create an NFS share.
+        1. Create an NFSv3 share.
         2. Start the NFS service upon creation if needed.
         3. Navigate to the datasets page and verify that the share is attached to the dataset.
         4. Navigate to the shares page and verify that the share is displayed correctly.

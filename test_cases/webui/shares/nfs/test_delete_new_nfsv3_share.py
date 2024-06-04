@@ -13,7 +13,7 @@ from keywords.webui.navigation import Navigation as NAV
 @allure.epic("Shares")
 @allure.feature("NFS")
 @pytest.mark.parametrize('nfs_data', get_data_list('shares/nfs'))
-class Test_Delete_NFS_Share:
+class Test_Delete_NFSv3_Share:
     """
     This test class covers the NFS share delete test cases.
     """
@@ -40,12 +40,12 @@ class Test_Delete_NFS_Share:
 
     @allure.tag("Delete")
     @allure.story('Delete NFS Share')
-    def test_delete_new_nfs_share(self, nfs_data):
+    def test_delete_new_nfsv3_share(self, nfs_data):
         """
-        Summary: This test deletes an NFS share and verifies that the share is detached from the dataset in the UI.
+        Summary: This test deletes an NFSv3 share and verifies that the share is detached from the dataset in the UI.
 
         Test Steps:
-        1. Delete the NFS share.
+        1. Delete the NFSv3 share.
         3. Navigate to the datasets page and verify that the share is still detached from the dataset.
         4. Navigate to the shares page and verify that the share is not displayed on the shares page.
         """
