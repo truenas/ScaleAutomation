@@ -363,7 +363,7 @@ class API_PUT:
             - API_PUT.set_cloud_sync_task_enabled('name', False)
         """
         cred_id = 0
-        response = GET(f'/cloudsync/credentials?name={name}').json()
+        response = GET(f'/cloudsync?description={name}').json()
         if response:
             cred_id = response[0]['id']
         payload = {
