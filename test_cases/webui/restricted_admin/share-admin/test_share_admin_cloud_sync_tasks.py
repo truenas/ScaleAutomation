@@ -135,7 +135,7 @@ class Test_Share_Admin_Cloud_Sync_Tasks:
         4. Verify the disabled Cloud Sync task toggle is locked and not clickable
         """
         assert DP.assert_enable_cloud_sync_task_toggle_is_restricted(cloud_sync['description']) is True
-        API_PUT.set_cloud_sync_task_enabled(cloud_sync['name'], False)
+        API_PUT.set_cloud_sync_task_enabled(cloud_sync['description'], False)
         NAV.navigate_to_data_protection()
         assert DP.assert_enable_cloud_sync_task_toggle_is_restricted(cloud_sync['description']) is True
 
