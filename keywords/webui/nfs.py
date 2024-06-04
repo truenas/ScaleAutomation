@@ -429,7 +429,7 @@ class NFS:
         """
         if COM.assert_page_header('Services'):
             COM.click_button('service-nfs-list-row-action')
-        elif COM.assert_page_header('Sharing'):
+        elif COM.assert_page_header('Shares'):
             COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('NFS'))
             COM.click_button('nfs-actions-menu-sessions')
         assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-shares')) is True
