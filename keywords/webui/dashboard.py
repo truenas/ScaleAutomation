@@ -33,7 +33,7 @@ class Dashboard:
         assert WebUI.wait_until_visible('//ix-view-chart-gauge', shared_config['LONG_WAIT']) is True
         assert WebUI.wait_until_visible(xpaths.dashboard.cpu_subtitle) is True
         results_list = [
-            "Avg Usage" in WebUI.get_text(xpaths.dashboard.cpu_subtitle)
+            "Avg Usage" in WebUI.get_text(xpaths.dashboard.cpu_subtitle),
             # TODO: those 2 lines bellow need to be if the "Thread" and "Usage" is not added back.
             # "Thread" in WebUI.get_text(xpaths.dashboard.cpu_load_cores(1)),
             # "Usage" in WebUI.get_text(xpaths.dashboard.cpu_load_cores(2))
@@ -65,7 +65,7 @@ class Dashboard:
         Example:
             - Dashboard.assert_cpu_card_load_text(1, 'Thread')
         """
-        return text in WebUI.get_text(xpaths.dashboard.card_list_item('cpu', index)+'//strong')
+        return text in WebUI.get_text(xpaths.dashboard.card_list_item('CPU', index)+'//strong')
 
     @classmethod
     def assert_dashboard_configure_panel_is_visible(cls) -> bool:
