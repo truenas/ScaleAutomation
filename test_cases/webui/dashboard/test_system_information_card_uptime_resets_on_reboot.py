@@ -8,9 +8,6 @@ from keywords.webui.dashboard import Dashboard
 @allure.tag("Dashboard")
 @allure.epic("Dashboard")
 @allure.feature("Dashboard-System-Info-Uptime")
-@pytest.mark.skip(reason="The System Information card is missing in the Dashboard UI")
-# TODO: Add back System Information Card test when it is reimplemented in the Dashboard UI
-@allure.issue('NAS-128451', 'NAS-128451')
 class Test_Verify_System_Information_Card_Uptime_Resets_on_Reboot:
     @pytest.fixture(scope='class')
     def uptime(self):
@@ -19,9 +16,12 @@ class Test_Verify_System_Information_Card_Uptime_Resets_on_Reboot:
     @allure.tag("Read")
     @allure.story("Verify System Info Uptime Resets on Reboot")
     @pytest.mark.parametrize('user_data', get_data_list('user'))
-    def verify_get_the_system_information_uptime(self, uptime, user_data):
+    def test_the_system_information_uptime(self, uptime, user_data):
         """
         This test verifies System Info Card uptime
+        1. Get the System Info Card uptime
+        2. Reboot and log back in
+        3. Verify System Info Card new option does not match the old
         """
         assert Dashboard.assert_dashboard_page_header_is_visible() is True
         assert Dashboard.is_system_information_card_visible() is True

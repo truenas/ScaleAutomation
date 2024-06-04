@@ -119,15 +119,14 @@ class Dashboard:
 
         :return: True if the copied version match the version on the UI, otherwise it returns False
         """
-        xpath = '//*[contains(text(),"Version:")]/ancestor::ix-widget-sysinfo/descendant::span/div'
-        version = WebUI.get_text(xpaths.common_xpaths.any_xpath(xpath))
+        version = WebUI.get_text('//*[contains(text(),"Version:")]/../div/div/span')
         version = version.replace('Version:', '').replace('assignment', '').strip()
         Common.click_button('copy-to-clipboard')
         clipboard = WebUI.get_clipboard_text()
         return version == clipboard
 
     @classmethod
-    def assert_system_information_ui(cls) -> bool:
+    def assert_system_information_overview(cls) -> bool:
         """
         This method returns True or False whether Platform, Version, Hostname, Uptime
         are all found on System Information Card.
@@ -136,10 +135,11 @@ class Dashboard:
         Information Card, otherwise it returns False.
         """
         list_results = [
-            WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 1)).startswith('Platform'),
-            WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 2)).startswith('Version'),
-            WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 3)).startswith('Hostname'),
-            WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 4)).startswith('Uptime')
+            WebUI.get_text(xpaths.dashboard.card_list_item('System Information', 1)).startswith('Platform'),
+            WebUI.get_text(xpaths.dashboard.card_list_item('System Information', 2)).startswith('Version'),
+            WebUI.get_text(xpaths.dashboard.card_list_item('System Information', 3)).startswith('License'),
+            WebUI.get_text(xpaths.dashboard.card_list_item('System Information', 4)).startswith('Hostname'),
+            WebUI.get_text(xpaths.dashboard.card_list_item('System Information', 5)).startswith('Uptime')
         ]
         # All need to be true or it returns false.
         return all(list_results)
@@ -334,8 +334,8 @@ class Dashboard:
 
         :return: the System Information Uptime value.
         """
-        assert WebUI.wait_until_visible(xpaths.dashboard.card_list_item('sysinfo', 4)) is True
-        return WebUI.get_text(xpaths.dashboard.card_list_item('sysinfo', 4))
+        assert WebUI.wait_until_visible(xpaths.dashboard.card_list_item('System Information', 5)) is True
+        return WebUI.get_text(xpaths.dashboard.card_list_item('System Information', 5))
 
     @classmethod
     def is_cpu_card_visible(cls) -> bool:

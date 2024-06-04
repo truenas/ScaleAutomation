@@ -11,10 +11,13 @@ from keywords.webui.reporting import Reporting
 class Test_Verify_The_Report_Button_On_The_CPU_Card:
 
     @allure.tag("Read")
-    @allure.story("Verify CPU Cards on Reporting")
-    def verify_all_cpu_cards_on_cpu_reporting_page(self):
+    @allure.story("Verify Report Button on CPU Card")
+    def test_verifying_the_report_button_on_the_cpu_card_works(self):
         """
         This test verifies CPU Cards on Reporting page
+        1. Click on CPU report button
+        2. Verify CPU reporting page open
+        3. Verify all CPU cards on CPU reporting page
         """
         assert Dashboard.assert_dashboard_page_header_is_visible() is True
         assert Dashboard.is_cpu_card_visible() is True
