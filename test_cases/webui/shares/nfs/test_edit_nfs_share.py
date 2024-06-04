@@ -54,7 +54,7 @@ class Test_Edit_NFS_Share:
         Summary: This test creates an NFS and configures it with advanced options in the UI.
 
         Test Steps:
-        1. Edit the NFS share and configure it with advanced options:
+        1. Edit the NFSv3 share and configure it with advanced options:
             - Authorized network address
             - Authorized ip address
             - Read only
@@ -63,7 +63,7 @@ class Test_Edit_NFS_Share:
             - Security type
         3. Navigate to the datasets page and verify that the share is attached to the dataset.
         4. Navigate to the shares page and verify that the share is displayed on the shares page.
-        5. Re-edit the NFS share and configure it with new advanced options:
+        5. Re-edit the NFSv3 share and configure it with new advanced options:
             - Unset read only
             - Unset maproot user
             - Unset maproot group
