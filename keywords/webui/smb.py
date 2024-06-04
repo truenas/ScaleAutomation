@@ -645,5 +645,5 @@ class SMB:
         elif COM.assert_page_header('Sharing'):
             COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('SMB'))
             COM.click_button('cifs-actions-menu-sessions')
-        assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-sharing')) is True
+        assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-shares')) is True
         assert COM.assert_page_header('SMB Status') is True

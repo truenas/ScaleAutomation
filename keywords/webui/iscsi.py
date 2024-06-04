@@ -319,5 +319,5 @@ class iSCSI:
         Example:
             - iSCSI.verify_iscsi_sharing_configuration_page_opens()
         """
-        assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-sharing')) is True
+        assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-shares')) is True
         assert COM.assert_page_header('iSCSI') is True

@@ -432,7 +432,7 @@ class NFS:
         elif COM.assert_page_header('Sharing'):
             COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('NFS'))
             COM.click_button('nfs-actions-menu-sessions')
-        assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-sharing')) is True
+        assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-shares')) is True
         assert COM.assert_page_header('NFS Sessions') is True
 
 
