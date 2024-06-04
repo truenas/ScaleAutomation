@@ -9,7 +9,7 @@ import xpaths.iscsi
 import xpaths.local_groups
 import xpaths.local_users
 import xpaths.services
-import xpaths.sharing
+import xpaths.shares
 import xpaths.smb
 import xpaths.ssh
 import xpaths.storage

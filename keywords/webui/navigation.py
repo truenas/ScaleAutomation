@@ -157,7 +157,7 @@ class Navigation:
         Example
          - Navigation.navigate_to_shares()
         """
-        cls.navigate_to('shares', 'Sharing')
+        cls.navigate_to('shares', 'Shares')
 
     @classmethod
     def navigate_to_storage(cls) -> None:

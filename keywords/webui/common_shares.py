@@ -115,7 +115,7 @@ class Common_Shares:
         """
         name = COM.convert_to_tag_format(name)
         share_type = COM.convert_to_tag_format(share_type)
-        xpath = xpaths.sharing.share_enabled_toggle(share_type, name)
+        xpath = xpaths.shares.share_enabled_toggle(share_type, name)
         return COM.get_element_property(xpath, 'ariaChecked') == 'true'
 
     @classmethod
@@ -193,7 +193,7 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_iscsi_target_is_visible('target-1')
         """
-        return WebUI.wait_until_visible(xpaths.sharing.iscsi_card_target_name(target_name))
+        return WebUI.wait_until_visible(xpaths.shares.iscsi_card_target_name(target_name))
 
     @classmethod
     def assert_share_card_actions_menu_dropdown(cls, sharetype: str) -> bool:
@@ -508,7 +508,7 @@ class Common_Shares:
             case 'iscsi':
                 share_type = share_type + "-target"
                 first_col = 'target-name'
-        xpath = xpaths.sharing.share_row_name(first_col, share_type, COM.convert_to_tag_format(name))
+        xpath = xpaths.shares.share_row_name(first_col, share_type, COM.convert_to_tag_format(name))
         return COM.is_visible(xpath)
 
     @classmethod
