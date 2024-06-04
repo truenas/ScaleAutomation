@@ -588,7 +588,7 @@ class SMB:
         """
         if COM.assert_page_header('Services'):
             COM.click_button('service-smb-receipt-long-row-action')
-        elif COM.assert_page_header('Sharing'):
+        elif COM.assert_page_header('Shares'):
             COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('SMB'))
             COM.click_button('cifs-actions-menu-logs')
         assert COM.assert_page_header('Audit') is True
@@ -642,8 +642,8 @@ class SMB:
         """
         if COM.assert_page_header('Services'):
             COM.click_button('service-smb-list-row-action')
-        elif COM.assert_page_header('Sharing'):
+        elif COM.assert_page_header('Shares'):
             COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu('SMB'))
             COM.click_button('cifs-actions-menu-sessions')
-        assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-sharing')) is True
+        assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-shares')) is True
         assert COM.assert_page_header('SMB Status') is True

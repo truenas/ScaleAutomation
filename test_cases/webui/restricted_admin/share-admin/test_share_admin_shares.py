@@ -98,7 +98,7 @@ class Test_Share_Admin_Shares:
         Test Steps:
         1. Verify the share admin is able to see Shares (SMB, NFS, iSCSI)
         """
-        assert COM.assert_page_header("Sharing") is True
+        assert COM.assert_page_header("Shares") is True
         assert SHARE.assert_share_card_displays("smb") is True
         assert SHARE.assert_share_card_displays("nfs") is True
         assert SHARE.assert_share_card_displays("iscsi") is True

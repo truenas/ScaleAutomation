@@ -157,7 +157,7 @@ class Navigation:
         Example
          - Navigation.navigate_to_shares()
         """
-        cls.navigate_to('shares', 'Sharing')
+        cls.navigate_to('shares', 'Shares')
 
     @classmethod
     def navigate_to_storage(cls) -> None:
@@ -178,6 +178,16 @@ class Navigation:
          - Navigation.navigate_to_system_settings_services()
         """
         cls.navigate_to('system', 'Advanced', 'advanced')
+
+    @classmethod
+    def navigate_to_system_settings_boot(cls) -> None:
+        """
+        This method navigates to the Boot page
+
+        Example
+         - Navigation.navigate_to_system_settings_boot()
+        """
+        cls.navigate_to('system', 'Boot Environments', 'boot')
 
     @classmethod
     def navigate_to_system_settings_general(cls) -> None:
