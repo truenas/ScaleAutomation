@@ -57,13 +57,13 @@ class Test_Share_Admin_Boot_Environments:
         """
         assert Boot.assert_boot_environment_element_restricted(shared_config['DEFAULT_BE'], 'clone') is True
         assert Boot.assert_boot_environment_element_restricted(shared_config['DEFAULT_BE'], 'rename') is True
-        assert Boot.assert_boot_environment_element_restricted(shared_config['DEFAULT_BE'], 'toggle-keep') is True
+        assert Boot.assert_boot_environment_element_restricted(shared_config['DEFAULT_BE'], 'keep') is True
 
         assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'activate') is True
         assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'clone') is True
         assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'delete') is True
         assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'rename') is True
-        assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'toggle-keep') is True
+        assert Boot.assert_boot_environment_element_restricted('test-bootenv', 'keep') is True
 
     @allure.story("Share Admin Can Not Scrub the Boot Pool")
     def test_share_admin_cannot_to_scrub_the_boot_pool(self):
