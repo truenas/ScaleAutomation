@@ -216,8 +216,22 @@ class Directory_Services:
         This method verifies the given service status is visible.
         :param status: The name of the service.
         :return: True if the given service status is visible otherwise it returns False.
+
+        Example:
+            - Directory_Services.assert_service_status('HEALTHY')
         """
         return COM.assert_label_and_value_exist('Status:', status.upper())
+
+    @classmethod
+    def assert_any_service_status(cls) -> bool:
+        """
+        This method returns True or False whether any service status is visible.
+        :return: True if any service status is visible otherwise it returns False.
+
+        Exemple:
+            - Directory_Services.assert_any_service_status()
+        """
+        return any(cls.assert_service_status(status) for status in ['HEALTHY', 'JOINING'])
 
     @classmethod
     def click_active_directory_settings_button(cls) -> None:

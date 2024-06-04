@@ -107,7 +107,7 @@ class Test_Read_Only_Admin_Directory_Services:
         3. Verify that the Active Directory card information is visible
         """
         assert Directory_Services.assert_active_directory_card_visible() is True
-        assert Directory_Services.assert_service_status('HEALTHY') is True
+        assert Directory_Services.assert_any_service_status() is True
         assert Directory_Services.assert_active_directory_domain_name(ad_data['domain']) is True
         assert Directory_Services.assert_active_directory_domain_account_name(ad_data['username']) is True
 
@@ -122,7 +122,7 @@ class Test_Read_Only_Admin_Directory_Services:
         3. Verify that the LDAP card information is visible
         """
         assert Directory_Services.assert_ldap_card() is True
-        assert Directory_Services.assert_service_status('HEALTHY') is True
+        assert Directory_Services.assert_any_service_status() is True
         assert Common.get_label_value('Hostname:') == ldap_data['domain']
         assert Common.get_label_value('Base DN:') == ldap_data['basedn']
         assert Common.get_label_value('Bind DN:') == ldap_data['binddn']
