@@ -21,7 +21,7 @@ from keywords.webui.system_services import System_Services as SERV
 @allure.tag("NFS Shares")
 @allure.epic("Shares")
 @allure.feature("NFS")
-class Test_Advanced_Configurations:
+class Test_NFSv3_Advanced_Configurations:
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self, nfs_advanced_config):
         """
@@ -66,18 +66,18 @@ class Test_Advanced_Configurations:
         assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True
 
     @allure.tag("Authorized IP Address")
-    @allure.story("NFS Share Authorized IP Address")
+    @allure.story("NFSv3 Share Authorized IP Address")
     @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[:1])
-    def test_nfs_share_authorized_ip_address(self, nfs_advanced_config):
+    def test_nfsv3_share_authorized_ip_address(self, nfs_advanced_config):
         """
-        Summary: This test sets an NFS share with an authorized IP address and verifies that the share can only be mounted on the authorized client.
+        Summary: This test sets an NFSv3 share with an authorized IP address and verifies that the share can only be mounted on the authorized client.
 
         Test Steps:
-        1. Create an NFS share with an authorized ip address set.
+        1. Create an NFSv3 share with an authorized ip address set.
         2. Verify share can mount from the client with the authorized ip address.
         3. Verify client can read/write/execute/delete on the share.
-        4. Unmount the NFS share.
-        5. Edit the NFS share and set a different authorized ip address than the client.
+        4. Unmount the NFSv3 share.
+        5. Edit the NFSv3 share and set a different authorized ip address than the client.
         6. Verify share cannot mount from the client with the previous authorized ip address.
         """
         # Edit the NFS share and set a valid authorized ip address
@@ -106,17 +106,17 @@ class Test_Advanced_Configurations:
         assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is False
 
     @allure.tag("Read Only")
-    @allure.story("NFS Share Read Only")
+    @allure.story("NFSv3 Share Read Only")
     @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[1:2])
-    def test_read_only_share(self, nfs_advanced_config):
+    def test_nfsv3_read_only_share(self, nfs_advanced_config):
         """
-        Summary: This test sets an NFS share to read only and verifies that the share can be mounted but
+        Summary: This test sets an NFSv3 share to read only and verifies that the share can be mounted but
         only read access is granted.
 
         Test Steps:
-        1. Create an NFS share and set it to read only.
+        1. Create an NFSv3 share and set it to read only.
         2. Verify share can mount and that only read access is granted.
-        4. Unmount the NFS share.
+        4. Unmount the NFSv3 share.
         5. Edit the NFS share and unset read only.
         6. Verify share can mount and that full access is granted.
         """
@@ -151,19 +151,19 @@ class Test_Advanced_Configurations:
         assert NFS_SSH.verify_share_delete_access(nfs_advanced_config["share_page_path"], nfs_advanced_config["mount_dir"]) is True
 
     @allure.tag("Authorized Network Address")
-    @allure.story("NFS Share Authorized Network Address")
+    @allure.story("NFSv3 Share Authorized Network Address")
     @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[2:3])
-    def test_nfs_share_authorized_network_address(self, nfs_advanced_config):
+    def test_nfsv3_share_authorized_network_address(self, nfs_advanced_config):
         """
-        Summary: This test sets an NFS share with an authorized network address and verifies that the share can only
+        Summary: This test sets an NFSv3 share with an authorized network address and verifies that the share can only
         be mounted on a client on the authorized network.
 
         Test Steps:
-        1. Create an NFS share with an authorized network address set.
+        1. Create an NFSv3 share with an authorized network address set.
         2. Verify share can mount from the client on the authorized network.
         3. Verify client can read/write/execute/delete on the share.
-        4. Unmount the NFS share.
-        5. Edit the NFS share and set a different network address than the client.
+        4. Unmount the NFSv3 share.
+        5. Edit the NFSv3 share and set a different network address than the client.
         6. Verify share cannot mount from the client on the previous authorized network.
         """
         # Edit the NFS share and set a valid authorized network address
@@ -195,18 +195,18 @@ class Test_Advanced_Configurations:
         assert NFS_SSH.verify_share_mounted(nfs_advanced_config["mount_dir"], nfs_advanced_config["permissions_code"], nfs_advanced_config["dataset_ownership"]) is False
 
     @allure.tag("mapall user", "mapall group")
-    @allure.story("NFS Share mapall user and mapall group")
+    @allure.story("NFSv3 Share mapall user and mapall group")
     @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[3:4])
-    def test_nfs_share_mapall_user_and_group(self, nfs_advanced_config):
+    def test_nfsv3_share_mapall_user_and_group(self, nfs_advanced_config):
         """
-        Summary: This test edits the NFS share with a mapall user and group and verifies that the share can mounted and
+        Summary: This test edits the NFSv3 share with a mapall user and group and verifies that the share can mounted and
         that access is appropriately mapped to the user and/or group.
 
         Test Steps:
-        1. Create an NFS share with the mapall user set.
+        1. Create an NFSv3 share with the mapall user set.
         2. Verify share can mount and that the mapped user access can read/write/execute/delete.
-        3. Unmount the NFS share.
-        4. Edit the NFS share and set the mapall group.
+        3. Unmount the NFSv3 share.
+        4. Edit the NFSv3 share and set the mapall group.
         5. Verify share can mount and that the mapped group access can read/write/execute/delete.
         6. Remove mapall user and group and verify access has been removed.
         """
@@ -262,15 +262,15 @@ class Test_Advanced_Configurations:
         assert NFS_SSH.unmount_nfs_share(nfs_advanced_config["mount_dir"]) is True
 
     @allure.tag("maproot user", "maproot group", "NAS-T1156")
-    @allure.story("NFS Share maproot user and maproot group")
+    @allure.story("NFSv3 Share maproot user and maproot group")
     @pytest.mark.parametrize('nfs_advanced_config', get_data_list('shares/nfs_advanced_config')[4:5])
-    def test_nfs_share_maproot_user_and_group(self, nfs_advanced_config):
+    def test_nfsv3_share_maproot_user_and_group(self, nfs_advanced_config):
         """
-        Summary: This test edits the NFS share with a maproot user and maproot group and verifies that the maproot
+        Summary: This test edits the NFSv3 share with a maproot user and maproot group and verifies that the maproot
         is set be and that root access is appropriately granted only when set.
 
         Test Steps:
-        1. Create an NFS share without maproot set.
+        1. Create an NFSv3 share without maproot set.
         2. Verify share can mount but root access is not granted.
         3. Set maproot user and verify root user is mapped.
         4. Set maproot group and verify root group is mapped.
