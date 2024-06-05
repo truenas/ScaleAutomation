@@ -12,7 +12,7 @@ def card_list_item(field: str, item_position: int) -> str:
     :param item_position: it the position of the list on the card.
     :return:  the xpath text of give card and list item_position
     """
-    return f'(//ix-widget-{field}//mat-list-item)[{item_position}]'
+    return f'(//mat-card[contains(.,"{field}")]//mat-list-item)[{item_position}]'
 
 
 def cpu_load_cores(index: int) -> str:
