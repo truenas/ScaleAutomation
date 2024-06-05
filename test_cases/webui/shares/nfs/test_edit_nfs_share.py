@@ -48,7 +48,7 @@ class Test_Edit_NFS_Share:
         API_DELETE.delete_dataset(nfs_data['api_path_alt'], recursive=True, force=True)
 
     @allure.tag("Update")
-    @allure.story("Edit NFS Share Advanced Options")
+    @allure.story("Edit NFSv3 Share Advanced Options")
     def test_edit_nfsv3_share_advanced_options(self, nfs_data):
         """
         Summary: This test creates an NFS and configures it with advanced options in the UI.
@@ -73,7 +73,7 @@ class Test_Edit_NFS_Share:
         7. Navigate to the shares page and verify that the share is displayed on the shares page.
         """
 
-        # Edit the NFS share with advanced options
+        # Edit the NFSv3 share with advanced options
         assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path']) is True
         COMSHARE.click_edit_share('nfs', nfs_data['share_page_path'])
         COM.set_checkbox('enabled')
@@ -108,7 +108,7 @@ class Test_Edit_NFS_Share:
         assert COMSHARE.assert_share_description('nfs', nfs_data['description']) is True
         assert COMSHARE.is_share_enabled('nfs', nfs_data['share_page_path']) is True
 
-        # Edit the NFS share with second set of advanced options
+        # Edit the NFSv3 share with second set of advanced options
         COMSHARE.click_edit_share('nfs', nfs_data['share_page_path_with_desc'])
         COMSHARE.click_advanced_options()
         COM.unset_checkbox('ro')
@@ -146,7 +146,7 @@ class Test_Edit_NFS_Share:
         4. Navigate to the datasets page and verify that the share is attached to the previous dataset.
         """
 
-        # Edit the NFS share
+        # Edit the NFSv3 share
         assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path']) is True
         COMSHARE.click_edit_share('nfs', nfs_data['share_page_path'])
         COMSHARE.set_share_path(nfs_data['api_path_alt'])
@@ -215,7 +215,7 @@ class Test_Edit_NFS_Share:
         assert DATASET.assert_dataset_roles_share_icon(nfs_data['dataset_name'], 'nfs') is True
 
     @allure.tag("Update")
-    @allure.story("NFS Share Edit Advanced UI Errors")
+    @allure.story("Edit NFSv3 Share Advanced UI Errors")
     def test_nfs_share_advanced_ui_errors(self, nfs_data):
         """
         Summary: This test creates an NFS share and verifies the advanced UI errors display.

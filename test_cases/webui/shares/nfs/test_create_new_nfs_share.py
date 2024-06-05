@@ -13,7 +13,7 @@ from keywords.webui.navigation import Navigation as NAV
 @allure.epic("Shares")
 @allure.feature("NFS")
 @pytest.mark.parametrize('nfs_data', get_data_list('shares/nfs'))
-class Test_Create_NFSv3_Share:
+class Test_Create_NFS_Share:
     """
     This test class covers the NFS share create test cases.
     """
