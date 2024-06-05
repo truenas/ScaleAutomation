@@ -22,7 +22,7 @@ from keywords.webui.system_services import System_Services as SERV
 @allure.epic("Shares")
 @allure.feature("NFS")
 @allure.issue("NAS-128417", name="NAS-128417")
-class Test_Advanced_Configurations:
+class Test_NFSv3_Advanced_Configurations:
     @pytest.fixture(scope='function', autouse=True)
     def setup_test(self, nfs_advanced_config):
         """
