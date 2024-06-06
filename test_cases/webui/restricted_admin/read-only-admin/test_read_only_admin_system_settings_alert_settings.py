@@ -2,7 +2,6 @@ import allure
 import pytest
 
 import xpaths
-from helper.webui import WebUI
 from keywords.webui.alert_settings import Alert_Settings as ALERT
 from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
