@@ -1,6 +1,7 @@
 import allure
 import pytest
 
+import xpaths
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
@@ -34,10 +35,11 @@ class Test_Read_Only_Admin_System_Settings_Alert_Settings:
 
         # Alert Services Card
         assert COM.is_text_visible('Alert Services') is True
-        assert COM.is_input_visible('table-filter') is True
-        assert COM.is_button_visible('alert-services-columns-menu') is True
-        assert COM.is_button_visible('alert-services-add') is True
-        assert COM.is_button_visible('alert-services-options') is True
+        assert COM.is_input_visible('search') is True
+        assert COM.is_button_visible('columns') is True
+        assert COM.is_button_visible('alert-service-add') is True
+        assert COM.is_visible(xpaths.common_xpaths.edit_row_button('snmp-trap')) is True
+        assert COM.is_visible(xpaths.common_xpaths.delete_row_button('snmp-trap')) is True
 
         # Category Card
         # TODO: NAS-129437 - convert to is_card_visible()
@@ -74,11 +76,7 @@ class Test_Read_Only_Admin_System_Settings_Alert_Settings:
         2. Verify the Save Debug button is locked and not clickable
         3. Verify Send Test Alert button is locked and not clickable
         """
-        COM.click_button("alert-services-add")
-        assert COM.assert_right_panel_header('Add Alert Service')
-        assert COM.assert_button_is_restricted('save') is True
-        assert COM.assert_button_is_restricted('send-test-alert') is True
-        COM.close_right_panel()
+        assert COM.assert_button_is_restricted('alert-service-add') is True
 
     @allure.tag("Update")
     @allure.story("Read Only Admin Is Not Able to Modify Any Alert Settings Settings")
@@ -92,8 +90,7 @@ class Test_Read_Only_Admin_System_Settings_Alert_Settings:
         3. Verify the Save Debug button is locked and not clickable
         4. Verify Send Test Alert button is locked and not clickable
         """
-        COM.click_button("alert-services-options")
-        COM.click_button('alert-services-options-edit')
+        COM.click_on_element(xpaths.common_xpaths.edit_row_button('snmp-trap'))
         assert COM.assert_right_panel_header('Edit Alert Service')
         assert COM.assert_button_is_restricted('save') is True
         assert COM.assert_button_is_restricted('send-test-alert') is True
@@ -111,11 +108,7 @@ class Test_Read_Only_Admin_System_Settings_Alert_Settings:
         3. Confirm the Deleter dialog
         4. Verify Delete Error dialog appears
         """
-        COM.click_button("alert-services-options")
-        COM.click_button('alert-services-options-delete')
-        COM.assert_confirm_dialog()
-        assert COM.assert_text_is_visible('Access denied to alertservice.delete') is True
-        COM.click_error_dialog_close_button()
+        assert COM.assert_element_is_restricted(xpaths.common_xpaths.delete_row_button('snmp-trap')) is True
 
     @allure.tag("Update")
     @allure.story("Read Only Admin Is Not Able to Modify Any Category Settings")

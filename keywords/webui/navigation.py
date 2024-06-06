@@ -187,7 +187,7 @@ class Navigation:
         Example
          - Navigation.navigate_to_system_settings_alert_settings()
         """
-        cls.navigate_to('system-settings', 'Alert Settings', 'alert-settings')
+        cls.navigate_to('system', 'Alert Settings', 'alert-settings')
 
     @classmethod
     def navigate_to_system_settings_boot(cls) -> None:
