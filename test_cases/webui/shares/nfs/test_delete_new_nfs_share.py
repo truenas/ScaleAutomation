@@ -46,8 +46,8 @@ class Test_Delete_NFS_Share:
 
         Test Steps:
         1. Delete the NFSv3 share.
-        3. Navigate to the datasets page and verify that the share is still detached from the dataset.
-        4. Navigate to the shares page and verify that the share is not displayed on the shares page.
+        2. Navigate to the datasets page and verify that the share is detached from the dataset.
+        3. Navigate to the shares page and verify that the share is not displayed on the shares page.
         """
         # Delete NFS share
         assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path']) is True

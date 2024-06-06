@@ -116,9 +116,9 @@ class Test_NFSv3_Advanced_Configurations:
         Test Steps:
         1. Create an NFSv3 share and set it to read only.
         2. Verify share can mount and that only read access is granted.
-        4. Unmount the NFSv3 share.
-        5. Edit the NFS share and unset read only.
-        6. Verify share can mount and that full access is granted.
+        3. Unmount the NFSv3 share.
+        4. Edit the NFS share and unset read only.
+        5. Verify share can mount and that full access is granted.
         """
         # Edit the NFS share and set it to read only
         assert COMSHARE.assert_share_path('nfs', nfs_advanced_config["share_page_path"]) is True

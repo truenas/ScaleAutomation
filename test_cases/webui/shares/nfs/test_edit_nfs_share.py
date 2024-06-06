@@ -61,16 +61,16 @@ class Test_Edit_NFS_Share:
             - Maproot user
             - Maproot group
             - Security type
-        3. Navigate to the datasets page and verify that the share is attached to the dataset.
-        4. Navigate to the shares page and verify that the share is displayed on the shares page.
-        5. Re-edit the NFSv3 share and configure it with new advanced options:
+        2. Navigate to the datasets page and verify that the share is attached to the dataset.
+        3. Navigate to the shares page and verify that the share is displayed on the shares page.
+        4. Re-edit the NFSv3 share and configure it with new advanced options:
             - Unset read only
             - Unset maproot user
             - Unset maproot group
             - Set mapall user
             - Set mapall group
-        6. Navigate to the datasets page and verify that the share is attached to the dataset.
-        7. Navigate to the shares page and verify that the share is displayed on the shares page.
+        5. Navigate to the datasets page and verify that the share is attached to the dataset.
+        6. Navigate to the shares page and verify that the share is displayed on the shares page.
         """
 
         # Edit the NFS share with advanced options
