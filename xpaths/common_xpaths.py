@@ -274,6 +274,26 @@ def dataset_permissions_ownership(name: str) -> str:
     return f'//*[contains(text(),"Owner:")]/following-sibling::*[contains(text(),"{name}")]'
 
 
+def delete_row_button(description: str) -> str:
+    """
+    This function returns the xpath text of the scrub task edit button by the given scrub task description.
+
+    :param description: The description used to identify the row (name, description, task, etc.).
+    :return: The xpath text of the edit row button by the given row description.
+    """
+    return f'//*[contains(@data-test,"{description}-delete-row-action")]'
+
+
+def edit_row_button(description: str) -> str:
+    """
+    This function returns the xpath text of the scrub task edit button by the given scrub task description.
+
+    :param description: The description used to identify the row (name, description, task, etc.).
+    :return: The xpath text of the edit row button by the given row description.
+    """
+    return f'//*[contains(@data-test,"{description}-edit-row-action")]'
+
+
 def input_field(field: str) -> str:
     """
     This function sets the text for the given input name

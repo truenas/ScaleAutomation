@@ -175,9 +175,19 @@ class Navigation:
         This method navigates to the Advanced page under the System Settings panel.
 
         Example
-         - Navigation.navigate_to_system_settings_services()
+         - Navigation.navigate_to_system_settings_advanced()
         """
         cls.navigate_to('system', 'Advanced', 'advanced')
+
+    @classmethod
+    def navigate_to_system_settings_alert_settings(cls) -> None:
+        """
+        This method navigates to the Alert Settings page under the System Settings panel.
+
+        Example
+         - Navigation.navigate_to_system_settings_alert_settings()
+        """
+        cls.navigate_to('system', 'Alert Settings', 'alert-settings')
 
     @classmethod
     def navigate_to_system_settings_boot(cls) -> None:
