@@ -4,10 +4,8 @@ import xpaths
 from pathlib import Path
 
 from selenium.common.exceptions import (
-    NoSuchElementException,
     TimeoutException,
-    ElementClickInterceptedException,
-    StaleElementReferenceException
+    ElementClickInterceptedException
 )
 from selenium.webdriver.common.keys import Keys
 
@@ -1070,8 +1068,7 @@ class Common:
         Example:
             - Common.is_row_visible('save')
         """
-        xpath = f'//*[@data-test="row-{cls.convert_to_tag_format(name)}"]'
-        return WebUI.wait_until_visible(xpath, shared_config['SHORT_WAIT'])
+        return cls.is_visible(f'//*[@data-test="row-{cls.convert_to_tag_format(name)}"]')
 
     @classmethod
     def is_select_visible(cls, name) -> bool:
@@ -1149,20 +1146,8 @@ class Common:
 
         Example:
             - Common.is_visible('myXpath')
+            - Common.is_visible('myXpath', shared_config['MEDIUM_WAIT'])
         """
-        # obj = None
-        # result = False
-        # try:
-        #     obj = WebUI.xpath(xpath)
-        #     result = obj.is_displayed()
-        # except (NoSuchElementException, StaleElementReferenceException):
-        #     return Falseobj = None
-        # result = False
-        # try:
-        #     obj = WebUI.xpath(xpath)
-        #     result = obj.is_displayed()
-        # except (NoSuchElementException, StaleElementReferenceException):
-        #     return False
         return WebUI.wait_until_visible(xpath, wait)
 
     @classmethod
@@ -1620,5 +1605,7 @@ class Common:
                 pause = 86400
 
         while cls.get_current_time_element(time) < value:
-            print("@@@ WAIT FOR: " + str(cls.get_current_time_element(time)) + " to be: " + str(value))
+            print(
+                f"@@@ WAIT FOR: {str(cls.get_current_time_element(time))} to be: {value}"
+            )
             WebUI.delay(pause)
