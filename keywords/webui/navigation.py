@@ -18,27 +18,27 @@ class Navigation:
          - Navigation.navigate_to('myLocation', 'My Location')
          - Navigation.navigate_to('myLocation', 'My Location2', 'my-second-location')
         """
-        if COM.is_visible(xpaths.common_xpaths.close_right_panel()):
-            print('@@@@@@@ RIGHT_PANEL_OPEN-'+create_timestamp())
-            take_screenshot('RIGHT_PANEL_OPEN-'+create_timestamp())
+        if COM.is_visible(xpaths.common_xpaths.close_right_panel(), 1):
+            print(f'@@@@@@@ RIGHT_PANEL_OPEN-{create_timestamp()}')
+            take_screenshot(f'RIGHT_PANEL_OPEN-{create_timestamp()}')
             COM.close_right_panel()
-        if COM.is_visible(xpaths.common_xpaths.button_field('dialog-cancel')):
-            print('@@@@@@@ DIALOG_LEFT_OPEN-'+create_timestamp())
-            take_screenshot('DIALOG_LEFT_OPEN-'+create_timestamp())
+        if COM.is_visible(xpaths.common_xpaths.button_field('dialog-cancel'), 1):
+            print(f'@@@@@@@ DIALOG_LEFT_OPEN-{create_timestamp()}')
+            take_screenshot(f'DIALOG_LEFT_OPEN-{create_timestamp()}')
             COM.cancel_confirm_dialog()
-        if COM.is_visible(xpaths.common_xpaths.button_field('cancel')):
+        if COM.is_visible(xpaths.common_xpaths.button_field('cancel'), 1):
             # This is used on datasets permissions preset dialogs
-            print('@@@@@@@ DIALOG_LEFT_OPEN-'+create_timestamp())
-            take_screenshot('DIALOG_LEFT_OPEN-'+create_timestamp())
+            print(f'@@@@@@@ DIALOG_LEFT_OPEN-{create_timestamp()}')
+            take_screenshot(f'DIALOG_LEFT_OPEN-{create_timestamp()}')
             COM.click_cancel_button()
-        if COM.is_visible(xpaths.common_xpaths.button_field('close-error-dialog')):
+        if COM.is_visible(xpaths.common_xpaths.button_field('close-error-dialog'), 1):
             print('@@@@@@@ DIALOG_LEFT_OPEN-' + create_timestamp())
             take_screenshot('DIALOG_LEFT_OPEN-' + create_timestamp())
             COM.click_error_dialog_close_button()
             COM.click_button('close')
-        if (COM.is_visible(xpaths.common_xpaths.any_header(header, 1)) is True) & (header != 'Dashboard'):
+        if (COM.is_visible(xpaths.common_xpaths.any_header(header, 1), 1) is True) & (header != 'Dashboard'):
             cls.navigate_to_dashboard()
-        COM.click_on_element(xpaths.common_xpaths.link_field(location + '-menu'))
+        COM.click_on_element(xpaths.common_xpaths.link_field(f'{location}-menu'))
         if location2 != "":
             WebUI.delay(0.2)
             COM.click_on_element(xpaths.common_xpaths.any_xpath(f'(//*[@data-test="link-{location2}"])[2]'))
