@@ -72,9 +72,7 @@ class Test_Read_Only_Admin_System_Settings_Alert_Settings:
         Summary: This test verifies the read-only user is not able to add any alert services.
 
         Test Steps:
-        1. Click Add Alert Service button
-        2. Verify the Save Debug button is locked and not clickable
-        3. Verify Send Test Alert button is locked and not clickable
+        1. Verify Add button is locked and not clickable
         """
         assert COM.assert_button_is_restricted('alert-service-add') is True
 
@@ -103,10 +101,7 @@ class Test_Read_Only_Admin_System_Settings_Alert_Settings:
         Summary: This test verifies the read-only user is not able to delete any alert services.
 
         Test Steps:
-        1. Click Alert Service options button (three dots)
-        2. Click delete option
-        3. Confirm the Deleter dialog
-        4. Verify Delete Error dialog appears
+        1. Verify Delete button is locked and not clickable
         """
         assert COM.assert_element_is_restricted(xpaths.common_xpaths.delete_row_button('snmp-trap')) is True
 
