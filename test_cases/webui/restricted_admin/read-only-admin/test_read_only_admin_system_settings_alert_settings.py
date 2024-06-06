@@ -1,7 +1,6 @@
 import allure
 import pytest
 
-import xpaths
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
@@ -199,4 +198,3 @@ class Test_Read_Only_Admin_System_Settings_Alert_Settings:
         WebUI.delay(0.1)
         COM.click_button('category-ups')
         assert COM.assert_button_is_restricted('save') is True
-
