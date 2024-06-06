@@ -2,6 +2,7 @@ import allure
 import pytest
 
 from helper.webui import WebUI
+from keywords.webui.alert_settings import Alert_Settings as ALERT
 from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
 
@@ -127,74 +128,15 @@ class Test_Read_Only_Admin_System_Settings_Alert_Settings:
         1. Click category button (Applications, Certificates, Directory Services)
         2. Verify the Save Debug button is locked and not clickable
         """
-        # Application Category
-        COM.click_button("categories")
-        WebUI.delay(0.1)
-        COM.click_button('category-applications')
-        assert COM.assert_button_is_restricted('save') is True
-
-        # Certificates Category
-        COM.click_button("categories")
-        WebUI.delay(0.1)
-        COM.click_button('category-certificates')
-        assert COM.assert_button_is_restricted('save') is True
-
-        # Directory Services Category
-        COM.click_button("categories")
-        WebUI.delay(0.1)
-        COM.click_button('category-directory-service')
-        assert COM.assert_button_is_restricted('save') is True
-
-        # Hardware Category
-        COM.click_button("categories")
-        WebUI.delay(0.1)
-        COM.click_button('category-hardware')
-        assert COM.assert_button_is_restricted('save') is True
-
-        # Key Management Interoperability Protocol (KMIP) Category
-        COM.click_button("categories")
-        WebUI.delay(0.1)
-        COM.click_button('category-kmip')
-        assert COM.assert_button_is_restricted('save') is True
-
-        # Network Category
-        COM.click_button("categories")
-        WebUI.delay(0.1)
-        COM.click_button('category-network')
-        assert COM.assert_button_is_restricted('save') is True
-
-        # Reporting Category
-        COM.click_button("categories")
-        WebUI.delay(0.1)
-        COM.click_button('category-reporting')
-        assert COM.assert_button_is_restricted('save') is True
-
-        # Sharing Category
-        COM.click_button("categories")
-        WebUI.delay(0.1)
-        COM.click_button('category-sharing')
-        assert COM.assert_button_is_restricted('save') is True
-
-        # Storage Category
-        COM.click_button("categories")
-        WebUI.delay(0.1)
-        COM.click_button('category-storage')
-        assert COM.assert_button_is_restricted('save') is True
-
-        # System Category
-        COM.click_button("categories")
-        WebUI.delay(0.1)
-        COM.click_button('category-system')
-        assert COM.assert_button_is_restricted('save') is True
-
-        # Tasks Category
-        COM.click_button("categories")
-        WebUI.delay(0.1)
-        COM.click_button('category-tasks')
-        assert COM.assert_button_is_restricted('save') is True
-
-        # UPS Category
-        COM.click_button("categories")
-        WebUI.delay(0.1)
-        COM.click_button('category-ups')
-        assert COM.assert_button_is_restricted('save') is True
+        ALERT.assert_alert_category_save_button_restricted('applications')
+        ALERT.assert_alert_category_save_button_restricted('certificates')
+        ALERT.assert_alert_category_save_button_restricted('directory-service')
+        ALERT.assert_alert_category_save_button_restricted('hardware')
+        ALERT.assert_alert_category_save_button_restricted('kmip')
+        ALERT.assert_alert_category_save_button_restricted('network')
+        ALERT.assert_alert_category_save_button_restricted('reporting')
+        ALERT.assert_alert_category_save_button_restricted('sharing')
+        ALERT.assert_alert_category_save_button_restricted('storage')
+        ALERT.assert_alert_category_save_button_restricted('system')
+        ALERT.assert_alert_category_save_button_restricted('tasks')
+        ALERT.assert_alert_category_save_button_restricted('ups')
