@@ -1011,7 +1011,7 @@ class Common:
         return file.is_file()
 
     @classmethod
-    def is_input_visible(cls, name) -> bool:
+    def is_input_visible(cls, name: str) -> bool:
         """
         This method returns True if the given input is visible, otherwise False.
 
@@ -1024,7 +1024,7 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.input_field(cls.convert_to_tag_format(name)))
 
     @classmethod
-    def is_link_visible(cls, name) -> bool:
+    def is_link_visible(cls, name: str) -> bool:
         """
         This method returns True if the given link is visible, otherwise False.
 
@@ -1049,7 +1049,7 @@ class Common:
         return cls.get_element_property(xpaths.common_xpaths.button_field('save'), 'disabled')
 
     @classmethod
-    def is_select_visible(cls, name) -> bool:
+    def is_select_visible(cls, name: str) -> bool:
         """
         This method returns True if the given select is visible, otherwise False.
 
@@ -1062,7 +1062,22 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.select_field(cls.convert_to_tag_format(name)))
 
     @classmethod
-    def is_text_visible(cls, text) -> bool:
+    def is_select_by_row_visible(cls, name: str, row: int = 1) -> bool:
+        """
+        This method returns True if the given select is visible, otherwise False.
+
+        :param name: name of the select.
+        :param row: index of the select. default = 1
+        :return: True if the given select is visible, otherwise False.
+
+        Example:
+            - Common.is_select_by_row_visible('search')
+            - Common.is_select_by_row_visible('search', 2)
+        """
+        return cls.is_visible(xpaths.common_xpaths.select_field_by_row(cls.convert_to_tag_format(name), row))
+
+    @classmethod
+    def is_text_visible(cls, text: str) -> bool:
         """
         This method returns True if the given text is visible, otherwise False.
 
@@ -1075,7 +1090,7 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.any_text(text))
 
     @classmethod
-    def is_textarea_visible(cls, name) -> bool:
+    def is_textarea_visible(cls, name: str) -> bool:
         """
         This method returns True if the given textarea is visible, otherwise False.
 
@@ -1101,7 +1116,7 @@ class Common:
         return eval(cls.get_element_property(xpaths.common_xpaths.toggle_field(name), 'ariaChecked').capitalize())
 
     @classmethod
-    def is_toggle_visible(cls, name) -> bool:
+    def is_toggle_visible(cls, name: str) -> bool:
         """
         This method returns True if the given toggle is visible, otherwise False.
 
