@@ -5,7 +5,7 @@ from pathlib import Path
 
 from selenium.common.exceptions import (
     TimeoutException,
-    ElementClickInterceptedException
+    ElementClickInterceptedException,
 )
 from selenium.webdriver.common.keys import Keys
 
@@ -84,11 +84,10 @@ class Common:
         Example:
             - Common.assert_button_is_restricted('delete')
         """
-        xpath_name = cls.convert_to_tag_format(name)
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field_locked(xpath_name)) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field_locked(name)) is True
         try:
             # At this point the button is visible a Timeout or ElementClickIntercepted exception will be thrown.
-            cls.click_button(xpath_name, 1)
+            cls.click_button(name, 1)
         except (ElementClickInterceptedException, TimeoutException):
             return True
         return False
@@ -104,10 +103,9 @@ class Common:
         Example:
             - Common.assert_checkbox_is_restricted('myCheckbox')
         """
-        xpath_name = cls.convert_to_tag_format(name)
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(xpath_name)) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(name)) is True
         try:
-            cls.set_checkbox(xpath_name)
+            cls.set_checkbox(name)
         except ElementClickInterceptedException:
             return True
         return False
@@ -251,11 +249,10 @@ class Common:
         Example:
             - Common.assert_button_is_restricted('delete')
         """
-        xpath_name = cls.convert_to_tag_format(name)
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.link_field_locked(xpath_name)) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.link_field_locked(name)) is True
         try:
             # At this point the link is visible a Timeout or ElementClickIntercepted exception will be thrown.
-            cls.click_link(xpath_name)
+            cls.click_link(name)
         except (ElementClickInterceptedException, TimeoutException):
             return True
         return False
@@ -407,10 +404,9 @@ class Common:
         Example:
             - Common.assert_toggle_is_restricted()
         """
-        xpath_name = cls.convert_to_tag_format(name)
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field_locked(xpath_name)) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field_locked(name)) is True
         try:
-            cls.click_on_element(xpaths.common_xpaths.toggle_field(xpath_name))
+            cls.click_on_element(xpaths.common_xpaths.toggle_field(name))
         except (ElementClickInterceptedException, TimeoutException):
             return True
         return False
@@ -1020,7 +1016,7 @@ class Common:
         return file.is_file()
 
     @classmethod
-    def is_input_visible(cls, name) -> bool:
+    def is_input_visible(cls, name: str) -> bool:
         """
         This method returns True if the given input is visible, otherwise False.
 
@@ -1033,7 +1029,7 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.input_field(cls.convert_to_tag_format(name)))
 
     @classmethod
-    def is_link_visible(cls, name) -> bool:
+    def is_link_visible(cls, name: str) -> bool:
         """
         This method returns True if the given link is visible, otherwise False.
 
@@ -1071,7 +1067,7 @@ class Common:
         return cls.is_visible(f'//*[@data-test="row-{cls.convert_to_tag_format(name)}"]')
 
     @classmethod
-    def is_select_visible(cls, name) -> bool:
+    def is_select_visible(cls, name: str) -> bool:
         """
         This method returns True if the given select is visible, otherwise False.
 
@@ -1084,7 +1080,22 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.select_field(cls.convert_to_tag_format(name)))
 
     @classmethod
-    def is_text_visible(cls, text) -> bool:
+    def is_select_by_row_visible(cls, name: str, row: int = 1) -> bool:
+        """
+        This method returns True if the given select is visible, otherwise False.
+
+        :param name: name of the select.
+        :param row: index of the select. default = 1
+        :return: True if the given select is visible, otherwise False.
+
+        Example:
+            - Common.is_select_by_row_visible('search')
+            - Common.is_select_by_row_visible('search', 2)
+        """
+        return cls.is_visible(xpaths.common_xpaths.select_field_by_row(cls.convert_to_tag_format(name), row))
+
+    @classmethod
+    def is_text_visible(cls, text: str) -> bool:
         """
         This method returns True if the given text is visible, otherwise False.
 
@@ -1097,7 +1108,7 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.any_text(text))
 
     @classmethod
-    def is_textarea_visible(cls, name) -> bool:
+    def is_textarea_visible(cls, name: str) -> bool:
         """
         This method returns True if the given textarea is visible, otherwise False.
 
@@ -1123,7 +1134,7 @@ class Common:
         return eval(cls.get_element_property(xpaths.common_xpaths.toggle_field(name), 'ariaChecked').capitalize())
 
     @classmethod
-    def is_toggle_visible(cls, name) -> bool:
+    def is_toggle_visible(cls, name: str) -> bool:
         """
         This method returns True if the given toggle is visible, otherwise False.
 
@@ -1605,7 +1616,5 @@ class Common:
                 pause = 86400
 
         while cls.get_current_time_element(time) < value:
-            print(
-                f"@@@ WAIT FOR: {str(cls.get_current_time_element(time))} to be: {value}"
-            )
+            print(f"@@@ WAIT FOR: {str(cls.get_current_time_element(time))} to be: {value}")
             WebUI.delay(pause)

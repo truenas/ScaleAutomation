@@ -40,12 +40,17 @@ class Test_Create_NFS_Share:
         API_DELETE.delete_dataset(nfs_data['api_path'], recursive=True, force=True)
 
     @allure.tag("Create")
-    @allure.story("Create New NFS Share")
-    def test_create_new_nfs_share(self, nfs_data):
+    @allure.story("Create New NFSv3 Share")
+    def test_create_new_nfsv3_share(self, nfs_data):
         """
-        This test creates a new NFS share with the given data.
-        """
+        This test creates a new NFSv3 share with the given data.
 
+        Test Steps:
+        1. Create an NFSv3 share.
+        2. Start the NFS service upon creation if needed.
+        3. Navigate to the datasets page and verify that the share is attached to the dataset.
+        4. Navigate to the shares page and verify that the share is displayed correctly.
+        """
         # Create new NFS share
         COMSHARE.click_add_share_button('nfs')
         COMSHARE.set_share_path(nfs_data['api_path'])
