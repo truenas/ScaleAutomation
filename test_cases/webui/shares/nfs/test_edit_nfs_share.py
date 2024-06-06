@@ -48,10 +48,29 @@ class Test_Edit_NFS_Share:
         API_DELETE.delete_dataset(nfs_data['api_path_alt'], recursive=True, force=True)
 
     @allure.tag("Update")
-    @allure.story("Edit NFS Share Advanced Options")
+    @allure.story("Edit NFSv3 Share Advanced Options")
     def test_edit_nfs_share_advanced_options(self, nfs_data):
         """
-        This test edits the NFS share with advanced options.
+        This test edits the NFSv3 share with advanced options.
+
+        Test Steps:
+        1. Edit the NFSv3 share and configure it with advanced options:
+            - Authorized network address
+            - Authorized ip address
+            - Read only
+            - Maproot user
+            - Maproot group
+            - Security type
+        2. Navigate to the datasets page and verify that the share is attached to the dataset.
+        3. Navigate to the shares page and verify that the share is displayed on the shares page.
+        4. Re-edit the NFSv3 share and configure it with new advanced options:
+            - Unset read only
+            - Unset maproot user
+            - Unset maproot group
+            - Set mapall user
+            - Set mapall group
+        5. Navigate to the datasets page and verify that the share is attached to the dataset.
+        6. Navigate to the shares page and verify that the share is displayed on the shares page.
         """
 
         # Edit the NFS share with advanced options
@@ -111,10 +130,16 @@ class Test_Edit_NFS_Share:
         assert COMSHARE.is_share_enabled('nfs', nfs_data['share_page_path']) is True
 
     @allure.tag("Update")
-    @allure.story("Edit NFS Share With Existing Dataset")
+    @allure.story("Edit NFSv3 Share With Existing Dataset")
     def test_edit_nfs_share_with_existing_dataset(self, nfs_data):
         """
-        This test edits the NFS share with existing dataset.
+        This test edits the NFSv3 share with existing dataset.
+
+        Test Steps:
+        1. Edit the NFSv3 share and configure it with different existing dataset.
+        2. Navigate to the datasets page and verify that the share is attached to the new dataset.
+        3. Navigate to the shares page and edit the share and configure it with the previous dataset.
+        4. Navigate to the datasets page and verify that the share is attached to the previous dataset.
         """
 
         # Edit the NFS share
@@ -176,10 +201,20 @@ class Test_Edit_NFS_Share:
         assert DATASET.assert_dataset_roles_share_icon(nfs_data['dataset_name'], 'nfs') is True
 
     @allure.tag("Update")
-    @allure.story("NFS Share Edit Advanced UI Errors")
-    def test_nfs_share_advanced_ui_errors(self, nfs_data):
+    @allure.story("Edit NFSv3 Share Advanced UI Errors")
+    def test_nfsv3_share_advanced_ui_errors(self, nfs_data):
         """
         This test errors in the NFS share edit advanced UI.
+
+        Test Steps:
+        1. Edit the NFSv3 share and verify that the following errors are displayed when expected:
+            - Trigger the maproot user required error
+            - Trigger mapall user override error
+            - Trigger invalid ip error
+            - Trigger network is required error
+            - Trigger Authorized Hosts and IP addresses is required error
+        2. Verify share still in original state when editing is cancelled.
+        3. Navigate to the datasets page and verify that the share is attached to the dataset.
         """
 
         # Trigger the maproot user required error
@@ -248,10 +283,15 @@ class Test_Edit_NFS_Share:
         assert DATASET.assert_dataset_roles_share_icon(nfs_data['dataset_name'], 'nfs') is True
 
     @allure.tag("Update")
-    @allure.story("Disable NFS Share")
-    def test_nfs_share_disabled_share(self, nfs_data):
+    @allure.story("Disable NFSv3 Share")
+    def test_nfsv3_share_disabled_share(self, nfs_data):
         """
         This test disables the NFS share.
+
+        Test Steps:
+        1. Edit the NFSv3 share and disable it.
+        2. Navigate to the datasets page and verify that the share is still attached to the previous dataset.
+        3. Navigate to the shares page and verify that the share is still displayed on the shares page.
         """
 
         # Disable the NFS share
