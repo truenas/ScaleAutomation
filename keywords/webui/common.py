@@ -998,7 +998,7 @@ class Common:
         return file.is_file()
 
     @classmethod
-    def is_input_visible(cls, name) -> bool:
+    def is_input_visible(cls, name: str) -> bool:
         """
         This method returns True if the given input is visible, otherwise False.
 
@@ -1011,7 +1011,7 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.input_field(cls.convert_to_tag_format(name)))
 
     @classmethod
-    def is_link_visible(cls, name) -> bool:
+    def is_link_visible(cls, name: str) -> bool:
         """
         This method returns True if the given link is visible, otherwise False.
 
