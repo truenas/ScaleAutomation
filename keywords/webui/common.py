@@ -628,7 +628,7 @@ class Common:
         elif 'iscsi' in name:
             name = name.replace('iscsi', 'iscsitarget')
         elif 's.m.a.r.t.' in name:
-            name = name.replace('s.m.a.r.t.', 'smartd')
+            name = name.replace('s.m.a.r.t.', 'smart')
         elif 'smb' in name:
             name = name.replace('smb', 'cifs')
         else:

@@ -21,9 +21,9 @@ class Test_Read_Only_Admin_Services:
         This test verifies the read-only admin can see the services and their states.
         1. Verify the service for and name is visible
         2. Verify the service running toggle is state is visible.
-        3. Verify the service autostart checkbox is state is visible.
+        3. Verify the service autostart toggle is state is visible.
         """
-        assert Common.is_row_visible(service_name) is True
+        assert Common.is_row_visible(f'service-{service_name}') is True
         assert Common.is_text_visible(service_name) is True
         # Only verify the status is visible true or false does not matter.
         assert System_Services.is_service_running_toggle_enabled(service_name) in [True, False]
@@ -37,6 +37,6 @@ class Test_Read_Only_Admin_Services:
         2. Verify the service autostart checkbox is restricted
         3. Verify the service edit button is restricted
         """
-        Common.assert_toggle_is_restricted(f'{service_name}-service')
-        Common.assert_checkbox_is_restricted(f'{service_name}-service')
-        Common.assert_button_is_restricted(f'{service_name}-edit')
+        Common.assert_toggle_is_restricted(f'running-service-{service_name}-row-toggle')
+        Common.assert_checkbox_is_restricted(f'start-automatically-service-{service_name}-row-toggle')
+        Common.assert_button_is_restricted(f'service-{service_name}-edit-row-action')
