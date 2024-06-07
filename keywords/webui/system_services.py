@@ -286,7 +286,7 @@ class System_Services:
         if COM.is_toggle_enabled(f'running-service-{service_backend}-row-toggle') is not state:
             COM.set_toggle_by_state(f'running-service-{service_backend}-row-toggle', state)
             assert COM.assert_progress_spinner_not_visible() is True
-            if state is False:
+            if not state:
                 COM.assert_confirm_dialog()
             i = 0
             assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(f'running-service-{service_backend}-row-toggle')) is True
