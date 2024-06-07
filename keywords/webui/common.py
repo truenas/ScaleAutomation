@@ -84,10 +84,11 @@ class Common:
         Example:
             - Common.assert_button_is_restricted('delete')
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field_locked(name)) is True
+        xpath_name = cls.convert_to_tag_format(name)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field_locked(xpath_name)) is True
         try:
             # At this point the button is visible a Timeout or ElementClickIntercepted exception will be thrown.
-            cls.click_button(name, 1)
+            cls.click_button(xpath_name, 1)
         except (ElementClickInterceptedException, TimeoutException):
             return True
         return False
@@ -103,9 +104,10 @@ class Common:
         Example:
             - Common.assert_checkbox_is_restricted('myCheckbox')
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(name)) is True
+        xpath_name = cls.convert_to_tag_format(name)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(xpath_name)) is True
         try:
-            cls.set_checkbox(name)
+            cls.set_checkbox(xpath_name)
         except ElementClickInterceptedException:
             return True
         return False
@@ -249,10 +251,11 @@ class Common:
         Example:
             - Common.assert_button_is_restricted('delete')
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.link_field_locked(name)) is True
+        xpath_name = cls.convert_to_tag_format(name)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.link_field_locked(xpath_name)) is True
         try:
             # At this point the link is visible a Timeout or ElementClickIntercepted exception will be thrown.
-            cls.click_link(name)
+            cls.click_link(xpath_name)
         except (ElementClickInterceptedException, TimeoutException):
             return True
         return False
@@ -404,9 +407,10 @@ class Common:
         Example:
             - Common.assert_toggle_is_restricted()
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field_locked(name)) is True
+        xpath_name = cls.convert_to_tag_format(name)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field_locked(xpath_name)) is True
         try:
-            cls.click_on_element(xpaths.common_xpaths.toggle_field(name))
+            cls.click_on_element(xpaths.common_xpaths.toggle_field(xpath_name))
         except (ElementClickInterceptedException, TimeoutException):
             return True
         return False
