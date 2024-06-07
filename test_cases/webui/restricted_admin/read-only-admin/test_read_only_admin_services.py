@@ -38,5 +38,5 @@ class Test_Read_Only_Admin_Services:
         3. Verify the service edit button is restricted
         """
         Common.assert_toggle_is_restricted(f'running-service-{service_name}-row-toggle')
-        Common.assert_checkbox_is_restricted(f'start-automatically-service-{service_name}-row-toggle')
+        Common.assert_toggle_is_restricted(f'start-automatically-service-{service_name}-row-toggle')
         Common.assert_button_is_restricted(f'service-{service_name}-edit-row-action')

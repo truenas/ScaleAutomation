@@ -625,12 +625,8 @@ class Common:
         name = name.lower()
         if name.__contains__('ad03\\'):
             name = name.replace('ad03\\', 'ad-03-')
-        elif 'iscsi' in name:
-            name = name.replace('iscsi', 'iscsitarget')
         elif 's.m.a.r.t.' in name:
             name = name.replace('s.m.a.r.t.', 'smart')
-        elif 'smb' in name:
-            name = name.replace('smb', 'cifs')
         else:
             # this split the name with numbers
             name_list = list(filter(None, re.split(r'(\d+)', name)))
