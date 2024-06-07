@@ -105,7 +105,7 @@ class Test_Read_Only_Admin_NFS_Share:
 
         # Verify the read-only admin is not able to disable and enable an NFS share
         assert Common_Shares.assert_share_card_displays('nfs') is True
-        assert Common_Shares.assert_card_share_enabled_toggle_is_locked_and_disabled('nfs', data['nfs_xpath']) is True
+        assert Common.assert_toggle_is_restricted(f'enabled-nfs-share-{data['nfs_xpath']}-row-toggle') is True
 
     @allure.tag('Delete')
     @allure.story("Read Only Admin Is Not Able To Delete An NFS Share On The NFS Card")
@@ -189,4 +189,4 @@ class Test_Read_Only_Admin_NFS_Share:
         assert Common_Shares.assert_share_card_displays('nfs') is True
         Common_Shares.click_share_card_header_link('nfs')
         assert NFS.assert_sharing_nfs_page_header() is True
-        assert NFS.assert_share_enabled_toggle_is_restricted_on_nfs_page(data['nfs_xpath']) is True
+        assert Common.assert_toggle_is_restricted(f'enabled-nfs-share-{data['nfs_xpath']}-row-toggle') is True
