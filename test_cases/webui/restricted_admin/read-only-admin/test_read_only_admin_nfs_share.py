@@ -189,4 +189,4 @@ class Test_Read_Only_Admin_NFS_Share:
         assert Common_Shares.assert_share_card_displays('nfs') is True
         Common_Shares.click_share_card_header_link('nfs')
         assert NFS.assert_sharing_nfs_page_header() is True
-        assert Common.assert_toggle_is_restricted(f'enabled-nfs-share-{data['nfs_xpath']}-row-toggle') is True
+        assert Common.assert_toggle_is_restricted(f'enabled-nfs-share-{data["nfs_xpath"]}-row-toggle') is True
