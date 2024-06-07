@@ -80,7 +80,7 @@ class Test_Read_Only_Admin_SMB_Share:
         """
         # Verify the read-only admin is not able to disable and enable an SMB share
         assert Common_Shares.assert_share_card_displays('smb') is True
-        assert Common.assert_toggle_is_restricted(f'enabled-card-smb-share-{data['smb_xpath']}-row-toggle') is True
+        assert Common.assert_toggle_is_restricted(f'enabled-card-smb-share-{data["smb_xpath"]}-row-toggle') is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Modify An SMB Share On The SMB Card")
