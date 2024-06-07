@@ -87,12 +87,7 @@ class Common:
             - Common.assert_button_is_restricted('delete')
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field_locked(name)) is True
-        try:
-            # At this point the button is visible a Timeout or ElementClickIntercepted exception will be thrown.
-            cls.click_button(name, 1)
-        except (ElementClickInterceptedException, TimeoutException):
-            return True
-        return False
+        return cls.assert_element_is_restricted(xpaths.common_xpaths.button_field(name))
 
     @classmethod
     def assert_checkbox_is_restricted(cls, name: str) -> bool:
@@ -106,11 +101,7 @@ class Common:
             - Common.assert_checkbox_is_restricted('myCheckbox')
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(name)) is True
-        try:
-            cls.set_checkbox(name)
-        except ElementClickInterceptedException:
-            return True
-        return False
+        return cls.assert_element_is_restricted(xpaths.common_xpaths.checkbox_field(name))
 
     @classmethod
     def assert_confirm_dialog(cls) -> None:
@@ -252,12 +243,7 @@ class Common:
             - Common.assert_button_is_restricted('delete')
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.link_field_locked(name)) is True
-        try:
-            # At this point the link is visible a Timeout or ElementClickIntercepted exception will be thrown.
-            cls.click_link(name)
-        except (ElementClickInterceptedException, TimeoutException):
-            return True
-        return False
+        return cls.assert_element_is_restricted(xpaths.common_xpaths.link_field(name))
 
     @classmethod
     def assert_page_header(cls, header_text: str, timeout: int = shared_config['WAIT']) -> bool:
@@ -407,11 +393,7 @@ class Common:
             - Common.assert_toggle_is_restricted()
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field_locked(name)) is True
-        try:
-            cls.click_on_element(xpaths.common_xpaths.toggle_field(name))
-        except (ElementClickInterceptedException, TimeoutException):
-            return True
-        return False
+        return cls.assert_element_is_restricted(xpaths.common_xpaths.toggle_field(name))
 
     @classmethod
     def assert_tree_is_expanded(cls, name: str) -> bool:
