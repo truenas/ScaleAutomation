@@ -4,10 +4,8 @@ import xpaths
 from pathlib import Path
 
 from selenium.common.exceptions import (
-    NoSuchElementException,
     TimeoutException,
     ElementClickInterceptedException,
-    StaleElementReferenceException
 )
 from selenium.webdriver.common.keys import Keys
 
@@ -86,10 +84,11 @@ class Common:
         Example:
             - Common.assert_button_is_restricted('delete')
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field_locked(name)) is True
+        xpath_name = cls.convert_to_tag_format(name)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field_locked(xpath_name)) is True
         try:
             # At this point the button is visible a Timeout or ElementClickIntercepted exception will be thrown.
-            cls.click_button(name, 1)
+            cls.click_button(xpath_name, 1)
         except (ElementClickInterceptedException, TimeoutException):
             return True
         return False
@@ -105,9 +104,10 @@ class Common:
         Example:
             - Common.assert_checkbox_is_restricted('myCheckbox')
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(name)) is True
+        xpath_name = cls.convert_to_tag_format(name)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(xpath_name)) is True
         try:
-            cls.set_checkbox(name)
+            cls.set_checkbox(xpath_name)
         except ElementClickInterceptedException:
             return True
         return False
@@ -251,10 +251,11 @@ class Common:
         Example:
             - Common.assert_button_is_restricted('delete')
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.link_field_locked(name)) is True
+        xpath_name = cls.convert_to_tag_format(name)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.link_field_locked(xpath_name)) is True
         try:
             # At this point the link is visible a Timeout or ElementClickIntercepted exception will be thrown.
-            cls.click_link(name)
+            cls.click_link(xpath_name)
         except (ElementClickInterceptedException, TimeoutException):
             return True
         return False
@@ -406,9 +407,10 @@ class Common:
         Example:
             - Common.assert_toggle_is_restricted()
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field_locked(name)) is True
+        xpath_name = cls.convert_to_tag_format(name)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field_locked(xpath_name)) is True
         try:
-            cls.click_on_element(xpaths.common_xpaths.toggle_field(name))
+            cls.click_on_element(xpaths.common_xpaths.toggle_field(xpath_name))
         except (ElementClickInterceptedException, TimeoutException):
             return True
         return False
@@ -638,8 +640,15 @@ class Common:
         Example:
             - Common.convert_to_tag_format('Element Name')
         """
-        if name.__contains__('AD03\\'):
-            name = name.replace('AD03\\', 'AD-03-')
+        name = name.lower()
+        if name.__contains__('ad03\\'):
+            name = name.replace('ad03\\', 'ad-03-')
+        elif 'iscsi' in name:
+            name = name.replace('iscsi', 'iscsitarget')
+        elif 's.m.a.r.t.' in name:
+            name = name.replace('s.m.a.r.t.', 'smartd')
+        elif 'smb' in name:
+            name = name.replace('smb', 'cifs')
         else:
             # this split the name with numbers
             name_list = list(filter(None, re.split(r'(\d+)', name)))
@@ -652,7 +661,7 @@ class Common:
         name = name.replace(' ', '-')
         name = name.replace('---', '-')
         name = name.replace('--', '-')
-        return name.lower()
+        return name
 
     @classmethod
     def create_non_admin_user_by_api(cls, name: str, fullname: str, password: str, smb_auth: str = 'False') -> None:
@@ -954,7 +963,7 @@ class Common:
         try:
             WebUI.wait_until_clickable(xpath, timeout)
         except TimeoutException:
-            print("TimeoutException occurred trying to find object: " + xpath)
+            print(f"TimeoutException occurred trying to find object: {xpath}")
             return False
         else:
             return True
@@ -998,9 +1007,9 @@ class Common:
         Example:
             - Common.is_file_downloaded('C:/path', 'myfile.txt')
         """
-        print("@@@ PATH: " + download_path)
-        file = Path(download_path + '/' + filename)
-        print("@@@ FILE: " + str(file))
+        print(f"@@@ PATH: {download_path}")
+        file = Path(f'{download_path}/{filename}')
+        print(f"@@@ FILE: {str(file)}")
         i = 0
         while file.is_file() is False:
             i = i + 1
@@ -1047,6 +1056,19 @@ class Common:
             - Common.is_save_button_disabled()
         """
         return cls.get_element_property(xpaths.common_xpaths.button_field('save'), 'disabled')
+
+    @classmethod
+    def is_row_visible(cls, name: str) -> bool:
+        """
+        This method returns True or False whether the given row is visible.
+
+        :param name: name of the row.
+        :return: True if the given row is visible, otherwise False.
+
+        Example:
+            - Common.is_row_visible('save')
+        """
+        return cls.is_visible(f'//*[@data-test="row-{cls.convert_to_tag_format(name)}"]')
 
     @classmethod
     def is_select_visible(cls, name: str) -> bool:
@@ -1129,24 +1151,19 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.toggle_field(cls.convert_to_tag_format(name)))
 
     @classmethod
-    def is_visible(cls, xpath: str) -> bool:
+    def is_visible(cls, xpath: str, wait: int = shared_config['SHORT_WAIT']) -> bool:
         """
         This method verifies if the object identified by the given xpath is visible
 
         :param xpath: the xpath of the object to find
+        :param wait: the time in seconds to wait for the object to be visible
         :return: true if the object is visible
 
         Example:
             - Common.is_visible('myXpath')
+            - Common.is_visible('myXpath', shared_config['MEDIUM_WAIT'])
         """
-        obj = None
-        result = False
-        try:
-            obj = WebUI.xpath(xpath)
-            result = obj.is_displayed()
-        except (NoSuchElementException, StaleElementReferenceException):
-            return False
-        return result
+        return WebUI.wait_until_visible(xpath, wait)
 
     @classmethod
     def login_to_truenas(cls, user: str, password: str) -> None:
@@ -1603,5 +1620,5 @@ class Common:
                 pause = 86400
 
         while cls.get_current_time_element(time) < value:
-            print("@@@ WAIT FOR: " + str(cls.get_current_time_element(time)) + " to be: " + str(value))
+            print(f"@@@ WAIT FOR: {str(cls.get_current_time_element(time))} to be: {value}")
             WebUI.delay(pause)

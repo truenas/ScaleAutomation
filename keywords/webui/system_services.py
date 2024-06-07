@@ -69,7 +69,7 @@ class System_Services:
         :return: returns the state of the auto start checkbox of the given service.
         """
         service_backend = cls.return_backend_service_name(service, True)
-        assert (COM.is_visible(xpaths.common_xpaths.checkbox_field(service_backend)))
+        assert COM.is_visible(xpaths.common_xpaths.checkbox_field(service_backend)) is True
         return COM.is_checked(service_backend)
 
     @classmethod
@@ -112,7 +112,7 @@ class System_Services:
             case _:
                 pass
         if append:
-            returned_name = returned_name+'-service'
+            returned_name += '-service'
         return returned_name
 
     @classmethod
@@ -282,7 +282,7 @@ class System_Services:
         if COM.is_toggle_enabled(service_backend) is not state:
             COM.set_toggle_by_state(service_backend, state)
             assert COM.assert_progress_spinner_not_visible() is True
-            if state is False:
+            if not state:
                 COM.assert_confirm_dialog()
             i = 0
             assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(service_backend)) is True
