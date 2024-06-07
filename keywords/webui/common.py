@@ -1040,7 +1040,7 @@ class Common:
         return cls.get_element_property(xpaths.common_xpaths.button_field('save'), 'disabled')
 
     @classmethod
-    def is_row_visible(cls, name) -> bool:
+    def is_row_visible(cls, name: str) -> bool:
         """
         This method returns True or False whether the given row is visible.
 
