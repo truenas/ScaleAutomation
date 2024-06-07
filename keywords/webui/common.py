@@ -86,12 +86,7 @@ class Common:
         """
         xpath_name = cls.convert_to_tag_format(name)
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field_locked(xpath_name)) is True
-        try:
-            # At this point the button is visible a Timeout or ElementClickIntercepted exception will be thrown.
-            cls.click_button(xpath_name, 1)
-        except (ElementClickInterceptedException, TimeoutException):
-            return True
-        return False
+        return cls.assert_element_is_restricted(xpaths.common_xpaths.button_field(xpath_name))
 
     @classmethod
     def assert_checkbox_is_restricted(cls, name: str) -> bool:
@@ -106,11 +101,7 @@ class Common:
         """
         xpath_name = cls.convert_to_tag_format(name)
         assert WebUI.wait_until_visible(xpaths.common_xpaths.checkbox_field_locked(xpath_name)) is True
-        try:
-            cls.set_checkbox(xpath_name)
-        except ElementClickInterceptedException:
-            return True
-        return False
+        return cls.assert_element_is_restricted(xpaths.common_xpaths.checkbox_field(xpath_name))
 
     @classmethod
     def assert_confirm_dialog(cls) -> None:
@@ -253,12 +244,7 @@ class Common:
         """
         xpath_name = cls.convert_to_tag_format(name)
         assert WebUI.wait_until_visible(xpaths.common_xpaths.link_field_locked(xpath_name)) is True
-        try:
-            # At this point the link is visible a Timeout or ElementClickIntercepted exception will be thrown.
-            cls.click_link(xpath_name)
-        except (ElementClickInterceptedException, TimeoutException):
-            return True
-        return False
+        return cls.assert_element_is_restricted(xpaths.common_xpaths.link_field(xpath_name))
 
     @classmethod
     def assert_page_header(cls, header_text: str, timeout: int = shared_config['WAIT']) -> bool:
@@ -409,11 +395,7 @@ class Common:
         """
         xpath_name = cls.convert_to_tag_format(name)
         assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field_locked(xpath_name)) is True
-        try:
-            cls.click_on_element(xpaths.common_xpaths.toggle_field(xpath_name))
-        except (ElementClickInterceptedException, TimeoutException):
-            return True
-        return False
+        return cls.assert_element_is_restricted(xpaths.common_xpaths.toggle_field(xpath_name))
 
     @classmethod
     def assert_tree_is_expanded(cls, name: str) -> bool:
@@ -1192,8 +1174,6 @@ class Common:
         cls.click_button('log-out')
         assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('power-menu'))
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('log-in'))
-        # Let the login page settle
-        WebUI.delay(2)
 
     @classmethod
     def navigate_to_login_screen(cls, ip: str) -> None:
@@ -1623,7 +1603,5 @@ class Common:
         if (value % pause) == 0:
             value = 1
         while cls.get_current_time_element(time) < value:
-            print(
-                f"@@@ WAIT FOR: {str(cls.get_current_time_element(time))} to be: {value}"
-            )
+            print(f"@@@ WAIT FOR: {str(cls.get_current_time_element(time))} to be: {value}")
             WebUI.delay(pause)
