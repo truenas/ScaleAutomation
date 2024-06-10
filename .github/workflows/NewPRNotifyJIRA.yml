@@ -1,4 +1,4 @@
-name: Comment on PR in Jira
+name: New PR Created - Notify JIRA
 
 on:
   pull_request:
