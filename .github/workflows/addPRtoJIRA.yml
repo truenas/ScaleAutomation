@@ -64,7 +64,7 @@ jobs:
           exit 2
         fi
 
-       # Post comment to Jira with detailed response
+        # Post comment to Jira with detailed response
         RESPONSE=$(curl -s -i -X POST \
           -H "Content-Type: application/json" \
           -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
