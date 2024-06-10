@@ -47,18 +47,18 @@ class Test_Read_Only_Admin_iSCSI_Share:
         assert Common_Shares.assert_iscsi_target_is_visible(data['iscsi_name_xpath']) is True
 
     @allure.tag('Update')
-    @allure.story("Read Only Admin Is Not Able To Enable Or Disable The iSCSI Service On The iSCSI Card")
-    def test_read_only_is_not_able_enable_or_disable_iscsi_service_on_the_iscsi_card(self):
+    @allure.story("Read Only Admin Is Not Able To Start Or Stop The iSCSI Service On The iSCSI Card")
+    def test_read_only_is_not_able_start_or_stop_iscsi_service_on_the_iscsi_card(self):
         """
-        This test verifies the read-only admin is not able to enable or disable the NFS service on the iSCSI card.
+        This test verifies the read-only admin is not able to start or stop the service on the iSCSI card.
         """
 
-        # Verify the read-only admin is not able to disable the NFS service
+        # Verify the read-only admin is not able to stop the service
         assert Common_Shares.assert_share_card_displays('iscsi') is True
         assert Common_Shares.assert_disable_share_service_is_restricted('iscsi') is True
         assert Common_Shares.is_share_service_running('iscsitarget') is True
 
-        # Verify the read-only admin is not able to enable the NFS service
+        # Verify the read-only admin is not able to start the service
         API_POST.stop_service('iscsitarget')
         assert Common_Shares.assert_share_card_displays('iscsi') is True
         assert Common_Shares.assert_enable_share_service_is_restricted('iscsi') is True
