@@ -27,9 +27,6 @@ jobs:
         # Extract Jira issue key from the PR title or branch name
         ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'TEN-[0-9]+')
 
-        # Debugging: Print the extracted ISSUE_KEY
-        echo "Extracted ISSUE_KEY: $ISSUE_KEY"
-
         if [ -z "$ISSUE_KEY" ]; then
           echo "No Jira issue key found in the PR title"
           exit 1
@@ -38,8 +35,7 @@ jobs:
         fi
 
         COMMENT="Pull Request Created: [$PR_TITLE]($PR_URL)"
-        echo "Comment Constructed: $COMMENT"
-
+        
         # Create the JSON payload
         PAYLOAD=$(cat <<EOF
         {
@@ -47,7 +43,7 @@ jobs:
         }
         EOF
         )
-        echo "Payload Created: $PAYLOAD"
+
         # Post comment to Jira
         RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
           -H "Content-Type: application/json" \
