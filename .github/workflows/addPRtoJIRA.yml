@@ -24,7 +24,7 @@ jobs:
       env:
         JIRA_USERNAME: ${{ secrets.JIRA_USER_EMAIL }}
         JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-        JIRA_URL: ${{ secrets.JIRA_BAS_URL }}
+        JIRA_URL: ${{ secrets.JIRA_BASE_URL }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         PR_TITLE="${{ github.event.pull_request.title }}"
