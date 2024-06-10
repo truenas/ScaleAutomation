@@ -32,8 +32,12 @@ jobs:
         else
           echo "Jira issue key found: $ISSUE_KEY"
         fi
-
-        COMMENT="Pull Request Closed (not merged): [$PR_TITLE]($PR_URL) - Target Branch: $TARGET_BRANCH"
+      
+        if [[ "${{ github.event.pull_request.merged }}" == "true" ]]; then
+            COMMENT="Pull Request Closed - MERGED: [${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }}) - Target Branch: ${{ github.event.pull_request.base.ref }}"
+          else
+            COMMENT="Pull Request Closed (not merged): [${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }}) - Target Branch: ${{ github.event.pull_request.base.ref }}"
+        fi
         
         # Create the JSON payload
         PAYLOAD=$(cat <<EOF
