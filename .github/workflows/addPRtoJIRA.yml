@@ -25,7 +25,7 @@ jobs:
         echo "PR_URL: $PR_URL"
 
         # Extract Jira issue key from the PR title or branch name
-        ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'TE-[0-9]+')
+        ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'TEN-[0-9]+')
 
         # Debugging: Print the extracted ISSUE_KEY
         echo "Extracted ISSUE_KEY: $ISSUE_KEY"
