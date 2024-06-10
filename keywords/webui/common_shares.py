@@ -60,7 +60,7 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_configure_button_is_restricted()
         """
-        return COM.assert_button_is_restricted('iscsi-share-configure')
+        return COM.assert_element_is_restricted('//*[@data-test="button-iscsi-share-configure"]')
 
     @classmethod
     def assert_card_iscsi_delete_button_is_restricted(cls, target_name: str) -> bool:
@@ -73,7 +73,7 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_iscsi_delete_button_is_restricted('target-1')
         """
-        return COM.assert_button_is_restricted(f'card-iscsi-target-{target_name}-delete-row-action')
+        return COM.assert_element_is_restricted(f'//*[@data-test="button-card-iscsi-target-{target_name}-delete-row-action"]')
 
     @classmethod
     def assert_card_iscsi_wizard_button_is_restricted(cls):
@@ -85,7 +85,7 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_iscsi_wizard_button_is_restricted()
         """
-        return COM.assert_button_is_restricted('iscsi-share-wizard')
+        return COM.assert_element_is_restricted('//*[@data-test="button-iscsi-share-wizard"]')
 
     @classmethod
     def assert_card_share_delete_button_is_restricted(cls, share_type: str, name: str) -> bool:
@@ -161,7 +161,6 @@ class Common_Shares:
            - Common_Shares.assert_disable_share_service_is_restricted('smb')
         """
         COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(share_type))
-        share_type = SS.return_backend_service_name(share_type, False)
         result = COM.assert_button_is_restricted(f'{share_type}-actions-menu-turn-off-service')
         WebUI.send_key('esc')
         return result
@@ -178,7 +177,6 @@ class Common_Shares:
            - Common_Shares.assert_enable_share_service_is_restricted('smb')
         """
         COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(share_type))
-        share_type = SS.return_backend_service_name(share_type, False)
         result = COM.assert_button_is_restricted(f'{share_type}-actions-menu-turn-on-service')
         WebUI.send_key('esc')
         return result
@@ -667,7 +665,6 @@ class Common_Shares:
         Example:
            - Common_Shares.click_edit_iscsi_target('target-1')
         """
-        target_name = COM.convert_to_tag_format(target_name)
         COM.click_button(f'card-iscsi-target-{target_name}-edit-row-action')
 
     @classmethod

@@ -47,18 +47,18 @@ class Test_Read_Only_Admin_iSCSI_Share:
         assert Common_Shares.assert_iscsi_target_is_visible(data['iscsi_name_xpath']) is True
 
     @allure.tag('Update')
-    @allure.story("Read Only Admin Is Not Able To Enable Or Disable The iSCSI Service On The iSCSI Card")
-    def test_read_only_is_not_able_enable_or_disable_iscsi_service_on_the_iscsi_card(self, data):
+    @allure.story("Read Only Admin Is Not Able To Start Or Stop The iSCSI Service On The iSCSI Card")
+    def test_read_only_is_not_able_start_or_stop_iscsi_service_on_the_iscsi_card(self):
         """
-        This test verifies the read-only admin is not able to enable or disable the NFS service on the iSCSI card.
+        This test verifies the read-only admin is not able to start or stop the service on the iSCSI card.
         """
 
-        # Verify the read-only admin is not able to disable the NFS service
+        # Verify the read-only admin is not able to stop the service
         assert Common_Shares.assert_share_card_displays('iscsi') is True
         assert Common_Shares.assert_disable_share_service_is_restricted('iscsi') is True
         assert Common_Shares.is_share_service_running('iscsitarget') is True
 
-        # Verify the read-only admin is not able to enable the NFS service
+        # Verify the read-only admin is not able to start the service
         API_POST.stop_service('iscsitarget')
         assert Common_Shares.assert_share_card_displays('iscsi') is True
         assert Common_Shares.assert_enable_share_service_is_restricted('iscsi') is True
@@ -66,7 +66,7 @@ class Test_Read_Only_Admin_iSCSI_Share:
 
     @allure.tag('Create')
     @allure.story("Read Only Admin Is Not Able To Create An iSCSI Share On The iSCSI Card")
-    def test_read_only_admin_is_not_able_to_create_an_iscsi_shares_on_the_iscsi_card(self, data):
+    def test_read_only_admin_is_not_able_to_create_an_iscsi_shares_on_the_iscsi_card(self):
         """
         This test verifies the read-only admin is not able to create and modify an iSCSI share on the iSCSI card.
         """
@@ -123,7 +123,7 @@ class Test_Read_Only_Admin_iSCSI_Share:
 
     @allure.tag('Create')
     @allure.story("Read Only Admin Is Not Able To Use The iSCSI Wizard On The Sharing iSCSI Page")
-    def test_read_only_admin_is_not_able_to_use_the_iscsi_wizard_on_the_sharing_iscsi_page(self, data):
+    def test_read_only_admin_is_not_able_to_use_the_iscsi_wizard_on_the_sharing_iscsi_page(self):
         """
         This test verifies the read-only admin is not able to use the iSCSI wizard on the Sharing iSCSI page.
         """
@@ -137,7 +137,7 @@ class Test_Read_Only_Admin_iSCSI_Share:
     @allure.tag('Create')
     @allure.story("Read Only Admin Is Not Able To Use The Add Button On a Tab Of The Sharing iSCSI Page")
     @pytest.mark.parametrize('tab', ['Portals', 'Initiators Groups',  'Authorized Access', 'Targets', 'Extents', 'Associated Targets'])
-    def test_read_only_admin_is_not_able_to_click_add_on_a_tab_of_the_sharing_iscsi_page(self, data, tab):
+    def test_read_only_admin_is_not_able_to_click_add_on_a_tab_of_the_sharing_iscsi_page(self, tab):
         """
         This test verifies a read-only admin is not able to click add on a tab of the Sharing iSCSI page.
         """
@@ -194,7 +194,7 @@ class Test_Read_Only_Admin_iSCSI_Share:
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Save A Target Global Configuration On The Sharing iSCSI Page")
-    def test_read_only_admin_is_not_able_to_save_a_target_global_configuration_on_the_sharing_iscsi_page(self, data):
+    def test_read_only_admin_is_not_able_to_save_a_target_global_configuration_on_the_sharing_iscsi_page(self):
         """
         This test verifies a read-only admin is not able to save a Target Global Configuration on the Sharing iSCSI page.
         """
