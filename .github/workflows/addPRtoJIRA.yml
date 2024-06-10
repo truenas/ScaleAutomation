@@ -1,0 +1,63 @@
+name: Comment on PR in Jira
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  jira_comment:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Axios
+      run: npm install axios
+
+    - name: Comment on Jira ticket
+      env:
+        JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        JIRA_URL: ${{ secrets.JIRA_URL }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        PR_TITLE="${{ github.event.pull_request.title }}"
+        PR_URL="${{ github.event.pull_request.html_url }}"
+
+        # Extract Jira issue key from the PR title or branch name
+        ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'TEN-[0-9]+')
+
+        if [ -z "$ISSUE_KEY" ]; then
+          echo "No Jira issue key found in the PR title"
+          exit 0
+        fi
+
+        COMMENT="Pull Request Created: [$PR_TITLE]($PR_URL)"
+
+        # Create the JSON payload
+        PAYLOAD=$(cat <<EOF
+        {
+          "body": "$COMMENT"
+        }
+        EOF
+        )
+
+        # Post comment to Jira
+        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+          -H "Content-Type: application/json" \
+          -u $JIRA_USERNAME:$JIRA_API_TOKEN \
+          --data "$PAYLOAD" \
+          "$JIRA_URL/rest/api/2/issue/$ISSUE_KEY/comment")
+
+        if [ "$RESPONSE" -eq 201 ]; then
+          echo "Comment added successfully"
+        else
+          echo "Failed to add comment, response code: $RESPONSE"
+          exit 1
+        fi
