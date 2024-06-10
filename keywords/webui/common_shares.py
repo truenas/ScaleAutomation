@@ -60,7 +60,7 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_configure_button_is_restricted()
         """
-        return COM.assert_button_is_restricted('iscsi-share-configure')
+        return COM.assert_element_is_restricted('//*[@data-test="button-iscsi-share-configure"]')
 
     @classmethod
     def assert_card_iscsi_delete_button_is_restricted(cls, target_name: str) -> bool:
@@ -73,7 +73,7 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_iscsi_delete_button_is_restricted('target-1')
         """
-        return COM.assert_button_is_restricted(f'card-iscsi-target-{target_name}-delete-row-action')
+        return COM.assert_element_is_restricted(f'//*[@data-test="button-card-iscsi-target-{target_name}-delete-row-action"]')
 
     @classmethod
     def assert_card_iscsi_wizard_button_is_restricted(cls):
@@ -85,7 +85,7 @@ class Common_Shares:
         Example:
            - Common_Shares.assert_iscsi_wizard_button_is_restricted()
         """
-        return COM.assert_button_is_restricted('iscsi-share-wizard')
+        return COM.assert_element_is_restricted('//*[@data-test="button-iscsi-share-wizard"]')
 
     @classmethod
     def assert_card_share_delete_button_is_restricted(cls, share_type: str, name: str) -> bool:
@@ -665,7 +665,6 @@ class Common_Shares:
         Example:
            - Common_Shares.click_edit_iscsi_target('target-1')
         """
-        target_name = COM.convert_to_tag_format(target_name)
         COM.click_button(f'card-iscsi-target-{target_name}-edit-row-action')
 
     @classmethod

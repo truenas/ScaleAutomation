@@ -145,7 +145,7 @@ class iSCSI:
                 tab = 'initiator'
             case _:
                 tab = tab_name.replace(' ', '-').lower().rstrip('s')
-        return COM.assert_button_is_restricted(f'iscsi-{tab}-{row_item}-delete-row-action')
+        return COM.assert_element_is_restricted(f'//*[@data-test="button-iscsi-{tab}-{row_item}-delete-row-action"]')
 
     @classmethod
     def click_on_the_tab_row_item_edit_button(cls, tab_name: str, row_item: str) -> None:
