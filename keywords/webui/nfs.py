@@ -173,18 +173,6 @@ class NFS:
         return COM.assert_button_is_restricted(f'nfs-share-{share_xpath}-delete-row-action')
 
     @classmethod
-    def assert_share_enabled_toggle_is_restricted_on_nfs_page(cls, share_xpath: str) -> bool:
-        """
-        This method returns True if enabled NFS share button is locked and not clickable on the Sharing NFS page.
-
-        :return: True if enabled NFS share button is locked and not clickable, otherwise it returns False.
-
-        Example:
-            - NFS.assert_nfs_enabled_button_is_restricted()
-        """
-        return COM.assert_toggle_is_restricted(f'enabled-nfs-share-{share_xpath}-row-toggle')
-
-    @classmethod
     def assert_sharing_nfs_page_header(cls) -> bool:
         """
         This method verifies that the sharing NFS page header is visible.

@@ -171,7 +171,7 @@ class Common:
         Example:
             - Common.assert_element_is_restricted('delete')
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(xpath)) is True
+        assert WebUI.wait_until_visible(xpath) is True
         try:
             # At this point the element is visible a Timeout or ElementClickIntercepted exception will be thrown.
             cls.click_on_element(xpath, 1)
