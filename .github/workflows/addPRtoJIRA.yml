@@ -4,8 +4,6 @@ on:
   pull_request:
     types:
       - opened
-      - synchronize
-
 jobs:
   extract_issue_key:
     runs-on: ubuntu-latest
@@ -23,6 +21,7 @@ jobs:
       run: |
         PR_TITLE="${{ github.event.pull_request.title }}"
         PR_URL="${{ github.event.pull_request.html_url }}"
+        TARGET_BRANCH="${{ github.event.pull_request.base.ref }}"
 
         # Extract Jira issue key from the PR title or branch name
         ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'TEN-[0-9]+')
@@ -34,7 +33,7 @@ jobs:
           echo "Jira issue key found: $ISSUE_KEY"
         fi
 
-        COMMENT="Pull Request Created: [$PR_TITLE]($PR_URL)"
+        COMMENT="Pull Request Created: [$PR_TITLE]($PR_URL) - Target Branch: $TARGET_BRANCH"
         
         # Create the JSON payload
         PAYLOAD=$(cat <<EOF
