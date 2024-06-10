@@ -1,6 +1,5 @@
 name: Comment on PR in Jira
 
-
 on:
   pull_request:
     types:
@@ -27,6 +26,9 @@ jobs:
         # Extract Jira issue key from the PR title or branch name
         ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'TEN-[0-9]+')
 
+        # Debugging: Print the extracted ISSUE_KEY
+        echo "Extracted ISSUE_KEY: $ISSUE_KEY"
+
         if [ -z "$ISSUE_KEY" ]; then
           echo "No Jira issue key found in the PR title"
           exit 1
@@ -36,6 +38,9 @@ jobs:
 
         COMMENT="Pull Request Created: [$PR_TITLE]($PR_URL)"
         
+        # Debugging: Print the COMMENT
+        echo "Comment to be posted: $COMMENT"
+        
         # Create the JSON payload
         PAYLOAD=$(cat <<EOF
         {
@@ -44,12 +49,24 @@ jobs:
         EOF
         )
 
+        # Debugging: Print the PAYLOAD
+        echo "Payload: $PAYLOAD"
+
+        # Ensure JIRA_USERNAME, JIRA_API_TOKEN, and JIRA_URL are set
+        if [ -z "$JIRA_USERNAME" ] || [ -z "$JIRA_API_TOKEN" ] || [ -z "$JIRA_URL" ]; then
+          echo "JIRA_USERNAME, JIRA_API_TOKEN, or JIRA_URL is not set"
+          exit 2
+        fi
+
         # Post comment to Jira
         RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
           -H "Content-Type: application/json" \
-          -u $JIRA_USERNAME:$JIRA_API_TOKEN \
+          -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
           --data "$PAYLOAD" \
           "$JIRA_URL/rest/api/2/issue/$ISSUE_KEY/comment")
+
+        # Debugging: Print the RESPONSE
+        echo "Response code: $RESPONSE"
 
         if [ "$RESPONSE" -eq 201 ]; then
           echo "Comment added successfully"
