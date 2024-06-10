@@ -31,12 +31,16 @@ jobs:
       run: |
         PR_TITLE="${{ github.event.pull_request.title }}"
         PR_URL="${{ github.event.pull_request.html_url }}"
-
-        # Extract Jira issue key from the PR title or branch name
-        #  ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'TEN-[0-9]+')
-        ISSUE_KEY="TEN-1344" 
         
-        echo "Confirmed1"
+        # Debugging: Print the PR title and URL
+        echo "PR_TITLE: $PR_TITLE"
+        echo "PR_URL: $PR_URL"
+        
+        # Extract Jira issue key from the PR title or branch name
+        ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'TEN-[0-9]+')
+        
+        # Debugging: Print the extracted ISSUE_KEY
+        echo "Extracted ISSUE_KEY: $ISSUE_KEY"
         
         if [ -z "$ISSUE_KEY" ]; then
           echo "No Jira issue key found in the PR title"
