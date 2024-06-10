@@ -13,6 +13,11 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v2
+      
+    - name: Install jq
+      run: |
+        sudo apt-get update
+        sudo apt-get install jq -y
 
 
     - name: Extract Jira issue key from PR title
@@ -47,13 +52,8 @@ jobs:
         # Debugging: Print the COMMENT
         echo "Comment to be posted: $COMMENT"
         
-        # Create the JSON payload
-        PAYLOAD=$(cat <<EOF
-        {
-          "body": "$COMMENT"
-        }
-        EOF
-        )
+        # Create the JSON payload, ensuring proper escaping of special characters
+        PAYLOAD=$(jq -n --arg body "$COMMENT" '{body: $body}')
 
         # Debugging: Print the PAYLOAD
         echo "Payload: $PAYLOAD"
