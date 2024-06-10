@@ -38,7 +38,8 @@ jobs:
         fi
 
         COMMENT="Pull Request Created: [$PR_TITLE]($PR_URL)"
-        echo "Confirmed1"
+        echo "Comment Constructed: $COMMENT"
+
         # Create the JSON payload
         PAYLOAD=$(cat <<EOF
         {
@@ -46,7 +47,7 @@ jobs:
         }
         EOF
         )
-
+        echo "Payload Created: $PAYLOAD"
         # Post comment to Jira
         RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
           -H "Content-Type: application/json" \
