@@ -34,7 +34,7 @@ jobs:
 
         # Extract Jira issue key from the PR title or branch name
         #  ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'TEN-[0-9]+')
-        Issue_KEY="TEN-1344" 
+        ISSUE_KEY="TEN-1344" 
         
         echo "Confirmed1"
         
