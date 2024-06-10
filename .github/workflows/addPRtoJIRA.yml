@@ -1,5 +1,6 @@
 name: Comment on PR in Jira
 
+
 on:
   pull_request:
     types:
@@ -7,44 +8,33 @@ on:
       - synchronize
 
 jobs:
-  jira_comment:
+  extract_issue_key:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Check out code
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-
-    - name: Install Axios
-      run: npm install axios
-
-    - name: Comment on Jira ticket
-      env:
-        JIRA_USERNAME: ${{ secrets.JIRA_USER_EMAIL }}
-        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-        JIRA_URL: ${{ secrets.JIRA_BASE_URL }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Extract Jira issue key from PR title
       run: |
         PR_TITLE="${{ github.event.pull_request.title }}"
         PR_URL="${{ github.event.pull_request.html_url }}"
-        
+
         # Debugging: Print the PR title and URL
         echo "PR_TITLE: $PR_TITLE"
         echo "PR_URL: $PR_URL"
-        
+
         # Extract Jira issue key from the PR title or branch name
-        ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'TEN-[0-9]+')
-        
+        ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'TE-[0-9]+')
+
         # Debugging: Print the extracted ISSUE_KEY
         echo "Extracted ISSUE_KEY: $ISSUE_KEY"
-        
+
         if [ -z "$ISSUE_KEY" ]; then
           echo "No Jira issue key found in the PR title"
-          exit 0
+          exit 1
+        else
+          echo "Jira issue key found: $ISSUE_KEY"
         fi
 
         COMMENT="Pull Request Created: [$PR_TITLE]($PR_URL)"
