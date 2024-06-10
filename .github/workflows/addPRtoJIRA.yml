@@ -2,7 +2,9 @@ name: Comment on PR in Jira
 
 on:
   pull_request:
-    types: [opened]
+    types:
+      - opened
+      - synchronize
 
 jobs:
   jira_comment:
