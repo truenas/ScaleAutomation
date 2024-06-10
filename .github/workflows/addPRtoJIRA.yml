@@ -14,7 +14,13 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
 
+
     - name: Extract Jira issue key from PR title
+      env:
+        JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        JIRA_URL: ${{ secrets.JIRA_URL }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         PR_TITLE="${{ github.event.pull_request.title }}"
         PR_URL="${{ github.event.pull_request.html_url }}"
