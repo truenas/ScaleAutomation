@@ -13,12 +13,6 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v2
-      
-    - name: Install jq
-      run: |
-        sudo apt-get update
-        sudo apt-get install jq -y
-
 
     - name: Extract Jira issue key from PR title
       env:
@@ -30,15 +24,8 @@ jobs:
         PR_TITLE="${{ github.event.pull_request.title }}"
         PR_URL="${{ github.event.pull_request.html_url }}"
 
-        # Debugging: Print the PR title and URL
-        echo "PR_TITLE: $PR_TITLE"
-        echo "PR_URL: $PR_URL"
-
         # Extract Jira issue key from the PR title or branch name
         ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'TEN-[0-9]+')
-
-        # Debugging: Print the extracted ISSUE_KEY
-        echo "Extracted ISSUE_KEY: $ISSUE_KEY"
 
         if [ -z "$ISSUE_KEY" ]; then
           echo "No Jira issue key found in the PR title"
@@ -49,14 +36,13 @@ jobs:
 
         COMMENT="Pull Request Created: [$PR_TITLE]($PR_URL)"
         
-        # Debugging: Print the COMMENT
-        echo "Comment to be posted: $COMMENT"
-        
-        # Create the JSON payload, ensuring proper escaping of special characters
-        PAYLOAD=$(jq -n --arg body "$COMMENT" '{body: $body}')
-
-        # Debugging: Print the PAYLOAD
-        echo "Payload: $PAYLOAD"
+        # Create the JSON payload
+        PAYLOAD=$(cat <<EOF
+        {
+          "body": "$COMMENT"
+        }
+        EOF
+        )
 
         # Ensure JIRA_USERNAME, JIRA_API_TOKEN, and JIRA_URL are set
         if [ -z "$JIRA_USERNAME" ] || [ -z "$JIRA_API_TOKEN" ] || [ -z "$JIRA_URL" ]; then
@@ -65,14 +51,11 @@ jobs:
         fi
 
         # Post comment to Jira with detailed response
-        RESPONSE=$(curl -s -i -X POST \
+        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
           -H "Content-Type: application/json" \
-          -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
+          -u $JIRA_USERNAME:$JIRA_API_TOKEN \
           --data "$PAYLOAD" \
           "$JIRA_URL/rest/api/2/issue/$ISSUE_KEY/comment")
-
-        # Debugging: Print the full RESPONSE
-        echo "Response: $RESPONSE"
 
         # Extract the HTTP status code from the response
         HTTP_STATUS=$(echo "$RESPONSE" | grep HTTP | awk '{print $2}')
