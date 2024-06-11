@@ -1281,6 +1281,10 @@ class Common:
         cls.click_on_element(f'//mat-option[contains(.,"{option}")]')
 
     @classmethod
+    def send_escape(cls, xpath) -> None:
+        WebUI.xpath(xpath).send_keys(Keys.ESCAPE)
+
+    @classmethod
     def set_10_items_per_page(cls) -> None:
         """
         This method sets the items per page to 10
