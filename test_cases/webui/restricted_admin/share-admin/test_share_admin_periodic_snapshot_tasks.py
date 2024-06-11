@@ -132,10 +132,10 @@ class Test_Share_Admin_Periodic_Snapshot_Tasks:
         3. Refresh page (re-navigate to Data Protection page)
         4. Verify the disabled periodic snapshot task toggle is locked and not clickable
         """
-        assert DP.assert_enable_periodic_snapshot_task_toggle_is_restricted('tank/persnap_ro') is True
+        assert COM.assert_toggle_is_restricted(f'enabled-snapshot-task-tank/persnap_ro-pending-row-toggle') is True
         API_PUT.set_periodic_snapshot_task_enabled('tank/persnap_ro', False)
         NAV.navigate_to_data_protection()
-        assert DP.assert_enable_periodic_snapshot_task_toggle_is_restricted('tank/persnap_ro') is True
+        assert COM.assert_toggle_is_restricted(f'enabled-snapshot-task-tank/persnap_ro-pending-row-toggle') is True
 
     @allure.tag("Read")
     @allure.story("Share Admin Can See The VM Periodic Snapshot Tasks")
