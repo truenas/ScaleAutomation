@@ -1,0 +1,64 @@
+name: New PR Created - Notify JIRA
+
+on:
+  pull_request:
+    types:
+      - opened
+jobs:
+  extract_issue_key:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Extract Jira issue key from PR title
+      env:
+        JIRA_USERNAME: ${{ secrets.JIRA_USER_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        JIRA_URL: ${{ secrets.JIRA_BASE_URL }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        PR_TITLE="${{ github.event.pull_request.title }}"
+        PR_URL="${{ github.event.pull_request.html_url }}"
+        TARGET_BRANCH="${{ github.event.pull_request.base.ref }}"
+
+        # Extract Jira issue key from the PR title or branch name
+        ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'TEN-[0-9]+')
+
+        if [ -z "$ISSUE_KEY" ]; then
+          echo "No Jira issue key found in the PR title"
+          exit 1
+        else
+          echo "Jira issue key found: $ISSUE_KEY"
+        fi
+
+        COMMENT="Pull Request Created: [$PR_TITLE]($PR_URL) - Target Branch: $TARGET_BRANCH"
+        
+        # Create the JSON payload
+        PAYLOAD=$(cat <<EOF
+        {
+          "body": "$COMMENT"
+        }
+        EOF
+        )
+
+        # Ensure JIRA_USERNAME, JIRA_API_TOKEN, and JIRA_URL are set
+        if [ -z "$JIRA_USERNAME" ] || [ -z "$JIRA_API_TOKEN" ] || [ -z "$JIRA_URL" ]; then
+          echo "JIRA_USERNAME, JIRA_API_TOKEN, or JIRA_URL is not set"
+          exit 2
+        fi
+
+        # Post comment to Jira with detailed response
+        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+          -H "Content-Type: application/json" \
+          -u $JIRA_USERNAME:$JIRA_API_TOKEN \
+          --data "$PAYLOAD" \
+          "$JIRA_URL/rest/api/2/issue/$ISSUE_KEY/comment")
+
+        if [ "$RESPONSE" -eq 201 ]; then
+          echo "Comment added successfully"
+        else
+          echo "Failed to add comment, response code: $RESPONSE"
+          exit 1
+        fi
