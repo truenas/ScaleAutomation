@@ -199,8 +199,7 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common_Shares.assert_share_card_displays('smb') is True
         Common_Shares.click_share_card_header_link('smb')
         assert SMB.assert_sharing_smb_page_header() is True
-        # assert SMB.assert_enabled_toggle_is_restricted(data['smb_xpath']) is True
-        assert Common.assert_element_is_restricted(f'//*[@data-test="toggle-enabled-smb-share-{data["smb_xpath"]}-row-toggle"]') is True
+        assert Common.assert_toggle_is_restricted(f'enabled-smb-{data["smb_xpath"]}-row-toggle') is True
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Edit The SMB Filesystem ACL Permissions On The Sharing SMB Page")

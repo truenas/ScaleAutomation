@@ -1282,6 +1282,14 @@ class Common:
 
     @classmethod
     def send_escape(cls, xpath) -> None:
+        """
+        This method sends the 'escape' character to the given xpath.
+
+        :param xpath: The xpath of the object to send an 'escape' character to.
+
+        Example:
+            - Common.send_escape('//button')
+        """
         WebUI.xpath(xpath).send_keys(Keys.ESCAPE)
 
     @classmethod
