@@ -26,6 +26,8 @@ def browser() -> WebDriver:
     chrome_options = Options()
     chrome_options.add_experimental_option("detach", True)
     chrome_options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(options=chrome_options)
     driver.set_window_size(1920, 1080)
     driver.implicitly_wait(shared_config['IMPLICITLY_WAIT'])
