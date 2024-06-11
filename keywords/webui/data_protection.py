@@ -219,22 +219,6 @@ class Data_Protection:
         return COM.assert_element_is_restricted(xpaths.data_protection.cloud_sync_task_dry_run_button(description))
 
     @classmethod
-    def assert_enable_rsync_task_toggle_is_restricted(cls, path: str) -> bool:
-        """
-        This method asserts if the enable rsync task toggle is locked and not clickable.
-
-        :param path: path of the rsync task
-        :return: True if the enable rsync task toggle is locked and not clickable, otherwise it returns False.
-
-        Example:
-            - Data_Protection.assert_enable_rsync_task_toggle_is_restricted('/my/Rep/Path')
-        """
-        xpath_ip = COM.convert_to_tag_format(private_config['REP_DEST_IP'])
-        xpath_path = COM.convert_to_tag_format(path)
-        xpath = f'enabled-card-rsync-task{xpath_path}-{xpath_ip}-row-toggle'
-        return COM.assert_toggle_is_restricted(xpath)
-
-    @classmethod
     def assert_enable_scrub_task_toggle_is_restricted(cls, description: str) -> bool:
         """
         This method returns if the enable scrub task toggle is locked and not clickable.

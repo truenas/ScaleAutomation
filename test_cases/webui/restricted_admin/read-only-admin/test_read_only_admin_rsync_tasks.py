@@ -1,6 +1,6 @@
 import allure
 import pytest
-from helper.global_config import shared_config
+from helper.global_config import shared_config, private_config
 from keywords.api.rsynctask import API_Rsync_Task
 from keywords.webui.common import Common
 from keywords.webui.data_protection import Data_Protection
@@ -138,11 +138,11 @@ class Test_Read_Only_Admin_Data_Protection_Rsync_Tasks:
         3. Disable the rsync task.
         4. Verify the Rsync Task Enabled toggle is locked and not clickable as a read-only admin.
         """
-        assert Data_Protection.assert_enable_rsync_task_toggle_is_restricted('/mnt/tank') is True
+        assert Common.assert_toggle_is_restricted(f'enabled-card-rsync-task/mnt/tank-{private_config["REP_DEST_IP"]}-row-toggle') is True
         API_Rsync_Task.disable_rsync_task(shared_config['TASK_ID'])
         Navigation.navigate_to_data_protection()
         assert Data_Protection.assert_rsync_task_card_header_is_visible() is True
-        assert Data_Protection.assert_enable_rsync_task_toggle_is_restricted('/mnt/tank') is True
+        assert Common.assert_toggle_is_restricted(f'enabled-card-rsync-task/mnt/tank-{private_config["REP_DEST_IP"]}-row-toggle') is True
 
     @allure.tag("Update")
     @allure.story('Verify That The Read-Only Admin Cannot Run A Rsync Task From The Card')
