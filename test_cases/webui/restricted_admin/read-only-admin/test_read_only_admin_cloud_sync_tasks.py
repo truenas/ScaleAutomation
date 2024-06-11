@@ -134,10 +134,10 @@ class Test_Read_Only_Admin_Cloud_Sync_Tasks:
         3. Refresh page (re-navigate to Data Protection page)
         4. Verify the disabled Cloud Sync task toggle is locked and not clickable
         """
-        assert DP.assert_enable_cloud_sync_task_toggle_is_restricted(cloud_sync['description']) is True
+        assert COM.assert_toggle_is_restricted(f'enabled-card-cloudsync-task-{cloud_sync["description"]}-row-toggle') is True
         API_PUT.set_cloud_sync_task_enabled(cloud_sync['description'], False)
         NAV.navigate_to_data_protection()
-        assert DP.assert_enable_cloud_sync_task_toggle_is_restricted(cloud_sync['description']) is True
+        assert COM.assert_toggle_is_restricted(f'enabled-card-cloudsync-task-{cloud_sync["description"]}-row-toggle') is True
 
     @allure.tag("Read")
     @allure.story("Read Only Admin Is Not Able To Run the Cloud Sync task")

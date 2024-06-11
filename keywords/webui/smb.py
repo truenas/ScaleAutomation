@@ -69,24 +69,6 @@ class SMB:
         return result
 
     @classmethod
-    def assert_enabled_toggle_is_restricted(cls, share_name: str) -> bool:
-        """
-        This method verifies that the enabled toggle is locked and not clickable.
-
-        :param share_name: The name of the share. Example: share1 is share-1
-        :return: True if the enabled toggle is locked and not clickable otherwise it returns False.
-
-        Example:
-            - SMB.assert_enabled_checkbox_is_restricted('share-1')
-        """
-        try:
-            toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(f'enabled-smb-{share_name}-row-toggle'))
-            toggle.click()
-        except (ElementClickInterceptedException, TimeoutException):
-            return True
-        return False
-
-    @classmethod
     def assert_edit_smb_panel_header(cls) -> bool:
         """
         This method asserts that the SMB edit panel header is displayed.

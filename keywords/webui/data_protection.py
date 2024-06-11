@@ -219,20 +219,6 @@ class Data_Protection:
         return COM.assert_element_is_restricted(xpaths.data_protection.cloud_sync_task_dry_run_button(description))
 
     @classmethod
-    def assert_enable_cloud_sync_task_toggle_is_restricted(cls, description: str) -> bool:
-        """
-        This method asserts if the enable cloud sync task toggle is locked and not clickable.
-
-        :param description: description of the cloud sync task
-        :return: True if the enable cloud sync task toggle is locked and not clickable, otherwise it returns False.
-
-        Example:
-            - Data_Protection.assert_enable_cloud_sync_task_toggle_is_restricted('description')
-        """
-        description = COM.convert_to_tag_format(description)
-        return COM.assert_element_is_restricted(xpaths.data_protection.cloud_sync_task_enable_toggle(description))
-
-    @classmethod
     def assert_enable_periodic_snapshot_task_toggle_is_restricted(cls, path: str) -> bool:
         """
         This method asserts if the enable periodic snapshot task toggle is locked and not clickable.
