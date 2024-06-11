@@ -219,20 +219,6 @@ class Data_Protection:
         return COM.assert_element_is_restricted(xpaths.data_protection.cloud_sync_task_dry_run_button(description))
 
     @classmethod
-    def assert_enable_replication_task_toggle_is_restricted(cls, name: str) -> bool:
-        """
-        This method returns True if the enable replication task toggle is locked and not clickable, otherwise it returns False.
-
-        :param name: name of the replication task
-        :return: True if the enable replication task toggle is locked and not clickable, otherwise it returns False.
-
-        Example:
-            - Data_Protection.assert_enable_replication_task_toggle_is_restricted('name')
-        """
-        name = COM.convert_to_tag_format(name)
-        return COM.assert_element_is_restricted(xpaths.data_protection.replication_task_enable_toggle(name))
-
-    @classmethod
     def assert_enable_rsync_task_toggle_is_restricted(cls, path: str) -> bool:
         """
         This method asserts if the enable rsync task toggle is locked and not clickable.
