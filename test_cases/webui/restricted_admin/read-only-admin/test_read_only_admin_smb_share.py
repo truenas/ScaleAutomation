@@ -50,9 +50,11 @@ class Test_Read_Only_Admin_SMB_Share:
         assert Common_Shares.assert_share_description('smb', data['smb_description']) is True
 
     @allure.tag('Update')
-    @allure.story("Read Only Admin Is Not Able To Enable Or Disable NFS Service On The SMB Card")
-    def test_read_only_is_not_able_enable_or_disable_nfs_service_on_the_smb_card(self, data):
-        # Verify the read-only admin is not able to enable or disable the NFS service
+    @allure.story("Read Only Admin Is Not Able To Enable Or Disable SMB Service On The SMB Card")
+    def test_read_only_is_not_able_enable_or_disable_smb_service_on_the_smb_card(self, data):
+        """
+        This test verifies the read-only admin is not able to enable or disable SMB service on the SMB card.
+        """
         assert Common_Shares.assert_share_card_displays('smb') is True
         assert Common_Shares.assert_disable_share_service_is_restricted('smb') is True
         assert Common_Shares.is_share_service_running('smb') is True

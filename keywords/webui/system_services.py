@@ -84,7 +84,7 @@ class System_Services:
             - Common.is_service_autostart_checbox_restricted('iscsi')
         """
         service_backend = cls.return_backend_service_name(service, True)
-        return COM.assert_checkbox_is_restricted(f'{service_backend}-service')
+        return COM.assert_checkbox_is_restricted(service_backend)
 
     @classmethod
     def is_service_edit_button_restricted(cls, service: str) -> bool:
@@ -97,7 +97,7 @@ class System_Services:
         Example:
             - Common.is_service_edit_button_restricted('iscsi')
         """
-        service_backend = cls.return_backend_service_name(service, True)
+        service_backend = cls.return_backend_service_name(service, False)
         return COM.assert_button_is_restricted(f'{service_backend}-edit')
 
     @classmethod
@@ -111,7 +111,7 @@ class System_Services:
         Example:
             - Common.is_service_row_visible('iscsi')
         """
-        service_backend = cls.return_backend_service_name(service, True)
+        service_backend = cls.return_backend_service_name(service, False)
         return COM.is_row_visible(service_backend)
 
     @classmethod
@@ -137,7 +137,7 @@ class System_Services:
             - Common.is_service_running_toggle_restricted('iscsi')
         """
         service_backend = cls.return_backend_service_name(service, True)
-        return COM.assert_toggle_is_restricted(f'{service_backend}-service')
+        return COM.assert_toggle_is_restricted(service_backend)
 
     @classmethod
     def restart_service_by_api(cls, service: str) -> None:

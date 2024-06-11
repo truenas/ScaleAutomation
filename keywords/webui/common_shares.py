@@ -161,6 +161,7 @@ class Common_Shares:
            - Common_Shares.assert_disable_share_service_is_restricted('smb')
         """
         COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(share_type))
+        share_type = 'cifs' if share_type == 'smb' else share_type
         result = COM.assert_button_is_restricted(f'{share_type}-actions-menu-turn-off-service')
         WebUI.send_key('esc')
         return result
@@ -177,6 +178,7 @@ class Common_Shares:
            - Common_Shares.assert_enable_share_service_is_restricted('smb')
         """
         COM.click_on_element(xpaths.common_xpaths.button_share_actions_menu(share_type))
+        share_type = 'cifs' if share_type == 'smb' else share_type
         result = COM.assert_button_is_restricted(f'{share_type}-actions-menu-turn-on-service')
         WebUI.send_key('esc')
         return result
