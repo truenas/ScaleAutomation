@@ -52,7 +52,7 @@ class Test_Read_Only_Admin_NFS_Share:
 
     @allure.tag('Update')
     @allure.story("Read Only Admin Is Not Able To Enable Or Disable The NFS Service On The NFS Card")
-    def test_read_only_is_not_able_enable_or_disable_nfs_service_on_the_nfs_card(self, data):
+    def test_read_only_is_not_able_enable_or_disable_nfs_service_on_the_nfs_card(self):
         """
         This test verifies the read-only admin is not able to enable or disable the NFS service on the NFS card.
         """
@@ -69,7 +69,7 @@ class Test_Read_Only_Admin_NFS_Share:
 
     @allure.tag('Create')
     @allure.story("Read Only Admin Is Not Able To Create An NFS Share On The NFS Card")
-    def test_read_only_admin_is_not_able_to_create_an_nfs_shares_on_the_nfs_card(self, data):
+    def test_read_only_admin_is_not_able_to_create_an_nfs_shares_on_the_nfs_card(self):
         """
         This test verifies the read-only admin is not able to create an NFS share on the NFS card.
         """
@@ -105,7 +105,7 @@ class Test_Read_Only_Admin_NFS_Share:
 
         # Verify the read-only admin is not able to disable and enable an NFS share
         assert Common_Shares.assert_share_card_displays('nfs') is True
-        assert Common_Shares.assert_card_share_enabled_toggle_is_locked_and_disabled('nfs', data['nfs_xpath']) is True
+        assert Common.assert_toggle_is_restricted(f'enabled-card-nfs-share-{data["nfs_xpath"]}-row-toggle') is True
 
     @allure.tag('Delete')
     @allure.story("Read Only Admin Is Not Able To Delete An NFS Share On The NFS Card")
@@ -134,7 +134,7 @@ class Test_Read_Only_Admin_NFS_Share:
 
     @allure.tag('Create')
     @allure.story("Read Only Admin Is Not Able To Create An NFS Share On The Sharing NFS Page")
-    def test_read_only_admin_is_not_able_to_create_an_nfs_shares_on_the_sharing_nfs_page(self, data):
+    def test_read_only_admin_is_not_able_to_create_an_nfs_shares_on_the_sharing_nfs_page(self):
         """
         This test verifies the read-only admin is not able to create an NFS share on the Sharing NFS page.
         """
@@ -188,5 +188,5 @@ class Test_Read_Only_Admin_NFS_Share:
         # Verify the read-only admin is not able to disable and enable an NFS share on the Sharing NFS page
         assert Common_Shares.assert_share_card_displays('nfs') is True
         Common_Shares.click_share_card_header_link('nfs')
-        assert NFS.assert_sharing_nfs_page_header() is True
-        assert NFS.assert_share_enabled_toggle_is_restricted_on_nfs_page(data['nfs_xpath']) is True
+        assert Common.assert_page_header('NFS') is True
+        assert Common.assert_toggle_is_restricted(f'enabled-nfs-share-{data["nfs_xpath"]}-row-toggle') is True

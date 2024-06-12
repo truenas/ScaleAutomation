@@ -206,16 +206,16 @@ class Test_Read_Only_Admin_Replication_Tasks:
         5. Navigate to Replication tasks page
         6. Verify the Replication tasks page enabled Replication task toggle is locked and not clickable
         """
-        assert DP.assert_enable_replication_task_toggle_is_restricted(rep['task-name']) is True
+        assert COM.assert_toggle_is_restricted(f'enabled-replication-task-{rep["task-name"]}-row-toggle') is True
         DP.click_card_page_link('Replication Tasks')
         # TODO: fix this when NAS-129103 is updated
-        assert DP.assert_enable_replication_task_toggle_is_restricted(rep['task-name']) is True
+        assert COM.assert_toggle_is_restricted(f'enabled-replication-task-{rep["task-name"]}-row-toggle') is True
         COM.click_link('breadcrumb-data-protection')
         API_PUT.set_replication_task_enabled(rep['task-name'], False)
         NAV.navigate_to_data_protection()
-        assert DP.assert_enable_replication_task_toggle_is_restricted(rep['task-name']) is True
+        assert COM.assert_toggle_is_restricted(f'enabled-replication-task-{rep["task-name"]}-row-toggle') is True
         DP.click_card_page_link('Replication Tasks')
-        assert DP.assert_enable_replication_task_toggle_is_restricted(rep['task-name']) is True
+        assert COM.assert_toggle_is_restricted(f'enabled-replication-task-{rep["task-name"]}-row-toggle') is True
         COM.click_link('breadcrumb-data-protection')
 
     @allure.tag("Read")
