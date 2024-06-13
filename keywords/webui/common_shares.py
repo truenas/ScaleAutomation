@@ -730,12 +730,15 @@ class Common_Shares:
         assert WebUI.wait_until_visible(xpaths.common_xpaths.any_text(f'{state.capitalize()} {share_type.upper()} Service'), timeout) is True
         if COM.is_visible(xpaths.common_xpaths.button_field('enable-service')):
             COM.click_button('enable-service')
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('enable-service')) is True
             assert COM.assert_progress_bar_not_visible() is True
             assert WebUI.wait_until_not_visible(xpaths.common_xpaths.close_right_panel()) is True
         elif COM.is_visible(xpaths.common_xpaths.button_field('restart-service')):
             COM.click_button('restart-service')
+            assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('restart-service')) is True
             assert COM.assert_progress_spinner_not_visible() is True
-        # WebUI.delay(2)
+            assert WebUI.wait_until_visible(xpaths.common_xpaths.close_right_panel()) is True
+        WebUI.delay(1)
 
     @classmethod
     def is_share_enabled(cls, share_type: str, name: str) -> bool:
