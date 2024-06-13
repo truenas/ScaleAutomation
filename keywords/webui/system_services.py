@@ -73,6 +73,48 @@ class System_Services:
         return COM.is_checked(service_backend)
 
     @classmethod
+    def is_service_autostart_checkbox_restricted(cls, service: str) -> bool:
+        """
+        This method returns true if the given service autostart checkbox is restricted, otherwise returns false.
+
+        :param service: The name of the service.
+        :return: true if the given service autostart checkbox is restricted.
+
+        Example:
+            - Common.is_service_autostart_checbox_restricted('iscsi')
+        """
+        service_backend = cls.return_backend_service_name(service, True)
+        return COM.assert_checkbox_is_restricted(service_backend)
+
+    @classmethod
+    def is_service_edit_button_restricted(cls, service: str) -> bool:
+        """
+        This method returns true if the given service edit button is restricted, otherwise returns false.
+
+        :param service: The name of the service.
+        :return: true if the given service edit button is restricted.
+
+        Example:
+            - Common.is_service_edit_button_restricted('iscsi')
+        """
+        service_backend = cls.return_backend_service_name(service, False)
+        return COM.assert_button_is_restricted(f'{service_backend}-edit')
+
+    @classmethod
+    def is_service_row_visible(cls, service: str) -> bool:
+        """
+        This method returns true if the given service row is visible, otherwise returns false.
+
+        :param service: The name of the service.
+        :return: true if the given service row is visible.
+
+        Example:
+            - Common.is_service_row_visible('iscsi')
+        """
+        service_backend = cls.return_backend_service_name(service, False)
+        return COM.is_row_visible(service_backend)
+
+    @classmethod
     def is_service_running_toggle_enabled(cls, service: str) -> bool:
         """
         This method returns true if the given service running toggle is enabled, otherwise returns false.
@@ -82,6 +124,20 @@ class System_Services:
         """
         service_backend = cls.return_backend_service_name(service, True)
         return COM.is_toggle_enabled(service_backend)
+
+    @classmethod
+    def is_service_running_toggle_restricted(cls, service: str) -> bool:
+        """
+        This method returns true if the given service running toggle is restricted, otherwise returns false.
+
+        :param service: The name of the service.
+        :return: true if the given service running toggle is restricted.
+
+        Example:
+            - Common.is_service_running_toggle_restricted('iscsi')
+        """
+        service_backend = cls.return_backend_service_name(service, True)
+        return COM.assert_toggle_is_restricted(service_backend)
 
     @classmethod
     def restart_service_by_api(cls, service: str) -> None:

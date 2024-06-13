@@ -295,6 +295,7 @@ class Test_Share_Admin_Shares:
 
     @allure.tag("Read", "NFS")
     @allure.story("Share Admin Is Able to enable and disable NFS Share")
+    @allure.issue('NAS-129198', 'NAS-129198')
     def test_share_admin_can_enable_and_disable_nfs_share(self, nfs_data):
         """
         Summary: This test verifies the share admin is able to enable and disable NFS Share.
