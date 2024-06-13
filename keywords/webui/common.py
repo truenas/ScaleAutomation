@@ -1615,6 +1615,9 @@ class Common:
             case 'day':
                 pause = 86400
 
+        if (value % pause) == 0:
+            value = 1
+
         while cls.get_current_time_element(time) < value:
             print(f"@@@ WAIT FOR: {str(cls.get_current_time_element(time))} to be: {value}")
             WebUI.delay(pause)
