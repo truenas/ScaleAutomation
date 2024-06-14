@@ -43,7 +43,7 @@ class Test_Create_Data_Pool:
         assert Common.assert_step_header_is_open('Data')
         assert Common.assert_progress_bar_not_visible() is True
         PCW.select_layout_option('data', data['pool-layout'])
-        PCW.select_disk_size_option('data', '1.82 GiB (HDD)')
+        PCW.select_disk_size_option('data', '1.82 TiB (HDD)')
         PCW.select_width_option('data', int(data['disk-width']))
         PCW.select_number_of_vdevs_option('data', 1)
         PCW.click_save_and_go_to_review_button('data')
