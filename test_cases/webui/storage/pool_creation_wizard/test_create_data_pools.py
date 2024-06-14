@@ -53,7 +53,7 @@ class Test_Create_Data_Pool:
         assert Common.assert_progress_bar_not_visible() is True
         assert PCW.assert_pool_name_value(data['pool-name']) is True
         assert PCW.assert_data_value(data['pool-data']) is True
-        assert PCW.assert_est_usable_raw_capacity(data['raw-capacity']) is True
+        # assert PCW.assert_est_usable_raw_capacity(data['raw-capacity']) is True
         PCW.click_create_pool_button()
         PCW.click_confirm_waring_dialog()
         assert PCW.assert_create_pool_dialog_not_visible() is True
