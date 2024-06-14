@@ -176,20 +176,29 @@ class API_POST:
         return response
 
     @classmethod
-    def create_dataset(cls, name: str, sharetype: str = 'GENERIC') -> Response:
+    def create_dataset(cls, name: str, sharetype: str = 'GENERIC', box: str = 'LOCAL') -> Response:
         """
         This method creates the given dataset.
 
         :param name: is the name of the dataset.
         :param sharetype: is the sharetype of the dataset.
+        :param box: The location of the dataset. [LOCAL/REMOTE]
         :return: the API request response.
 
         Example:
             - API_POST.create_dataset('tank/test-dataset', 'GENERIC')
         """
+        if box.upper() == 'REMOTE':
+            private_config['API_IP'] = private_config['REP_DEST_IP']
         response = GET(f'/pool/dataset?name={name}').json()
+        if box.upper() == 'REMOTE':
+            private_config['API_IP'] = private_config['IP']
         if not response:
+            if box.upper() == 'REMOTE':
+                private_config['API_IP'] = private_config['REP_DEST_IP']
             response = POST('/pool/dataset', {"name": name, "share_type": sharetype})
+            if box.upper() == 'REMOTE':
+                private_config['API_IP'] = private_config['IP']
             assert response.status_code == 200, response.text
         return response
 
@@ -558,13 +567,13 @@ class API_POST:
         return response
 
     @classmethod
-    def create_snapshot(cls, dataset: str, name: str, recursive: bool = False, suspend_vms: bool = False,
+    def create_snapshot(cls, dataset: str, naming_schema: str, recursive: bool = False, suspend_vms: bool = False,
                         vmware_sync: bool = False) -> Response:
         """
         This method creates the given snapshot.
 
         :param dataset: is the name of the dataset.
-        :param name: is the name of the snapshot.
+        :param naming_schema: is the naming_schema of the snapshot.
         :param recursive: Optional - True if should the snapshot be recursive else False.
         :param suspend_vms: Optional - True if should the snapshot suspend vms else False.
         :param vmware_sync: Optional - True if should the snapshot sync vmware else False.
@@ -576,7 +585,7 @@ class API_POST:
         """
         payload = {
             "dataset": dataset,
-            "name": name,
+            "naming_schema": naming_schema,
             "recursive": recursive,
             "suspend_vms": suspend_vms,
             "vmware_sync": vmware_sync

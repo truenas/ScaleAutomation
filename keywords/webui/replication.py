@@ -1,7 +1,10 @@
+from datetime import datetime
+
 import xpaths
 from helper.global_config import private_config, shared_config
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
+from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation as NAV
 
 
@@ -67,6 +70,28 @@ class Replication:
             COM.logoff_truenas()
             WebUI.close_window()
         cls.switch_to_source_box()
+
+    @classmethod
+    def delete_dataset_by_box(cls, pool: str, dataset: str, box: str = 'LOCAL') -> None:
+        """
+        This method deletes the given dataset on the given box.
+        :param pool: The name of the pool.
+        :param dataset: The name of the dataset.
+        :param box: The location of the dataset. [LOCAL/REMOTE]
+
+        Example:
+            - Dataset.delete_dataset('test-pool', 'test-dataset')
+            - Dataset.delete_dataset('test-pool', 'test-dataset', 'REMOTE')
+        """
+        if box.upper() == 'REMOTE':
+            cls.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
+
+        NAV.navigate_to_datasets()
+        DATASET.expand_all_datasets()
+        DATASET.delete_dataset(pool, dataset)
+
+        if box.upper() == 'REMOTE':
+            cls.close_destination_box()
 
     @classmethod
     def delete_replication_task_by_name(cls, name: str) -> None:
