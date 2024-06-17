@@ -1509,12 +1509,13 @@ class Common:
         cls.set_toggle_by_state(name, True)
 
     @classmethod
-    def set_toggle_by_state(cls, name: str, state: bool) -> None:
+    def set_toggle_by_state(cls, name: str, state: bool, spinner: bool = True) -> None:
         """
         This method sets the given toggle to the given state and asserts is set correctly
 
         :param name: is the name of the toggle to set
         :param state: state to set the toggle to
+        :param spinner: whether to wait for the progress spinner to be not visible
 
         Example:
             - Common.set_toggle_by_state('myToggle', True)
@@ -1524,7 +1525,8 @@ class Common:
         toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
         if eval(toggle.get_attribute('ariaChecked').title()) != state:
             toggle.click()
-            assert cls.assert_progress_spinner_not_visible() is True
+            if spinner:
+                assert cls.assert_progress_spinner_not_visible() is True
         WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field(name))
         toggle = WebUI.xpath(xpaths.common_xpaths.toggle_field(name))
         i = 0
