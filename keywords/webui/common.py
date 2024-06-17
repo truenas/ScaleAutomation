@@ -553,6 +553,7 @@ class Common:
             - Common.click_next_button()
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('next'), shared_config['MEDIUM_WAIT']) is True
+        assert WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('next'), shared_config['MEDIUM_WAIT']) is True
         cls.click_button('next')
         WebUI.delay(3)
 
