@@ -429,9 +429,9 @@ class Dashboard:
         cls.click_the_configure_button()
         assert cls.assert_dashboard_configure_panel_is_visible()
         if state:
-            Common.set_toggle(card)
+            Common.set_toggle_by_state(card, True, False)
         else:
-            Common.unset_toggle(card)
+            Common.set_toggle_by_state(card, False, False)
         assert Common.click_save_button_and_wait_for_right_panel() is True
 
     @classmethod
