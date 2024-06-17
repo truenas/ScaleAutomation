@@ -171,7 +171,7 @@ class Common:
         Example:
             - Common.assert_element_is_restricted('delete')
         """
-        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_xpath(xpath)) is True
+        assert WebUI.wait_until_visible(xpath) is True
         try:
             # At this point the element is visible a Timeout or ElementClickIntercepted exception will be thrown.
             cls.click_on_element(xpath, 1)
@@ -1281,6 +1281,18 @@ class Common:
         cls.click_on_element(f'//mat-option[contains(.,"{option}")]')
 
     @classmethod
+    def send_escape(cls, xpath) -> None:
+        """
+        This method sends the 'escape' character to the given xpath.
+
+        :param xpath: The xpath of the object to send an 'escape' character to.
+
+        Example:
+            - Common.send_escape('//button')
+        """
+        WebUI.xpath(xpath).send_keys(Keys.ESCAPE)
+
+    @classmethod
     def set_10_items_per_page(cls) -> None:
         """
         This method sets the items per page to 10
@@ -1598,6 +1610,7 @@ class Common:
 
         if (value % pause) == 0:
             value = 1
+
         while cls.get_current_time_element(time) < value:
             print(f"@@@ WAIT FOR: {str(cls.get_current_time_element(time))} to be: {value}")
             WebUI.delay(pause)

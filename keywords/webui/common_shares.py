@@ -119,21 +119,6 @@ class Common_Shares:
         return COM.get_element_property(xpath, 'ariaChecked') == 'true'
 
     @classmethod
-    def assert_card_share_enabled_toggle_is_locked_and_disabled(cls, share_type: str, name: str) -> bool:
-        """
-        This method verifies that the Enabled toggle is locked and not clickable.
-
-        :param share_type: type of the given share [smb/nfs]
-        :param name: The name(SMB)/path(NFS) of the share
-        :return: True if the Enabled toggle is locked and not clickable otherwise it returns False.
-
-        Example:
-           - Common_Shares.assert_share_enabled_toggle_is_locked_and_disabled('smb', 'share-1')
-           - Common_Shares.assert_share_enabled_toggle_is_locked_and_disabled('nfs', 'tank/nfsshare')
-        """
-        return COM.assert_toggle_is_restricted(f'enabled-card-{share_type}-share-{name}-row-toggle')
-
-    @classmethod
     def assert_card_share_has_no_shares(cls, share_type: str) -> bool:
         """
         This method returns True if the given share has no shares, otherwise it returns False.

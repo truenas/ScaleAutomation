@@ -121,12 +121,12 @@ class Test_Read_Only_Admin_Scrub_Tasks:
         3. Refresh page (re-navigate to Data Protection page)
         4. Verify the disabled Cloud Sync task toggle is locked and not clickable
         """
-        assert DP.assert_enable_scrub_task_toggle_is_restricted("Scrub Task For Pool") is True
+        assert COM.assert_toggle_is_restricted('enabled-card-scrub-task-1-Scrub Task For Pool-row-toggle') is True
         # Create disabled Scrub Task
         API_DELETE.delete_scrub_task("tank")
         API_POST.create_scrub_task(enable=False)
         NAV.navigate_to_data_protection()
-        assert DP.assert_enable_scrub_task_toggle_is_restricted("Scrub Task For Pool") is True
+        assert COM.assert_toggle_is_restricted('enabled-card-scrub-task-1-Scrub Task For Pool-row-toggle') is True
 
     @allure.tag("Read")
     @allure.story("Read Only Admin Is Not Able To modify the Resilver Priority")

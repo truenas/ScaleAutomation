@@ -1,5 +1,4 @@
 import allure
-import pytest
 from keywords.webui.dashboard import Dashboard
 from keywords.webui.update import Update
 

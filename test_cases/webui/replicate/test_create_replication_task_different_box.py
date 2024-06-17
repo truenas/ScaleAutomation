@@ -133,7 +133,7 @@ class Test_Create_Replicate_Task_Different_Box:
 
         REP.select_schedule_preset('custom')
         current_minute = COM.get_current_minute()
-        REP.set_preset_custom_time(minutes=str(current_minute + 1))
+        REP.set_preset_custom_time(minutes=str(current_minute + 2))
         COM.click_button('done')
         REP.click_save_button_and_resolve_dialogs()
         assert REP.is_replication_task_visible(rep['task-name']) is True
@@ -163,7 +163,7 @@ class Test_Create_Replicate_Task_Different_Box:
         SNAP.select_schedule_preset('custom')
         current_hour = COM.get_current_hour()
         current_minute = COM.get_current_minute()
-        REP.set_preset_custom_time(minutes=str(current_minute + 1))
+        REP.set_preset_custom_time(minutes=str(current_minute + 2))
         COM.click_button('done')
         COM.click_save_button_and_wait_for_right_panel()
         COM.wait_for_system_time('minute', current_minute + 1)
@@ -224,7 +224,7 @@ class Test_Create_Replicate_Task_Different_Box:
 
         REP.select_schedule_preset('custom')
         current_minute = COM.get_current_minute()
-        REP.set_preset_custom_time(minutes=str(current_minute + 1))
+        REP.set_preset_custom_time(minutes=str(current_minute + 2))
         COM.click_button('done')
         REP.click_save_button_and_resolve_dialogs()
         assert REP.is_replication_task_visible(rep['task-name']) is True
