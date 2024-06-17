@@ -30,6 +30,16 @@ class API_Common:
         return cls.get_id_by_type("group?", group)
 
     @classmethod
+    def get_pool_id(cls, name: str) -> int:
+        """
+        This method return the ID of the specified group.
+
+        :param name: is the name of the pool to get the ID from.
+        :return: the ID of the specified pool.
+        """
+        return cls.get_id_by_type("pool?", name)
+
+    @classmethod
     def get_privilege_id(cls, privilege: str) -> int:
         """
         This method return the ID of the specified privilege.
