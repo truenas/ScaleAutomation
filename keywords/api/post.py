@@ -741,6 +741,13 @@ class API_POST:
         return cls.toggle_dataset_lock_by_state(payload, 'lock', 'remote')
 
     @classmethod
+    def reboot_system(cls):
+        """
+        This method reboots the system.
+        """
+        return POST('/system/reboot')
+
+    @classmethod
     def restart_replication_service(cls, service: str) -> Response:
         """
         This method restart the specified service of the replication NAS.

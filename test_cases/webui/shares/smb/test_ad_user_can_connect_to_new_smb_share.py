@@ -17,7 +17,6 @@ from keywords.webui.smb import SMB
 @allure.tag("SMB", "AD")
 @allure.epic("Shares")
 @allure.feature("SMB-AD")
-@allure.issue("NAS-128958", "NAS-128958")
 @pytest.mark.parametrize('ad_data', get_data_list('ad_credentials'), scope='class')
 class Test_SMB_AD_User:
 
@@ -66,7 +65,7 @@ class Test_SMB_AD_User:
         assert SSHSMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
         assert SSHSMB.assert_user_can_put_directory('Documents', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
         assert SSHSMB.assert_user_can_delete_directory('Documents', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
-        COM.reboot_system()
+        API_POST.reboot_system()
         COM.set_login_form(private_config['USERNAME'], private_config['PASSWORD'])
         assert SSHSMB.assert_user_can_put_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True
         assert SSHSMB.assert_user_can_delete_file('putfile', 'SMBADUSER', ad_data['username'], ad_data['password'], True) is True

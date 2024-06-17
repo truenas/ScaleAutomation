@@ -1,6 +1,7 @@
 import allure
 import pytest
 from helper.data_config import get_data_list
+from keywords.api.post import API_POST
 from keywords.webui.common import Common
 from keywords.webui.dashboard import Dashboard
 
@@ -28,7 +29,7 @@ class Test_Verify_System_Information_Card_Uptime_Resets_on_Reboot:
         uptime['old'] = Dashboard.get_system_information_uptime()
 
         # reboot and log back in
-        Common.reboot_system()
+        API_POST.reboot_system()
         Common.set_login_form(user_data['username'], user_data['password'])
         assert Dashboard.assert_dashboard_page_header_is_visible() is True
 
