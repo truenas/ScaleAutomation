@@ -6,7 +6,7 @@ from keywords.webui.navigation import Navigation
 class Advanced:
 
     @classmethod
-    def get_debug_files(cls):
+    def get_debug_files(cls) -> None:
         """
         This method gets the debug logs.
 
