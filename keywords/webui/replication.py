@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import xpaths
 from helper.global_config import private_config, shared_config
 from helper.webui import WebUI

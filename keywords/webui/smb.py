@@ -4,7 +4,6 @@ from helper.global_config import private_config
 from helper.webui import WebUI
 from keywords.ssh.smb import SSH_SMB as SSHSMB
 from keywords.webui.common import Common as COM
-from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException
 
 
 class SMB:

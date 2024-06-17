@@ -56,7 +56,7 @@ class Test_Create_Replicate_Task_Local:
         # Add data
         COM.add_test_file('rep_one.txt', f'{rep["pool"]}/{rep["source"]}')
         assert COM.assert_file_exists('rep_one.txt', f'{rep["pool"]}/{rep["source"]}') is True
-        assert COM.assert_file_exists('rep_one.txt', f'{rep["pool"]}/{rep["destination"]}', private_config['REP_DEST_IP']) is False
+        assert COM.assert_file_exists('rep_one.txt', f'{rep["pool"]}/{rep["destination"]}') is False
 
         # Create Periodic Task
         response = API_POST.create_snapshot(f'{rep["pool"]}/{rep["source"]}', "rep-%Y-%m-%d_%H-%M").json()
@@ -114,7 +114,7 @@ class Test_Create_Replicate_Task_Local:
         # Add data
         COM.add_test_file('rep_one.txt', f'{rep["pool"]}/{rep["source"]}')
         assert COM.assert_file_exists('rep_one.txt', f'{rep["pool"]}/{rep["source"]}') is True
-        assert COM.assert_file_exists('rep_one.txt', f'secondary/{rep["destination"]}', private_config['REP_DEST_IP']) is False
+        assert COM.assert_file_exists('rep_one.txt', f'secondary/{rep["destination"]}') is False
 
         # Create Periodic Task
         response = API_POST.create_snapshot(f'{rep["pool"]}/{rep["source"]}', "rep-%Y-%m-%d_%H-%M").json()
