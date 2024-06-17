@@ -17,7 +17,7 @@ from keywords.webui.ssh_connection import SSH_Connection as SSHCON
 @allure.epic("Data Protection")
 @allure.feature("Replication-Remote")
 @pytest.mark.random_order(disabled=True)
-@pytest.mark.parametrize('rep', get_data_list('replication')[2:3], scope='class')
+@pytest.mark.parametrize('rep', get_data_list('replication')[2:4], scope='class')
 class Test_Create_Replicate_Task_Remote:
 
     @pytest.fixture(scope='function', autouse=True)

@@ -14,7 +14,7 @@ from keywords.webui.replication import Replication as REP
 @allure.epic("Data Protection")
 @allure.feature("Replication-Local")
 @pytest.mark.random_order(disabled=True)
-@pytest.mark.parametrize('rep', get_data_list('replication')[:1], scope='class')
+@pytest.mark.parametrize('rep', get_data_list('replication')[:2], scope='class')
 class Test_Create_Replicate_Task_Local:
 
     @pytest.fixture(scope='function', autouse=True)
