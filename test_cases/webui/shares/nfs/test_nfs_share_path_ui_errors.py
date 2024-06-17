@@ -65,7 +65,7 @@ class Test_NFS_Share_Path_UI_Errors:
         COMSHARE.set_share_path('nonexistent')
         COMSHARE.set_share_description(nfs_data['description'])
         COM.set_checkbox('enabled')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
 
         # Assert error message displays
         assert NFS.assert_error_nfs_share_path_nonexistent() is True
@@ -80,7 +80,7 @@ class Test_NFS_Share_Path_UI_Errors:
 
         # Trigger the duplicate share error
         COMSHARE.set_share_path(nfs_data['api_path_alt'])
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
 
         # Assert error message displays
         assert NFS.assert_error_nfs_share_path_duplicate(nfs_data['share_page_path_alt']) is True
