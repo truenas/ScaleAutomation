@@ -1,5 +1,5 @@
 import time
-from helper.api import GET
+from helper.api import GET, Response
 
 
 class API_Common:
@@ -28,6 +28,31 @@ class API_Common:
         :return: the ID of the specified group.
         """
         return cls.get_id_by_type("group?", group)
+
+    @classmethod
+    def get_jobs(cls, value: str, attribute) -> Response:
+        """
+        This method gets all the jobs related to the value of the attribute.
+
+        :param value: is the value to search with.
+        :param attribute: is the attribute to search options: [id, method, state]
+        :return: the ID of the specified job.
+        """
+        response = GET(f'/core/get_jobs/?{attribute}={value}')
+        assert response.status_code == 200, response.text
+        return response
+
+    @classmethod
+    def get_a_job_id(cls, value: str, attribute) -> int:
+        """
+        This method return the ID of the specified job.
+
+        :param value: is the value of the job to get the ID from.
+        :param attribute: is the attribute of the job to get the ID from.
+            options: [method, state]
+        :return: the ID of the specified job.
+        """
+        return cls.get_jobs(value, attribute).json()[-1]['id']
 
     @classmethod
     def get_privilege_id(cls, privilege: str) -> int:
@@ -94,7 +119,7 @@ class API_Common:
         - API_Common.is_system_ready()
         """
         state = GET("/system/state")
-        print("@@@ SYSTEM IS: "+state.text)
+        print(f"@@@ SYSTEM IS: {state.text}")
         return state.text.__contains__("READY")
 
     @classmethod
