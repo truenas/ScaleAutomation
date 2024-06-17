@@ -90,7 +90,7 @@ class Test_Edit_NFS_Share:
         NFS.set_security_type('sys')
         COMSHARE.set_share_description(nfs_data['description'])
         COM.select_then_deselect_input_field('comment')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
 
         # Handle start/restart service popup
         COMSHARE.handle_share_service_dialog('nfs')
@@ -117,7 +117,7 @@ class Test_Edit_NFS_Share:
         NFS.set_mapall_user('admin')
         NFS.set_mapall_group('admin')
         COM.select_then_deselect_input_field('comment')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
 
         # Verify share attachment to new dataset and no attachment to old dataset
         NAV.navigate_to_datasets()
@@ -152,7 +152,7 @@ class Test_Edit_NFS_Share:
         COMSHARE.set_share_path(nfs_data['api_path_alt'])
         COMSHARE.set_share_description(nfs_data['description_alt'])
         COM.set_checkbox('enabled')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
 
         # Handle start/restart service popup
         COMSHARE.handle_share_service_dialog('nfs')
@@ -195,7 +195,7 @@ class Test_Edit_NFS_Share:
         COMSHARE.set_share_path('nonexistent')
         COMSHARE.set_share_description(nfs_data['description'])
         COM.set_checkbox('enabled')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
 
         # Assert error message displays and saving disabled
         assert NFS.assert_error_nfs_share_path_nonexistent() is True
@@ -237,7 +237,7 @@ class Test_Edit_NFS_Share:
         COM.set_checkbox('enabled')
         COMSHARE.click_advanced_options()
         NFS.set_maproot_group('admin')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
 
         # Assert error message displays and saving disabled
         assert NFS.assert_error_nfs_share_maproot_user_required() is True
@@ -246,7 +246,7 @@ class Test_Edit_NFS_Share:
         # Trigger mapall user override error
         NFS.set_maproot_user('admin')
         NFS.set_mapall_user('admin')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
 
         # Assert error message displays and saving disabled
         assert NFS.assert_error_nfs_share_mapall_user_override() is True
@@ -311,7 +311,7 @@ class Test_Edit_NFS_Share:
         assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path']) is True
         COMSHARE.click_edit_share('nfs', nfs_data['share_page_path'])
         COM.unset_checkbox('enabled')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
 
         # Handle start/restart service popup
         COMSHARE.handle_share_service_dialog('nfs')
