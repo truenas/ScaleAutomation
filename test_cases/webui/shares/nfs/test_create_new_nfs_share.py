@@ -56,7 +56,7 @@ class Test_Create_NFS_Share:
         COMSHARE.set_share_path(nfs_data['api_path'])
         COMSHARE.set_share_description(nfs_data['description'])
         COM.set_checkbox('enabled')
-        COM.click_save_button()
+        COM.click_save_button_and_wait_for_progress_bar()
 
         # Handle start/restart service popup
         COMSHARE.handle_share_service_dialog('nfs', 'start')
