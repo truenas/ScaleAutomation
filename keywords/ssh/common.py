@@ -93,8 +93,7 @@ class Common_SSH:
         :param password: is the password of the user to ssh
         :return: the output of the command ran through ssh.
         """
-        results = SSH_Command_Line(command, ip, user, password)
-        return results
+        return SSH_Command_Line(command, ip, user, password)
 
     @classmethod
     def get_smb_share_permission_response(cls, user: str, perm: str, value: str, cmd: str, state: str) -> bool:

@@ -35,5 +35,3 @@ class Test_Read_Only_Admin_Jobs_Task:
         assert COM.is_row_visible(f'job-{shared_config["JOB_ID"]}') is True
         assert COM.assert_text_is_visible('system.debug') is True
         assert COM.assert_text_is_visible('SUCCESS') is True
-
-

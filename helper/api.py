@@ -1,6 +1,6 @@
 import requests
 import json
-from helper.global_config import private_config
+from helper.global_config import private_config, shared_config
 
 HEADER = {'Content-Type': 'application/json', 'Vary': 'accept'}
 Response = requests.Response
@@ -15,13 +15,13 @@ def GET(api_path: str, payload=None) -> Response:
 
     :return: REST API call response which can return status_code, json, text and more.
     """
-    get_it = requests.get(
+    return requests.get(
         f'http://{private_config["API_IP"]}/api/v2.0{api_path}',
         headers=HEADER,
         auth=(private_config['API_USER'], private_config["API_PASSWORD"]),
-        data=json.dumps(payload) if payload else None
+        data=json.dumps(payload) if payload else None,
+        timeout=shared_config['API_TIMEOUT']
     )
-    return get_it
 
 
 def POST(api_path: str,  payload=None) -> Response:
@@ -33,13 +33,13 @@ def POST(api_path: str,  payload=None) -> Response:
 
     :return: REST API call response which can return status_code, json, text and more.
     """
-    post_it = requests.post(
+    return requests.post(
         f'http://{private_config["API_IP"]}/api/v2.0{api_path}',
         headers=HEADER,
         auth=(private_config['API_USER'], private_config["API_PASSWORD"]),
-        data=json.dumps(payload) if payload else None
+        data=json.dumps(payload) if payload else None,
+        timeout=shared_config['API_TIMEOUT']
     )
-    return post_it
 
 
 def PUT(api_path: str, payload=None) -> Response:
@@ -51,13 +51,13 @@ def PUT(api_path: str, payload=None) -> Response:
 
     :return: REST API call response which can return status_code, json, text and more.
     """
-    put_it = requests.put(
+    return requests.put(
         f'http://{private_config["API_IP"]}/api/v2.0{api_path}',
         headers=HEADER,
         auth=(private_config['API_USER'], private_config["API_PASSWORD"]),
-        data=json.dumps(payload) if payload else None
+        data=json.dumps(payload) if payload else None,
+        timeout=shared_config['API_TIMEOUT']
     )
-    return put_it
 
 
 def DELETE(api_path: str, payload=None) -> Response:
@@ -69,10 +69,10 @@ def DELETE(api_path: str, payload=None) -> Response:
 
     :return: REST API call response which can return status_code, json, text and more.
     """
-    delete_it = requests.delete(
+    return requests.delete(
         f'http://{private_config["API_IP"]}/api/v2.0{api_path}',
         headers=HEADER,
         auth=(private_config['API_USER'], private_config["API_PASSWORD"]),
-        data=json.dumps(payload) if payload else None
+        data=json.dumps(payload) if payload else None,
+        timeout=shared_config['API_TIMEOUT']
     )
-    return delete_it
