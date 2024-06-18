@@ -91,7 +91,8 @@ class Test_Create_Replicate_Task_Remote:
         COM.set_input_field('naming-schema', "rep-%Y-%m-%d_%H-%M")
         REP.set_task_name(rep['task-name'])
         WebUI.delay(1)
-        COM.click_next_button()
+        COM.click_on_element('//*[@class="mat-step-label"]')
+        # COM.click_next_button()
 
         REP.set_run_once_button()
         REP.unset_read_only_destination_checkbox()
