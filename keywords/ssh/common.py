@@ -93,7 +93,6 @@ class Common_SSH:
         :param password: is the password of the user to ssh
         :return: the output of the command ran through ssh.
         """
-        print(f'Command: {command}')
         return SSH_Command_Line(command, ip, user, password)
 
     @classmethod
