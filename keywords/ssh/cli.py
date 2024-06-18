@@ -23,7 +23,8 @@ class CLI_SSH:
         status = cli.expect(output)
         # assert that the output is as expected
         assert status == 0
-        assert output in cli.after
+        expected_output = str(cli.after)
+        assert output in expected_output, expected_output
         # exit ssh session is not needed, but I keep it here for reference.
         # cli.sendline('exit')
         # Wait for the ssh session to close. Kept here for reference.
