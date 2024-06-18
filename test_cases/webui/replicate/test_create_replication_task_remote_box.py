@@ -3,6 +3,7 @@ import pytest
 
 from helper.data_config import get_data_list
 from helper.global_config import private_config
+from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
@@ -93,6 +94,7 @@ class Test_Create_Replicate_Task_Remote:
         # However, clicking on the "Step 2: When" appears to work
         # If this gets fixed, replace with the 'click_next_button()'
         COM.click_on_element('//*[@class="mat-step-label"]')
+        WebUI.delay(0.2)
         # COM.click_next_button()
 
         REP.set_run_once_button()
