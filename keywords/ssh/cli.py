@@ -7,16 +7,16 @@ class CLI_SSH:
     @classmethod
     def assert_cli_command(cls, cli_command: str, output: str, user, password: str):
         """
-        This method runs the cli command through ssh and asserts that the output is as expected
+        This method runs the cli command through ssh and asserts that the output is as expected.
 
-        :param cli_command: is the command line to run through ssh
-        :param output: is the expected output of the command
-        :param user: is the username of the user to ssh
-        :param password: is the password of the user to ssh
-        :return: the output of the command ran through ssh.
+        :param cli_command: is the command line to run in cli.
+        :param output: is the expected output of the command.
+        :param user: is the username of the user to ssh.
+        :param password: is the password of the user to ssh.
+        :return: True if the output is as expected, False otherwise.
 
         Example:
-            - CLI_SSH.assert_cli_command('system ls', 'reboot', 'user', 'password')
+            - CLI_SSH.assert_cli_command('system ls', 'usr', 'password')
         """
         # send the cli command
         cli = cls.run_cli_command(cli_command, user, password)
