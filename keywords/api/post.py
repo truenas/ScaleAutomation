@@ -178,20 +178,29 @@ class API_POST:
         return response
 
     @classmethod
-    def create_dataset(cls, name: str, sharetype: str = 'GENERIC') -> Response:
+    def create_dataset(cls, name: str, sharetype: str = 'GENERIC', box: str = 'LOCAL') -> Response:
         """
         This method creates the given dataset.
 
         :param name: is the name of the dataset.
         :param sharetype: is the sharetype of the dataset.
+        :param box: The location of the dataset. [LOCAL/REMOTE]
         :return: the API request response.
 
         Example:
             - API_POST.create_dataset('tank/test-dataset', 'GENERIC')
         """
+        if box.upper() == 'REMOTE':
+            private_config['API_IP'] = private_config['REP_DEST_IP']
         response = GET(f'/pool/dataset?name={name}').json()
+        if box.upper() == 'REMOTE':
+            private_config['API_IP'] = private_config['IP']
         if not response:
+            if box.upper() == 'REMOTE':
+                private_config['API_IP'] = private_config['REP_DEST_IP']
             response = POST('/pool/dataset', {"name": name, "share_type": sharetype})
+            if box.upper() == 'REMOTE':
+                private_config['API_IP'] = private_config['IP']
             assert response.status_code == 200, response.text
         return response
 
@@ -321,6 +330,31 @@ class API_POST:
             response = POST('/user', payload)
             assert response.status_code == 200, response.text
         return response
+
+    @classmethod
+    def create_pool(cls, name: str, data_type: str, disks: list) -> dict:
+        """
+        This method creates a new non-admin user that is a member of the given group.
+
+        :param name: is the name of the pool.
+        :param data_type: is the type of pool to create. [STRIPE/MIRROR/]
+        :param disks: list of disks to use.
+        :return: the status of the request response.
+        """
+        payload = {
+            "name": name,
+            "topology": {
+                "data": [{
+                    "type": data_type,
+                    "disks": disks
+                }]
+            }
+        }
+        response = POST('/pool', payload)
+        assert response.status_code == 200, response.text
+        job_status = API_Common.wait_on_job(response.json(), shared_config['LONG_WAIT'])
+        assert job_status['state'] == 'SUCCESS', job_status['results']
+        return job_status
 
     @classmethod
     def create_read_only_admin(cls, username: str, fullname: str, password: str, smb_auth: str = 'True') -> Response:
@@ -560,13 +594,13 @@ class API_POST:
         return response
 
     @classmethod
-    def create_snapshot(cls, dataset: str, name: str, recursive: bool = False, suspend_vms: bool = False,
+    def create_snapshot(cls, dataset: str, naming_schema: str, recursive: bool = False, suspend_vms: bool = False,
                         vmware_sync: bool = False) -> Response:
         """
         This method creates the given snapshot.
 
         :param dataset: is the name of the dataset.
-        :param name: is the name of the snapshot.
+        :param naming_schema: is the naming_schema of the snapshot.
         :param recursive: Optional - True if should the snapshot be recursive else False.
         :param suspend_vms: Optional - True if should the snapshot suspend vms else False.
         :param vmware_sync: Optional - True if should the snapshot sync vmware else False.
@@ -578,7 +612,7 @@ class API_POST:
         """
         payload = {
             "dataset": dataset,
-            "name": name,
+            "naming_schema": naming_schema,
             "recursive": recursive,
             "suspend_vms": suspend_vms,
             "vmware_sync": vmware_sync
@@ -674,6 +708,22 @@ class API_POST:
         job_status = API_Common.wait_on_job(response.json(), shared_config['EXTRA_LONG_WAIT'])
         assert job_status['state'] == 'SUCCESS', job_status['results']
         return job_status
+
+    @classmethod
+    def get_unused_disks(cls) -> list:
+        """
+        This method gets the unused disks list.
+        :return: the list of unused disks.
+
+        Example:
+            - API_POST.get_unused_disks()
+        """
+        response = POST('/disk/get_unused')
+        assert response.status_code == 200, response.text
+        disk_list = []
+        for name in response.json():
+            disk_list.append(name["name"])
+        return disk_list
 
     @classmethod
     def is_service_autostart_enabled(cls, service: str) -> bool:

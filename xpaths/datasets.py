@@ -9,16 +9,6 @@ def checkbox_locked_snapshot_hold(name: str) -> str:
     return f'//*[contains(text(),"{name}")]/ancestor::tbody//*[@data-test="checkbox"]/ancestor::span//ix-icon[@name="lock"]'
 
 
-def dataset_encryption_text(dataset_name: str) -> str:
-    """
-    This function returns the xpath text of the given dataset encryption text.
-
-    :param dataset_name: The name of the dataset.
-    :return: The xpath text of the given dataset encryption text.
-    """
-    return f'//ix-dataset-node[contains(.,"{dataset_name}")]//ix-dataset-encryption-cell/div/div'
-
-
 def dataset_ace_permission_checkbox(level: str) -> str:
     """
     This function returns the xpath text of the given dataset ace permission checkbox.
@@ -27,6 +17,26 @@ def dataset_ace_permission_checkbox(level: str) -> str:
     :return: The xpath text of the given dataset encryption text.
     """
     return f'//ix-edit-posix-ace//*[contains(text(), "{level}")]//ancestor::mat-checkbox'
+
+
+def dataset_encryption_text(name: str) -> str:
+    """
+    This function returns the xpath text of the given dataset encryption text.
+
+    :param name: The name of the dataset.
+    :return: The xpath text of the given dataset encryption text.
+    """
+    return f'//ix-dataset-node[contains(.,"{name}")]//ix-dataset-encryption-cell/div/div'
+
+
+def dataset_name(name: str) -> str:
+    """
+    This function returns the xpath text of the given dataset.
+
+    :param name: The name of the dataset.
+    :return: The xpath text of the given dataset.
+    """
+    return f'//ix-dataset-node[contains(.,"{name}")]'
 
 
 def dataset_permission_custom_preset_delete_button(name: str) -> str:
@@ -129,4 +139,3 @@ def selected_dataset_owner() -> str:
     :return: xpath string for given dataset.
     """
     return '//*[contains(text(),"Owner:")]//ancestor::div/*[@class="value ng-star-inserted"]'
-

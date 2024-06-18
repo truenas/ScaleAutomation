@@ -1,4 +1,3 @@
-from helper.webui import WebUI
 from keywords.webui.common import Common
 from keywords.webui.navigation import Navigation
 
