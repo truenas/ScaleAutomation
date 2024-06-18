@@ -100,6 +100,6 @@ class Interactive_Shell:
         sshpass = f'sshpass -p {password} ' if password else f'eval `ssh-agent` ; ssh-add {shared_config["KEYPATH"]} ; '
         child = pexpect.spawn(f'{sshpass}ssh {ssh_option} {username}@{ip}', encoding='utf-8')
         # This output the console output when .expect is used. It is very useful for debugging.
-        #child.logfile = sys.stdout
+        # child.logfile = sys.stdout
         child.expect(shared_config['HOSTNAME'])
         return child

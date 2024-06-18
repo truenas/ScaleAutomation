@@ -11,7 +11,7 @@ from keywords.webui.common import Common
 @allure.feature('Share Admin')
 class Test_Share_Admin_Power_Control:
 
-    @pytest.fixture
+    @pytest.fixture(autouse=True, scope='class')
     def setup_ssh(self):
         """
         This fixture starts the ssh service.

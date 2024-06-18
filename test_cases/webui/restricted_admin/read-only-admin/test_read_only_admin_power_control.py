@@ -11,7 +11,7 @@ from keywords.webui.common import Common
 @allure.feature('Read Only Admin')
 class Test_Read_Only_Admin_Power_Control:
 
-    @pytest.fixture
+    @pytest.fixture(autouse=True, scope='class')
     def setup_ssh(self):
         """
         This fixture starts the ssh service.
