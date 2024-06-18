@@ -57,8 +57,8 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
 
         Test Steps:
         1. Click Edit Periodic Snapshot task
-        2. Verify Periodic Snapshot Task fields (dataset, exclude, recursive, etc)
-        3. Verify sub-sections (dataset, Schedule)
+        2. Verify Periodic Snapshot Task fields (dataset, exclude, recursive, etc.)
+        3. Verify subsections (dataset, Schedule)
         4. Verify can view Custom Schedule dialog
         5. Close right panel
         """
@@ -132,10 +132,10 @@ class Test_Read_Only_Admin_Periodic_Snapshot_Tasks:
         3. Refresh page (re-navigate to Data Protection page)
         4. Verify the disabled periodic snapshot task toggle is locked and not clickable
         """
-        assert COM.assert_toggle_is_restricted(f'enabled-snapshot-task-tank/persnap_ro-pending-row-toggle') is True
+        assert COM.assert_toggle_is_restricted('enabled-snapshot-task-tank/persnap_ro-pending-row-toggle') is True
         API_PUT.set_periodic_snapshot_task_enabled('tank/persnap_ro', False)
         NAV.navigate_to_data_protection()
-        assert COM.assert_toggle_is_restricted(f'enabled-snapshot-task-tank/persnap_ro-pending-row-toggle') is True
+        assert COM.assert_toggle_is_restricted('enabled-snapshot-task-tank/persnap_ro-pending-row-toggle') is True
 
     @allure.tag("Read")
     @allure.story("Read Only Admin Can See The VM Periodic Snapshot Tasks")

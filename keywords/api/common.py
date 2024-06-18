@@ -77,7 +77,6 @@ class API_Common:
         """
         return cls.get_id_by_type("pool?", name)
 
-
     @classmethod
     def get_privilege_id(cls, privilege: str) -> int:
         """
