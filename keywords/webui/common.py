@@ -1432,7 +1432,7 @@ class Common:
         WebUI.delay(0.1)
         if tab:
             WebUI.xpath(xpaths.common_xpaths.input_field(name)).send_keys(Keys.TAB)
-            WebUI.delay(0.1)
+            WebUI.delay(0.2)
         if pill:
             assert WebUI.get_attribute(xpaths.common_xpaths.any_pill(name, value), 'textContent').strip() == value
         else:

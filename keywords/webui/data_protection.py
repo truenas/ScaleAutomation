@@ -520,24 +520,6 @@ class Data_Protection:
         return COM.is_visible(xpaths.data_protection.smart_test_description(description))
 
     @classmethod
-    def assert_snapshot_by_hour_and_minute(cls, hour: int, minute: int) -> bool:
-        """
-        This method returns True if a snapshot with the given hour and minute is visible, otherwise returns False.
-
-        :param hour: hour of the snapshot to validate [0-23]
-        :param minute: minute of the snapshot to validate [0-59]
-        :return: True if a snapshot with the given hour and minute is visible, otherwise returns False.
-
-        Example:
-            - Data_Protection.assert_snapshot_by_hour_and_minute(10, 37)
-        """
-        snaptime = '-{:02d}-{:02d}'.format(hour - 3, minute + 1)
-        shotname = COM.get_element_property('//*[starts-with(@data-test,"row-")]/td[3]', "innerText")
-        print(f'@@@ SNAP:  {shotname}')
-        print(f'@@@ XPATH: //*[contains(@data-test,"{snaptime}")]')
-        return COM.is_visible(xpaths.common_xpaths.any_xpath(f'//*[contains(@data-test,"{snaptime}")]'))
-
-    @classmethod
     def click_add_replication_button(cls) -> None:
         """
         This method clicks the Add Replication task button
@@ -729,6 +711,7 @@ class Data_Protection:
             - Data_Protection.click_snapshots_button()
         """
         COM.click_link('snapshot-task-snapshots')
+        assert COM.assert_page_header('Snapshots')
 
     @classmethod
     def delete_all_periodic_snapshot_tasks(cls) -> None:
@@ -808,6 +791,21 @@ class Data_Protection:
         task_type = COM.convert_to_tag_format(task_type)
         name = COM.convert_to_tag_format(name)
         return COM.get_element_property(xpaths.common_xpaths.any_xpath(f'//*[contains(@data-test,"state-{task_type}-task-{name}")]'), 'innerText')
+
+    @classmethod
+    def is_snapshot_visible(cls, dataset: str, snapshot_name: str) -> bool:
+        """
+        This method returns True if a snapshot with the given hour and minute is visible, otherwise returns False.
+
+        :param dataset: dataset of the snapshot to validate
+        :param snapshot_name: name of the snapshot to validate
+        :return: True if a snapshot with the given dataset and name is visible, otherwise returns False.
+
+        Example:
+            - Data_Protection.is_snapshot_visible('tank/dataset', 10, 37)
+        """
+        xpath = f'//*[@data-test="text-dataset-snapshot-row-text" and contains(text(), "{dataset}")]/ancestor::tr/descendant::*[contains(text(), "{snapshot_name}")]'
+        return COM.is_visible(xpath)
 
     @classmethod
     def set_schedule(cls, schedule: str) -> None:

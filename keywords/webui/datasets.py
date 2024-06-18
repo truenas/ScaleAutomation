@@ -825,7 +825,7 @@ class Datasets:
         Example:
             - Dataset.delete_dataset('test-pool', 'test-dataset')
         """
-        if WebUI.wait_until_visible(xpaths.common_xpaths.any_text(dataset), shared_config['SHORT_WAIT']):
+        if WebUI.wait_until_visible(xpaths.datasets.dataset_name(dataset), shared_config['SHORT_WAIT']):
             cls.click_dataset_location(dataset)
             Common.click_button('delete-dataset')
             Common.assert_progress_spinner_not_visible()

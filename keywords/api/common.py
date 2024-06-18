@@ -11,10 +11,11 @@ class API_Common:
         :param path: is the path to search the name to get the ID.
         :param name: is the name of the to get the ID from.
         :return: the ID of name of specified path.
+
+        Example:
+            - API_Common.get_id_by_type('user?', 'username')
         """
-        search = 'name='
-        if path.__contains__('nfs'):
-            search = 'path=/mnt/'
+        search = 'path=/mnt/' if 'nfs' in path else 'name='
         user_results = GET(f"/{path}{search}{name}")
         assert user_results.status_code == 200, user_results.text
         return user_results.json()[0]['id']
@@ -26,6 +27,9 @@ class API_Common:
 
         :param group: is the name of the group to get the ID from.
         :return: the ID of the specified group.
+
+        Example:
+            - API_Common.get_group_id('group1')
         """
         return cls.get_id_by_type("group?", group)
 
@@ -36,7 +40,10 @@ class API_Common:
 
         :param value: is the value to search with.
         :param attribute: is the attribute to search options: [id, method, state]
-        :return: the ID of the specified job.
+        :return: the API request response.
+
+        Example:
+            - API_Common.get_jobs('system.debug', 'state')
         """
         response = GET(f'/core/get_jobs/?{attribute}={value}')
         assert response.status_code == 200, response.text
@@ -51,8 +58,24 @@ class API_Common:
         :param attribute: is the attribute of the job to get the ID from.
             options: [method, state]
         :return: the ID of the specified job.
+
+        Example:
+            - API_Common.get_a_job_id('system.debug', 'state')
         """
         return cls.get_jobs(value, attribute).json()[-1]['id']
+
+    @classmethod
+    def get_pool_id(cls, name: str) -> int:
+        """
+        This method return the ID of the specified group.
+
+        :param name: is the name of the pool to get the ID from.
+        :return: the ID of the specified pool.
+
+        Example:
+            - API_Common.get_pool_id('tank')
+        """
+        return cls.get_id_by_type("pool?", name)
 
     @classmethod
     def get_privilege_id(cls, privilege: str) -> int:
@@ -61,6 +84,9 @@ class API_Common:
 
         :param privilege: is the name of the privilege to get the ID from.
         :return: the ID of the specified privilege.
+
+        Example:
+            - API_Common.get_privilege_id('privilege1')
         """
         return cls.get_id_by_type("privilege?", privilege)
 
@@ -71,6 +97,9 @@ class API_Common:
 
         :param privilege: is the name of the privilege to get the GID from.
         :return: the GID of the specified privilege.
+
+        Example:
+            - API_Common.get_privilege_gid('privilege1')
         """
         user_results = GET(f"/privilege?name={privilege}")
         assert user_results.status_code == 200, user_results.text
@@ -83,6 +112,9 @@ class API_Common:
 
         :param ssh: is the name of the ssh connection to get the ID from.
         :return: the ID of the specified ssh connection.
+
+        Example:
+            - API_Common.get_ssh_id('ssh1')
         """
         return cls.get_id_by_type("keychaincredential?", ssh)
 
@@ -93,6 +125,9 @@ class API_Common:
 
         :param username: is the username of the user to get the ID from.
         :return: the ID of the specified username.
+
+        Example:
+            - API_Common.get_user_id('username')
         """
         return cls.get_id_by_type("user?user", username)
 
@@ -103,6 +138,9 @@ class API_Common:
 
         :param username: is the username of the user to get the ID from.
         :return: the ID of the specified username.
+
+        Example:
+            - API_Common.get_user_uid('username')
         """
         user_results = GET(f"/user?username={username}")
         assert user_results.status_code == 200, user_results.text
@@ -130,6 +168,9 @@ class API_Common:
         :param job_id: is the id number of the job.
         :param max_timeout: is the time in second to time out the wait for SUCCESS or FAILED.
         :return: a dictionary with the state and the json results as a dictionary.
+
+        Example:
+            - API_Common.wait_on_job(1234, 60)
         """
         timeout = 0
         while True:
