@@ -90,7 +90,9 @@ class Test_Create_Replicate_Task_Remote:
         REP.set_custom_snapshots()
         COM.set_input_field('naming-schema', "rep-%Y-%m-%d_%H-%M")
         REP.set_task_name(rep['task-name'])
-        WebUI.delay(1)
+        # Clicking the "Next" button doesn't seeme to work on the pipeline
+        # However, clicking on the "Step 2: When" appears to work
+        # If this gets fixed, replace with the 'click_next_button()'
         COM.click_on_element('//*[@class="mat-step-label"]')
         # COM.click_next_button()
 
