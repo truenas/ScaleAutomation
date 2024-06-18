@@ -1,5 +1,7 @@
 import allure
+import pytest
 from helper.global_config import shared_config
+from keywords.api.post import API_POST
 from keywords.ssh.cli import CLI_SSH
 from keywords.webui.common import Common
 
@@ -8,6 +10,14 @@ from keywords.webui.common import Common
 @allure.epic('permissions')
 @allure.feature('Share Admin')
 class Test_Share_Admin_Power_Control:
+
+    @pytest.fixture
+    def setup_ssh(self):
+        """
+        This fixture starts the ssh service.
+        """
+        API_POST.start_service('ssh')
+
     @allure.story("Share Admin Cannot Restart The System From The WebUI")
     def test_share_admin_cannot_restart_the_system_from_the_webui(self):
         """
@@ -28,8 +38,8 @@ class Test_Share_Admin_Power_Control:
         CLI_SSH.assert_cli_command(
             'system reboot',
             'Namespace reboot not found',
-            shared_config['ROA_USER'],
-            shared_config['ROA_PASSWORD']
+            shared_config['SHARE_ADMIN_USER'],
+            shared_config['SHARE_ADMIN_PASSWORD']
         )
 
     @allure.story("Share Admin Cannot Shut Down The System From The WebUI")
@@ -52,8 +62,8 @@ class Test_Share_Admin_Power_Control:
         CLI_SSH.assert_cli_command(
             'system shutdown',
             'Namespace shutdown not found',
-            shared_config['ROA_USER'],
-            shared_config['ROA_PASSWORD']
+            shared_config['SHARE_ADMIN_USER'],
+            shared_config['SHARE_ADMIN_PASSWORD']
         )
 
     @allure.story("Share Admin Can Log Out Of The WebUI")

@@ -1,5 +1,7 @@
 import allure
+import pytest
 from helper.global_config import shared_config
+from keywords.api.post import API_POST
 from keywords.ssh.cli import CLI_SSH
 from keywords.webui.common import Common
 
@@ -8,6 +10,14 @@ from keywords.webui.common import Common
 @allure.epic('permissions')
 @allure.feature('Read Only Admin')
 class Test_Read_Only_Admin_Power_Control:
+
+    @pytest.fixture
+    def setup_ssh(self):
+        """
+        This fixture starts the ssh service.
+        """
+        API_POST.start_service('ssh')
+
     @allure.story("Read Only Admin Cannot Restart The System From The WebUI")
     def test_read_only_admin_cannot_restart_the_system_from_the_webui(self):
         """
