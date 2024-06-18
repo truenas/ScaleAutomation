@@ -1,5 +1,7 @@
+import xpaths
 from helper.api import POST, Response, GET
 from helper.global_config import shared_config, private_config
+from helper.webui import WebUI
 from keywords.api.common import API_Common
 from keywords.api.get import API_GET
 
@@ -789,6 +791,21 @@ class API_POST:
 
         payload = {'id': dataset}
         return cls.toggle_dataset_lock_by_state(payload, 'lock', 'remote')
+
+    @classmethod
+    def reboot_system(cls):
+        """
+        This method reboots the system.
+        """
+        POST('/system/reboot')
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.any_text('Connecting to TrueNAS'),
+                                        shared_config['EXTRA_LONG_WAIT']) is True
+        assert WebUI.wait_until_not_visible(
+            xpaths.common_xpaths.any_xpath('//ix-disconnected-message//*[contains(text(), "Connecting to TrueNAS")]'),
+            shared_config['EXTRA_LONG_WAIT']) is True
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.input_field('username'), shared_config['EXTRA_LONG_WAIT']) is True
+        WebUI.wait_until_clickable(xpaths.common_xpaths.button_field('log-in'))
+        assert API_Common.is_system_ready() is True
 
     @classmethod
     def restart_replication_service(cls, service: str) -> Response:
