@@ -202,7 +202,7 @@ class Common:
         # print(f'{file} RESPONSE: {response.status}')
         # print(f'{file} SUCCESS RESPONSE: {response.stdout}')
         # print(f'{file} ERROR RESPONSE: {response.stderr}')
-        print(f'{file}: ' + str(response.stdout.__contains__(file)))
+        print(f'{file}: {str(response.stdout.__contains__(file))}')
         return response.stdout.__contains__(file)
 
     @classmethod
@@ -277,6 +277,22 @@ class Common:
         """
         assert WebUI.wait_until_visible(xpaths.common_xpaths.any_header('Please wait', 6), shared_config['SHORT_WAIT']) is True
         return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_header('Please wait', 1), wait)
+
+    @classmethod
+    def assert_power_menu_option_is_restricted(cls, option: str) -> None:
+        """
+        This method asserts that the given power control option is restricted.
+
+        :param option: is the name of the power control option
+        :return: None
+
+        Example:
+            - Common.assert_power_control_option_restricted('Restart')
+        """
+        Common.click_button('power-menu')
+        assert Common.assert_button_is_restricted(option) is True
+        assert Common.is_dialog_visible(option.title(), 1) is False
+        WebUI.send_key('esc')
 
     @classmethod
     def assert_progress_bar_not_visible(cls, wait: int = shared_config['LONG_WAIT']) -> bool:
