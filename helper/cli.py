@@ -1,7 +1,12 @@
-import pexpect
+import sys
 from helper.global_config import shared_config
 from platform import system
 from subprocess import run, PIPE
+if system() == 'Windows':
+    import wexpect as pexpect
+else:
+    import pexpect
+
 
 
 class Local_Command_Line:
@@ -29,6 +34,7 @@ class Local_Command_Line:
         self.stdout = self.process.stdout
         self.stderr = self.process.stderr
         self.status = self.process.returncode == 0
+        assert self.status
 
 
 class SSH_Command_Line:
@@ -97,7 +103,11 @@ class Interactive_Shell:
         ssh_option = "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o VerifyHostKeyDNS=no " \
                      "-o LogLevel=quiet"
         sshpass = f'sshpass -p {password} ' if password else f'eval `ssh-agent` ; ssh-add {shared_config["KEYPATH"]} ; '
-        child = pexpect.spawn(f'{sshpass}ssh {ssh_option} {username}@{ip}', encoding='utf-8')
+        print(system())
+        if system() == "Windows":
+            child = pexpect.spawn(f'wsl -- {sshpass}ssh {ssh_option} {username}@{ip}')
+        else:
+            child = pexpect.spawn(f'{sshpass}ssh {ssh_option} {username}@{ip}', encoding='utf-8')
         # This output the console output when .expect is used. It is very useful for debugging.
         # child.logfile = sys.stdout
         child.expect(shared_config['HOSTNAME'])

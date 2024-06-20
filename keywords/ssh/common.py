@@ -48,8 +48,8 @@ class Common_SSH:
     def create_ssh_key(cls):
         """This method create the SSH key if it does not exist"""
         # don't recreate the file if it already exists.
-        if path.exists(shared_config['KEYPATH']) is False:
-            Local_Command_Line(f"yes | ssh-keygen -t rsa -f {shared_config['KEYPATH']} -q -N ''")
+        if Local_Command_Line(f"test -f {shared_config['KEYPATH']}").status is False:
+            Local_Command_Line(f"ssh-keygen -t rsa -f {shared_config['KEYPATH']} -q -N ''")
 
     @classmethod
     def get_checksum_of_file(cls, ip: str, filename: str, user: str = private_config["SSH_USERNAME"], password: str = private_config["SSH_PASSWORD"]) -> str:
@@ -147,7 +147,7 @@ class Common_SSH:
 
         :return: the SSH public key
         """
-        return open(path.expanduser(f'{shared_config["KEYPATH"]}.pub'), 'r').read().strip()
+        return Local_Command_Line(f'cat {shared_config['KEYPATH']}.pub').stdout.strip()
 
     @classmethod
     def list_directory(cls, full_path: str, ip: str = private_config['IP'],
@@ -192,7 +192,8 @@ class Common_SSH:
         :param username: the username to set the SSH public key on the NAS
         """
         cls.create_ssh_key()
-        assert path.exists(path.expanduser(f'{shared_config["KEYPATH"]}.pub')) is True
+
+        assert Local_Command_Line(f"test -f {shared_config['KEYPATH']}.pub").status
         assert API_PUT.set_user_ssh_public_key(username, cls.get_ssh_pub_key()).status_code == 200
         assert API_POST.start_service('ssh').status_code == 200
         assert API_PUT.enable_service_at_boot('ssh').status_code == 200
