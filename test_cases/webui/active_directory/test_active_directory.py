@@ -113,7 +113,7 @@ class Test_Active_Directory:
         assert Active_Directory.assert_nameserver_failed_to_resolve_srv_record_message(ad_data['nameserver2']) is True
         Common.click_error_dialog_close_button()
         Common.close_right_panel()
-        Navigation.navigate_to_dashboard()
+        API_PUT.set_nameservers(ad_data['nameserver'])
 
     @allure.tag("defect_verification", "NAS-129528")
     def test_setup_active_directory_with_group_cache_disabled(self, ad_data, setup_active_directory_with_api, tear_down_class):
@@ -121,6 +121,7 @@ class Test_Active_Directory:
         This test case test setup active directory with misconfigured dns.
         """
         # Setup SSH usage and dataset
+        Navigation.navigate_to_dashboard()
         API_POST.start_service('ssh')
         API_PUT.enable_user_ssh_password(private_config['USERNAME'])
         API_PUT.enable_user_all_sudo_commands_no_password(private_config['USERNAME'])
