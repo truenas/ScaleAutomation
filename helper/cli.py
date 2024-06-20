@@ -1,4 +1,3 @@
-import sys
 from helper.global_config import shared_config
 from platform import system
 from subprocess import run, PIPE
@@ -103,7 +102,6 @@ class Interactive_Shell:
         ssh_option = "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o VerifyHostKeyDNS=no " \
                      "-o LogLevel=quiet"
         sshpass = f'sshpass -p {password} ' if password else f'eval `ssh-agent` ; ssh-add {shared_config["KEYPATH"]} ; '
-        print(system())
         if system() == "Windows":
             child = pexpect.spawn(f'wsl -- {sshpass}ssh {ssh_option} {username}@{ip}')
         else:

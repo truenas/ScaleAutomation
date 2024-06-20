@@ -147,7 +147,7 @@ class Common_SSH:
 
         :return: the SSH public key
         """
-        return Local_Command_Line(f'cat {shared_config['KEYPATH']}.pub').stdout.strip()
+        return Local_Command_Line(f"cat {shared_config['KEYPATH']}.pub").stdout.strip()
 
     @classmethod
     def list_directory(cls, full_path: str, ip: str = private_config['IP'],
