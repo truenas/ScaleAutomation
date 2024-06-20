@@ -1,4 +1,3 @@
-import allure
 import pytest
 
 from helper.data_config import get_data_list

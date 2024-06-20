@@ -1,9 +1,10 @@
 allure-pytest
 percy-selenium
+pexpect
 pyperclip
 pytest
 pytest-timeout
+pytest-timestamper
 requests
 selenium
 toml
-pytest-timestamper
