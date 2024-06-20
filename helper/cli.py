@@ -53,6 +53,6 @@ class SSH_Command_Line:
         self.stdout = self.process.stdout
         self.stderr = self.process.stderr
         self.status = self.process.status
-        # print("@@@ STDOUT: " + self.stdout)
-        # print("@@@ STDERR: " + self.stderr)
-        # print("@@@ STATUS: " + str(self.status))
+        print("@@@ STDOUT: " + self.stdout)
+        print("@@@ STDERR: " + self.stderr)
+        print("@@@ STATUS: " + str(self.status))
