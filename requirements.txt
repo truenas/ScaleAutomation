@@ -7,6 +7,4 @@ pytest-timeout
 pytest-timestamper
 requests
 selenium
-setuptools
 toml
-wexpect==4.0.0
