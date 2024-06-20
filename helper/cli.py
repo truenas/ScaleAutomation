@@ -1,4 +1,3 @@
-import sys
 from helper.global_config import shared_config
 from platform import system
 from subprocess import run, PIPE

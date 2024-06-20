@@ -9,4 +9,4 @@ requests
 selenium
 setuptools
 toml
-wexpect
+wexpect==4.0.0

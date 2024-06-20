@@ -2,7 +2,6 @@ from helper.cli import Local_Command_Line, SSH_Command_Line
 from helper.global_config import shared_config, private_config
 from keywords.api.post import API_POST
 from keywords.api.put import API_PUT
-from os import path
 
 
 class Common_SSH:
@@ -147,7 +146,7 @@ class Common_SSH:
 
         :return: the SSH public key
         """
-        return Local_Command_Line(f'cat {shared_config['KEYPATH']}.pub').stdout.strip()
+        return Local_Command_Line(f"cat {shared_config['KEYPATH']}.pub").stdout.strip()
 
     @classmethod
     def list_directory(cls, full_path: str, ip: str = private_config['IP'],
