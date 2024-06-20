@@ -14,6 +14,8 @@ from keywords.webui.datasets import Datasets
 from keywords.webui.directory_services import Directory_Services
 from keywords.webui.navigation import Navigation
 from keywords.webui.permissions import Permissions
+from keywords.webui.common_shares import Common_Shares as COMSHARE
+from keywords.webui.smb import SMB
 
 
 @pytest.mark.parametrize('ad_data', get_data_list('ad_credentials'), scope='class')
@@ -98,11 +100,14 @@ class Test_Active_Directory:
         # Setup SSH usage and dataset
         Navigation.navigate_to_dashboard()
         API_POST.start_service('ssh')
+        API_POST.start_service('cifs')
         API_PUT.enable_user_ssh_password(private_config['USERNAME'])
         API_PUT.enable_user_all_sudo_commands_no_password(private_config['USERNAME'])
+        API_POST.create_dataset("tank/group_cache_disabled_smb", "SMB")
         API_POST.create_dataset("tank/group_cache_disabled_unix")
         API_POST.create_dataset("tank/group_cache_disabled_nfsv4", "SMB")
         API_POST.create_dataset("tank/group_cache_disabled_POSIX")
+        API_POST.create_share('smb', "group_cache_disabled_smb", "/mnt/tank/group_cache_disabled_smb")
 
         # Click on the active directory settings button and edit the active directory configuration.
         Navigation.navigate_to_directory_services()
@@ -120,6 +125,17 @@ class Test_Active_Directory:
         Active_Directory.click_advanced_options_button()
         assert Common.is_checked("disable-freenas-cache") is True
         Common.close_right_panel()
+
+        # Create SMB share with ACL
+        Navigation.navigate_to_shares()
+        assert COMSHARE.assert_share_card_displays('smb') is True
+        SMB.click_edit_share_acl("group_cache_disabled_smb")
+        Common.select_option("ae-who", "ae-who-group")
+        Common.set_input_field("group", r"AD03\domain guests")
+        Common.click_save_button_and_wait_for_right_panel()
+
+        # Verify ACL Permissions of share
+        assert SMB.assert_user_can_access('group_cache_disabled_smb', ad_data['username'], ad_data['password']) is True
 
         # Navigate to datasets page and edit unix dataset group with manually typed AD group
         Navigation.navigate_to_datasets()
@@ -166,14 +182,23 @@ class Test_Active_Directory:
         Permissions.click_save_acl_button()
 
         # Verify POSIX dataset group has saved in UI and CLI
-        assert Permissions.get_dataset_permissions_item_name_by_level('group', r"AD03\domain guests") is r"AD03\domain guests"
-        assert Perm_SSH.verify_getfacl_contains_permissions("/mnt/tank/group_cache_disabled_nfsv4",
-                                                            r"user:AD03\\domain\040guests:r--") is True
+        assert Common.is_visible(xpaths.datasets.dataset_permissions_item(r'Group – AD03\domain guests', "Read")) is True
+        assert Perm_SSH.verify_getfacl_contains_permissions("/mnt/tank/group_cache_disabled_POSIX",
+                                                            r"group:AD03\\domain\040guests:r--") is True
 
-        # Delete dataset
-        API_DELETE.delete_dataset("tank/group_cache_disabled_unix")
-        API_DELETE.delete_dataset("tank/group_cache_disabled_nfsv4")
-        API_DELETE.delete_dataset("tank/group_cache_disabled_POSIX")
+        # Edit nfsv4 dataset group with manually typed AD group
+        Datasets.select_dataset("group_cache_disabled_nfsv4")
+        Datasets.click_edit_permissions_button()
+        Permissions.click_add_item_button()
+        Permissions.select_ace_who("group")
+        Common.set_input_field("group", r"AD03\domain guests")
+        Permissions.click_save_acl_button()
+
+        # Verify nfsv4 dataset group has saved in UI and CLI
+        assert Datasets.is_permissions_advanced_item_visible("Group", r"AD03\domain guests") is True
+        assert Perm_SSH.verify_getfacl_contains_permissions("/mnt/tank/group_cache_disabled_nfsv4",
+                                                            r"group:AD03\domain guests:rwxpDdaARWc--s:fd-----:allow",
+                                                            "NFSv4") is True
 
     def test_setup_active_directory_with_misconfigured_dns(self, ad_data, setup_dns_for_ad_with_a_second_nameserver):
         """
@@ -212,3 +237,8 @@ class Test_Active_Directory:
         elif request.node.report.failed and 'leave_active_directory' in request.node.name:
             API_POST.leave_active_directory(ad_data['username'], ad_data['password'])
             API_PUT.set_nameservers(ad_data['nameserver1'], ad_data['nameserver2'])
+        API_DELETE.delete_dataset("tank/group_cache_disabled_unix")
+        API_DELETE.delete_dataset("tank/group_cache_disabled_nfsv4")
+        API_DELETE.delete_dataset("tank/group_cache_disabled_POSIX")
+        API_DELETE.delete_dataset("tank/group_cache_disabled_smb")
+        API_DELETE.delete_share("smb", "group_cache_disabled_smb")
