@@ -1,4 +1,5 @@
 import xpaths
+from helper.webui import WebUI
 from keywords.webui.common import Common
 
 
@@ -37,6 +38,7 @@ class Active_Directory:
             - Common.click_advanced_options_button()
         """
         Common.click_button('toggle-advanced')
+        WebUI.delay(0.5)
 
     @classmethod
     def click_leave_domain_button(cls):
