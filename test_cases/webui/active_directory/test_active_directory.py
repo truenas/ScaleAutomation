@@ -90,7 +90,7 @@ class Test_Active_Directory:
         assert Directory_Services.assert_active_directory_domain_name(ad_data['domain'])
         assert Directory_Services.assert_active_directory_domain_account_name(ad_data['username'])
 
-    def test_setup_active_directory_with_misconfigured_dns(self, ad_data, setup_dns_for_ad_with_a_second_nameserver, tear_down_class):
+    def test_setup_active_directory_with_misconfigured_dns(self, ad_data, setup_dns_for_ad_with_a_second_nameserver):
         """
         This test case test setup active directory with misconfigured dns.
         """
@@ -112,9 +112,11 @@ class Test_Active_Directory:
         # Verify the message of the nameserver failed to resolve SRV record message.
         assert Active_Directory.assert_nameserver_failed_to_resolve_srv_record_message(ad_data['nameserver2']) is True
         Common.click_error_dialog_close_button()
+        Common.close_right_panel()
+        Navigation.navigate_to_dashboard()
 
     @allure.tag("defect_verification", "NAS-129528")
-    def test_setup_active_directory_with_group_cache_disabled(self, ad_data, tear_down_class):
+    def test_setup_active_directory_with_group_cache_disabled(self, ad_data, setup_active_directory_with_api, tear_down_class):
         """
         This test case test setup active directory with misconfigured dns.
         """
