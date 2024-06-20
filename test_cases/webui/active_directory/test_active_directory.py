@@ -116,8 +116,7 @@ class Test_Active_Directory:
         Directory_Services.click_active_directory_settings_button()
         assert Active_Directory.is_edit_active_directory_visible() is True
         Active_Directory.click_advanced_options_button()
-        assert Common.get_element_property(xpaths.common_xpaths.checkbox_field_attribute
-                                           ("disable-freenas-cache"), 'checked') is True
+        assert Common.is_checked("disable-freenas-cache") is True
         Common.close_right_panel()
 
         # Navigate to datasets page and edit dataset group with manually typed AD group
