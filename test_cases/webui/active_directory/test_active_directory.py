@@ -96,6 +96,7 @@ class Test_Active_Directory:
         This test case test setup active directory with the group cache disabled.
         """
         # Setup SSH usage and dataset
+        Navigation.navigate_to_dashboard()
         API_POST.start_service('ssh')
         API_PUT.enable_user_ssh_password(private_config['USERNAME'])
         API_PUT.enable_user_all_sudo_commands_no_password(private_config['USERNAME'])
