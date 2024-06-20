@@ -2,11 +2,12 @@ import sys
 from helper.global_config import shared_config
 from platform import system
 from subprocess import run, PIPE
+import pexpect
 if system() == 'Windows':
-    import wexpect as pexpect
+    from pexpect import popen_spawn
+    spawn = popen_spawn.PopenSpawn
 else:
-    import pexpect
-
+    from pexpect import spawn
 
 
 class Local_Command_Line:
@@ -81,7 +82,7 @@ class Interactive_Shell:
     There is more options in the pexpect docs: https://pexpect.readthedocs.io/en/stable/api/pexpect.html
     """
     @classmethod
-    def ssh(cls, ip: str, username: str, password: str = None) -> pexpect.spawn:
+    def ssh(cls, ip: str, username: str, password: str = None) -> spawn:
         """
         This method run the command line through SSH and allows interacting with the shell.
 
@@ -103,12 +104,11 @@ class Interactive_Shell:
         ssh_option = "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o VerifyHostKeyDNS=no " \
                      "-o LogLevel=quiet"
         sshpass = f'sshpass -p {password} ' if password else f'eval `ssh-agent` ; ssh-add {shared_config["KEYPATH"]} ; '
-        print(system())
         if system() == "Windows":
-            child = pexpect.spawn(f'wsl -- {sshpass}ssh {ssh_option} {username}@{ip}')
+            child = pexpect.popen_spawn.PopenSpawn(f'wsl -- {sshpass}ssh {ssh_option} {username}@{ip}', encoding='utf-8')
         else:
             child = pexpect.spawn(f'{sshpass}ssh {ssh_option} {username}@{ip}', encoding='utf-8')
         # This output the console output when .expect is used. It is very useful for debugging.
-        # child.logfile = sys.stdout
+        child.logfile = sys.stdout
         child.expect(shared_config['HOSTNAME'])
         return child
