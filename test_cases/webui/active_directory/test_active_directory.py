@@ -92,7 +92,8 @@ class Test_Active_Directory:
         assert Directory_Services.assert_active_directory_domain_name(ad_data['domain'])
         assert Directory_Services.assert_active_directory_domain_account_name(ad_data['username'])
 
-    @allure.tag("defect_verification", "NAS-129528")
+    @allure.tag("defect_verification", "NAS-129528", "NAS-129686")
+    @allure.issue("NAS-129686", "NAS-129686")
     def test_setup_active_directory_with_group_cache_disabled(self, ad_data, tear_down_class):
         """
         This test case test setup active directory with the group cache disabled.
@@ -137,7 +138,8 @@ class Test_Active_Directory:
 
         # Verify share functionality
         SMB.click_edit_share_acl("group_cache_disabled_smb")
-        Common.assert_text_is_visible(r"AD03\domain guests")
+        # Expected failure below: https://ixsystems.atlassian.net/browse/NAS-129686
+        assert Common.assert_text_is_visible(r"AD03\domain guests") is True
         Common.close_right_panel()
         assert SMB.assert_user_can_access('group_cache_disabled_smb', ad_data['username'], ad_data['password']) is True
 
