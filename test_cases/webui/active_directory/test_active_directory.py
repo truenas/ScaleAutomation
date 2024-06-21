@@ -1,9 +1,9 @@
 import allure
 import pytest
 
-import xpaths
 from helper.data_config import get_data_list
 from helper.global_config import shared_config, private_config
+from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.api.put import API_PUT
@@ -16,6 +16,9 @@ from keywords.webui.navigation import Navigation
 from keywords.webui.permissions import Permissions
 
 
+@allure.tag('Active Directory', 'Directory Services')
+@allure.epic('Directory Services')
+@allure.feature('Active Directory')
 @pytest.mark.parametrize('ad_data', get_data_list('ad_credentials'), scope='class')
 class Test_Active_Directory:
     """
@@ -63,9 +66,16 @@ class Test_Active_Directory:
         # Verify that the active directory card is not visible after leaving the active directory
         assert Directory_Services.assert_active_directory_card_not_visible() is True
 
+    @allure.tag("Create", 'Percy')
+    @allure.story("Setup Active Directory")
     def test_setup_active_directory(self, ad_data, setup_dns_for_active_directory):
         """
         This test case test setup active directory.
+        1. Navigate to directory services page.
+        2. Click on the active directory settings button
+        3. Set up the active directory and save
+        4. Verify the Active Directory card is visible and the service status is HEALTHY
+        5. Take a snapshot of active directory setup
         """
         # Navigate to directory services page.
         Navigation.navigate_to_directory_services()
@@ -90,7 +100,9 @@ class Test_Active_Directory:
         assert Directory_Services.assert_active_directory_domain_name(ad_data['domain'])
         assert Directory_Services.assert_active_directory_domain_account_name(ad_data['username'])
 
-    @allure.tag("defect_verification", "NAS-129528")
+        WebUI.take_percy_snapshot("Active Directory Setup")
+
+    @allure.tag("defect_verification", "NAS-129528", 'Percy')
     def test_setup_active_directory_with_group_cache_disabled(self, ad_data, tear_down_class):
         """
         This test case test setup active directory with the group cache disabled.

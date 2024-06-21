@@ -3,6 +3,7 @@ import pytest
 
 from helper.data_config import get_data_list
 from helper.global_config import private_config
+from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
@@ -38,7 +39,7 @@ class Test_Local_Users:
         API_DELETE.delete_user(users['username'] + '-edt')
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
 
-    @allure.tag("Create")
+    @allure.tag("Create", 'Percy')
     @allure.story("Add New Local Users")
     def test_add_new_user(self, users) -> None:
         """
@@ -51,7 +52,7 @@ class Test_Local_Users:
         4. Verify User is visible
         """
         API_DELETE.delete_user(users['username'])
-        assert LU.is_user_visible(users['username']) is False
+        assert LU.is_user_not_visible(users['username']) is True
         LU.click_add_user_button()
 
         LU.set_user_fullname(users['fullname'])
@@ -59,12 +60,13 @@ class Test_Local_Users:
         LU.set_user_password(users['password'])
         LU.set_user_password_confirm(users['password'])
         LU.set_user_email(users['email'])
-
+        WebUI.take_percy_snapshot('Add User UI', scope='//*[contains(@class,"ix-slide-in-body")]')
         COM.click_save_button_and_wait_for_progress_bar()
         LU.unset_show_builtin_users_toggle()
         LU.refresh_local_user_page('100')
 
         assert LU.is_user_visible(users['username']) is True
+        WebUI.take_percy_snapshot('Users UI with New User')
 
     @allure.tag("Delete")
     @allure.story("Delete Local Users")

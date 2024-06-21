@@ -322,16 +322,20 @@ class WebUI(object):
         cls.web_driver.switch_to.window(cls.web_driver.window_handles[index])
 
     @classmethod
-    def take_percy_snapshot(cls, name: str) -> None:
+    def take_percy_snapshot(cls, name: str, scope: str = None) -> None:
         """
         This method takes a snapshot for percy of the current window.
 
         :param name: is the name of the snapshot.
+        :param scope: is the xpath of the element that is the scope of the snapshot.
 
         Example:
             - WebUI.percy_snapshot('name')
         """
-        percy_snapshot(cls.web_driver, name, widths=[1920])
+        if scope:
+            percy_snapshot(cls.web_driver, name, scope=scope)
+        else:
+            percy_snapshot(cls.web_driver, name, widths=[1920])
 
     @classmethod
     def total_time_waited(cls) -> float:
