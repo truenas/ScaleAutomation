@@ -1,4 +1,4 @@
-from helper.cli import Interactive_Shell, pexpect
+from helper.cli import Interactive_Shell, spawn
 from helper.global_config import private_config
 
 
@@ -34,7 +34,7 @@ class CLI_SSH:
         return status == 0
 
     @classmethod
-    def run_cli_command(cls, cli_command: str, user, password: str) -> pexpect.spawn:
+    def run_cli_command(cls, cli_command: str, user, password: str) -> spawn:
         """
         This method runs the cli command through ssh.
 
