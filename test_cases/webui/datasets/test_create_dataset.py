@@ -1,11 +1,16 @@
+import allure
 import pytest
 from helper.data_config import get_data_list
+from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.webui.common import Common
 from keywords.webui.datasets import Datasets
 from keywords.webui.navigation import Navigation
 
 
+@allure.tag('Dataset')
+@allure.epic('Datasets')
+@allure.feature('Creating Dataset')
 @pytest.mark.parametrize('data', get_data_list('datasets')[2:4], scope='class')
 class Test_Create_Dataset:
     """
@@ -26,9 +31,16 @@ class Test_Create_Dataset:
         yield
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["dataset"]}')
 
+    @allure.tag('Create', 'Percy')
+    @allure.story('Create A Simple Dataset')
     def test_create_dataset(self, data):
         """
         This test navigates to datasets page.
+        1. Navigate to datasets page
+        2. Select the pool and click on add dataset.
+        3. Create a dataset and save it.
+        4. Verify that the created dataset exists in the datasets page.
+        5. Take Percy snapshot.
         """
         # Navigate to Datasets page
         Navigation.navigate_to_datasets()
@@ -45,3 +57,5 @@ class Test_Create_Dataset:
 
         # Verify that the created dataset exists in the datasets page.
         Datasets.is_dataset_visible(data["pool"], data["dataset"])
+
+        WebUI.take_percy_snapshot('Dataset Created UI')
