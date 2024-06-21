@@ -1,5 +1,7 @@
 import allure
 import pytest
+
+import xpaths
 from helper.data_config import get_data_list
 from helper.global_config import shared_config, private_config
 from keywords.api.delete import API_DELETE
