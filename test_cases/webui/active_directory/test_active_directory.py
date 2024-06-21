@@ -130,11 +130,15 @@ class Test_Active_Directory:
         Navigation.navigate_to_shares()
         assert COMSHARE.assert_share_card_displays('smb') is True
         SMB.click_edit_share_acl("group_cache_disabled_smb")
-        Common.select_option("ae-who", "ae-who-group")
-        Common.set_input_field("group", r"AD03\domain guests")
+        SMB.add_additional_acl_who_entry("group", r"AD03\domain guests")
+        # Common.select_option("ae-who", "ae-who-group")
+        # Common.set_input_field("group", r"AD03\domain guests")
         Common.click_save_button_and_wait_for_right_panel()
 
-        # Verify ACL Permissions of share
+        # Verify share functionality
+        SMB.click_edit_share_acl("group_cache_disabled_smb")
+        Common.assert_text_is_visible(r"AD03\domain guests")
+        Common.close_right_panel()
         assert SMB.assert_user_can_access('group_cache_disabled_smb', ad_data['username'], ad_data['password']) is True
 
         # Navigate to datasets page and edit unix dataset group with manually typed AD group

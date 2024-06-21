@@ -2,11 +2,47 @@ import xpaths
 from helper.cli import SSH_Command_Line
 from helper.global_config import private_config
 from helper.webui import WebUI
-from keywords.ssh.smb import SSH_SMB as SSHSMB
+from keywords.ssh.smb import SSH_SMB as SSH_SMB
 from keywords.webui.common import Common as COM
 
 
 class SMB:
+    @classmethod
+    def add_additional_acl_who_entry(cls, who_type: str, name: str = "", permissions: str = "FULL", type_field: str = "ALLOWED") -> None:
+        """
+        This method creates a new entry of the given type, with the given name, permissions and type.
+
+        :param who_type: type of who to add. [user/group/everyone]
+        :param name: Optional for everyone, name of the user or group to add
+        :param permissions: Optional, defaults to FULL. [FULL/CHANGE/READ]
+        :param type_field: Optional, defaults to ALLOWED. [ALLOWED/DENIED]
+
+        Example:
+            - SMB.add_additional_acl_who_entry('group', 'admin_group')
+            - SMB.add_additional_acl_who_entry('everyone')
+        """
+        COM.click_button("add-item-add-entry")
+        WebUI.delay(0.1)
+        COM.click_on_element(xpaths.smb.smb_acl_empty_entry_who())
+        match who_type:
+            case 'user':
+                who_type_cap = 'User'
+            case 'group':
+                who_type_cap = 'Group'
+            case 'everyone':
+                who_type_cap = 'everyone'
+        COM.click_on_element(xpaths.common_xpaths.option_field(f"ae-who-{who_type}"))
+        WebUI.delay(0.1)
+        if who_type != "everyone":
+            COM.set_input_field(who_type, rf"{name}")
+        WebUI.delay(0.1)
+        COM.click_on_element(xpaths.smb.smb_acl_select_field(who_type_cap, "perm"))
+        COM.click_on_element(xpaths.common_xpaths.option_field(f"ae-perm-{permissions.lower()}"))
+        WebUI.delay(0.1)
+        COM.click_on_element(xpaths.smb.smb_acl_select_field(who_type_cap, "type"))
+        COM.click_on_element(xpaths.common_xpaths.option_field(f"ae-type-{type_field.lower()}"))
+        WebUI.delay(0.1)
+
     @classmethod
     def assert_add_smb_share_button_is_restricted(cls):
         """
@@ -108,7 +144,7 @@ class SMB:
         Example:
             - SMB.assert_guest_delete_file('myFile', 'myShare')
         """
-        return SSHSMB.assert_user_can_delete_file(file, share, 'nonexistent', 'nopassword')
+        return SSH_SMB.assert_user_can_delete_file(file, share, 'nonexistent', 'nopassword')
 
     @classmethod
     def assert_guest_put_file(cls, file: str, share: str) -> bool:
@@ -123,7 +159,7 @@ class SMB:
         Example:
             - SMB.assert_guest_put_file('myFile', 'myShare')
         """
-        return SSHSMB.assert_user_can_put_file(file, share, 'nonexistent', 'nopassword')
+        return SSH_SMB.assert_user_can_put_file(file, share, 'nonexistent', 'nopassword')
 
     @classmethod
     def assert_share_acl_configuration_field_visible(cls, field: str) -> bool:
@@ -628,3 +664,4 @@ class SMB:
             COM.click_button('cifs-actions-menu-sessions')
         assert COM.is_visible(xpaths.common_xpaths.link_field('breadcrumb-shares')) is True
         assert COM.assert_page_header('SMB Status') is True
+
