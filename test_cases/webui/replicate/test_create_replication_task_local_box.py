@@ -5,8 +5,6 @@ from helper.data_config import get_data_list
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
-from keywords.webui.data_protection import Data_Protection as DP
-from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.replication import Replication as REP
 
 
@@ -24,6 +22,7 @@ class Test_Create_Replicate_Task_Local:
         """
         API_DELETE.delete_dataset(f'{rep["pool"]}/{rep["source"]}', True)
         API_DELETE.delete_dataset(f'{rep["pool"]}/{rep["destination"]}', True)
+        API_POST.export_pool('secondary', True)
 
     @pytest.fixture(scope='function', autouse=True)
     def teardown_test(self, rep) -> None:
@@ -33,6 +32,7 @@ class Test_Create_Replicate_Task_Local:
         yield
         API_DELETE.delete_dataset(f'{rep["pool"]}/{rep["source"]}', True)
         API_DELETE.delete_dataset(f'{rep["pool"]}/{rep["destination"]}', True)
+        API_POST.export_pool('secondary', True)
 
     @allure.tag("Create")
     @allure.story("Create and Run Replication Task to Local Box")
@@ -57,34 +57,28 @@ class Test_Create_Replicate_Task_Local:
         assert COM.assert_file_exists('rep_one.txt', f'{rep["pool"]}/{rep["source"]}') is True
         assert COM.assert_file_exists('rep_one.txt', f'{rep["pool"]}/{rep["destination"]}') is False
 
-        # Create Periodic Task
-        response = API_POST.create_snapshot(f'{rep["pool"]}/{rep["source"]}', "rep-%Y-%m-%d_%H-%M").json()
-        NAV.navigate_to_data_protection()
-        DP.click_snapshots_button()
-        assert DP.is_snapshot_visible(f'{rep["pool"]}/{rep["source"]}', response['snapshot_name']) is True
-        assert COM.is_text_visible(f'{rep["pool"]}/{rep["destination"]}') is False
+        # Create Periodic Snapshot
+        snapshot_name = REP.create_periodic_snapshot(f'{rep["pool"]}/{rep["source"]}',
+                                                     f'{rep["pool"]}/{rep["destination"]}',
+                                                     'rep-%Y-%m-%d_%H-%M',
+                                                     'LOCAL',
+                                                     'LOCAL')
 
         # Create Replication Task
-        NAV.navigate_to_data_protection()
-        DP.click_add_replication_button()
-        REP.set_source_location_on_same_box(f'{rep["pool"]}/{rep["source"]}')
-        REP.set_destination_location_on_same_box(f'{rep["pool"]}/{rep["destination"]}')
-        REP.set_custom_snapshots()
-        COM.set_input_field('naming-schema', "rep-%Y-%m-%d_%H-%M")
-        REP.set_task_name(rep['task-name'])
-        COM.click_next_button()
-
-        REP.set_run_once_button()
-        REP.unset_read_only_destination_checkbox()
-        REP.click_save_button_and_resolve_dialogs()
+        REP.create_replication_task(f'{rep["pool"]}/{rep["source"]}',
+                                    f'{rep["pool"]}/{rep["destination"]}',
+                                    rep['connection-name'],
+                                    'rep-%Y-%m-%d_%H-%M',
+                                    rep['task-name'],
+                                    'LOCAL',
+                                    'LOCAL')
 
         # Verify Replication Task successful
-        NAV.navigate_to_data_protection()
-        assert REP.is_replication_task_visible(rep['task-name']) is True
-        assert REP.get_replication_status(rep['task-name']) == rep['status']
-        DP.click_snapshots_button()
-        assert DP.is_snapshot_visible(f'{rep["pool"]}/{rep["destination"]}', response['snapshot_name']) is True
-        assert COM.assert_file_exists('rep_one.txt', f'{rep["pool"]}/{rep["destination"]}') is True
+        assert REP.is_destination_snapshot_and_file_exist(rep['task-name'],
+                                                          f'{rep["pool"]}/{rep["destination"]}',
+                                                          snapshot_name,
+                                                          'rep_one.txt',
+                                                          'LOCAL') is True
 
     @allure.tag("Create")
     @allure.story("Create and Run Replication Task to Different Pool on Local Box")
@@ -115,36 +109,28 @@ class Test_Create_Replicate_Task_Local:
         assert COM.assert_file_exists('rep_one.txt', f'{rep["pool"]}/{rep["source"]}') is True
         assert COM.assert_file_exists('rep_one.txt', f'secondary/{rep["destination"]}') is False
 
-        # Create Periodic Task
-        response = API_POST.create_snapshot(f'{rep["pool"]}/{rep["source"]}', "rep-%Y-%m-%d_%H-%M").json()
-        NAV.navigate_to_data_protection()
-        DP.click_snapshots_button()
-        assert DP.is_snapshot_visible(f'{rep["pool"]}/{rep["source"]}', response['snapshot_name']) is True
-        assert COM.is_text_visible(f'secondary/{rep["destination"]}') is False
+        # Create Periodic Snapshot
+        snapshot_name = REP.create_periodic_snapshot(f'{rep["pool"]}/{rep["source"]}',
+                                                     f'secondary/{rep["destination"]}',
+                                                     'rep-%Y-%m-%d_%H-%M',
+                                                     'LOCAL',
+                                                     'LOCAL')
 
         # Create Replication Task
-        NAV.navigate_to_data_protection()
-        DP.click_add_replication_button()
-        REP.set_source_location_on_same_box(f'{rep["pool"]}/{rep["source"]}')
-        REP.set_destination_location_on_same_box(f'secondary/{rep["destination"]}')
-        REP.set_custom_snapshots()
-        COM.set_input_field('naming-schema', "rep-%Y-%m-%d_%H-%M")
-        REP.set_task_name(rep['task-name'])
-        COM.click_next_button()
-
-        REP.set_run_once_button()
-        REP.unset_read_only_destination_checkbox()
-        REP.click_save_button_and_resolve_dialogs()
+        REP.create_replication_task(f'{rep["pool"]}/{rep["source"]}',
+                                    f'secondary/{rep["destination"]}',
+                                    rep['connection-name'],
+                                    'rep-%Y-%m-%d_%H-%M',
+                                    rep['task-name'],
+                                    'LOCAL',
+                                    'LOCAL')
 
         # Verify Replication Task successful
-        NAV.navigate_to_data_protection()
-        assert REP.is_replication_task_visible(rep['task-name']) is True
-        assert REP.get_replication_status(rep['task-name']) == rep['status']
-        DP.click_snapshots_button()
-        assert DP.is_snapshot_visible(f'secondary/{rep["destination"]}', response['snapshot_name']) is True
-        assert COM.assert_file_exists('rep_one.txt', f'secondary/{rep["destination"]}') is True
-
-        API_POST.export_pool('secondary', True)
+        assert REP.is_destination_snapshot_and_file_exist(rep['task-name'],
+                                                          f'secondary/{rep["destination"]}',
+                                                          snapshot_name,
+                                                          'rep_one.txt',
+                                                          'LOCAL') is True
 
     @allure.tag("Create")
     @allure.story("Second Run Replication Task to Local Box")
@@ -170,53 +156,47 @@ class Test_Create_Replicate_Task_Local:
         assert COM.assert_file_exists('rep_one.txt', f'{rep["pool"]}/{rep["source"]}') is True
         assert COM.assert_file_exists('rep_one.txt', f'{rep["pool"]}/{rep["destination"]}') is False
 
-        # Create Periodic Task
-        response = API_POST.create_snapshot(f'{rep["pool"]}/{rep["source"]}', "rep-%Y-%m-%d_%H-%M").json()
-        NAV.navigate_to_data_protection()
-        DP.click_snapshots_button()
-        assert DP.is_snapshot_visible(f'{rep["pool"]}/{rep["source"]}', response['snapshot_name']) is True
-        assert COM.is_text_visible(f'{rep["pool"]}/{rep["destination"]}') is False
+        # Create Periodic Snapshot
+        snapshot_name = REP.create_periodic_snapshot(f'{rep["pool"]}/{rep["source"]}',
+                                                     f'{rep["pool"]}/{rep["destination"]}',
+                                                     'rep-%Y-%m-%d_%H-%M',
+                                                     'LOCAL',
+                                                     'LOCAL')
 
         # Create Replication Task
-        NAV.navigate_to_data_protection()
-        DP.click_add_replication_button()
-        REP.set_source_location_on_same_box(f'{rep["pool"]}/{rep["source"]}')
-        REP.set_destination_location_on_same_box(f'{rep["pool"]}/{rep["destination"]}')
-        REP.set_custom_snapshots()
-        COM.set_input_field('naming-schema', "rep-%Y-%m-%d_%H-%M")
-        REP.set_task_name(rep['task-name'])
-        COM.click_next_button()
-
-        REP.set_run_once_button()
-        REP.unset_read_only_destination_checkbox()
-        REP.click_save_button_and_resolve_dialogs()
+        REP.create_replication_task(f'{rep["pool"]}/{rep["source"]}',
+                                    f'{rep["pool"]}/{rep["destination"]}',
+                                    rep['connection-name'],
+                                    'rep-%Y-%m-%d_%H-%M',
+                                    rep['task-name'],
+                                    'LOCAL',
+                                    'LOCAL')
 
         # Verify Replication Task successful
-        NAV.navigate_to_data_protection()
-        assert REP.is_replication_task_visible(rep['task-name']) is True
-        assert REP.get_replication_status(rep['task-name']) == rep['status']
-        DP.click_snapshots_button()
-        assert DP.is_snapshot_visible(f'{rep["pool"]}/{rep["destination"]}', response['snapshot_name']) is True
-        assert COM.assert_file_exists('rep_one.txt', f'{rep["pool"]}/{rep["destination"]}') is True
+        assert REP.is_destination_snapshot_and_file_exist(rep['task-name'],
+                                                          f'{rep["pool"]}/{rep["destination"]}',
+                                                          snapshot_name,
+                                                          'rep_one.txt',
+                                                          'LOCAL') is True
 
         # Add data
         COM.add_test_file('rep_two.txt', f'{rep["pool"]}/{rep["source"]}')
         assert COM.assert_file_exists('rep_two.txt', f'{rep["pool"]}/{rep["source"]}') is True
         assert COM.assert_file_exists('rep_two.txt', f'{rep["pool"]}/{rep["destination"]}') is False
 
-        # Create Periodic Task
-        response = API_POST.create_snapshot(f'{rep["pool"]}/{rep["source"]}', "rep-%Y-%m-%d_%H-%M").json()
-        NAV.navigate_to_data_protection()
-        DP.click_snapshots_button()
-        assert DP.is_snapshot_visible(f'{rep["pool"]}/{rep["source"]}', response['snapshot_name']) is True
+        # Create Periodic Snapshot
+        snapshot_name = REP.create_periodic_snapshot(f'{rep["pool"]}/{rep["source"]}',
+                                                     f'{rep["pool"]}/{rep["destination"]}',
+                                                     'rep-%Y-%m-%d_%H-%M',
+                                                     'LOCAL',
+                                                     'LOCAL')
 
         # Verify Replication Task successful
-        NAV.navigate_to_data_protection()
-        REP.click_run_now_replication_task_by_name(rep['task-name'])
-        assert REP.get_replication_status(rep['task-name']) == rep['status']
-        DP.click_snapshots_button()
-        assert DP.is_snapshot_visible(f'{rep["pool"]}/{rep["destination"]}', response['snapshot_name']) is True
-        assert COM.assert_file_exists('rep_two.txt', f'{rep["pool"]}/{rep["destination"]}') is True
+        assert REP.is_destination_snapshot_and_file_exist(rep['task-name'],
+                                                          f'{rep["pool"]}/{rep["destination"]}',
+                                                          snapshot_name,
+                                                          'rep_two.txt',
+                                                          'LOCAL') is True
 
     @allure.tag("Create")
     @allure.story("Second Run Replication Task to Different Pool on Local Box")
@@ -248,34 +228,28 @@ class Test_Create_Replicate_Task_Local:
         assert COM.assert_file_exists('rep_one.txt', f'{rep["pool"]}/{rep["source"]}') is True
         assert COM.assert_file_exists('rep_one.txt', f'secondary/{rep["destination"]}') is False
 
-        # Create Periodic Task
-        response = API_POST.create_snapshot(f'{rep["pool"]}/{rep["source"]}', "rep-%Y-%m-%d_%H-%M").json()
-        NAV.navigate_to_data_protection()
-        DP.click_snapshots_button()
-        assert DP.is_snapshot_visible(f'{rep["pool"]}/{rep["source"]}', response['snapshot_name']) is True
-        assert COM.is_text_visible(f'secondary/{rep["destination"]}') is False
+        # Create Periodic Snapshot
+        snapshot_name = REP.create_periodic_snapshot(f'{rep["pool"]}/{rep["source"]}',
+                                                     f'secondary/{rep["destination"]}',
+                                                     'rep-%Y-%m-%d_%H-%M',
+                                                     'LOCAL',
+                                                     'LOCAL')
 
         # Create Replication Task
-        NAV.navigate_to_data_protection()
-        DP.click_add_replication_button()
-        REP.set_source_location_on_same_box(f'{rep["pool"]}/{rep["source"]}')
-        REP.set_destination_location_on_same_box(f'secondary/{rep["destination"]}')
-        REP.set_custom_snapshots()
-        COM.set_input_field('naming-schema', "rep-%Y-%m-%d_%H-%M")
-        REP.set_task_name(rep['task-name'])
-        COM.click_next_button()
-
-        REP.set_run_once_button()
-        REP.unset_read_only_destination_checkbox()
-        REP.click_save_button_and_resolve_dialogs()
+        REP.create_replication_task(f'{rep["pool"]}/{rep["source"]}',
+                                    f'secondary/{rep["destination"]}',
+                                    rep['connection-name'],
+                                    'rep-%Y-%m-%d_%H-%M',
+                                    rep['task-name'],
+                                    'LOCAL',
+                                    'LOCAL')
 
         # Verify Replication Task successful
-        NAV.navigate_to_data_protection()
-        assert REP.is_replication_task_visible(rep['task-name']) is True
-        assert REP.get_replication_status(rep['task-name']) == rep['status']
-        DP.click_snapshots_button()
-        assert DP.is_snapshot_visible(f'secondary/{rep["destination"]}', response['snapshot_name']) is True
-        assert COM.assert_file_exists('rep_one.txt', f'secondary/{rep["destination"]}') is True
+        assert REP.is_destination_snapshot_and_file_exist(rep['task-name'],
+                                                          f'secondary/{rep["destination"]}',
+                                                          snapshot_name,
+                                                          'rep_one.txt',
+                                                          'LOCAL') is True
 
         # Add data
         COM.add_test_file('rep_two.txt', f'{rep["pool"]}/{rep["source"]}')
@@ -283,17 +257,15 @@ class Test_Create_Replicate_Task_Local:
         assert COM.assert_file_exists('rep_two.txt', f'secondary/{rep["destination"]}') is False
 
         # Create Periodic Task
-        response = API_POST.create_snapshot(f'{rep["pool"]}/{rep["source"]}', "rep-%Y-%m-%d_%H-%M").json()
-        NAV.navigate_to_data_protection()
-        DP.click_snapshots_button()
-        assert DP.is_snapshot_visible(f'{rep["pool"]}/{rep["source"]}', response['snapshot_name']) is True
+        snapshot_name = REP.create_periodic_snapshot(f'{rep["pool"]}/{rep["source"]}',
+                                                     f'secondary/{rep["destination"]}',
+                                                     'rep-%Y-%m-%d_%H-%M',
+                                                     'LOCAL',
+                                                     'LOCAL')
 
         # Verify Replication Task successful
-        NAV.navigate_to_data_protection()
-        REP.click_run_now_replication_task_by_name(rep['task-name'])
-        assert REP.get_replication_status(rep['task-name']) == rep['status']
-        DP.click_snapshots_button()
-        assert DP.is_snapshot_visible(f'secondary/{rep["destination"]}', response['snapshot_name']) is True
-        assert COM.assert_file_exists('rep_two.txt', f'secondary/{rep["destination"]}') is True
-
-        API_POST.export_pool('secondary', True)
+        assert REP.is_destination_snapshot_and_file_exist(rep['task-name'],
+                                                          f'secondary/{rep["destination"]}',
+                                                          snapshot_name,
+                                                          'rep_two.txt',
+                                                          'LOCAL') is True

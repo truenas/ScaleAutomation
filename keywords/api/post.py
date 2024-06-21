@@ -703,10 +703,13 @@ class API_POST:
             "destroy": destroy
         }
         pool_id = API_GET.get_pool_id(name)
-        response = POST(f'/pool/id/{pool_id}/export/', payload)
-        assert response.status_code == 200, response.text
-        job_status = API_Common.wait_on_job(response.json(), shared_config['EXTRA_LONG_WAIT'])
-        assert job_status['state'] == 'SUCCESS', job_status['results']
+        # print(f'@@@ POOL ID: {pool_id}')
+        job_status = dict
+        if pool_id:
+            response = POST(f'/pool/id/{pool_id}/export/', payload)
+            assert response.status_code == 200, response.text
+            job_status = API_Common.wait_on_job(response.json(), shared_config['EXTRA_LONG_WAIT'])
+            assert job_status['state'] == 'SUCCESS', job_status['results']
         return job_status
 
     @classmethod

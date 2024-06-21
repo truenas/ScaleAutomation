@@ -55,7 +55,12 @@ class API_GET:
         Example:
             - API_GET.get_pool_id('pool1')
         """
-        return GET(f'/pool/?name={name}').json()[0]['id']
+        pool_id = None
+        response = GET(f'/pool/?name={name}')
+        # print(f'@@@ RESPONSE: {response.json()}')
+        if response.json():
+            pool_id = response.json()[0]['id']
+        return pool_id
 
     @classmethod
     def get_pool_type(cls, name: str) -> str:

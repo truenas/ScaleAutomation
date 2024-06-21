@@ -12,4 +12,8 @@ def setup_class():
     """
     API_PUT.enable_user_all_sudo_commands_no_password(private_config['USERNAME'])
     API_PUT.enable_user_ssh_password(private_config['USERNAME'])
+    private_config['API_IP'] = private_config['REP_DEST_IP']
+    API_PUT.enable_user_all_sudo_commands_no_password(private_config['USERNAME'])
+    API_PUT.enable_user_ssh_password(private_config['USERNAME'])
+    private_config['API_IP'] = private_config['IP']
     API_POST.start_service('ssh')
