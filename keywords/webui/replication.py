@@ -143,7 +143,7 @@ class Replication:
         else:
             cls.set_destination_location_on_different_box(destination_path, connection)
 
-        if source_box.upper() == 'LOCAL' and destination_box.upper() == 'LOCAL':
+        if source_box.upper() == 'LOCAL':
             cls.set_custom_snapshots()
         COM.set_input_field('naming-schema', naming_schema)
         cls.set_task_name(task_name)
