@@ -1,7 +1,5 @@
 import allure
 import pytest
-
-import xpaths
 from helper.data_config import get_data_list
 from helper.global_config import shared_config, private_config
 from keywords.api.delete import API_DELETE
@@ -124,11 +122,11 @@ class Test_Active_Directory:
         Datasets.select_dataset("group_cache_disabled")
         Datasets.click_edit_permissions_button()
         Permissions.set_apply_group_checkbox()
-        Permissions.set_dataset_group("AD03\domain guests")
+        Permissions.set_dataset_group(r"AD03\domain guests")
         Common.click_save_button()
 
         # Verify dataset group has saved in UI and CLI
-        assert Permissions.assert_dataset_group("AD03\domain guests") is True
+        assert Permissions.assert_dataset_group(r"AD03\domain guests") is True
         assert Perm_SSH.verify_getfacl_contains_permissions("/mnt/tank/group_cache_disabled",
                                                             r"# group: AD03\\domain\040guests") is True
 
