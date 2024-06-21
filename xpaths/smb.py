@@ -2,7 +2,7 @@
 
 def smb_acl_empty_entry_who() -> str:
     """
-    This function sets the text for the first empty who field in the SMB ACL panel
+    This function returns the text for the first empty who field in the SMB ACL panel
 
     :return: xpath string for the first empty who field in the SMB ACL panel
     """
@@ -11,7 +11,7 @@ def smb_acl_empty_entry_who() -> str:
 
 def smb_acl_select_field(entry_type: str, field_type: str) -> str:
     """
-    This function sets the text for the given share ACL select field
+    This function returns the text for the given share ACL select field
 
     :param entry_type: type of the entry. [user/group]
     :param field_type: type of the field. [perm/type]
@@ -22,10 +22,10 @@ def smb_acl_select_field(entry_type: str, field_type: str) -> str:
 
 def smb_share_options(name: str) -> str:
     """
-    This function sets the text for the given share name
+    This function returns the text for the given share name options button
 
     :param name: name of the given share
-    :return: xpath string for given share name
+    :return: xpath string for given share name options button
     """
     return f'//*[@data-test="row-{name}"]//*[@data-test="button-samba-options"]'
 
