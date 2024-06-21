@@ -1,3 +1,5 @@
+import allure
+from helper.webui import WebUI
 from keywords.webui.login_page_ui import Login_Page_Ui as LPU
 from keywords.webui.common import Common as COM
 from helper.global_config import private_config
@@ -13,12 +15,13 @@ class Test_Login_Page_UI:
         COM.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
 
-    @staticmethod
-    def test_login_page_ui():
+    @allure.tag('Read', 'Percy')
+    def test_login_page_ui(self):
         """
         This test asserts the UI of the login page
         """
         assert COM.assert_copyright_text_is_correct() is True
+        WebUI.take_percy_snapshot('Login Page UI')
         assert LPU.assert_password_visibility_button_toggles_off_to_on() is True
         assert LPU.assert_password_visibility_button_toggles_on_to_off() is True
         assert LPU.assert_text_doesnt_affect_password_visibility_button() is True
@@ -34,3 +37,4 @@ class Test_Login_Page_UI:
         assert LPU.assert_ixsystems_icon_displays() is True
         assert LPU.assert_background_image_displays() is True
         assert LPU.assert_ixsystems_link_is_correct() is True
+

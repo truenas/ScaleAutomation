@@ -4,6 +4,7 @@ import pytest
 import xpaths
 from helper.data_config import get_data_list
 from helper.global_config import shared_config, private_config
+from helper.webui import WebUI
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.api.put import API_PUT
@@ -18,6 +19,9 @@ from keywords.webui.common_shares import Common_Shares as COMSHARE
 from keywords.webui.smb import SMB
 
 
+@allure.tag('Active Directory', 'Directory Services')
+@allure.epic('Directory Services')
+@allure.feature('Active Directory')
 @pytest.mark.parametrize('ad_data', get_data_list('ad_credentials'), scope='class')
 class Test_Active_Directory:
     """
@@ -65,9 +69,16 @@ class Test_Active_Directory:
         # Verify that the active directory card is not visible after leaving the active directory
         assert Directory_Services.assert_active_directory_card_not_visible() is True
 
+    @allure.tag("Create", 'Percy')
+    @allure.story("Setup Active Directory")
     def test_setup_active_directory(self, ad_data, setup_dns_for_active_directory):
         """
         This test case test setup active directory.
+        1. Navigate to directory services page.
+        2. Click on the active directory settings button
+        3. Set up the active directory and save
+        4. Verify the Active Directory card is visible and the service status is HEALTHY
+        5. Take a snapshot of active directory setup
         """
         # Navigate to directory services page.
         Navigation.navigate_to_directory_services()
@@ -91,6 +102,8 @@ class Test_Active_Directory:
         # Verify the domain name and domain account name is visible.
         assert Directory_Services.assert_active_directory_domain_name(ad_data['domain'])
         assert Directory_Services.assert_active_directory_domain_account_name(ad_data['username'])
+
+        WebUI.take_percy_snapshot("Active Directory Setup")
 
     @allure.tag("defect_verification", "NAS-129528", "NAS-129686")
     @allure.issue("NAS-129686", "NAS-129686")
@@ -132,8 +145,6 @@ class Test_Active_Directory:
         assert COMSHARE.assert_share_card_displays('smb') is True
         SMB.click_edit_share_acl("group_cache_disabled_smb")
         SMB.add_additional_acl_who_entry("group", r"AD03\domain guests")
-        # Common.select_option("ae-who", "ae-who-group")
-        # Common.set_input_field("group", r"AD03\domain guests")
         Common.click_save_button_and_wait_for_right_panel()
 
         # Verify share functionality
