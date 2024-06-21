@@ -21,6 +21,7 @@ class SMB:
             - SMB.add_additional_acl_who_entry('group', 'admin_group')
             - SMB.add_additional_acl_who_entry('everyone')
         """
+        who_type = who_type.lower()
         COM.click_button("add-item-add-entry")
         WebUI.delay(0.1)
         COM.click_on_element(xpaths.smb.smb_acl_empty_entry_who())
