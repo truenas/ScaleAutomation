@@ -5,6 +5,7 @@ from helper.data_config import get_data_list
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
+from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.replication import Replication as REP
 
 
@@ -192,6 +193,8 @@ class Test_Create_Replicate_Task_Local:
                                                      'LOCAL')
 
         # Verify Replication Task successful
+        NAV.navigate_to_data_protection()
+        REP.click_run_now_replication_task_by_name(rep['task-name'])
         assert REP.is_destination_snapshot_and_file_exist(rep['task-name'],
                                                           f'{rep["pool"]}/{rep["destination"]}',
                                                           snapshot_name,
@@ -264,6 +267,8 @@ class Test_Create_Replicate_Task_Local:
                                                      'LOCAL')
 
         # Verify Replication Task successful
+        NAV.navigate_to_data_protection()
+        REP.click_run_now_replication_task_by_name(rep['task-name'])
         assert REP.is_destination_snapshot_and_file_exist(rep['task-name'],
                                                           f'secondary/{rep["destination"]}',
                                                           snapshot_name,
