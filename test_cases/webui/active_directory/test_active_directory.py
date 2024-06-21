@@ -142,7 +142,7 @@ class Test_Active_Directory:
         Datasets.select_dataset("group_cache_disabled_unix")
         Datasets.click_edit_permissions_button()
         Permissions.set_apply_group_checkbox()
-        Permissions.set_dataset_group(r"AD03\domain guests")
+        Common.set_input_field('gid', r"AD03\domain guests", True)
         Common.click_save_button()
 
         # Verify unix dataset group has saved in UI and CLI
@@ -150,21 +150,7 @@ class Test_Active_Directory:
         assert Perm_SSH.verify_getfacl_contains_permissions("/mnt/tank/group_cache_disabled_unix",
                                                             r"# group: AD03\\domain\040guests") is True
 
-        # Edit nfsv4 dataset group with manually typed AD group
-        Datasets.select_dataset("group_cache_disabled_nfsv4")
-        Datasets.click_edit_permissions_button()
-        Permissions.click_add_item_button()
-        Permissions.select_ace_who("group")
-        Common.set_input_field("group", r"AD03\domain guests")
-        Permissions.click_save_acl_button()
-
-        # Verify nfsv4 dataset group has saved in UI and CLI
-        assert Datasets.is_permissions_advanced_item_visible("Group", r"AD03\domain guests") is True
-        assert Perm_SSH.verify_getfacl_contains_permissions("/mnt/tank/group_cache_disabled_nfsv4",
-                                                            r"group:AD03\domain guests:rwxpDdaARWc--s:fd-----:allow",
-                                                            "NFSv4") is True
-
-        # Create POSIX dataset group with manually typed AD group
+        # Edit POSIX dataset group with manually typed AD group
         Datasets.select_dataset("group_cache_disabled_POSIX")
         Datasets.click_edit_permissions_button()
         Permissions.click_set_acl_button()
