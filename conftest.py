@@ -1,5 +1,4 @@
 import os
-import threading
 
 import pytest
 from helper.webui import WebUI
@@ -24,10 +23,6 @@ def pytest_sessionfinish(session, exitstatus):
     allure_environment()
     allure_reporting()
     WebUI.quit()
-    # Start threading.Thread(target=pytest_sessionfinish, daemon=True).start()
-    all_child_threads = [thread for thread in threading.enumerate() if thread != threading.main_thread()]
-    for thread in all_child_threads:
-        thread.daemon = True
 
 
 def pytest_sessionstart(session):
