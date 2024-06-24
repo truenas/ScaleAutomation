@@ -703,7 +703,6 @@ class API_POST:
             "destroy": destroy
         }
         pool_id = API_GET.get_pool_id(name)
-        # print(f'@@@ POOL ID: {pool_id}')
         job_status = dict
         if pool_id:
             response = POST(f'/pool/id/{pool_id}/export/', payload)

@@ -57,7 +57,6 @@ class API_GET:
         """
         pool_id = None
         response = GET(f'/pool/?name={name}')
-        # print(f'@@@ RESPONSE: {response.json()}')
         if response.json():
             pool_id = response.json()[0]['id']
         return pool_id

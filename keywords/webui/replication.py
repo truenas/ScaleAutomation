@@ -92,7 +92,6 @@ class Replication:
         response = API_POST.create_snapshot(source_path, naming_schema).json()
         if source_box.upper() == 'REMOTE':
             private_config['API_IP'] = private_config['IP']
-        if source_box.upper() == 'REMOTE':
             cls.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_data_protection()
         DP.click_snapshots_button()
@@ -104,8 +103,6 @@ class Replication:
             cls.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_data_protection()
         DP.click_snapshots_button()
-        # assert COM.is_text_visible(destination_path) is False
-        # assert COM.is_text_visible(response['snapshot_name']) is False
         assert DP.is_snapshot_visible(destination_path, response['snapshot_name']) is False
         if destination_box.upper() == 'REMOTE':
             cls.close_destination_box()
@@ -115,7 +112,7 @@ class Replication:
     def create_replication_task(cls, source_path: str, destination_path: str, connection: str, naming_schema: str,
                                 task_name: str, source_box: str = 'LOCAL', destination_box: str = 'REMOTE') -> None:
         """
-        This methode return the True if the Replication Task was successful
+        This methode return the True if the Replication Task was successful,
             the snapshot exists and the file exists, otherwise False.
 
         :param source_path: the path of the source
