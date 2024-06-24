@@ -95,7 +95,7 @@ class Test_Share_Admin_System_Settings_Advanced:
     @allure.story("Share Admin Is Able to Modify iSCSI, NFS, SMB Services")
     def test_share_admin_able_to_modify_specific_services(self):
         """
-        Summary: This test verifies the share user is able to modify iSCSI, NFS, SMB Services.
+        Summary: This test verifies the share admin is able to modify iSCSI, NFS, SMB Services.
 
         Test Steps:
         1. Verify modify iSCSI Services (edit, change values, save)
@@ -138,7 +138,7 @@ class Test_Share_Admin_System_Settings_Advanced:
     @allure.story("Share Admin Is Not Able to Modify FTP, SMART, SNMP, SSH, UPS Services")
     def test_share_admin_not_able_to_modify_specific_services(self):
         """
-        Summary: This test verifies the share user is not able to modify FTP, SMART, SNMP, SSH, UPS Services.
+        Summary: This test verifies the share admin is not able to modify FTP, SMART, SNMP, SSH, UPS Services.
 
         Test Steps:
         1. Verify not able to modify FTP Services (running, automatic, edit)
@@ -176,7 +176,7 @@ class Test_Share_Admin_System_Settings_Advanced:
     @allure.story("Share Admin Is Able to Start iSCSI, NFS, SMB Services")
     def test_share_admin_able_to_start_specific_services(self):
         """
-        Summary: This test verifies the share user is able to start iSCSI, NFS, SMB Services.
+        Summary: This test verifies the share admin is able to start iSCSI, NFS, SMB Services.
 
         Test Steps:
         1. Verify start iSCSI Services (running, automatic)
@@ -223,7 +223,7 @@ class Test_Share_Admin_System_Settings_Advanced:
     @allure.story("Share Admin Is Able to Stop iSCSI, NFS, SMB Services")
     def test_share_admin_able_to_stop_specific_services(self):
         """
-        Summary: This test verifies the share user is able to stop iSCSI, NFS, SMB Services.
+        Summary: This test verifies the share admin is able to stop iSCSI, NFS, SMB Services.
 
         Test Steps:
         1. Verify stop iSCSI Services (running)
