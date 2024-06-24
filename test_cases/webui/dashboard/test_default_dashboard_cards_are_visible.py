@@ -8,7 +8,7 @@ from keywords.webui.dashboard import Dashboard
 @allure.feature('Dashboard-Card-Visible')
 class Test_Verify_Default_Dashboard_Cards_Are_Visible:
 
-    @allure.tag("Update")
+    @allure.tag("Read", "Percy")
     @allure.story('Verify All Dashboard Cards Are Visible')
     def test_all_default_dashboard_cards_are_visible(self):
         """

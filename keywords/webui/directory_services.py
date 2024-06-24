@@ -242,6 +242,7 @@ class Directory_Services:
             - Directory_Services.click_active_directory_settings_button()
         """
         COM.click_button('active-directory-settings')
+        WebUI.delay(1)
 
     @classmethod
     def click_configure_active_directory_button(cls) -> None:

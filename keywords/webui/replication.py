@@ -1,7 +1,10 @@
 import xpaths
 from helper.global_config import private_config, shared_config
 from helper.webui import WebUI
+from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
+from keywords.webui.data_protection import Data_Protection as DP
+from keywords.webui.datasets import Datasets as DATASET
 from keywords.webui.navigation import Navigation as NAV
 
 
@@ -69,6 +72,112 @@ class Replication:
         cls.switch_to_source_box()
 
     @classmethod
+    def create_periodic_snapshot(cls, source_path: str, destination_path: str, naming_schema: str, source_box: str = 'LOCAL', destination_box: str = 'REMOTE') -> str:
+        """
+        This methode return the name of the created Periodic Snapshot.
+
+        :param source_path: the path of the source
+        :param destination_path: the path of the destination
+        :param naming_schema: the naming schema to use for snapshot
+        :param source_box: the location of the source [LOCAL/REMOTE]
+        :param destination_box: the location of the destination [LOCAL/REMOTE]
+
+        Example:
+            - Replication.create_periodic_snapshot('tank/source', 'tank/destination', 'snapshot-%Y-%m-%d_%H-%M')
+            - Replication.create_periodic_snapshot('tank/source', 'tank/destination', 'snapshot-%Y-%m-%d_%H-%M', 'REMOTE', 'LOCAL')
+        """
+        # Create Periodic Snapshot
+        if source_box.upper() == 'REMOTE':
+            private_config['API_IP'] = private_config['REP_DEST_IP']
+        response = API_POST.create_snapshot(source_path, naming_schema).json()
+        if source_box.upper() == 'REMOTE':
+            private_config['API_IP'] = private_config['IP']
+            cls.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
+        NAV.navigate_to_data_protection()
+        DP.click_snapshots_button()
+        assert DP.is_snapshot_visible(source_path, response['snapshot_name']) is True
+        if source_box.upper() == 'REMOTE':
+            cls.close_destination_box()
+
+        if destination_box.upper() == 'REMOTE':
+            cls.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
+        NAV.navigate_to_data_protection()
+        DP.click_snapshots_button()
+        assert DP.is_snapshot_visible(destination_path, response['snapshot_name']) is False
+        if destination_box.upper() == 'REMOTE':
+            cls.close_destination_box()
+        return response['snapshot_name']
+
+    @classmethod
+    def create_replication_task(cls, source_path: str, destination_path: str, connection: str, naming_schema: str,
+                                task_name: str, source_box: str = 'LOCAL', destination_box: str = 'REMOTE') -> None:
+        """
+        This methode return the True if the Replication Task was successful,
+            the snapshot exists and the file exists, otherwise False.
+
+        :param source_path: the path of the source
+        :param destination_path: the path of the destination
+        :param connection: the name of the connection
+        :param naming_schema: the name of the naming_schema
+        :param task_name: the name of the task
+        :param source_box: the location of the source [LOCAL/REMOTE]
+        :param destination_box: the location of the destination [LOCAL/REMOTE]
+
+        Example:
+            - Replication.create_replication_task('tank/source', 'tank/destination', 'connection', 'rep-%Y-%m-%d_%H-%M', 'rep_task')
+            - Replication.create_replication_task('tank/source', 'tank/destination', 'connection', 'rep-%Y-%m-%d_%H-%M', 'rep_task', 'REMOTE', 'LOCAL')
+        """
+        # Create Replication Task
+        NAV.navigate_to_data_protection()
+        DP.click_add_replication_button()
+        if source_box.upper() == 'REMOTE':
+            cls.set_source_location_on_different_box(source_path, connection)
+        else:
+            cls.set_source_location_on_same_box(source_path)
+
+        if destination_box.upper() == 'LOCAL':
+            cls.set_destination_location_on_same_box(destination_path)
+        else:
+            cls.set_destination_location_on_different_box(destination_path, connection)
+
+        if source_box.upper() == 'LOCAL':
+            cls.set_custom_snapshots()
+        COM.set_input_field('naming-schema', naming_schema)
+        cls.set_task_name(task_name)
+        # Clicking the "Next" button doesn't seeme to work on the pipeline
+        # However, clicking on the "Step 2: When" appears to work
+        # If this gets fixed, replace with the 'click_next_button()'
+        COM.click_on_element('//*[@class="mat-step-label"]')
+        WebUI.delay(0.2)
+        # COM.click_next_button()
+
+        cls.set_run_once_button()
+        cls.unset_read_only_destination_checkbox()
+        cls.click_save_button_and_resolve_dialogs()
+
+    @classmethod
+    def delete_dataset_by_box(cls, pool: str, dataset: str, box: str = 'LOCAL') -> None:
+        """
+        This method deletes the given dataset on the given box.
+        :param pool: The name of the pool.
+        :param dataset: The name of the dataset.
+        :param box: The location of the dataset. [LOCAL/REMOTE]
+
+        Example:
+            - Dataset.delete_dataset('test-pool', 'test-dataset')
+            - Dataset.delete_dataset('test-pool', 'test-dataset', 'REMOTE')
+        """
+        if box.upper() == 'REMOTE':
+            cls.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
+
+        NAV.navigate_to_datasets()
+        DATASET.expand_all_datasets()
+        DATASET.delete_dataset(pool, dataset)
+
+        if box.upper() == 'REMOTE':
+            cls.close_destination_box()
+
+    @classmethod
     def delete_replication_task_by_name(cls, name: str) -> None:
         """
         This method deletes the given replication task if exists
@@ -99,6 +208,37 @@ class Replication:
     """
         NAV.navigate_to_data_protection()
         return COM.get_element_property(xpaths.common_xpaths.button_field(f'state-replication-task-{COM.convert_to_tag_format(name)}-row-state'), 'innerText').strip(' ')
+
+    @classmethod
+    def is_destination_snapshot_and_file_exist(cls, task_name: str, destination_path: str, snapshot_name: str, file_name: str, destination_box: str = 'REMOTE') -> bool:
+        """
+        This methode return the True if the Replication Task was successful the snapshot exists and the file exists, otherwise False.
+
+        :param task_name: the name of the replication task
+        :param destination_path: the path of the destination
+        :param snapshot_name: the name of the snapshot
+        :param file_name: the name of the file
+        :param destination_box: the location of the destination [LOCAL/REMOTE]
+
+        Example:
+            - Replication.is_destination_snapshot_and_file_exist('rep_task', 'FINISHED', 'snapshot-2024-01-01_10-01', 'filename.txt')
+            - Replication.is_destination_snapshot_and_file_exist('rep_task', 'FINISHED', 'snapshot-2024-01-01_10-01', 'filename.txt', 'LOCAL')
+        """
+        # Verify Replication Task successful
+        NAV.navigate_to_data_protection()
+        assert cls.is_replication_task_visible(task_name) is True
+        assert cls.get_replication_status(task_name) == 'FINISHED'
+        if destination_box.upper() == 'REMOTE':
+            cls.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
+            NAV.navigate_to_data_protection()
+        DP.click_snapshots_button()
+        assert DP.is_snapshot_visible(destination_path, snapshot_name) is True
+        ip = private_config['API_IP']
+
+        if destination_box.upper() == 'REMOTE':
+            cls.close_destination_box()
+            ip = private_config['REP_DEST_IP']
+        return COM.assert_file_exists(file_name, destination_path, ip) is True
 
     @classmethod
     def is_destination_snapshots_dialog_visible(cls) -> bool:

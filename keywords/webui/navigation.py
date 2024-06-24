@@ -32,8 +32,8 @@ class Navigation:
             take_screenshot(f'DIALOG_LEFT_OPEN-{create_timestamp()}')
             COM.click_cancel_button()
         if COM.is_visible(xpaths.common_xpaths.button_field('close-error-dialog'), 1):
-            print('@@@@@@@ DIALOG_LEFT_OPEN-' + create_timestamp())
-            take_screenshot('DIALOG_LEFT_OPEN-' + create_timestamp())
+            print(f'@@@@@@@ DIALOG_LEFT_OPEN-{create_timestamp()}')
+            take_screenshot(f'DIALOG_LEFT_OPEN-{create_timestamp()}')
             COM.click_error_dialog_close_button()
             COM.click_button('close')
         if (COM.is_visible(xpaths.common_xpaths.any_header(header, 1), 1) is True) & (header != 'Dashboard'):

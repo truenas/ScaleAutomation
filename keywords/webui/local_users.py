@@ -648,7 +648,7 @@ class Local_Users:
          - Local_Users.is_user_not_visible('username')
         """
         name = COM.convert_to_tag_format(username)
-        return WebUI.wait_until_not_visible(xpaths.common_xpaths.any_xpath(f'//*[@data-test="row-{name}"]'))
+        return WebUI.wait_until_not_visible(xpaths.local_users.user(name))
 
     @classmethod
     def refresh_local_user_page(cls, count: str = 50) -> None:
