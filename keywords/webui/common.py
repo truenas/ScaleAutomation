@@ -1094,6 +1094,19 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.select_field_by_row(cls.convert_to_tag_format(name), row))
 
     @classmethod
+    def is_table_row_visible(cls, name: str) -> bool:
+        """
+        This method returns True if the given name of the table row is visible, otherwise False.
+
+        :param name: the name of the table row to be identified.
+        :return: True if the given name of the table row is visible, otherwise False.
+
+        Example:
+            - Common.is_table_row_visible('row_name')
+        """
+        return cls.is_visible(xpaths.common_xpaths.data_test_field(f'row-{cls.convert_to_tag_format(name)}'))
+
+    @classmethod
     def is_text_visible(cls, text: str) -> bool:
         """
         This method returns True if the given text is visible, otherwise False.
