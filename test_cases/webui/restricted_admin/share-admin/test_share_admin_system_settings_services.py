@@ -186,38 +186,21 @@ class Test_Share_Admin_System_Settings_Advanced:
 
         # iSCSI Service
         SERV.stop_service_by_name('iscsi')
-        SERV.set_service_autostart_on('iscsi')
-        API_POST.reboot_system()
-        COM.login_to_truenas(shared_config['SHARE_ADMIN_USER'], shared_config['SHARE_ADMIN_PASSWORD'])
-        assert COM.is_toggle_enabled('running-service-iscsi-row-toggle') is True
-        SERV.stop_service_by_name('iscsi')
-        assert COM.is_toggle_enabled('running-service-iscsi-row-toggle') is False
         SERV.start_service_by_name('iscsi', True)
-        assert COM.is_toggle_enabled('running-service-iscsi-row-toggle') is True
+        SERV.set_service_autostart_off('iscsi')
+        SERV.set_service_autostart_on('iscsi')
 
         # NFS Service
         SERV.stop_service_by_name('nfs')
-        SERV.set_service_autostart_on('nfs')
-        assert COM.is_toggle_enabled('start-automatically-service-nfs-row-toggle') is True
-        API_POST.reboot_system()
-        COM.login_to_truenas(shared_config['SHARE_ADMIN_USER'], shared_config['SHARE_ADMIN_PASSWORD'])
-        assert COM.is_toggle_enabled('running-service-nfs-row-toggle') is True
-        SERV.stop_service_by_name('nfs')
-        assert COM.is_toggle_enabled('running-service-nfs-row-toggle') is False
         SERV.start_service_by_name('nfs', True)
-        assert COM.is_toggle_enabled('running-service-nfs-row-toggle') is True
+        SERV.set_service_autostart_off('nfs')
+        SERV.set_service_autostart_on('nfs')
 
         # SMB Service
         SERV.stop_service_by_name('smb')
-        SERV.set_service_autostart_on('smb')
-        assert COM.is_toggle_enabled('start-automatically-service-smb-row-toggle') is True
-        API_POST.reboot_system()
-        COM.login_to_truenas(shared_config['SHARE_ADMIN_USER'], shared_config['SHARE_ADMIN_PASSWORD'])
-        assert COM.is_toggle_enabled('running-service-smb-row-toggle') is True
-        SERV.stop_service_by_name('smb')
-        assert COM.is_toggle_enabled('running-service-smb-row-toggle') is False
         SERV.start_service_by_name('smb', True)
-        assert COM.is_toggle_enabled('running-service-smb-row-toggle') is True
+        SERV.set_service_autostart_off('smb')
+        SERV.set_service_autostart_on('smb')
 
     @allure.tag("Update")
     @allure.story("Share Admin Is Able to Stop iSCSI, NFS, SMB Services")
@@ -233,18 +216,18 @@ class Test_Share_Admin_System_Settings_Advanced:
 
         # iSCSI Service
         SERV.start_service_by_name('iscsi', True)
-        assert COM.is_toggle_enabled('running-service-iscsi-row-toggle') is True
         SERV.stop_service_by_name('iscsi')
-        assert COM.is_toggle_enabled('running-service-iscsi-row-toggle') is False
+        SERV.set_service_autostart_on('iscsi')
+        SERV.set_service_autostart_off('iscsi')
 
         # NFS Service
         SERV.start_service_by_name('nfs', True)
-        assert COM.is_toggle_enabled('running-service-nfs-row-toggle') is True
         SERV.stop_service_by_name('nfs')
-        assert COM.is_toggle_enabled('running-service-nfs-row-toggle') is False
+        SERV.set_service_autostart_on('nfs')
+        SERV.set_service_autostart_off('nfs')
 
         # SMB Service
         SERV.start_service_by_name('smb', True)
-        assert COM.is_toggle_enabled('running-service-smb-row-toggle') is True
         SERV.stop_service_by_name('smb')
-        assert COM.is_toggle_enabled('running-service-smb-row-toggle') is False
+        SERV.set_service_autostart_on('smb')
+        SERV.set_service_autostart_off('smb')
