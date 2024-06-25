@@ -105,7 +105,7 @@ class Test_Share_Admin_Boot_Environments:
         """
         COM.click_button('bootenv-status')
         assert COM.assert_page_header('Boot Pool Status') is True
-        COM.click_button(f'{COM.convert_to_tag_format(shared_config['BOOT_DISK'])}-actions')
+        COM.click_button(f'{COM.convert_to_tag_format(shared_config["BOOT_DISK"])}-actions')
         assert COM.assert_button_is_restricted('attach') is True
         assert COM.assert_button_is_restricted('replace') is True
         COM.click_on_element('//*')
