@@ -19,7 +19,7 @@ from keywords.webui.common import Common
 def pytest_sessionfinish(session, exitstatus):
     print(f"\nTotal time (in seconds) spent on hard delays using WebUI.delay(): {WebUI.total_time_waited()} seconds waited")
     # stop_percy_session only stop percy session if PERCY_TOKEN environment variable is set.
-    stop_percy_session()
+    # stop_percy_session()
     allure_environment()
     allure_reporting()
     WebUI.quit()
@@ -27,7 +27,7 @@ def pytest_sessionfinish(session, exitstatus):
 
 def pytest_sessionstart(session):
     # start_percy_session only start percy session if PERCY_TOKEN environment variable is set.
-    start_percy_session()
+    # start_percy_session()
     Common.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
     # Set up a unique hostname for the test session.
     # PID is unique for each session
