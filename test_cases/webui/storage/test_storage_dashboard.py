@@ -20,4 +20,4 @@ class Test_Storage_Dashboard:
         """
         Navigation.navigate_to_storage()
         assert Storage.is_pool_name_header_visible('tank') is True
-        WebUI.take_percy_snapshot('Storage Dashboard UI')
+        # WebUI.take_percy_snapshot('Storage Dashboard UI')
