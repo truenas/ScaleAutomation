@@ -14,6 +14,9 @@ from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 from keywords.ssh.common import Common_SSH as COM_SSH
 
 
+@allure.tag("Datasets", "Dataset Permissions", "POSIX")
+@allure.epic("Datasets")
+@allure.feature("Dataset Permissions")
 @pytest.mark.parametrize('posix_acl_recursive_permissions', get_data_list('dataset_permission/posix_acl_recursive_permissions'), scope='class')
 class Test_POSIX_Recursive_Permissions:
     @pytest.fixture(scope='class', autouse=True)
@@ -70,6 +73,8 @@ class Test_POSIX_Recursive_Permissions:
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
+    @allure.tag("Read")
+    @allure.story("Dataset Recursive Permissions Using UI")
     @allure.issue('NAS-128726', 'NAS-128726')
     def test_recursive_permissions_via_UI(self, posix_acl_recursive_permissions):
         """
@@ -132,6 +137,8 @@ class Test_POSIX_Recursive_Permissions:
         assert PERM.verify_dataset_other_default_permissions(posix_acl_recursive_permissions['other_default_perm']) is True
         assert PERM.verify_dataset_permissions_edit_button() is True
 
+    @allure.tag("Read")
+    @allure.story("Dataset Recursive Permissions Using SSH")
     def test_recursive_permissions_via_SSH(self, posix_acl_recursive_permissions):
         """
         This test verifies the ability to use recursive permissions application and verifies the permissions via SSH

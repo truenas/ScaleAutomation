@@ -10,7 +10,6 @@ from selenium.common.exceptions import (
 from selenium.webdriver.common.keys import Keys
 
 from helper.cli import SSH_Command_Line
-from helper.reporting import take_screenshot
 from helper.webui import WebUI
 from helper.global_config import private_config
 from helper.global_config import shared_config
@@ -1213,21 +1212,6 @@ class Common:
         """
         WebUI.get(f'http://{ip}/ui/sessions/signin')
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('log-in')) is True
-
-    @classmethod
-    def print_defect_and_screenshot(cls, ticketnumber: str) -> None:
-        """
-        This method prints the NAS ticket number and screenshots.
-
-        :param ticketnumber: The ticket number to display with the failure.
-
-        Example:
-            - Common.print_defect_and_screenshot('NAS-999999')
-        """
-        print(f'##### This test has an associated NAS ticket number: | {ticketnumber} | #####')
-        take_screenshot(ticketnumber)
-        # TODO: Refactor into webui to be a list that gets added to each time it is called.
-        #  Then add to global conftest to print at the end.
 
     @classmethod
     def reboot_system(cls) -> None:

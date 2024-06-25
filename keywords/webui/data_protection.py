@@ -271,20 +271,18 @@ class Data_Protection:
         return COM.assert_element_is_restricted('//button[contains(@data-test,"-delete")]')
 
     @classmethod
-    def assert_replication_page_enabled_replication_task_checkbox_is_restricted(cls, name: str) -> bool:
+    def assert_replication_page_enabled_replication_task_toggle_is_restricted(cls, name: str) -> bool:
         """
-        This method returns True if the delete replication task button is locked and not clickable, otherwise returns False.
+        This method returns True if the enable replication task toggle is locked and not clickable, otherwise returns False.
 
         :param name: name of the replication task
-        :return: True if the delete replication task button is locked and not clickable, otherwise returns False.
+        :return: True if the enable replication task toggle is locked and not clickable, otherwise returns False.
 
         Example:
-            - Data_Protection.assert_replication_page_enabled_replication_task_checkbox_is_restricted("rep_name")
+            - Data_Protection.assert_replication_page_enabled_replication_task_toggle_is_restricted("rep_name")
         """
-        # name = COM.convert_to_tag_format(name)
-        # TODO: Update when NAS-129103 is fixed
-        # return COM.assert_element_is_locked_and_not_clickable(xpaths.common_xpaths.checkbox_field(f'{name}-enabled'))
-        return COM.assert_element_is_restricted(xpaths.common_xpaths.any_xpath('//*[starts-with(@data-test,"checkbox-")]'))
+        name = COM.convert_to_tag_format(name)
+        return COM.assert_toggle_is_restricted(xpaths.common_xpaths.toggle_field(f'enabled-replication-task-{name}-row-toggle'))
 
     @classmethod
     def assert_replication_page_replication_task_name(cls, name: str) -> bool:
