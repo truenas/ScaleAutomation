@@ -2,8 +2,6 @@ import allure
 import pytest
 
 import xpaths
-from helper.global_config import shared_config
-from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
 from keywords.webui.navigation import Navigation as NAV
 from keywords.webui.system_services import System_Services as SERV
