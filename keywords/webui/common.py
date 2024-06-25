@@ -10,7 +10,6 @@ from selenium.common.exceptions import (
 from selenium.webdriver.common.keys import Keys
 
 from helper.cli import SSH_Command_Line
-from helper.reporting import take_screenshot
 from helper.webui import WebUI
 from helper.global_config import private_config
 from helper.global_config import shared_config
