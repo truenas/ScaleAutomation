@@ -725,30 +725,6 @@ class Certificates:
         Common.assert_progress_bar_not_visible()
 
     @classmethod
-    def select_acme_first_domain_option(cls, option: str) -> None:
-        """
-        This method click on ACME First Domain and select an option.
-        :param option: The domain name.
-
-        Example:
-            - Certificates.select_acme_first_domain_option('test.com')
-        """
-        # TODO: This will will be replaced by select_Field when the data-test get fix
-        Common.click_on_element('//*[@data-test="select"]')
-        Common.click_on_element(xpaths.common_xpaths.option_field(option))
-
-    @classmethod
-    def select_acme_second_domain_option(cls, domain_id: str) -> None:
-        """
-        This method click on ACME Second Domain and select an option.
-        :param domain_id: The domain id in the list.
-
-        Example:
-            - Certificates.select_acme_second_domain_option('www.test.com')
-        """
-        Common.select_option('1', f'1-{domain_id}')
-
-    @classmethod
     def select_acme_server_directory_uri_option(cls, option: str) -> None:
         """
         This method click on ACME Server Directory URI and select an option.
