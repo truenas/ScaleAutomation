@@ -105,5 +105,7 @@ class Test_Read_Only_Admin_Boot_Environments:
         """
         COM.click_button('bootenv-status')
         assert COM.assert_page_header('Boot Pool Status') is True
-        assert Boot.assert_boot_disk_actions_is_restricted(shared_config['BOOT_DISK'], 'attach') is True
-        assert Boot.assert_boot_disk_actions_is_restricted(shared_config['BOOT_DISK'], 'replace') is True
+        COM.click_button(f'{COM.convert_to_tag_format(shared_config['BOOT_DISK'])}-actions')
+        assert COM.assert_button_is_restricted('attach') is True
+        assert COM.assert_button_is_restricted('replace') is True
+        COM.click_on_element('//*')

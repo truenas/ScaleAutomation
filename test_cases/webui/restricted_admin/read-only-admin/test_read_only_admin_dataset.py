@@ -1,6 +1,7 @@
 import allure
 import pytest
 from helper.data_config import get_data_list
+from helper.global_config import shared_config
 from keywords.api.post import API_POST
 from keywords.api.delete import API_DELETE
 from keywords.webui.common import Common
@@ -26,7 +27,8 @@ class Test_Read_Only_Admin_Dataset:
         API_POST.create_dataset(f'{data["pool"]}/{data["acl_parent_dataset"]}/{data["acl_child_dataset"]}', 'SMB')
         API_POST.create_dataset(f'{data["pool"]}/{data["generic_parent_dataset"]}', 'GENERIC')
         API_POST.create_dataset(f'{data["pool"]}/{data["generic_parent_dataset"]}/{data["generic_child_dataset"]}', 'GENERIC')
-        API_POST.create_snapshot(f'{data["pool"]}/{data["acl_parent_dataset"]}', data['snapshot_name'])
+        # API_POST.create_snapshot(f'{data["pool"]}/{data["acl_parent_dataset"]}', data['snapshot_name'])
+        shared_config['snapshot_name'] = API_POST.create_snapshot(f'{data["pool"]}/{data["acl_parent_dataset"]}', data['snapshot_name']).json()['snapshot_name']
 
     @pytest.fixture(autouse=True, scope='class')
     def tear_down_test(self, data):
@@ -36,7 +38,8 @@ class Test_Read_Only_Admin_Dataset:
         yield
         # Return to dataset page or there will be an error when deleting the dataset.
         Navigation.navigate_to_datasets()
-        API_DELETE.delete_snapshot(f'{data["pool"]}/{data["acl_parent_dataset"]}@{data["snapshot_name"]}', recursive=True)
+        # API_DELETE.delete_snapshot(f'{data["pool"]}/{data["acl_parent_dataset"]}@{data["snapshot_name"]}', recursive=True)
+        API_DELETE.delete_snapshot(f'{data["pool"]}/{data["acl_parent_dataset"]}@{shared_config["snapshot_name"]}', recursive=True)
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["acl_parent_dataset"]}', recursive=True, force=True)
         API_DELETE.delete_dataset(f'{data["pool"]}/{data["generic_parent_dataset"]}', recursive=True, force=True)
 
@@ -268,17 +271,18 @@ class Test_Read_Only_Admin_Dataset:
         Datasets.click_manage_snapshots_link()
 
         assert Snapshots.assert_dataset_snapshot_page_header(f'{data["pool"]}/{data["acl_parent_dataset"]}') is True
-        assert Snapshots.assert_snapshot_is_visible(data['snapshot_name']) is True
-        Snapshots.expand_snapshot_by_name(data['snapshot_name'])
+        # assert Snapshots.assert_snapshot_is_visible(data['snapshot_name']) is True
+        assert Snapshots.assert_snapshot_is_visible(shared_config['snapshot_name']) is True
+        Snapshots.expand_snapshot_by_name(shared_config['snapshot_name'])
 
         # verify the read-only admin is not able to delete snapshots
-        assert Snapshots.assert_delete_button_is_restricted(data['snapshot_name']) is True
+        assert Snapshots.assert_delete_button_is_restricted(shared_config['snapshot_name']) is True
 
         # verify the read-only admin is not able to clone a snapshots
-        assert Snapshots.assert_clone_to_new_snapshot_button_is_restricted(data['snapshot_name']) is True
+        assert Snapshots.assert_clone_to_new_snapshot_button_is_restricted(shared_config['snapshot_name']) is True
 
         # verify the read-only admin is not able to roll back a snapshots
-        assert Snapshots.assert_rollback_button_is_restricted(data['snapshot_name']) is True
+        assert Snapshots.assert_rollback_button_is_restricted(shared_config['snapshot_name']) is True
 
         # verify the read-only admin is not able to change the hold checkbox
-        assert Snapshots.assert_hold_checkbox_is_restricted(data['snapshot_name']) is True
+        assert Snapshots.assert_hold_checkbox_is_restricted(shared_config['snapshot_name']) is True
