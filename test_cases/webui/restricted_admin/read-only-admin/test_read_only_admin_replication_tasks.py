@@ -208,7 +208,6 @@ class Test_Read_Only_Admin_Replication_Tasks:
         """
         assert COM.assert_toggle_is_restricted(f'enabled-replication-task-{rep["task-name"]}-row-toggle') is True
         DP.click_card_page_link('Replication Tasks')
-        # TODO: fix this when NAS-129103 is updated
         assert COM.assert_toggle_is_restricted(f'enabled-replication-task-{rep["task-name"]}-row-toggle') is True
         COM.click_link('breadcrumb-data-protection')
         API_PUT.set_replication_task_enabled(rep['task-name'], False)

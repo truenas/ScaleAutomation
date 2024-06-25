@@ -13,6 +13,9 @@ from keywords.webui.navigation import Navigation as NAV
 from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 
 
+@allure.tag("Datasets", "Dataset Custom Presets", "POSIX")
+@allure.epic("Datasets")
+@allure.feature("Dataset Custom Presets")
 @pytest.mark.parametrize('posix_acl_custom', get_data_list('dataset_permission/posix_acl_custom'), scope='class')
 class Test_POSIX_Custom_Preset:
     @pytest.fixture(scope='class', autouse=True)
@@ -64,6 +67,8 @@ class Test_POSIX_Custom_Preset:
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
+    @allure.tag("Read")
+    @allure.story("Dataset Recursive Custom Presets Permissions Using UI")
     @allure.issue("NAS-128105", name="NAS-128105")
     def test_verify_posix_custom_preset_permissions_via_UI(self, posix_acl_custom):
         """
@@ -82,6 +87,8 @@ class Test_POSIX_Custom_Preset:
         assert PERM.verify_dataset_mask_permissions_name() is True
         assert PERM.verify_dataset_mask_permissions(posix_acl_custom['mask_perm']) is True
 
+    @allure.tag("Read")
+    @allure.story("Dataset Recursive Custom Presets Permissions Using SSH")
     def test_verify_posix_custom_preset_permissions_via_SSH(self, posix_acl_custom):
         """
         This test verifies the ability to create and use a custom POSIX ACL preset and verifies the permissions via SSH.

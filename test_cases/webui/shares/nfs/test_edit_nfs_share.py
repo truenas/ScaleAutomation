@@ -329,4 +329,4 @@ class Test_Edit_NFS_Share:
         assert COMSHARE.assert_share_path('nfs', nfs_data['share_page_path']) is True
         assert COMSHARE.is_share_enabled('nfs', nfs_data['share_page_path']) is False
 
-        # TODO: Add in CLI test component to ensure share cannot be used when disabled. TE-1415
+        # TODO: Add in CLI test component to ensure share cannot be used when disabled. TEN-902
