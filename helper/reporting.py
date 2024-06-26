@@ -32,18 +32,18 @@ assert mkdircommand.status is True, f'{mkdircommand.stdout} \n{mkdircommand.stde
 
 
 def allure_environment():
-    product_name = API_GET.get_system_product_name()
-    product_type = API_GET.get_system_product_type()
+    # product_name = API_GET.get_system_product_name()
+    # product_type = API_GET.get_system_product_type()
     version = API_GET.get_system_version()
-    version_short = API_GET.get_system_version_short()
+    # version_short = API_GET.get_system_version_short()
     allure_results = str(Path('/allure-results'))
     environment_properties = str(Path('/environment.properties'))
     with open(f'{real_full_test_path}{allure_results}{environment_properties}', 'w') as file:
-        file.write(f'product_name={product_name}\n')
-        file.write(f'product_type={product_type}\n')
+        # file.write(f'product_name={product_name}\n')
+        # file.write(f'product_type={product_type}\n')
         file.write(f'version={version}\n')
-        file.write(f'short_version={version_short}\n')
-        file.write(f'short_version={version_short}\n')
+        # file.write(f'short_version={version_short}\n')
+        # file.write(f'short_version={version_short}\n')
         for _ in range(10):
             if "percy_threading" not in str(threading.enumerate()) and shared_config['PERCY_URL']:
                 file.write(f"percy_report={shared_config['PERCY_URL']}\n")
