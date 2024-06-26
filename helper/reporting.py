@@ -32,10 +32,10 @@ assert mkdircommand.status is True, f'{mkdircommand.stdout} \n{mkdircommand.stde
 
 
 def allure_environment():
-    product_name = API_GET.get_system_product_name().json()
-    product_type = API_GET.get_system_product_type().json()
-    version = API_GET.get_system_version().json()
-    version_short = API_GET.get_system_version_short().json()
+    product_name = API_GET.get_system_product_name()
+    product_type = API_GET.get_system_product_type()
+    version = API_GET.get_system_version()
+    version_short = API_GET.get_system_version_short()
     allure_results = str(Path('/allure-results'))
     environment_properties = str(Path('/environment.properties'))
     with open(f'{real_full_test_path}{allure_results}{environment_properties}', 'w') as file:
