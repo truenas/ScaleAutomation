@@ -105,7 +105,7 @@ class Test_Create_Replicate_Task_Options:
 
         Test Steps:
         1. Create Periodic Snapshot
-        2. Create Replication Task (Include Dataset Properties = True)
+        2. Create Replication Task (Include Dataset Properties = False)
         3. Trigger Replication Task
         4. Verify destination dataset values are not set
         """
