@@ -84,9 +84,9 @@ class Replication:
         # Create Replication Task
         NAV.navigate_to_data_protection()
         DP.click_add_replication_button()
-        COM.assert_right_panel_header('Replication Task Wizard')
+        assert COM.assert_right_panel_header('Replication Task Wizard') is True
         COM.click_button('advanced')
-        COM.assert_right_panel_header('Add Replication Task')
+        assert COM.assert_right_panel_header('Add Replication Task') is True
 
         # Set Options
         for opt in options:
