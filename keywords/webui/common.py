@@ -1307,6 +1307,18 @@ class Common:
         WebUI.xpath(xpath).send_keys(Keys.ESCAPE)
 
     @classmethod
+    def send_space(cls, xpath) -> None:
+        """
+        This method sends the 'space' character to the given xpath.
+
+        :param xpath: The xpath of the object to send an 'space' character to.
+
+        Example:
+            - Common.send_space('//button')
+        """
+        WebUI.xpath(xpath).send_keys(Keys.SPACE)
+
+    @classmethod
     def set_10_items_per_page(cls) -> None:
         """
         This method sets the items per page to 10
