@@ -325,4 +325,6 @@ class Test_Create_Replicate_Task_Remote:
         COM.click_button('download-logs')
         COM.click_button('close')
         file = COM.is_file_exist(downloads, '.log.crdownload')
+        text = f"doing push from '{rep['pool']}/{rep['source']}' to '{rep['pool']}/{rep['destination']}'"
+        assert COM.file_contains_text(downloads, file, text) is True
         COM.delete_file(downloads, file)

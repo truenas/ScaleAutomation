@@ -751,6 +751,24 @@ class Common:
         print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
 
     @classmethod
+    def file_contains_text(cls, download_path: str, filename: str, text: str) -> bool:
+        """
+        This method returns True if the given teext is in the given file ,otherwise False.
+
+        :param download_path: the path of the download directory.
+        :param filename: the name of the file to search.
+        :param text: the text to find in the file.
+
+        Example:
+            - Common.is_file_exist('C:/path', 'myfile.txt')
+        """
+        file = Path(f'{download_path}/{filename}')
+        f = open(file, "r")
+        found = True if f.read().__contains__(text) else False
+        f.close()
+        return found
+
+    @classmethod
     def get_current_day(cls) -> int:
         """
         This method returns the current system day date [1-31]
