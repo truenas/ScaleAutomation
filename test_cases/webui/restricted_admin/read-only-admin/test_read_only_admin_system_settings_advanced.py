@@ -141,7 +141,7 @@ class Test_Read_Only_Admin_System_Settings_Advanced:
         assert COM.assert_button_is_restricted('syslog-configure') is True
         assert COM.assert_button_is_restricted('audit-configure') is True
         # TODO: fix this when NAS-129333 is fixed
-        # assert COM.assert_button_is_restricted('kernel-configure') is True
+        assert COM.assert_button_is_restricted('kernel-configure') is True
         assert COM.assert_button_is_restricted('cron-add') is True
         COM.click_link('cron-jobs-open-in-new')
         assert COM.assert_button_is_restricted('add-cronjob') is True
@@ -163,4 +163,4 @@ class Test_Read_Only_Admin_System_Settings_Advanced:
         # assert COM.assert_button_is_restricted('self-encrypted-drive-configure') is True
         assert COM.assert_button_is_restricted('isolated-gpus-devices-configure') is True
         # TODO: fix this when NAS-129333 is fixed
-        # assert COM.assert_button_is_restricted('two-factor-auth-configure') is True
+        assert COM.assert_button_is_restricted('two-factor-auth-configure') is True
