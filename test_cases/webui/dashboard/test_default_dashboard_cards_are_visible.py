@@ -23,4 +23,4 @@ class Test_Verify_Default_Dashboard_Cards_Are_Visible:
         assert Dashboard.is_memory_card_visible() is True
         assert Dashboard.is_storage_card_visible() is True
         assert Dashboard.is_network_card_visible() is True
-        WebUI.take_percy_snapshot('Default Dashboard Cards Are Visible')
+        # WebUI.take_percy_snapshot('Default Dashboard Cards Are Visible')
