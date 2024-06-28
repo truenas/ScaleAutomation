@@ -1,0 +1,3 @@
+username,shell_return,shell_type
+admin,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/bash,bash
+admin,This account is currently not available.,nologin

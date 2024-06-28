@@ -1,4 +1,5 @@
 import xpaths
+from helper.cli import SSH_Command_Line
 from helper.global_config import private_config
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
@@ -6,6 +7,21 @@ from keywords.webui.navigation import Navigation as NAV
 
 
 class SSH_Connection:
+    @classmethod
+    def assert_shell_type(cls, shell_return: str, shell_type: str) -> bool:
+        """
+        This method verifies the shell for the given user is set to the given shell type.
+
+        :param shell_return: is the expected output of the /etc/passwd file
+        :param shell_type: is the name of the shell
+
+        Example:
+            - SSH_Connection.assert_shell_type('admin', 'bash')
+        """
+        command = SSH_Command_Line(f'grep {shell_type} /etc/passwd', private_config['IP'], private_config['USERNAME'],
+                                private_config['PASSWORD'])
+        return shell_return in command.stdout
+
     @classmethod
     def assert_ssh_connection_exists(cls, connection: str) -> bool:
         """

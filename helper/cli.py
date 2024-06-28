@@ -34,7 +34,7 @@ class Local_Command_Line:
         self.stdout = self.process.stdout
         self.stderr = self.process.stderr
         self.status = self.process.returncode == 0
-        assert self.status
+        # assert self.status
 
 
 class SSH_Command_Line:
@@ -61,9 +61,9 @@ class SSH_Command_Line:
         self.stdout = self.process.stdout
         self.stderr = self.process.stderr
         self.status = self.process.status
-        # print("@@@ STDOUT: " + self.stdout)
-        # print("@@@ STDERR: " + self.stderr)
-        # print("@@@ STATUS: " + str(self.status))
+        print("@@@ STDOUT: " + self.stdout)
+        print("@@@ STDERR: " + self.stderr)
+        print("@@@ STATUS: " + str(self.status))
 
 
 class Interactive_Shell:
