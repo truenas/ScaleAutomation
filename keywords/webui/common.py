@@ -753,14 +753,14 @@ class Common:
     @classmethod
     def file_contains_text(cls, download_path: str, filename: str, text: str) -> bool:
         """
-        This method returns True if the given teext is in the given file ,otherwise False.
+        This method returns True if the given text is in the given file, otherwise False.
 
         :param download_path: the path of the download directory.
         :param filename: the name of the file to search.
         :param text: the text to find in the file.
 
         Example:
-            - Common.is_file_exist('C:/path', 'myfile.txt')
+            - Common.file_contains_text('C:/path', 'myfile.txt', 'text to search')
         """
         file = Path(f'{download_path}/{filename}')
         f = open(file, "r")
