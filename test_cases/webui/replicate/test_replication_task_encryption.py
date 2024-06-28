@@ -50,7 +50,6 @@ class Test_Create_Replicate_Task_Encryption:
         API_DELETE.delete_ssh_connection('admin-other')
         API_DELETE.delete_ssh_keypairs('admin-other')
 
-
     @allure.tag("Create")
     @allure.story("Run Replication Task from Encrypted to Unencrypted")
     def test_run_replicate_task_from_encrypted_to_unencrypted_remote(self) -> None:
@@ -61,7 +60,7 @@ class Test_Create_Replicate_Task_Encryption:
         1. Create Periodic Snapshot
         2. Create Replication Task (Include Dataset Properties = False)
         3. Trigger Replication Task
-        4. Verify destination dataset file exists
+        4. Verify destination dataset file exists and destination is not encrypted/locked
         """
 
         # Create Periodic Snapshot
@@ -89,7 +88,7 @@ class Test_Create_Replicate_Task_Encryption:
         REP.create_advanced_replication_task_local(replication_options)
         REP.click_run_now_replication_task_by_name('rep-enc-non')
 
-        # Verify destination dataset file exists
+        # Verify destination dataset file exists and not locked
         assert COM.assert_file_exists('test_file.txt', 'tank/destination/enc-non', private_config['REP_DEST_IP']) is True
         REP.login_to_destination_box(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_datasets()
