@@ -26,7 +26,8 @@ def dataset_encryption_text(name: str) -> str:
     :param name: The name of the dataset.
     :return: The xpath text of the given dataset encryption text.
     """
-    return f'//ix-dataset-node[contains(.,"{name}")]//ix-dataset-encryption-cell/div/div'
+    # return f'//ix-dataset-node[contains(.,"{name}")]//ix-dataset-encryption-cell/div/div'
+    return f'//ix-dataset-node[contains(.,"{name}")]//ix-dataset-encryption-cell/div'
 
 
 def dataset_name(name: str) -> str:
