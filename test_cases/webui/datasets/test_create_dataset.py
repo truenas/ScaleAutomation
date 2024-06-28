@@ -58,4 +58,4 @@ class Test_Create_Dataset:
         # Verify that the created dataset exists in the datasets page.
         Datasets.is_dataset_visible(data["pool"], data["dataset"])
 
-        WebUI.take_percy_snapshot('Dataset Created UI')
+        # WebUI.take_percy_snapshot('Dataset Created UI')

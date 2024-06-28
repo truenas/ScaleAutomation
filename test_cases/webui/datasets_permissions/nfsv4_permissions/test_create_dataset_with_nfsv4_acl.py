@@ -1,3 +1,4 @@
+import allure
 import pytest
 
 from helper.global_config import private_config
@@ -11,6 +12,9 @@ from keywords.webui.navigation import Navigation as NAV
 from keywords.ssh.permissions import Permissions_SSH as PERM_SSH
 
 
+@allure.tag("Datasets", "Dataset Permissions", "NFSv4")
+@allure.epic("Datasets")
+@allure.feature("Dataset Permissions")
 class Test_NFSv4_UI_Create:
     @pytest.fixture(scope='class', autouse=True)
     def setup_test(self):
@@ -35,6 +39,8 @@ class Test_NFSv4_UI_Create:
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
         NAV.navigate_to_dashboard()
 
+    @allure.tag("Create")
+    @allure.story("Create Dataset Permissions Using UI")
     def test_create_dataset_with_nfsv4_acl(self):
         """
         This test creates a new dataset and sets it with the NFSv4 ACL Type and verifies the permissions are set.

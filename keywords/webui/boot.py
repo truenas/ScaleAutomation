@@ -6,24 +6,6 @@ from keywords.webui.common import Common as COM
 class Boot:
 
     @classmethod
-    def assert_boot_disk_actions_is_restricted(cls, boot_disk: str, action: str) -> bool:
-        """
-        This method returns True or False whether the Boot disk actions button is locked and not clickable.
-
-        :param boot_disk: The name of the data disks
-        :param action: The name of the action. Options [attach, detach, replace].
-        :return: True if the Boot disk actions button is locked and not clickable otherwise it returns False.
-
-
-        Example:
-            - Boot.assert_boot_disk_actions_is_restricted('sda3')
-        """
-        COM.click_button(f'{COM.convert_to_tag_format(boot_disk)}-actions')
-        result = COM.assert_button_is_restricted(action)
-        WebUI.send_key('esc')
-        return result
-
-    @classmethod
     def assert_boot_environment_element_restricted(cls, be_name: str, action: str) -> bool:
         """
         This method returns True or False whether the link is restricted or not.

@@ -10,7 +10,6 @@ from selenium.common.exceptions import (
 from selenium.webdriver.common.keys import Keys
 
 from helper.cli import SSH_Command_Line
-from helper.reporting import take_screenshot
 from helper.webui import WebUI
 from helper.global_config import private_config
 from helper.global_config import shared_config
@@ -1094,6 +1093,19 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.select_field_by_row(cls.convert_to_tag_format(name), row))
 
     @classmethod
+    def is_table_row_visible(cls, name: str) -> bool:
+        """
+        This method returns True if the given name of the table row is visible, otherwise False.
+
+        :param name: the name of the table row to be identified.
+        :return: True if the given name of the table row is visible, otherwise False.
+
+        Example:
+            - Common.is_table_row_visible('row_name')
+        """
+        return cls.is_visible(xpaths.common_xpaths.data_test_field(f'row-{cls.convert_to_tag_format(name)}'))
+
+    @classmethod
     def is_text_visible(cls, text: str) -> bool:
         """
         This method returns True if the given text is visible, otherwise False.
@@ -1202,21 +1214,6 @@ class Common:
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('log-in')) is True
 
     @classmethod
-    def print_defect_and_screenshot(cls, ticketnumber: str) -> None:
-        """
-        This method prints the NAS ticket number and screenshots.
-
-        :param ticketnumber: The ticket number to display with the failure.
-
-        Example:
-            - Common.print_defect_and_screenshot('NAS-999999')
-        """
-        print(f'##### This test has an associated NAS ticket number: | {ticketnumber} | #####')
-        take_screenshot(ticketnumber)
-        # TODO: Refactor into webui to be a list that gets added to each time it is called.
-        #  Then add to global conftest to print at the end.
-
-    @classmethod
     def reboot_system(cls) -> None:
         """
         This method reboots the system
@@ -1308,6 +1305,18 @@ class Common:
             - Common.send_escape('//button')
         """
         WebUI.xpath(xpath).send_keys(Keys.ESCAPE)
+
+    @classmethod
+    def send_space(cls, xpath) -> None:
+        """
+        This method sends the 'space' character to the given xpath.
+
+        :param xpath: The xpath of the object to send an 'space' character to.
+
+        Example:
+            - Common.send_space('//button')
+        """
+        WebUI.xpath(xpath).send_keys(Keys.SPACE)
 
     @classmethod
     def set_10_items_per_page(cls) -> None:

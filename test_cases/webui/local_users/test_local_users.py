@@ -60,13 +60,13 @@ class Test_Local_Users:
         LU.set_user_password(users['password'])
         LU.set_user_password_confirm(users['password'])
         LU.set_user_email(users['email'])
-        WebUI.take_percy_snapshot('Add User UI', scope='//*[contains(@class,"ix-slide-in-body")]')
+        # WebUI.take_percy_snapshot('Add User UI', scope='//*[contains(@class,"ix-slide-in-body")]')
         COM.click_save_button_and_wait_for_progress_bar()
         LU.unset_show_builtin_users_toggle()
         LU.refresh_local_user_page('100')
 
         assert LU.is_user_visible(users['username']) is True
-        WebUI.take_percy_snapshot('Users UI with New User')
+        # WebUI.take_percy_snapshot('Users UI with New User')
 
     @allure.tag("Delete")
     @allure.story("Delete Local Users")

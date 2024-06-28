@@ -72,6 +72,60 @@ class Replication:
         cls.switch_to_source_box()
 
     @classmethod
+    def create_advanced_replication_task_local(cls, options: dict) -> None:
+        """
+        This methode creates a Replication Task with Advanced Options.
+
+        :param options: the dict of the options to set on the replication task
+
+        Example:
+            - Replication.create_replication_task({'NAME'= 'rep_task', 'SOURCE'= 'tank/source', 'DESTINATION'= 'tank/destination', 'ENABLED'= True, 'NAMING'= 'rep-%Y-%m-%d_%H-%M'})
+        """
+        # Create Replication Task
+        NAV.navigate_to_data_protection()
+        DP.click_add_replication_button()
+        assert COM.assert_right_panel_header('Replication Task Wizard') is True
+        COM.click_button('advanced')
+        assert COM.assert_right_panel_header('Add Replication Task') is True
+
+        # Set Options
+        for opt in options:
+            match opt:
+                case "NAME":
+                    COM.set_input_field('name', options[opt], True)
+                case "TRANSPORT":
+                    COM.select_option('transport', options[opt])
+                case "SSH_CONNECTION":
+                    COM.click_on_element(xpaths.common_xpaths.select_field('ssh-credentials'))
+                    COM.click_on_element(xpaths.common_xpaths.option_field(f'ssh-credentials-{options[opt]}'))
+                    COM.assert_confirm_dialog()
+                case "DESTINATION":
+                    COM.set_input_field('target-dataset', options[opt])
+                case "READ_ONLY_POLICY":
+                    COM.click_on_element(xpaths.common_xpaths.select_field('readonly'))
+                    COM.select_option('readonly', options[opt])
+                case "SOURCE":
+                    COM.set_input_field('source-datasets', options[opt])
+                case "INCLUDE_PROPERTIES":
+                    if COM.get_element_property(xpaths.common_xpaths.checkbox_field_attribute('properties'), 'checked') is not options[opt]:
+                        # regular set checkbox not work.
+                        COM.send_space(xpaths.common_xpaths.checkbox_field_attribute('properties'))
+                case "MATCHING_SCHEMA":
+                    COM.click_radio_button('schema-or-regex-matching-naming-schema')
+                case  "NAMING_SCHEMA":
+                    COM.set_input_field('also-include-naming-schema', options[opt])
+                case "RUN_AUTOMATICALLY":
+                    if COM.get_element_property(xpaths.common_xpaths.checkbox_field_attribute('auto'), 'checked') is not options[opt]:
+                        # regular set checkbox not work.
+                        COM.send_space(xpaths.common_xpaths.checkbox_field_attribute('auto'))
+                case "SCHEDULE":
+                    COM.set_checkbox_by_state('schedule', options[opt])
+                case "FREQUENCY":
+                    COM.select_option('schedule-picker-presets', options[opt])
+
+        cls.click_save_button_and_resolve_dialogs()
+
+    @classmethod
     def create_periodic_snapshot(cls, source_path: str, destination_path: str, naming_schema: str, source_box: str = 'LOCAL', destination_box: str = 'REMOTE') -> str:
         """
         This methode return the name of the created Periodic Snapshot.
