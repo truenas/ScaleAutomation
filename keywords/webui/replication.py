@@ -95,6 +95,10 @@ class Replication:
                     COM.set_input_field('name', options[opt], True)
                 case "TRANSPORT":
                     COM.select_option('transport', options[opt])
+                case "SSH_CONNECTION":
+                    COM.click_on_element(xpaths.common_xpaths.select_field('ssh-credentials'))
+                    COM.click_on_element(xpaths.common_xpaths.option_field(f'ssh-credentials-{options[opt]}'))
+                    COM.assert_confirm_dialog()
                 case "DESTINATION":
                     COM.set_input_field('target-dataset', options[opt])
                 case "READ_ONLY_POLICY":
