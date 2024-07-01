@@ -35,7 +35,7 @@ class Test_SSH_Shell_Access:
         LU.expand_user(ssh_shell_access['username'])
         LU.click_user_edit_button()
         COM.set_checkbox('ssh-password-enabled')
-        COM.select_option('shell', 'shell-' + ssh_shell_access['shell_xpath'])
+        COM.select_option('shell', ssh_shell_access["shell_xpath"])
         COM.click_save_button_and_wait_for_right_panel()
 
     @pytest.fixture(scope='class', autouse=True)

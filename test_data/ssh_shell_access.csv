@@ -1,10 +1,10 @@
 username,shell_return,etc_passwd,shell_xpath,shell_type,full_shell_path
-admin,This account is currently not available.,admin:x:950:950:Local Administrator:/home/admin:/usr/sbin/nologin,nologin,nologin,/usr/sbin/nologin
-admin,/home/admin,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/sh,sh,sh,/usr/bin/sh
-admin,/home/admin,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/bash,bash,bash,/usr/bin/bash
-admin,/home/admin,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/rbash,rbash,rbash,/usr/bin/rbash
-admin,/home/admin,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/dash,dash,dash,/usr/bin/dash
-admin,/home/admin,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/tmux,tmux,tmux,/usr/bin/tmux
-admin,/home/admin,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/zsh,zsh,zsh,/usr/bin/zsh
-admin,account,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/cli,true-nas-cli,cli,/usr/bin/cli
-admin,Enter an option from 1-9:,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/cli_console,true-nas-console,cli_console,/usr/bin/cli_console
+admin,This account is currently not available.,admin:x:950:950:Local Administrator:/home/admin:/usr/sbin/nologin,shell-nologin,nologin,/usr/sbin/nologin
+admin,/home/admin,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/sh,shell-sh,sh,/usr/bin/sh
+admin,/home/admin,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/bash,shell-bash,bash,/usr/bin/bash
+admin,/home/admin,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/rbash,shell-rbash,rbash,/usr/bin/rbash
+admin,/home/admin,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/dash,shell-dash,dash,/usr/bin/dash
+admin,/home/admin,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/tmux,shell-tmux,tmux,/usr/bin/tmux
+admin,/home/admin,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/zsh,shell-zsh,zsh,/usr/bin/zsh
+admin,account,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/cli,shell-true-nas-cli,cli,/usr/bin/cli
+admin,Enter an option from 1-9:,admin:x:950:950:Local Administrator:/home/admin:/usr/bin/cli_console,shell-true-nas-console,cli_console,/usr/bin/cli_console
