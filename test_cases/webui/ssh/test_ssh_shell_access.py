@@ -46,8 +46,8 @@ class Test_SSH_Shell_Access:
         yield
         API_DELETE.delete_user('third_party')
 
-    @allure.tag("Create")
-    @allure.story("Create SSH Connection")
+    @allure.tag("Update")
+    @allure.story("Edit User Shell Type and Verify Connection")
     def test_assert_shell_type(self, ssh_shell_access) -> None:
         """
         This test will assert the shell type of the user matches the set shell and the shell allows login if not nologin.
