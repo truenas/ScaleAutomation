@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from helper.data_config import get_data_list
-from helper.global_config import private_config
+from helper.global_config import private_config, downloads
 from keywords.api.delete import API_DELETE
 from keywords.api.post import API_POST
 from keywords.webui.common import Common as COM
@@ -282,3 +282,49 @@ class Test_Create_Replicate_Task_Remote:
                                                           snapshot_name,
                                                           'rep_two.txt',
                                                           'LOCAL') is True
+
+    @allure.tag("Read")
+    @allure.story("Download Replication Task Log")
+    def test_download_replicate_task_log(self, rep) -> None:
+        """
+        Summary: This test verifies the logs of a replicate task can be downloaded
+
+        Test Steps:
+        1. Create Datasets Task (Source = local and Destination = remote)
+        2. Verify SSH Connection exists, if not create it
+        3. Create Periodic Snapshot
+        4. Create Replication Task (Source = local and Destination = remote)
+        5. Trigger Replication Task by Run Once and save
+        6. Verify download Replication Task log
+        """
+        # Create Datasets
+        API_POST.create_dataset(f'{rep["pool"]}/{rep["source"]}', box='LOCAL')
+        API_POST.create_dataset(f'{rep["pool"]}/{rep["destination"]}', box='REMOTE')
+
+        # Verify SSH Connection
+        NAV.navigate_to_backup_credentials()
+        SSHCON.assert_ssh_connection_exists(rep['connection-name'])
+
+        # Create Periodic Snapshot
+        REP.create_periodic_snapshot(f'{rep["pool"]}/{rep["source"]}',
+                                     f'{rep["pool"]}/{rep["destination"]}',
+                                     'rep-%Y-%m-%d_%H-%M')
+
+        # Create Replication Task
+        REP.create_replication_task(f'{rep["pool"]}/{rep["source"]}',
+                                    f'{rep["pool"]}/{rep["destination"]}',
+                                    rep['connection-name'],
+                                    'rep-%Y-%m-%d_%H-%M',
+                                    rep['task-name'],
+                                    'LOCAL',
+                                    'REMOTE')
+
+        # Verify download Replication Task log
+        REP.get_replication_log(rep['task-name'])
+        assert COM.assert_dialog_visible('Logs')
+        COM.click_button('download-logs')
+        COM.click_button('close')
+        file = COM.is_file_exist(downloads, '.log.crdownload')
+        text = f"doing push from '{rep['pool']}/{rep['source']}' to '{rep['pool']}/{rep['destination']}'"
+        assert COM.file_contains_text(downloads, file, text) is True
+        COM.delete_file(downloads, file)

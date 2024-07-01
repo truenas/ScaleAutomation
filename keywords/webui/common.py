@@ -1,4 +1,5 @@
 import datetime
+import os
 import re
 import xpaths
 from pathlib import Path
@@ -750,6 +751,24 @@ class Common:
         print(f'Response code: {response.status_code}\n\nResponse text: {response.text}')
 
     @classmethod
+    def file_contains_text(cls, download_path: str, filename: str, text: str) -> bool:
+        """
+        This method returns True if the given text is in the given file, otherwise False.
+
+        :param download_path: the path of the download directory.
+        :param filename: the name of the file to search.
+        :param text: the text to find in the file.
+
+        Example:
+            - Common.file_contains_text('C:/path', 'myfile.txt', 'text to search')
+        """
+        file = Path(f'{download_path}/{filename}')
+        f = open(file, "r")
+        found = True if f.read().__contains__(text) else False
+        f.close()
+        return found
+
+    @classmethod
     def get_current_day(cls) -> int:
         """
         This method returns the current system day date [1-31]
@@ -995,8 +1014,8 @@ class Common:
         """
         This method returns True if the given file exists in the given download directory, otherwise returns False
 
-        :param download_path: the username used to log in to TrueNAS.
-        :param filename: the password of the user used to log in.
+        :param download_path: the path of the download directory.
+        :param filename: the name of the file to search for
 
         Example:
             - Common.is_file_downloaded('C:/path', 'myfile.txt')
@@ -1012,6 +1031,26 @@ class Common:
                 print("File not found")
                 return False
         return file.is_file()
+
+    @classmethod
+    def is_file_exist(cls, download_path: str, filename: str) -> str:
+        """
+        This method returns the name of the given file if it exists in the given download directory,
+        otherwise returns empty string.
+
+        :param download_path: the path of the download directory.
+        :param filename: the name of the file to see if exists
+
+        Example:
+            - Common.is_file_exist('C:/path', 'myfile.txt')
+        """
+        file = ''
+        for name in os.listdir(download_path):
+            if name.__contains__(filename):
+                print(f'@@@ FILE: {name}')
+                file = name
+                break
+        return file
 
     @classmethod
     def is_input_visible(cls, name: str) -> bool:

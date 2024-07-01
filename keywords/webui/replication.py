@@ -250,6 +250,18 @@ class Replication:
             COM.assert_confirm_dialog()
 
     @classmethod
+    def get_replication_log(cls, name: str) -> None:
+        """
+        This method displays the log for the given replication task.
+
+        :param name: is the name of the given replication task
+
+        Example:
+            - Replication.get_replication_log('myRepTask')
+        """
+        COM.click_on_element(xpaths.common_xpaths.button_field(f'state-replication-task-{COM.convert_to_tag_format(name)}-row-state'))
+
+    @classmethod
     def get_replication_status(cls, name: str) -> str:
         """
         This method returns the status for the given replication task.
@@ -259,7 +271,7 @@ class Replication:
 
         Example:
             - Replication.get_replication_status('myRepTask')
-    """
+        """
         NAV.navigate_to_data_protection()
         return COM.get_element_property(xpaths.common_xpaths.button_field(f'state-replication-task-{COM.convert_to_tag_format(name)}-row-state'), 'innerText').strip(' ')
 
