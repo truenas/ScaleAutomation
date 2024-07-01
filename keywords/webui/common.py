@@ -1297,10 +1297,10 @@ class Common:
         """
         WebUI.delay(0.1)
         cls.click_on_element(xpaths.common_xpaths.select_field(name))
-        WebUI.delay(0.1)
+        WebUI.delay(0.3)
         cls.click_on_element(xpaths.common_xpaths.option_field(option))
         WebUI.xpath(xpaths.common_xpaths.select_field(name)).send_keys(Keys.TAB)
-        WebUI.delay(0.1)
+        WebUI.delay(0.3)
 
     @classmethod
     def select_option_by_row(cls, name: str, row: int, option: str) -> None:

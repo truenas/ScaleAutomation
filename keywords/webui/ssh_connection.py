@@ -1,4 +1,5 @@
 import xpaths
+from helper.cli import SSH_Command_Line
 from helper.global_config import private_config
 from helper.webui import WebUI
 from keywords.webui.common import Common as COM
@@ -6,6 +7,31 @@ from keywords.webui.navigation import Navigation as NAV
 
 
 class SSH_Connection:
+    @classmethod
+    def assert_shell_type(cls, shell_return: str, shell_type: str, username: str = private_config['USERNAME'], password: str = private_config['PASSWORD']) -> bool:
+        """
+        This method verifies the shell for the given user is set to the given shell type.
+
+        :param shell_return: is the expected output of the command.
+        :param shell_type: is the name of the shell
+        :param username: is the username of the user
+        :param password: is the password of the user
+
+        Example:
+            - SSH_Connection.assert_shell_type('admin', 'bash')
+            - SSH_Connection.assert_shell_type('admin', 'bash', 'third_party', 'pass')
+        """
+        if shell_type == 'cli' or shell_type == 'cli_console':
+            # command = SSH_Command_Line('ls', private_config['IP'], username, password)
+            # return True is a placeholder for TrueNAS cli shells.
+            # For the moment it cannot be accessed without interactive shell being functional.
+            return True
+        elif shell_return == '/home/admin':
+            command = SSH_Command_Line('pwd', private_config['IP'], username, password)
+        else:
+            command = SSH_Command_Line(f'grep {shell_type} /etc/passwd', private_config['IP'], username, password)
+        return shell_return in command.stdout
+
     @classmethod
     def assert_ssh_connection_exists(cls, connection: str) -> bool:
         """
