@@ -34,6 +34,8 @@ class Local_Command_Line:
         self.stdout = self.process.stdout
         self.stderr = self.process.stderr
         self.status = self.process.returncode == 0
+        # This was causing failures with commands that are meant to fail such as on SSHCOM.remove_all_test_files()
+        # when no files are not found. Commenting for now to assess effect.
         # assert self.status
 
 
