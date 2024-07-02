@@ -696,7 +696,7 @@ class Datasets:
         Example:
             - Dataset.click_dataset_location('root')
         """
-        Common.set_input_field('search', location)
+        Common.set_input_field('search', location, True)
         Common.click_on_element(xpaths.datasets.link_dataset(location))
 
     @classmethod

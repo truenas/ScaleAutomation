@@ -10,8 +10,8 @@ DATA_PROTECTION_LINKS = ['Manage CloudSync Tasks', 'Manage Replication Tasks', '
 DATASET_CARDS = ['Dataset Details', 'Dataset Space Management', 'Data Protection', 'Roles', 'Permissions']
 DATASET_PROTECTION_TASKS = ['Total Snapshots', 'Snapshot Tasks', 'Replication Tasks', 'Cloud Sync Tasks', 'Rsync Tasks']
 DISK_LIST = ["sda", "sdb", "sdc", "sdd"]
-# Execution delay will slow down WebUI.xpath by 10 misecond
-EXECUTION_DELAY = 0.01
+# Execution delay will slow down WebUI.xpath by 30 misecond
+EXECUTION_DELAY = 0.03
 EXTRA_LONG_WAIT = 300
 HOSTNAME = "default"
 # IMPLICITLY_WAIT can not be higher than SHORT_WAIT
