@@ -791,6 +791,20 @@ class Data_Protection:
         return COM.get_element_property(xpaths.common_xpaths.any_xpath(f'//*[contains(@data-test,"state-{task_type}-task-{name}")]'), 'innerText')
 
     @classmethod
+    def is_replication_task_enabled(cls, name: str) -> bool:
+        """
+        This method returns True if the replication task is enabled, otherwise returns False.
+
+        :param name: name of the replication task
+        :return: True if the replication task is enabled, otherwise returns False.
+
+        Example:
+            - Data_Protection.is_replication_task_enabled("rep_name")
+        """
+        name = COM.convert_to_tag_format(name)
+        return COM.is_toggle_enabled(f'enabled-replication-task-{name}-row-toggle')
+
+    @classmethod
     def is_snapshot_visible(cls, dataset: str, snapshot_name: str) -> bool:
         """
         This method returns True if a snapshot with the given hour and minute is visible, otherwise returns False.
