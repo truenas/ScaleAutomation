@@ -31,7 +31,7 @@ mkdircommand = Local_Command_Line(f'mkdir -p {report_dir}')
 assert mkdircommand.status is True, f'{mkdircommand.stdout} \n{mkdircommand.stderr}'
 
 
-def allure_environment():
+def allure_environment() -> None:
     # product_name = API_GET.get_system_product_name()
     # product_type = API_GET.get_system_product_type()
     version = API_GET.get_system_version().json()
@@ -51,7 +51,7 @@ def allure_environment():
             WebUI.delay(1)
 
 
-def allure_reporting():
+def allure_reporting() -> None:
     """
     This function creates a unique directory in the reports directory, moves the allure-results contents into it
     and generates the allure report.
@@ -68,7 +68,7 @@ def allure_reporting():
     print(f'Report generated. Folder name: | {timestamp_test_name} |')
 
 
-def attach_browser_console_logs():
+def attach_browser_console_logs() -> None:
     """
     This function attaches the browser console logs to the allure report.
 
@@ -79,7 +79,7 @@ def attach_browser_console_logs():
     allure.attach(console_logs, name='browser_console.log', attachment_type="text/plain", extension="attach")
 
 
-def percy_cli_installed():
+def percy_cli_installed() -> bool:
     """
     This function checks if the percy cli is installed.
 
@@ -90,7 +90,7 @@ def percy_cli_installed():
     return command.status
 
 
-def start_percy_session():
+def start_percy_session() -> None:
     """
     This method starts percy session if PERCY_TOKEN is set.
 
@@ -108,7 +108,7 @@ def start_percy_session():
         print('PERCY_TOKEN environment variable is not set. Skipping starting percy session.')
 
 
-def stop_percy_session():
+def stop_percy_session() -> None:
     """
     This function stops percy session if PERCY_TOKEN is set.
 
@@ -119,7 +119,7 @@ def stop_percy_session():
         run('npx percy exec:stop', shell=True)
 
 
-def percy_threading():
+def percy_threading() -> None:
     p = Popen('npx percy exec:start', shell=True, universal_newlines=True, stdout=PIPE)
     while True:
         line = p.stdout.readline()
@@ -131,7 +131,7 @@ def percy_threading():
             break
 
 
-def take_screenshot(name):
+def take_screenshot(name) -> None:
     """
     This function takes a screenshot of the webui and saves it in the reports folder.
 
