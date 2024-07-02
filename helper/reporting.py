@@ -31,7 +31,7 @@ mkdircommand = Local_Command_Line(f'mkdir -p {report_dir}')
 assert mkdircommand.status is True, f'{mkdircommand.stdout} \n{mkdircommand.stderr}'
 
 
-def allure_environment():
+def allure_environment() -> None:
     # product_name = API_GET.get_system_product_name()
     # product_type = API_GET.get_system_product_type()
     version = API_GET.get_system_version().json()
@@ -51,9 +51,9 @@ def allure_environment():
             WebUI.delay(1)
 
 
-def allure_reporting():
+def allure_reporting() -> None:
     """
-    This method creates a unique directory in the reports directory, moves the allure-results contents into it
+    This function creates a unique directory in the reports directory, moves the allure-results contents into it
     and generates the allure report.
 
     Example:
@@ -68,9 +68,9 @@ def allure_reporting():
     print(f'Report generated. Folder name: | {timestamp_test_name} |')
 
 
-def attach_browser_console_logs():
+def attach_browser_console_logs() -> None:
     """
-    This method attaches the browser console logs to the allure report.
+    This function attaches the browser console logs to the allure report.
 
     Example:
         - allure_attach_browser_console_logs()
@@ -79,13 +79,27 @@ def attach_browser_console_logs():
     allure.attach(console_logs, name='browser_console.log', attachment_type="text/plain", extension="attach")
 
 
-def start_percy_session():
+def percy_cli_installed() -> bool:
+    """
+    This function checks if the percy cli is installed.
+
+    Example:
+        - percy_cli_installed()
+    """
+    command = Local_Command_Line('npm list @percy/cli')
+    return command.status
+
+
+def start_percy_session() -> None:
     """
     This method starts percy session if PERCY_TOKEN is set.
 
     Example:
         - start_percy_session()
     """
+    if percy_cli_installed() is False:
+        print('@percy/cli is not installed. Skipping starting percy session.')
+        return
     if os.getenv('PERCY_TOKEN') is not None:
         threading_percy = threading.Thread(target=percy_threading, name='percy_threading')
         threading_percy.start()
@@ -94,18 +108,18 @@ def start_percy_session():
         print('PERCY_TOKEN environment variable is not set. Skipping starting percy session.')
 
 
-def stop_percy_session():
+def stop_percy_session() -> None:
     """
-    This method stops percy session if PERCY_TOKEN is set.
+    This function stops percy session if PERCY_TOKEN is set.
 
     Example:
         - stop_percy_session()
     """
-    if os.getenv('PERCY_TOKEN') is not None:
+    if os.getenv('PERCY_TOKEN') is not None and percy_cli_installed():
         run('npx percy exec:stop', shell=True)
 
 
-def percy_threading():
+def percy_threading() -> None:
     p = Popen('npx percy exec:start', shell=True, universal_newlines=True, stdout=PIPE)
     while True:
         line = p.stdout.readline()
@@ -117,9 +131,9 @@ def percy_threading():
             break
 
 
-def take_screenshot(name):
+def take_screenshot(name) -> None:
     """
-    This method takes a screenshot of the webui and saves it in the reports folder.
+    This function takes a screenshot of the webui and saves it in the reports folder.
 
     :param name: The name of the screenshot
 

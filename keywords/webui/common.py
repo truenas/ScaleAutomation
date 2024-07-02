@@ -1234,9 +1234,10 @@ class Common:
         Example:
             - Common.logoff_truenas()
         """
-        cls.click_button('power-menu')
+        cls.click_button('user-menu')
+        WebUI.delay(0.2)
         cls.click_button('log-out')
-        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('power-menu'))
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('user-menu'))
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod
@@ -1297,10 +1298,10 @@ class Common:
         """
         WebUI.delay(0.1)
         cls.click_on_element(xpaths.common_xpaths.select_field(name))
-        WebUI.delay(0.1)
+        WebUI.delay(0.3)
         cls.click_on_element(xpaths.common_xpaths.option_field(option))
         WebUI.xpath(xpaths.common_xpaths.select_field(name)).send_keys(Keys.TAB)
-        WebUI.delay(0.1)
+        WebUI.delay(0.3)
 
     @classmethod
     def select_option_by_row(cls, name: str, row: int, option: str) -> None:

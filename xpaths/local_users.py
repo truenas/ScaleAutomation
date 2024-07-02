@@ -1,4 +1,3 @@
-
 def builtin(name: str) -> str:
     """
     This function sets the xpath for the given user builtin value
@@ -47,3 +46,14 @@ def user(name: str) -> str:
     :return: xpath string for given user username value
     """
     return f'//*[@data-test="text-username-user-{name}-row-text"]'
+
+
+def user_shell_type(name: str, shell_type: str) -> str:
+    """
+    This function sets the xpath for the given user's shell type
+
+    :param name: name of the given user
+    :param shell_type: shell type of the given user
+    :return: xpath string for given user's shell type
+    """
+    return f'//*[@data-test="row-user-{name}"]//following-sibling::tr//dd[contains(text(), "{shell_type}")]'
