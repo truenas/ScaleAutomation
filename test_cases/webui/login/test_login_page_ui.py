@@ -16,6 +16,7 @@ class Test_Login_Page_UI:
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
 
     @allure.tag('Read', 'Percy', "NAS-129711")
+    @allure.issue('NAS-129860', 'NAS-129860')
     def test_login_page_ui(self):
         """
         This test asserts the UI of the login page
@@ -37,5 +38,6 @@ class Test_Login_Page_UI:
         assert LPU.assert_truenas_icon_displays() is True
         assert LPU.assert_ixsystems_icon_displays() is True
         assert LPU.assert_background_image_displays() is True
+        # Expected failure below: https://ixsystems.atlassian.net/browse/NAS-129860
         assert LPU.assert_ixsystems_link_is_correct() is True
 
