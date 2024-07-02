@@ -1237,7 +1237,7 @@ class Common:
         cls.click_button('user-menu')
         WebUI.delay(0.2)
         cls.click_button('log-out')
-        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('power-menu'))
+        assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('user-menu'))
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('log-in'))
 
     @classmethod
