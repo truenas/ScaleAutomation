@@ -53,7 +53,7 @@ def allure_environment():
 
 def allure_reporting():
     """
-    This method creates a unique directory in the reports directory, moves the allure-results contents into it
+    This function creates a unique directory in the reports directory, moves the allure-results contents into it
     and generates the allure report.
 
     Example:
@@ -70,13 +70,24 @@ def allure_reporting():
 
 def attach_browser_console_logs():
     """
-    This method attaches the browser console logs to the allure report.
+    This function attaches the browser console logs to the allure report.
 
     Example:
         - allure_attach_browser_console_logs()
     """
     console_logs = '\n'.join(map(str, WebUI.get_console_log()))
     allure.attach(console_logs, name='browser_console.log', attachment_type="text/plain", extension="attach")
+
+
+def percy_cli_installed():
+    """
+    This function checks if the percy cli is installed.
+
+    Example:
+        - percy_cli_installed()
+    """
+    command = Local_Command_Line('npm list @percy/cli')
+    return command.status
 
 
 def start_percy_session():
@@ -86,6 +97,9 @@ def start_percy_session():
     Example:
         - start_percy_session()
     """
+    if percy_cli_installed() is False:
+        print('@percy/cli is not installed. Skipping starting percy session.')
+        return
     if os.getenv('PERCY_TOKEN') is not None:
         threading_percy = threading.Thread(target=percy_threading, name='percy_threading')
         threading_percy.start()
@@ -96,12 +110,12 @@ def start_percy_session():
 
 def stop_percy_session():
     """
-    This method stops percy session if PERCY_TOKEN is set.
+    This function stops percy session if PERCY_TOKEN is set.
 
     Example:
         - stop_percy_session()
     """
-    if os.getenv('PERCY_TOKEN') is not None:
+    if os.getenv('PERCY_TOKEN') is not None and percy_cli_installed():
         run('npx percy exec:stop', shell=True)
 
 
@@ -119,7 +133,7 @@ def percy_threading():
 
 def take_screenshot(name):
     """
-    This method takes a screenshot of the webui and saves it in the reports folder.
+    This function takes a screenshot of the webui and saves it in the reports folder.
 
     :param name: The name of the screenshot
 

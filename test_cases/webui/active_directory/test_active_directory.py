@@ -103,7 +103,7 @@ class Test_Active_Directory:
         assert Directory_Services.assert_active_directory_domain_name(ad_data['domain'])
         assert Directory_Services.assert_active_directory_domain_account_name(ad_data['username'])
 
-        # WebUI.take_percy_snapshot("Active Directory Setup")
+        WebUI.take_percy_snapshot("Active Directory Setup")
 
     @allure.tag("defect_verification", "NAS-129528", "NAS-129686")
     @allure.issue("NAS-129686", "NAS-129686")
