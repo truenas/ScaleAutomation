@@ -15,12 +15,13 @@ class Test_Login_Page_UI:
         COM.login_to_truenas(private_config['USERNAME'], private_config['PASSWORD'])
         COM.verify_logged_in_user_correct(private_config['USERNAME'], private_config['PASSWORD'])
 
-    @allure.tag('Read', 'Percy')
+    @allure.tag('Read', 'Percy', "NAS-129711")
     def test_login_page_ui(self):
         """
         This test asserts the UI of the login page
         """
-        assert COM.assert_copyright_text_is_correct() is True
+        # Per https://ixsystems.atlassian.net/browse/NAS-129711, the copyright text should no-longer display.
+        assert COM.assert_copyright_text_is_correct() is False
         # WebUI.take_percy_snapshot('Login Page UI')
         assert LPU.assert_password_visibility_button_toggles_off_to_on() is True
         assert LPU.assert_password_visibility_button_toggles_on_to_off() is True
