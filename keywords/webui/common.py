@@ -55,6 +55,20 @@ class Common:
         return cls.is_visible(xpaths.common_xpaths.button_field(f'add-item-{name}'))
 
     @classmethod
+    def assert_alert_message(cls, message: str) -> bool:
+        """
+        This method returns True if the given message is contained i the alert text, otherwise False
+
+        :param message: the text of the message to verify
+        :return: True if the given message is contained i the alert text, otherwise False
+
+        Example:
+            - Common.assert_alert_message('my alert message')
+        """
+        alert = cls.get_element_property(xpaths.common_xpaths.any_xpath('//h4'), 'innerText')
+        return alert.__contains__(message)
+
+    @classmethod
     def assert_button_is_greyed_and_not_clickable(cls, name: str) -> bool:
         """
         This method asserts that the given button is greyed and not clickable
@@ -179,6 +193,20 @@ class Common:
         except (ElementClickInterceptedException, TimeoutException):
             return True
         return False
+
+    @classmethod
+    def assert_error_dialog_message(cls, error_message: str) -> bool:
+        """
+        This method returns True if the given error message is contained in the error dialog text, otherwise False
+
+        :param error_message: the text of the error message to verify
+        :return: True if the given error message is contained in the error dialog text, otherwise False
+
+        Example:
+            - Common.assert_error_dialog_message('error message')
+        """
+        error = cls.get_element_property(xpaths.common_xpaths.any_xpath('(//ix-error-dialog//span)[1]'), 'innerText')
+        return error.__contains__(error_message)
 
     @classmethod
     def assert_file_exists(cls, file: str, path: str, ip: str = private_config['IP'],
@@ -388,7 +416,7 @@ class Common:
                                         shared_config['SHORT_WAIT'])
 
     @classmethod
-    def assert_text_is_visible(cls, text) -> bool:
+    def assert_text_is_visible(cls, text: str) -> bool:
         """
         This method return True if the given text is visible before timeout otherwise it returns False.
 
@@ -405,10 +433,11 @@ class Common:
         """
         This method returns True or False if the toggle is locked and not clickable.
 
+        :param name: is the name of the toggle.
         :return: True if the toggle is locked and not clickable, otherwise it returns False.
 
         Example:
-            - Common.assert_toggle_is_restricted()
+            - Common.assert_toggle_is_restricted('enabled')
         """
         xpath_name = cls.convert_to_tag_format(name)
         assert WebUI.wait_until_visible(xpaths.common_xpaths.toggle_field_locked(xpath_name)) is True
@@ -995,19 +1024,20 @@ class Common:
         return cls.get_element_property(xpaths.common_xpaths.checkbox_field_attribute(name), 'disabled')
 
     @classmethod
-    def is_dialog_visible(cls, dialog_title: str, level: int) -> bool:
+    def is_dialog_visible(cls, dialog_title: str, level: int, wait: int = shared_config['SHORT_WAIT']) -> bool:
         """
         This method return True if the dialog is visible, otherwise it returns False.
 
         :param dialog_title: The name of the title of the dialog
         :param level: The level of the title of the dialog [1/3]
+        :param wait: the time in seconds to wait for the dialog to be visible
         :return: True if the dialog is visible, otherwise it returns False.
 
         Example:
             - Common.is_dialog_visible('Dialog Title', 1)
-            - Common.is_dialog_visible('Dialog Title', 3)
+            - Common.is_dialog_visible('Dialog Title', 3, 60)
         """
-        return cls.is_visible(xpaths.common_xpaths.any_header(dialog_title, level))
+        return cls.is_visible(xpaths.common_xpaths.any_header(dialog_title, level), wait)
 
     @classmethod
     def is_file_downloaded(cls, download_path: str, filename: str) -> bool:
@@ -1234,7 +1264,7 @@ class Common:
         Example:
             - Common.logoff_truenas()
         """
-        cls.click_button('power-menu')
+        cls.click_button('user-menu')
         cls.click_button('log-out')
         assert WebUI.wait_until_not_visible(xpaths.common_xpaths.button_field('power-menu'))
         assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field('log-in'))

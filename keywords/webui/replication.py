@@ -20,6 +20,21 @@ class Replication:
         COM.click_dialog_close_button()
 
     @classmethod
+    def click_run_now_button(cls, name):
+        """
+        This method clicks the run now button for the given replication task
+
+        :param name: the name of the given replication task
+
+        Example:
+            - Replication.click_run_now_replication_task_by_name('myRepTask')
+        """
+        name = COM.convert_to_tag_format(name)
+        assert WebUI.wait_until_visible(xpaths.common_xpaths.button_field(f'replication-task-{name}-play-arrow-row-action')) is True
+        COM.click_button(f'replication-task-{name}-play-arrow-row-action')
+        COM.assert_confirm_dialog()
+
+    @classmethod
     def click_run_now_replication_task_by_name(cls, name):
         """
         This method clicks the run now button for the given replication task
